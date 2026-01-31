@@ -33,6 +33,8 @@
 		"test:watch": "vitest",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build"
+		,
+		"release:patch": "npm version patch && npm publish"
 	},
 	"peerDependencies": {
 		"react": "^18.0.0",
