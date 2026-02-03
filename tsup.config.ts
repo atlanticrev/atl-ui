@@ -9,5 +9,5 @@ export default defineConfig({
 	sourcemap: true,
 	clean: true,
 	external: ['react', 'react-dom'],
-	esbuildPlugins: [TsconfigPathsPlugin()],
+	esbuildPlugins: [TsconfigPathsPlugin({ tsconfig: 'tsconfig.json' })],
 });

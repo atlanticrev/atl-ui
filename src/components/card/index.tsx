@@ -7,9 +7,9 @@ type CardProps<T extends ElementType> = {
 	className?: string;
 } & Omit<ComponentPropsWithoutRef<T>, 'as' | 'className'>;
 
-export function Card<T extends ElementType = 'div'>({ as, className, ...props }: CardProps<T>) {
+export function AtlCard<T extends ElementType = 'div'>({ as, className, ...props }: CardProps<T>) {
 	const Component = as ?? 'div';
-	const classes = clsx('ui-card', className);
+	const classes = clsx('atl-card', className);
 
 	return (
 		<Component

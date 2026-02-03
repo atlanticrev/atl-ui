@@ -3,14 +3,11 @@
 import type { KeyboardEvent, MouseEvent } from 'react';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 
-import { Button } from '@/components/button';
-import { Dropdown } from '@/components/dropdown';
+import { AtlButton } from '@/components/button';
+import { AtlDropdown } from '@/components/dropdown';
 import { clsx } from '@/lib/clsx';
 
-type SelectOption = {
-	value: string;
-	label: string;
-};
+import type { SelectOption } from './types';
 
 type SelectProps = {
 	label: string;
@@ -25,7 +22,7 @@ type SelectProps = {
 const DEFAULT_DROPDOWN_OFFSET = 10;
 const DEFAULT_MOBILE_BREAKPOINT = 960;
 
-export function Select({ label, value, options, onChange, helper, className, dropdownOffset }: SelectProps) {
+export function AtlSelect({ label, value, options, onChange, helper, className, dropdownOffset }: SelectProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
 
@@ -218,7 +215,7 @@ export function Select({ label, value, options, onChange, helper, className, dro
 
 	const getOptionClasses = (optionValue: string) => {
 		const isActive = optionValue === value;
-		return clsx('ui-select__option', isActive && 'ui-select__option--active');
+		return clsx('atl-select__option', isActive && 'atl-select__option--active');
 	};
 
 	const getOptionAriaSelected = (optionValue: string) => optionValue === value;
@@ -229,10 +226,10 @@ export function Select({ label, value, options, onChange, helper, className, dro
 		const optionClasses = getOptionClasses(option.value);
 		const isSelected = getOptionAriaSelected(option.value);
 		const isHighlighted = highlightedIndex === index;
-		const classes = clsx(optionClasses, isHighlighted && 'ui-select__option--highlighted');
+		const classes = clsx(optionClasses, isHighlighted && 'atl-select__option--highlighted');
 
 		return (
-			<Button
+			<AtlButton
 				aria-selected={isSelected}
 				className={classes}
 				data-value={option.value}
@@ -246,28 +243,28 @@ export function Select({ label, value, options, onChange, helper, className, dro
 				variant="ghost"
 			>
 				{option.label}
-			</Button>
+			</AtlButton>
 		);
 	};
 
-	const classes = clsx('ui-select', className);
+	const classes = clsx('atl-select', className);
 	const selectedOption = options.find((option) => option.value === value) ?? options[0];
 
 	return (
 		<div className={classes}>
 			<span
-				className="ui-select__label"
+				className="atl-select__label"
 				id={labelId}
 			>
 				{label}
 			</span>
 
-			<Button
+			<AtlButton
 				aria-controls={listId}
 				aria-expanded={isOpen}
 				aria-haspopup="listbox"
 				aria-labelledby={labelId}
-				className="ui-select__trigger"
+				className="atl-select__trigger"
 				onClick={handleToggle}
 				onKeyDown={handleTriggerKeyDown}
 				ref={anchorRef}
@@ -275,14 +272,14 @@ export function Select({ label, value, options, onChange, helper, className, dro
 				disableMotion
 				variant="ghost"
 			>
-				<span className="ui-select__value">{selectedOption?.label ?? label}</span>
+				<span className="atl-select__value">{selectedOption?.label ?? label}</span>
 
-				<span className="ui-select__icon" />
-			</Button>
+				<span className="atl-select__icon" />
+			</AtlButton>
 
-			<Dropdown
+			<AtlDropdown
 				anchorRef={anchorRef}
-				className="ui-select__dropdown"
+				className="atl-select__dropdown"
 				isOpen={isOpen}
 				mode="auto"
 				mobileBreakpoint={DEFAULT_MOBILE_BREAKPOINT}
@@ -292,7 +289,7 @@ export function Select({ label, value, options, onChange, helper, className, dro
 				<div
 					aria-activedescendant={highlightedIndex !== null ? getOptionId(highlightedIndex) : undefined}
 					aria-labelledby={labelId}
-					className="ui-select__options"
+					className="atl-select__options"
 					id={listId}
 					onKeyDown={handleOptionsKeyDown}
 					ref={optionsRef}
@@ -301,9 +298,9 @@ export function Select({ label, value, options, onChange, helper, className, dro
 				>
 					{options.map(renderOption)}
 				</div>
-			</Dropdown>
+			</AtlDropdown>
 
-			{helper ? <span className="ui-select__helper">{helper}</span> : null}
+			{helper ? <span className="atl-select__helper">{helper}</span> : null}
 		</div>
 	);
 }

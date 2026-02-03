@@ -3,16 +3,21 @@ import { forwardRef } from 'react';
 
 import { clsx } from '@/lib/clsx';
 
-type ButtonVariant = 'primary' | 'ghost';
+import type { ButtonVariant } from './types';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	variant?: ButtonVariant;
 	disableMotion?: boolean;
 };
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const AtlButton = forwardRef<HTMLButtonElement, ButtonProps>(
 	({ variant = 'primary', className, children, disableMotion, ...props }, ref) => {
-		const classes = clsx('ui-button', `ui-button--${variant}`, disableMotion && 'ui-button--no-motion', className);
+		const classes = clsx(
+			'atl-button',
+			`atl-button--${variant}`,
+			disableMotion && 'atl-button--no-motion',
+			className,
+		);
 
 		return (
 			<button
@@ -20,10 +25,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 				ref={ref}
 				{...props}
 			>
-				<span className="ui-button__label">{children}</span>
+				<span className="atl-button__label">{children}</span>
 			</button>
 		);
 	},
 );
 
-Button.displayName = 'Button';
+AtlButton.displayName = 'AtlButton';

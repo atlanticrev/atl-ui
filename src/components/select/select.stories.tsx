@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentProps } from 'react';
 import { useState } from 'react';
 
-import { Select } from './index';
+import { AtlSelect } from './index';
 
 const options = [
 	{ value: 'figma', label: 'Figma' },
@@ -11,14 +11,14 @@ const options = [
 	{ value: 'slack', label: 'Slack' },
 ];
 
-type SelectArgs = ComponentProps<typeof Select>;
+type SelectArgs = ComponentProps<typeof AtlSelect>;
 
 const SelectDemo = ({ label, helper, options: selectOptions }: SelectArgs) => {
 	const [value, setValue] = useState(selectOptions[0]?.value ?? '');
 
 	return (
 		<div style={{ display: 'grid', gap: '1rem' }}>
-			<Select
+			<AtlSelect
 				helper={helper}
 				label={label}
 				options={selectOptions}
@@ -29,15 +29,15 @@ const SelectDemo = ({ label, helper, options: selectOptions }: SelectArgs) => {
 	);
 };
 
-const meta: Meta<typeof Select> = {
-	title: 'Components/Select',
-	component: Select,
+const meta: Meta<typeof AtlSelect> = {
+	title: 'Components/AtlSelect',
+	component: AtlSelect,
 	parameters: {
 		layout: 'centered',
 		docs: {
 			description: {
 				component: `
-Select - single-value dropdown with helper text.
+AtlSelect - single-value dropdown with helper text.
 
 ## Features
 - Controlled value
@@ -67,7 +67,7 @@ Select - single-value dropdown with helper text.
 
 export default meta;
 
-type Story = StoryObj<typeof Select>;
+type Story = StoryObj<typeof AtlSelect>;
 
 export const Default: Story = {
 	render: (args) => <SelectDemo {...args} />,

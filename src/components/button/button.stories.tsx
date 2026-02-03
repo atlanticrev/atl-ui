@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from './index';
+import { AtlButton } from './index';
 
 const BUTTON_VARIANTS = ['primary', 'ghost'] as const;
 
-const meta: Meta<typeof Button> = {
-	title: 'Components/Button',
-	component: Button,
+const meta: Meta<typeof AtlButton> = {
+	title: 'Components/AtlButton',
+	component: AtlButton,
 	parameters: {
 		layout: 'centered',
 		docs: {
 			description: {
 				component: `
-Button - base action component with primary and ghost variants.
+AtlButton - base action component with primary and ghost variants.
 
 ## Features
 - 2 variants: primary, ghost
@@ -36,7 +36,7 @@ Button - base action component with primary and ghost variants.
 		},
 	},
 	args: {
-		children: 'Button',
+		children: 'AtlButton',
 		variant: 'primary',
 		disabled: false,
 		disableMotion: false,
@@ -45,21 +45,21 @@ Button - base action component with primary and ghost variants.
 
 export default meta;
 
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof AtlButton>;
 
 export const Default: Story = {};
 
 export const Variants: Story = {
 	render: () => (
 		<div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-			<Button variant="primary">Primary</Button>
-			<Button variant="ghost">Ghost</Button>
-			<Button variant="primary" disabled>
+			<AtlButton variant="primary">Primary</AtlButton>
+			<AtlButton variant="ghost">Ghost</AtlButton>
+			<AtlButton variant="primary" disabled>
 				Disabled
-			</Button>
-			<Button variant="ghost" disableMotion>
+			</AtlButton>
+			<AtlButton variant="ghost" disableMotion>
 				No motion
-			</Button>
+			</AtlButton>
 		</div>
 	),
 };

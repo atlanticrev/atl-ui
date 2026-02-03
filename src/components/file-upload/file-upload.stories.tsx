@@ -2,16 +2,16 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { ComponentProps } from 'react';
 import { useState } from 'react';
 
-import { FileUpload } from './index';
+import { AtlFileUpload } from './index';
 
-type FileUploadArgs = ComponentProps<typeof FileUpload>;
+type FileUploadArgs = ComponentProps<typeof AtlFileUpload>;
 
 const FileUploadDemo = (args: FileUploadArgs) => {
 	const [fileName, setFileName] = useState<string>('');
 
 	return (
 		<div style={{ display: 'grid', gap: '0.5rem' }}>
-			<FileUpload
+			<AtlFileUpload
 				{...args}
 				onFileSelected={(file) => {
 					setFileName(file?.name ?? '');
@@ -23,15 +23,15 @@ const FileUploadDemo = (args: FileUploadArgs) => {
 	);
 };
 
-const meta: Meta<typeof FileUpload> = {
-	title: 'Components/FileUpload',
-	component: FileUpload,
+const meta: Meta<typeof AtlFileUpload> = {
+	title: 'Components/AtlFileUpload',
+	component: AtlFileUpload,
 	parameters: {
 		layout: 'centered',
 		docs: {
 			description: {
 				component: `
-FileUpload - minimal file picker with label and hint.
+AtlFileUpload - minimal file picker with label and hint.
 
 ## Features
 - Accept filter support
@@ -62,7 +62,7 @@ FileUpload - minimal file picker with label and hint.
 
 export default meta;
 
-type Story = StoryObj<typeof FileUpload>;
+type Story = StoryObj<typeof AtlFileUpload>;
 
 export const Default: Story = {
 	render: (args) => <FileUploadDemo {...args} />,

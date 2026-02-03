@@ -14,9 +14,9 @@ import {
 
 import { clsx } from '@/lib/clsx';
 
-import type { UiInputProps } from './input.type';
+import type { AtlInputProps } from './input.type';
 
-export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function UiInput({
+export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(function AtlInput({
   testId,
   value,
   label,
@@ -59,6 +59,7 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
     setInternalHasValue(value !== undefined && value !== '');
   }, [ value ]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: label text changes should update measurement.
   useLayoutEffect(() => {
     if (measureRef.current && isLabelFloated) {
       setLabelWidth(measureRef.current.getBoundingClientRect().width);
@@ -83,19 +84,19 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
   }, [ onBlur ]);
 
   const inputRootClasses = clsx(
-    'ui-input__root',
-    `ui-input__root--${size}`,
-    status === 'error' && 'ui-input__root--error',
-    status === 'success' && 'ui-input__root--success',
-    disabled && 'ui-input__root--disabled',
-    readOnly && 'ui-input__root--readonly',
+    'atl-input__root',
+    `atl-input__root--${size}`,
+    status === 'error' && 'atl-input__root--error',
+    status === 'success' && 'atl-input__root--success',
+    disabled && 'atl-input__root--disabled',
+    readOnly && 'atl-input__root--readonly',
   );
 
-  const borderClasses = clsx('ui-input__border', label && isLabelFloated && 'ui-input__border--with-gap');
+  const borderClasses = clsx('atl-input__border', label && isLabelFloated && 'atl-input__border--with-gap');
 
   return (
     <div
-      className={clsx('ui-input', className)}
+      className={clsx('atl-input', className)}
       data-size={size}
       data-testid={testId || undefined}
     >
@@ -103,7 +104,7 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
         <span
           ref={measureRef}
           aria-hidden="true"
-          className="ui-input__label-measure"
+          className="atl-input__label-measure"
         >
           {label}
         </span>
@@ -116,9 +117,9 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
         {label && (
           <span
             className={clsx(
-              'ui-input__label',
-              isLabelFloated && 'ui-input__label--floated',
-              iconLeft && 'ui-input__label--with-icon',
+              'atl-input__label',
+              isLabelFloated && 'atl-input__label--floated',
+              iconLeft && 'atl-input__label--with-icon',
             )}
           >
             {label}
@@ -126,7 +127,7 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
         )}
 
         {iconLeft && (
-          <span className="ui-input__icon">
+          <span className="atl-input__icon">
             {iconLeft}
           </span>
         )}
@@ -136,7 +137,7 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
           aria-describedby={helperTextId}
           aria-invalid={isInvalid || undefined}
           aria-label={!isLabelFloated && label ? label : undefined}
-          className={clsx('ui-input__field', variant === 'number' && 'ui-input__field--number')}
+          className={clsx('atl-input__field', variant === 'number' && 'atl-input__field--number')}
           data-testid={testId ? `${testId}-input` : undefined}
           disabled={disabled}
           inputMode={inputMode}
@@ -155,10 +156,10 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
             ? (
               <button
                 className={clsx(
-                  'ui-input__icon',
-                  'ui-input__icon--right',
-                  'ui-input__icon--clickable',
-                  iconRightRotated && 'ui-input__icon--rotated',
+                  'atl-input__icon',
+                  'atl-input__icon--right',
+                  'atl-input__icon--clickable',
+                  iconRightRotated && 'atl-input__icon--rotated',
                 )}
                 tabIndex={-1}
                 type="button"
@@ -170,9 +171,9 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
             : (
               <span
                 className={clsx(
-                  'ui-input__icon',
-                  'ui-input__icon--right',
-                  iconRightRotated && 'ui-input__icon--rotated',
+                  'atl-input__icon',
+                  'atl-input__icon--right',
+                  iconRightRotated && 'atl-input__icon--rotated',
                 )}
               >
                 {iconRight}
@@ -184,13 +185,13 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
       </label>
 
       {showFooter && (
-        <div className="ui-input__footer">
+        <div className="atl-input__footer">
           {helperText && (
             <span
               className={clsx(
-                'ui-input__helper',
-                status === 'error' && 'ui-input__helper--error',
-                status === 'success' && 'ui-input__helper--success',
+                'atl-input__helper',
+                status === 'error' && 'atl-input__helper--error',
+                status === 'success' && 'atl-input__helper--success',
               )}
               id={helperTextId}
             >
@@ -199,21 +200,20 @@ export const UiInput = memo(forwardRef<HTMLInputElement, UiInputProps>(function 
           )}
 
           {showCharacterCount && maxLength && (
-            <span
+            <output
               aria-atomic="true"
               aria-live="polite"
-              className="ui-input__counter"
-              role="status"
+              className="atl-input__counter"
             >
-              <span className="ui-input__counter-current">
+              <span className="atl-input__counter-current">
                 {currentLength}
               </span>
 
-              <span className="ui-input__counter-total">
+              <span className="atl-input__counter-total">
                 /
                 {maxLength}
               </span>
-            </span>
+            </output>
           )}
         </div>
       )}

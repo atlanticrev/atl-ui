@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from '@/components/button';
-import { ToastProvider, useToast } from './index';
+import { AtlButton } from '@/components/button';
+import { AtlToastProvider, useAtlToast } from './index';
 
-const meta: Meta<typeof ToastProvider> = {
-	title: 'Components/ToastProvider',
-	component: ToastProvider,
+const meta: Meta<typeof AtlToastProvider> = {
+	title: 'Components/AtlToastProvider',
+	component: AtlToastProvider,
 	parameters: {
 		layout: 'centered',
 		docs: {
 			description: {
 				component: `
-ToastProvider - context-based toasts with variants.
+AtlToastProvider - context-based toasts with variants.
 
 ## Features
 - 3 variants: info, success, error
@@ -25,30 +25,30 @@ ToastProvider - context-based toasts with variants.
 
 export default meta;
 
-type Story = StoryObj<typeof ToastProvider>;
+type Story = StoryObj<typeof AtlToastProvider>;
 
 const ToastDemo = () => {
-	const { enqueueToast } = useToast();
+	const { enqueueToast } = useAtlToast();
 
 	return (
 		<div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-			<Button onClick={() => enqueueToast('Saved changes', { variant: 'success' })}>
+			<AtlButton onClick={() => enqueueToast('Saved changes', { variant: 'success' })}>
 				Success toast
-			</Button>
-			<Button variant="ghost" onClick={() => enqueueToast('Network issue', { variant: 'error' })}>
+			</AtlButton>
+			<AtlButton variant="ghost" onClick={() => enqueueToast('Network issue', { variant: 'error' })}>
 				Error toast
-			</Button>
-			<Button variant="ghost" onClick={() => enqueueToast('New version available', { variant: 'info' })}>
+			</AtlButton>
+			<AtlButton variant="ghost" onClick={() => enqueueToast('New version available', { variant: 'info' })}>
 				Info toast
-			</Button>
+			</AtlButton>
 		</div>
 	);
 };
 
 const ProviderStory = () => (
-	<ToastProvider>
+	<AtlToastProvider>
 		<ToastDemo />
-	</ToastProvider>
+	</AtlToastProvider>
 );
 
 export const Default: Story = {

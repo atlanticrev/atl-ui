@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useRef, useState } from 'react';
 
-import { Button } from '@/components/button';
-import { Dropdown } from './index';
+import { AtlButton } from '@/components/button';
+import { AtlDropdown } from './index';
 
 const DROPDOWN_MODES = ['anchored', 'modal', 'auto'] as const;
 const DROPDOWN_PLACEMENTS = ['bottom-start', 'bottom-end', 'top-start', 'top-end'] as const;
@@ -20,16 +20,16 @@ const DropdownDemo = ({ mode = 'anchored', placement = 'bottom-start', offset = 
 
 	return (
 		<div style={{ minHeight: 220, display: 'grid', gap: '1rem', alignContent: 'start' }}>
-			<Button
+			<AtlButton
 				ref={anchorRef}
 				onClick={() => setOpen((prev) => !prev)}
 				variant="primary"
 				style={{ width: 140 }}
 			>
 				Toggle dropdown
-			</Button>
+			</AtlButton>
 
-			<Dropdown
+			<AtlDropdown
 				anchorRef={anchorRef}
 				isOpen={open}
 				onClose={() => setOpen(false)}
@@ -37,33 +37,33 @@ const DropdownDemo = ({ mode = 'anchored', placement = 'bottom-start', offset = 
 				placement={placement}
 				offset={offset}
 			>
-				<div className={isModal ? undefined : 'ui-dropdown__panel'}>
+				<div className={isModal ? undefined : 'atl-dropdown__panel'}>
 					<div style={{ display: 'grid', gap: '0.4rem' }}>
-						<Button variant="ghost" disableMotion>
+						<AtlButton variant="ghost" disableMotion>
 							First action
-						</Button>
-						<Button variant="ghost" disableMotion>
+						</AtlButton>
+						<AtlButton variant="ghost" disableMotion>
 							Second action
-						</Button>
-						<Button variant="ghost" disableMotion>
+						</AtlButton>
+						<AtlButton variant="ghost" disableMotion>
 							Third action
-						</Button>
+						</AtlButton>
 					</div>
 				</div>
-			</Dropdown>
+			</AtlDropdown>
 		</div>
 	);
 };
 
-const meta: Meta<typeof Dropdown> = {
-	title: 'Components/Dropdown',
-	component: Dropdown,
+const meta: Meta<typeof AtlDropdown> = {
+	title: 'Components/AtlDropdown',
+	component: AtlDropdown,
 	parameters: {
 		layout: 'centered',
 		docs: {
 			description: {
 				component: `
-Dropdown - floating panel with anchored, modal, or auto behavior.
+AtlDropdown - floating panel with anchored, modal, or auto behavior.
 
 ## Features
 - 3 modes: anchored, modal, auto
@@ -96,7 +96,7 @@ Dropdown - floating panel with anchored, modal, or auto behavior.
 
 export default meta;
 
-type Story = StoryObj<typeof Dropdown>;
+type Story = StoryObj<typeof AtlDropdown>;
 
 export const Default: Story = {
 	render: (args) => <DropdownDemo {...args} />,

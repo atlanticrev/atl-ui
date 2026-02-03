@@ -2,27 +2,10 @@
 
 import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 
-import { Button } from '@/components/button';
+import { AtlButton } from '@/components/button';
 import { clsx } from '@/lib/clsx';
 
-type ToastVariant = 'info' | 'success' | 'error';
-
-type ToastOptions = {
-	variant?: ToastVariant;
-	duration?: number;
-};
-
-type ToastItem = {
-	id: string;
-	message: string;
-	variant: ToastVariant;
-	duration: number;
-};
-
-type ToastContextValue = {
-	enqueueToast: (message: string, options?: ToastOptions) => string;
-	closeToast: (id: string) => void;
-};
+import type { ToastContextValue, ToastItem, ToastOptions, ToastVariant } from './types';
 
 type ToastProviderProps = {
 	children: React.ReactNode;
@@ -39,12 +22,12 @@ const DEFAULT_VARIANT: ToastVariant = 'info';
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-const ToastCard = ({ toast, onDismiss }: ToastCardProps) => {
+const AtlToastCard = ({ toast, onDismiss }: ToastCardProps) => {
 	const handleDismiss = () => {
 		onDismiss(toast.id);
 	};
 
-	const classes = clsx('ui-toast', `ui-toast--${toast.variant}`);
+	const classes = clsx('atl-toast', `atl-toast--${toast.variant}`);
 
 	const role = toast.variant === 'error' ? 'alert' : 'status';
 
@@ -54,22 +37,22 @@ const ToastCard = ({ toast, onDismiss }: ToastCardProps) => {
 			className={classes}
 			role={role}
 		>
-			<span className="ui-toast__message">{toast.message}</span>
+			<span className="atl-toast__message">{toast.message}</span>
 
-			<Button
+			<AtlButton
 				aria-label="Dismiss"
-				className="ui-toast__dismiss"
+				className="atl-toast__dismiss"
 				onClick={handleDismiss}
 				variant="ghost"
 				type="button"
 			>
 				Dismiss
-			</Button>
+			</AtlButton>
 		</div>
 	);
 };
 
-export const ToastProvider = ({ children }: ToastProviderProps) => {
+export const AtlToastProvider = ({ children }: ToastProviderProps) => {
 	const [toasts, setToasts] = useState<ToastItem[]>([]);
 
 	const idRef = useRef(0);
@@ -125,7 +108,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
 	);
 
 	const renderToast = (toast: ToastItem) => (
-		<ToastCard
+		<AtlToastCard
 			key={toast.id}
 			onDismiss={closeToast}
 			toast={toast}
@@ -136,18 +119,18 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
 		<ToastContext.Provider value={value}>
 			{children}
 
-			<div className="ui-toast-provider">
-				<div className="ui-toast-provider__stack">{toasts.map(renderToast)}</div>
+			<div className="atl-toast-provider">
+				<div className="atl-toast-provider__stack">{toasts.map(renderToast)}</div>
 			</div>
 		</ToastContext.Provider>
 	);
 };
 
-export const useToast = () => {
+export const useAtlToast = () => {
 	const context = useContext(ToastContext);
 
 	if (!context) {
-		throw new Error('useToast must be used within ToastProvider.');
+		throw new Error('useAtlToast must be used within AtlToastProvider.');
 	}
 
 	return context;

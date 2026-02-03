@@ -3,16 +3,16 @@ type ProgressProps = {
 	value: number;
 };
 
-export function Progress({ label, value }: ProgressProps) {
+export function AtlProgress({ label, value }: ProgressProps) {
 	const clampedValue = Math.min(100, Math.max(0, value));
 
 	return (
-		<div className="ui-progress">
-			<span className="ui-progress__label">{label}</span>
+		<div className="atl-progress">
+			<span className="atl-progress__label">{label}</span>
 
-			<div className="ui-progress__track">
+			<div className="atl-progress__track">
 				<span
-					className="ui-progress__fill"
+					className="atl-progress__fill"
 					style={{ width: `${clampedValue}%` }}
 				/>
 			</div>

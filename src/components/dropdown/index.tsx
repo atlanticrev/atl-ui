@@ -6,17 +6,7 @@ import { createPortal } from 'react-dom';
 
 import { clsx } from '@/lib/clsx';
 
-type DropdownPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
-
-type DropdownMode = 'anchored' | 'modal' | 'auto';
-
-type DropdownPosition = {
-	top: number;
-	left: number;
-	minWidth: number;
-	transformOrigin: string;
-	placement: DropdownPlacement;
-};
+import type { DropdownMode, DropdownPlacement, DropdownPosition } from './types';
 
 type DropdownProps = {
 	anchorRef: React.RefObject<HTMLElement | null>;
@@ -48,7 +38,7 @@ const getTransformOrigin = (placement: DropdownPlacement) => {
 	}
 };
 
-export const Dropdown = ({
+export const AtlDropdown = ({
 	anchorRef,
 	children,
 	isOpen,
@@ -312,7 +302,7 @@ export const Dropdown = ({
 			resizeObserverRef.current?.disconnect();
 			resizeObserverRef.current = null;
 		};
-	}, [isOpen, updatePosition]);
+	}, [isOpen, isModal, updatePosition]);
 
 	useEffect(() => {
 		if (!isOpen) {
@@ -387,12 +377,12 @@ export const Dropdown = ({
 	const content = isModal ? (
 		// biome-ignore lint/a11y/noStaticElementInteractions: <overlay>
 		<div
-			className="ui-dropdown ui-dropdown__overlay"
+			className="atl-dropdown atl-dropdown__overlay"
 			onClick={handleOverlayClick}
 			role="presentation"
 		>
 			<div
-				className={clsx('ui-dropdown__panel', className)}
+				className={clsx('atl-dropdown__panel', className)}
 				ref={dropdownRef}
 			>
 				{children}
@@ -400,7 +390,7 @@ export const Dropdown = ({
 		</div>
 	) : (
 		<div
-			className={clsx('ui-dropdown', className)}
+			className={clsx('atl-dropdown', className)}
 			ref={dropdownRef}
 			style={wrapperStyle}
 		>

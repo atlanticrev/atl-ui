@@ -1,19 +1,19 @@
 import type { InputHTMLAttributes, ReactNode } from 'react';
 
-export type UiInputSize = 'xl' | 'l' | 'm' | 's' | 'xs';
+export type AtlInputSize = 'xl' | 'l' | 'm' | 's' | 'xs';
 
-export type UiInputStatus = 'default' | 'error' | 'success';
+export type AtlInputStatus = 'default' | 'error' | 'success';
 
-export type UiInputVariant = 'text' | 'number';
+export type AtlInputVariant = 'text' | 'number';
 
-export type UiInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> & {
+export type AtlInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'onChange'> & {
   testId?: string;
   value?: string;
   label?: string;
   helperText?: string;
-  size?: UiInputSize;
-  status?: UiInputStatus;
-  variant?: UiInputVariant;
+  size?: AtlInputSize;
+  status?: AtlInputStatus;
+  variant?: AtlInputVariant;
   maxLength?: number;
   showCharacterCount?: boolean;
   iconLeft?: ReactNode;

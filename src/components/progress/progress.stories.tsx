@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Progress } from './index';
+import { AtlProgress } from './index';
 
-const meta: Meta<typeof Progress> = {
-	title: 'Components/Progress',
-	component: Progress,
+const meta: Meta<typeof AtlProgress> = {
+	title: 'Components/AtlProgress',
+	component: AtlProgress,
 	parameters: {
 		layout: 'centered',
 		docs: {
 			description: {
 				component: `
-Progress - labeled progress indicator.
+AtlProgress - labeled progress indicator.
 
 ## Features
 - Clamps value between 0 and 100
@@ -35,16 +35,16 @@ Progress - labeled progress indicator.
 
 export default meta;
 
-type Story = StoryObj<typeof Progress>;
+type Story = StoryObj<typeof AtlProgress>;
 
 export const Default: Story = {};
 
 export const Overview: Story = {
 	render: () => (
 		<div style={{ display: 'grid', gap: '1rem', maxWidth: 320 }}>
-			<Progress label="Queued" value={0} />
-			<Progress label="Processing" value={42} />
-			<Progress label="Complete" value={100} />
+			<AtlProgress label="Queued" value={0} />
+			<AtlProgress label="Processing" value={42} />
+			<AtlProgress label="Complete" value={100} />
 		</div>
 	),
 };

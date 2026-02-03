@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 
-import { UiInput } from './input';
+import { AtlInput } from './input';
 
 const IconBase = ({ children }: { children: ReactNode }) => (
 	<svg
@@ -58,15 +58,15 @@ const iconOptions = {
 	spinner: <SpinnerIcon />,
 };
 
-const meta: Meta<typeof UiInput> = {
-	title: 'Components/UiInput',
-	component: UiInput,
+const meta: Meta<typeof AtlInput> = {
+	title: 'Components/AtlInput',
+	component: AtlInput,
 	parameters: {
 		layout: 'centered',
 		docs: {
 			description: {
 				component: `
-UiInput - universal input component with support for various sizes, states, and display variants.
+AtlInput - universal input component with support for various sizes, states, and display variants.
 
 ## Features
 - 5 sizes: xl, l, m, s, xs
@@ -79,9 +79,9 @@ UiInput - universal input component with support for various sizes, states, and 
 
 ## Usage
 \`\`\`tsx
-import { UiInput } from './input';
+import { AtlInput } from './input';
 
-<UiInput
+<AtlInput
   testId="my-input"
   label="Email"
   value={email}
@@ -130,7 +130,7 @@ import { UiInput } from './input';
 		},
 	},
 	args: {
-		testId: 'ui-input',
+		testId: 'atl-input',
 		size: 'm',
 		status: 'default',
 		variant: 'text',
@@ -145,7 +145,7 @@ import { UiInput } from './input';
 
 export default meta;
 
-type Story = StoryObj<typeof UiInput>;
+type Story = StoryObj<typeof AtlInput>;
 
 export const Default: Story = {
 	args: {
@@ -169,7 +169,7 @@ export const WithPlaceholder: Story = {
 	},
 };
 
-export const Error: Story = {
+export const ErrorState: Story = {
 	args: {
 		label: 'Label',
 		value: 'Invalid value',
@@ -258,7 +258,7 @@ function SelectSimulationDemo() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<UiInput
+		<AtlInput
 			readOnly
 			helperText={isOpen ? 'Click to close' : 'Click to open'}
 			iconRight={<ChevronDownIcon />}
@@ -336,7 +336,7 @@ function InteractiveInputDemo() {
 	const [value, setValue] = useState('');
 
 	return (
-		<UiInput
+		<AtlInput
 			showCharacterCount
 			helperText={`Characters: ${value.length}`}
 			label="Type something"
@@ -361,7 +361,7 @@ export const AllSizes: Story = {
 				gap: '24px',
 			}}
 		>
-			<UiInput
+			<AtlInput
 				helperText="Size XL - for number inputs"
 				label="Amount"
 				size="xl"
@@ -369,7 +369,7 @@ export const AllSizes: Story = {
 				value="500.00"
 				variant="number"
 			/>
-			<UiInput
+			<AtlInput
 				helperText="Size L - for number inputs"
 				label="Amount"
 				size="l"
@@ -377,9 +377,9 @@ export const AllSizes: Story = {
 				value="500.00"
 				variant="number"
 			/>
-			<UiInput helperText="Size M - default" label="Label" size="m" testId="size-m" value="Value" />
-			<UiInput helperText="Size S" label="Label" size="s" testId="size-s" value="Value" />
-			<UiInput helperText="Size XS - compact" label="Label" size="xs" testId="size-xs" value="Value" />
+			<AtlInput helperText="Size M - default" label="Label" size="m" testId="size-m" value="Value" />
+			<AtlInput helperText="Size S" label="Label" size="s" testId="size-s" value="Value" />
+			<AtlInput helperText="Size XS - compact" label="Label" size="xs" testId="size-xs" value="Value" />
 		</div>
 	),
 };
@@ -393,9 +393,9 @@ export const AllStatuses: Story = {
 				gap: '24px',
 			}}
 		>
-			<UiInput helperText="Default state" label="Default" status="default" testId="status-default" value="Value" />
-			<UiInput helperText="This field has an error" label="Error" status="error" testId="status-error" value="Invalid" />
-			<UiInput
+			<AtlInput helperText="Default state" label="Default" status="default" testId="status-default" value="Value" />
+			<AtlInput helperText="This field has an error" label="Error" status="error" testId="status-error" value="Invalid" />
+			<AtlInput
 				helperText="This field is valid"
 				iconRight={<CheckIcon />}
 				label="Success"
@@ -416,10 +416,10 @@ export const AllStates: Story = {
 				gap: '24px',
 			}}
 		>
-			<UiInput helperText="Empty state with label as placeholder" label="Empty" testId="state-empty" />
-			<UiInput helperText="Filled state with floating label" label="Filled" testId="state-filled" value="Some value" />
-			<UiInput disabled helperText="Disabled state" label="Disabled" testId="state-disabled" value="Disabled value" />
-			<UiInput readOnly helperText="Read only state" label="Read Only" testId="state-readonly" value="Read only value" />
+			<AtlInput helperText="Empty state with label as placeholder" label="Empty" testId="state-empty" />
+			<AtlInput helperText="Filled state with floating label" label="Filled" testId="state-filled" value="Some value" />
+			<AtlInput disabled helperText="Disabled state" label="Disabled" testId="state-disabled" value="Disabled value" />
+			<AtlInput readOnly helperText="Read only state" label="Read Only" testId="state-readonly" value="Read only value" />
 		</div>
 	),
 };
