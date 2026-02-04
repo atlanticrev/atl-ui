@@ -1,0 +1,34 @@
+.atl-file-upload {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: start;
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--atl-border-strong);
+    background: var(--atl-surface);
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--atl-accent-weak);
+    }
+  }
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+  }
+
+  &__hint {
+    font-size: 0.8rem;
+    color: var(--atl-muted);
+  }
+}

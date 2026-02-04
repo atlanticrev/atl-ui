@@ -1,0 +1,26 @@
+.atl-dropdown {
+  position: absolute;
+  z-index: 60;
+  background: var(--atl-surface);
+  border: 1px solid var(--atl-border);
+  border-radius: var(--atl-radius-sm);
+  box-shadow: var(--atl-shadow);
+  transform: translate(var(--dropdown-translate-x, 0), var(--dropdown-translate-y, 0));
+
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 17, 17, 0.24);
+    display: grid;
+    place-items: center;
+    z-index: 60;
+  }
+
+  &__panel {
+    background: var(--atl-surface);
+    border-radius: var(--atl-radius);
+    box-shadow: var(--atl-shadow);
+    padding: 0.75rem;
+    min-width: min(92vw, 320px);
+  }
+}

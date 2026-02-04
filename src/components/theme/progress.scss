@@ -1,0 +1,25 @@
+.atl-progress {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 320px;
+
+  &__label {
+    font-size: 0.85rem;
+    color: var(--atl-muted);
+  }
+
+  &__track {
+    width: 100%;
+    height: 8px;
+    background: var(--atl-accent-weak);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    display: block;
+    height: 100%;
+    background: var(--atl-accent);
+    border-radius: inherit;
+  }
+}

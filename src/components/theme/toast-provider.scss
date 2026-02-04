@@ -1,0 +1,46 @@
+.atl-toast-provider {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 80;
+  pointer-events: none;
+
+  &__stack {
+    display: grid;
+    gap: 0.6rem;
+  }
+}
+
+.atl-toast {
+  background: var(--atl-surface);
+  border: 1px solid var(--atl-border);
+  border-left: 4px solid var(--atl-accent);
+  border-radius: var(--atl-radius-sm);
+  box-shadow: var(--atl-shadow-sm);
+  padding: 0.75rem 0.9rem;
+  min-width: 240px;
+  display: grid;
+  gap: 0.5rem;
+  pointer-events: auto;
+
+  &--success {
+    border-left-color: var(--atl-success);
+  }
+
+  &--error {
+    border-left-color: var(--atl-danger);
+  }
+
+  &--info {
+    border-left-color: var(--atl-info);
+  }
+
+  &__message {
+    font-size: 0.9rem;
+  }
+
+  &__dismiss {
+    justify-self: start;
+    padding: 0.35rem 0.7rem;
+  }
+}

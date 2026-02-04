@@ -1,10 +1,4 @@
-import type { StorybookConfig } from '@storybook/react-vite';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-const config: StorybookConfig = {
+const config = {
 	framework: {
 		name: '@storybook/react-vite',
 		options: {},
@@ -18,10 +12,10 @@ const config: StorybookConfig = {
 		config.resolve = config.resolve ?? {};
 		config.resolve.alias = {
 			...(config.resolve.alias as Record<string, string>),
-			'@': path.resolve(__dirname, '../src'),
+			'@': new URL('../src', import.meta.url).pathname,
 		};
 		return config;
 	},
-};
+} satisfies import('@storybook/react-vite').StorybookConfig;
 
 export default config;

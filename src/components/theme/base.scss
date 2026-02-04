@@ -1,0 +1,31 @@
+:root {
+  color-scheme: light;
+  --atl-font-sans: "IBM Plex Sans", "Helvetica Neue", sans-serif;
+  --atl-bg: #f6f6f4;
+  --atl-surface: #ffffff;
+  --atl-ink: #111111;
+  --atl-muted: #6c6c6c;
+  --atl-border: #e6e6e2;
+  --atl-border-strong: #d0d0cb;
+  --atl-accent: #111111;
+  --atl-accent-weak: #f0f0ec;
+  --atl-success: #1f7a4c;
+  --atl-danger: #b42318;
+  --atl-info: #2563eb;
+  --atl-radius: 12px;
+  --atl-radius-sm: 8px;
+  --atl-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+  --atl-shadow-sm: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--atl-font-sans);
+  background: var(--atl-bg);
+  color: var(--atl-ink);
+}
