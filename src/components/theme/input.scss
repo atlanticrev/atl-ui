@@ -4,6 +4,8 @@
   --atl-input-padding-inline: 16px;
   --atl-input-icon-size: 24px;
   --atl-input-gap: 12px;
+  --atl-input-border-gap-offset: 8px;
+  --atl-input-border-gap-padding: 16px;
   --atl-input-font: var(--md-sys-typescale-body-large-font);
   --atl-input-support-font: var(--md-sys-typescale-body-small-font);
   --atl-input-label-font: var(--md-sys-typescale-body-large-font);
@@ -22,6 +24,10 @@
   }
 
   &__root {
+    --atl-input-background: var(--md-sys-color-surface-container-highest);
+    --atl-input-border-color: var(--md-sys-color-outline);
+    --atl-input-border-width: 1px;
+
     position: relative;
     display: flex;
     align-items: center;
@@ -29,19 +35,21 @@
     width: 100%;
     padding: var(--atl-input-padding-block) var(--atl-input-padding-inline);
     border-radius: var(--md-sys-shape-corner-extra-small);
-    background: var(--md-sys-color-surface-container-highest);
+    background-color: var(--atl-input-background);
     cursor: text;
     transition: background-color 0.2s ease;
 
     &:hover:not(.atl-input__root--disabled):not(.atl-input__root--readonly) {
-      background: color-mix(in srgb, var(--md-sys-color-surface-container-highest) 92%, var(--md-sys-color-on-surface));
+      --atl-input-background: color-mix(
+        in srgb,
+        var(--md-sys-color-surface-container-highest) 92%,
+        var(--md-sys-color-on-surface)
+      );
     }
 
     &:focus-within {
-      .atl-input__border {
-        border-color: var(--md-sys-color-primary);
-        border-width: 2px;
-      }
+      --atl-input-border-color: var(--md-sys-color-primary);
+      --atl-input-border-width: 2px;
 
       .atl-input__label {
         color: var(--md-sys-color-primary);
@@ -49,10 +57,7 @@
     }
 
     &--error {
-      .atl-input__border,
-      &:focus-within .atl-input__border {
-        border-color: var(--md-sys-color-error);
-      }
+      --atl-input-border-color: var(--md-sys-color-error);
 
       .atl-input__label,
       .atl-input__helper {
@@ -61,9 +66,7 @@
     }
 
     &--success {
-      .atl-input__border {
-        border-color: var(--atl-success);
-      }
+      --atl-input-border-color: var(--atl-success);
     }
 
     &--disabled,
@@ -76,6 +79,7 @@
     position: absolute;
     top: 50%;
     left: var(--atl-input-label-offset);
+    z-index: 1;
     color: var(--md-sys-color-on-surface-variant);
     font: var(--atl-input-label-font);
     transform: translateY(-50%);
@@ -86,7 +90,7 @@
       top: 0;
       left: 12px;
       padding: 0 4px;
-      background: linear-gradient(var(--md-sys-color-surface-container-highest), var(--md-sys-color-surface-container-highest));
+      background: transparent;
       font: var(--atl-input-label-floated-font);
       transform: translateY(-50%);
     }
@@ -112,6 +116,8 @@
     flex: 1 1 auto;
     flex-direction: column;
     min-width: 0;
+    position: relative;
+    z-index: 1;
   }
 
   &__field {
@@ -143,6 +149,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 1;
     color: var(--md-sys-color-on-surface-variant);
 
     &--clickable {
@@ -160,10 +168,23 @@
   &__border {
     position: absolute;
     inset: 0;
-    border: 1px solid var(--md-sys-color-outline);
+    z-index: 0;
+    border: var(--atl-input-border-width) solid var(--atl-input-border-color);
     border-radius: inherit;
     pointer-events: none;
     transition: border-color 0.2s ease, border-width 0.2s ease;
+
+    &--with-gap::before {
+      content: '';
+      position: absolute;
+      top: calc(var(--atl-input-border-width) * -1);
+      left: var(--atl-input-border-gap-offset);
+      width: calc(var(--label-width) + var(--atl-input-border-gap-padding));
+      max-width: calc(100% - (var(--atl-input-border-gap-offset) * 2));
+      height: calc(var(--atl-input-border-width) + 6px);
+      background-color: var(--atl-input-background);
+      transition: background-color 0.2s ease, height 0.2s ease, top 0.2s ease;
+    }
   }
 
   &__footer {

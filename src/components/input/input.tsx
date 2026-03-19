@@ -37,9 +37,12 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 	const [isFocused, setIsFocused] = useState(false);
 	const [labelWidth, setLabelWidth] = useState(0);
 	const [internalHasValue, setInternalHasValue] = useState(false);
+	
 	const generatedId = useId();
+	
 	const measureRef = useRef<HTMLSpanElement>(null);
 	const inputRootRef = useRef<HTMLLabelElement | null>(null);
+	
 	const mutableRootRef = rootRef as { current: HTMLLabelElement | null } | undefined;
 	const applyReadOnlyStyles = readOnlyStyled ?? readOnly;
 	const hasValue = (value !== undefined && value !== '') || internalHasValue;
@@ -70,10 +73,12 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 		setInternalHasValue(event.target.value !== '');
 		onChange?.(event.target.value);
 	}, [onChange]);
+
 	const handleFocus = useCallback((event: FocusEvent<HTMLInputElement>) => {
 		setIsFocused(true);
 		onFocus?.(event);
 	}, [onFocus]);
+	
 	const handleBlur = useCallback((event: FocusEvent<HTMLInputElement>) => {
 		setIsFocused(false);
 		onBlur?.(event);
@@ -120,6 +125,7 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 	return (
 		<div className={clsx('atl-input', className)} data-size={size} data-testid={testId || undefined}>
 			{label && <span aria-hidden="true" className="atl-input__label-measure" ref={measureRef}>{label}</span>}
+			
 			<label
 				className={clsx(
 					'atl-input__root',
@@ -142,7 +148,9 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 						{label}
 					</span>
 				)}
+
 				{iconLeft && <span className="atl-input__icon">{iconLeft}</span>}
+				
 				<div className="atl-input__content">
 					<input
 						{...rest}
@@ -162,11 +170,15 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 						onChange={handleChange}
 						onFocus={handleFocus}
 					/>
+					
 					{description && <span className="atl-input__description" id={descriptionId}>{description}</span>}
 				</div>
+				
 				{renderRightIcon()}
+				
 				<span className={clsx('atl-input__border', label && isLabelFloated && 'atl-input__border--with-gap')} />
 			</label>
+
 			{showFooter && (
 				<div className="atl-input__footer">
 					{helperText && (
@@ -174,9 +186,11 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 							{helperText}
 						</span>
 					)}
+					
 					{showCharacterCount && maxLength && (
 						<output aria-atomic="true" aria-live="polite" className="atl-input__counter">
 							<span className="atl-input__counter-current">{currentLength}</span>
+							
 							<span className="atl-input__counter-total">/{maxLength}</span>
 						</output>
 					)}
