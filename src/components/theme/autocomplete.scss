@@ -1,0 +1,9 @@
+.atl-autocomplete {
+  &__empty-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+}

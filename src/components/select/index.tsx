@@ -1,306 +1,179 @@
-'use client';
+import type { KeyboardEvent } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
-import type { KeyboardEvent, MouseEvent } from 'react';
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
-
-import { AtlButton } from '@/components/button';
+import { useDropdownState } from '@/components/combobox/use-dropdown-state';
+import { useKeyboardNavigation } from '@/components/combobox/use-keyboard-navigation';
 import { AtlDropdown } from '@/components/dropdown';
-import { clsx } from '@/lib/clsx';
+import { AtlInput } from '@/components/input/input';
+import { AtlPopup } from '@/components/popup';
+import { ChevronDownIcon } from '@/icons/chevron-down-icon';
+import { SearchIcon } from '@/icons/search-icon';
 
-import type { SelectOption } from './types';
+import type { AtlSelectProps, SelectOption } from './types';
 
-type SelectProps = {
-	label: string;
-	value: string;
-	options: SelectOption[];
-	onChange: (value: string) => void;
-	helper?: string;
-	className?: string;
-	dropdownOffset?: number;
+const DEFAULT_MAX_HEIGHT = 212;
+
+const defaultFilter = <T,>(option: SelectOption<T>, searchValue: string): boolean => {
+	return option.label.toLowerCase().includes(searchValue.toLowerCase());
 };
 
-const DEFAULT_DROPDOWN_OFFSET = 10;
-const DEFAULT_MOBILE_BREAKPOINT = 960;
-
-export function AtlSelect({ label, value, options, onChange, helper, className, dropdownOffset }: SelectProps) {
-	const [isOpen, setIsOpen] = useState(false);
-	const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
-
-	const labelId = useId();
-	const listId = useId();
-
-	const anchorRef = useRef<HTMLButtonElement | null>(null);
-	const optionsRef = useRef<HTMLDivElement | null>(null);
-	const focusRafRef = useRef<number | null>(null);
-	const focusAttemptsRef = useRef(0);
-
-	const selectedIndex = options.findIndex((option) => option.value === value);
-
-	const handleToggle = () => {
-		setIsOpen((prev) => !prev);
-	};
-
-	const handleClose = () => {
-		setIsOpen(false);
-	};
-
-	const focusOptions = useCallback(() => {
-		if (focusRafRef.current) {
-			window.cancelAnimationFrame(focusRafRef.current);
+export const AtlSelect = <T,>({
+	className,
+	disabled = false,
+	filterFn,
+	flip = true,
+	footerText,
+	helperText,
+	label,
+	maxDropdownHeight = DEFAULT_MAX_HEIGHT,
+	multiSelect = false,
+	noResultsText = 'No results found',
+	onChange,
+	onSelectAll,
+	options,
+	placeholder,
+	searchPlaceholder,
+	searchable = false,
+	selectAllText = 'Select all',
+	showFooter = false,
+	size = 'm',
+	status = 'default',
+	testId,
+	value,
+}: AtlSelectProps<T>): JSX.Element => {
+	const [searchValue, setSearchValue] = useState('');
+	const inputRef = useRef<HTMLInputElement>(null);
+	const anchorRef = useRef<HTMLDivElement>(null);
+	const inputRootRef = useRef<HTMLLabelElement>(null);
+	const dropdown = useDropdownState(disabled);
+	const filteredOptions = useMemo(() => {
+		if (!searchable || !searchValue.trim()) {
+			return options;
 		}
 
-		focusRafRef.current = window.requestAnimationFrame(() => {
-			if (optionsRef.current) {
-				try {
-					optionsRef.current.focus({ preventScroll: true });
-				} catch {
-					optionsRef.current.focus();
-				}
-				focusAttemptsRef.current = 0;
-				focusRafRef.current = null;
+		const runFilter = filterFn ?? defaultFilter;
+		return options.filter((option) => runFilter(option, searchValue));
+	}, [filterFn, options, searchValue, searchable]);
+	const selectedValues = useMemo(() => {
+		if (multiSelect) {
+			return (value as T[] | undefined) ?? [];
+		}
+
+		return value === undefined ? [] : [value as T];
+	}, [multiSelect, value]);
+	const selectedOption = useMemo(() => {
+		return multiSelect ? undefined : options.find((option) => option.value === value);
+	}, [multiSelect, options, value]);
+	const displayValue = useMemo(() => {
+		if (multiSelect) {
+			return selectedValues.length > 0 ? `${selectedValues.length} selected` : '';
+		}
+
+		return selectedOption?.label ?? '';
+	}, [multiSelect, selectedOption, selectedValues.length]);
+	const initialHighlightIndex = filteredOptions.findIndex((option) => selectedValues.includes(option.value));
+	const { handleKeyDown, highlightedIndex } = useKeyboardNavigation({
+		initialHighlightIndex,
+		inputRef,
+		isOpen: dropdown.isOpen,
+		onClose: dropdown.close,
+		onOpen: dropdown.open,
+		onSelect: (selected) => {
+			if (multiSelect) {
+				const currentValues = (value as T[] | undefined) ?? [];
+				const nextValues = currentValues.includes(selected)
+					? currentValues.filter((item) => item !== selected)
+					: [...currentValues, selected];
+				(onChange as ((values: T[]) => void) | undefined)?.(nextValues);
 				return;
 			}
 
-			focusAttemptsRef.current += 1;
-			if (focusAttemptsRef.current < 6) {
-				focusOptions();
-				return;
-			}
+			(onChange as ((nextValue: T) => void) | undefined)?.(selected);
+			dropdown.close();
+		},
+		options: filteredOptions,
+	});
 
-			focusAttemptsRef.current = 0;
-			focusRafRef.current = null;
-		});
-	}, []);
-
-	const focusTrigger = () => {
-		anchorRef.current?.focus();
-	};
-
-	const ensureHighlight = useCallback(() => {
-		if (selectedIndex >= 0) {
-			setHighlightedIndex(selectedIndex);
+	const handleTriggerMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+		event.preventDefault();
+		dropdown.toggle();
+		requestAnimationFrame(() => inputRef.current?.focus());
+	}, [dropdown]);
+	const handleSelect = useCallback((selected: T) => {
+		if (multiSelect) {
+			const currentValues = (value as T[] | undefined) ?? [];
+			const nextValues = currentValues.includes(selected)
+				? currentValues.filter((item) => item !== selected)
+				: [...currentValues, selected];
+			(onChange as ((values: T[]) => void) | undefined)?.(nextValues);
 			return;
 		}
 
-		if (options.length > 0) {
-			setHighlightedIndex(0);
-		}
-	}, [options.length, selectedIndex]);
-
-	const closeAndResetHighlight = () => {
-		setIsOpen(false);
-		setHighlightedIndex(null);
-		focusTrigger();
-	};
-
-	useEffect(() => {
-		if (isOpen) {
-			ensureHighlight();
-			focusOptions();
-		} else {
-			setHighlightedIndex(null);
-			if (focusRafRef.current) {
-				window.cancelAnimationFrame(focusRafRef.current);
-				focusRafRef.current = null;
-			}
-			focusAttemptsRef.current = 0;
-		}
-	}, [isOpen, ensureHighlight, focusOptions]);
-
-	const handleOptionClick = (event: MouseEvent<HTMLButtonElement>) => {
-		const optionValue = event.currentTarget.dataset.value;
-		if (!optionValue) {
-			return;
-		}
-
-		if (optionValue !== value) {
-			onChange(optionValue);
-		}
-
-		setIsOpen(false);
-	};
-
-	const handleOptionSelect = (index: number) => {
-		const option = options[index];
-
-		if (!option) {
-			return;
-		}
-
-		if (option.value !== value) {
-			onChange(option.value);
-		}
-
-		closeAndResetHighlight();
-	};
-
-	const getNextIndex = (direction: 'next' | 'prev') => {
-		if (options.length === 0) {
-			return null;
-		}
-
-		const baseIndex = highlightedIndex ?? (selectedIndex >= 0 ? selectedIndex : 0);
-		const delta = direction === 'next' ? 1 : -1;
-		const nextIndex = baseIndex + delta;
-
-		if (nextIndex >= options.length) {
-			return 0;
-		}
-
-		if (nextIndex < 0) {
-			return options.length - 1;
-		}
-
-		return nextIndex;
-	};
-
-	const moveHighlight = (direction: 'next' | 'prev') => {
-		const nextIndex = getNextIndex(direction);
-		if (nextIndex === null) {
-			return;
-		}
-
-		setHighlightedIndex(nextIndex);
-	};
-
-	const handleArrowNavigation = (direction: 'next' | 'prev') => {
-		if (!isOpen) {
-			setIsOpen(true);
-			ensureHighlight();
-		}
-
-		moveHighlight(direction);
-		focusOptions();
-	};
-
-	const handleTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault();
-			setIsOpen((prev) => !prev);
-		}
-
-		if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-			event.preventDefault();
-			handleArrowNavigation(event.key === 'ArrowDown' ? 'next' : 'prev');
-		}
-	};
-
-	const handleOptionsKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-		if (event.key === 'ArrowDown') {
-			event.preventDefault();
-			moveHighlight('next');
-		}
-
-		if (event.key === 'ArrowUp') {
-			event.preventDefault();
-			moveHighlight('prev');
-		}
-
-		if (event.key === 'Enter') {
-			event.preventDefault();
-			if (highlightedIndex !== null) {
-				handleOptionSelect(highlightedIndex);
-			}
-		}
-
-		if (event.key === 'Escape') {
-			event.preventDefault();
-			closeAndResetHighlight();
-		}
-
-		if (event.key === 'Tab') {
-			closeAndResetHighlight();
-		}
-	};
-
-	const getOptionClasses = (optionValue: string) => {
-		const isActive = optionValue === value;
-		return clsx('atl-select__option', isActive && 'atl-select__option--active');
-	};
-
-	const getOptionAriaSelected = (optionValue: string) => optionValue === value;
-
-	const getOptionId = (index: number) => `${listId}-option-${index}`;
-
-	const renderOption = (option: SelectOption, index: number) => {
-		const optionClasses = getOptionClasses(option.value);
-		const isSelected = getOptionAriaSelected(option.value);
-		const isHighlighted = highlightedIndex === index;
-		const classes = clsx(optionClasses, isHighlighted && 'atl-select__option--highlighted');
-
-		return (
-			<AtlButton
-				aria-selected={isSelected}
-				className={classes}
-				data-value={option.value}
-				id={getOptionId(index)}
-				key={option.value}
-				onClick={handleOptionClick}
-				role="option"
-				tabIndex={-1}
-				type="button"
-				disableMotion
-				variant="ghost"
-			>
-				{option.label}
-			</AtlButton>
-		);
-	};
-
-	const classes = clsx('atl-select', className);
-	const selectedOption = options.find((option) => option.value === value) ?? options[0];
+		(onChange as ((nextValue: T) => void) | undefined)?.(selected);
+		dropdown.close();
+	}, [dropdown, multiSelect, onChange, value]);
+	const handleSearchKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+		event.stopPropagation();
+		handleKeyDown(event);
+	}, [handleKeyDown]);
+	const dropdownHeader = searchable ? (
+		<div className="atl-select__search">
+			<AtlInput
+				autoFocus
+				className="atl-select__search-input"
+				iconLeft={<SearchIcon />}
+				placeholder={searchPlaceholder}
+				size="xs"
+				value={searchValue}
+				onChange={setSearchValue}
+				onKeyDown={handleSearchKeyDown}
+			/>
+		</div>
+	) : undefined;
+	const emptyState = <span>{noResultsText}</span>;
 
 	return (
-		<div className={classes}>
-			<span
-				className="atl-select__label"
-				id={labelId}
-			>
-				{label}
-			</span>
-
-			<AtlButton
-				aria-controls={listId}
-				aria-expanded={isOpen}
-				aria-haspopup="listbox"
-				aria-labelledby={labelId}
-				className="atl-select__trigger"
-				onClick={handleToggle}
-				onKeyDown={handleTriggerKeyDown}
-				ref={anchorRef}
-				type="button"
-				disableMotion
-				variant="ghost"
-			>
-				<span className="atl-select__value">{selectedOption?.label ?? label}</span>
-
-				<span className="atl-select__icon" />
-			</AtlButton>
-
-			<AtlDropdown
-				anchorRef={anchorRef}
-				className="atl-select__dropdown"
-				isOpen={isOpen}
-				mode="auto"
-				mobileBreakpoint={DEFAULT_MOBILE_BREAKPOINT}
-				offset={dropdownOffset ?? DEFAULT_DROPDOWN_OFFSET}
-				onClose={handleClose}
-			>
-				<div
-					aria-activedescendant={highlightedIndex !== null ? getOptionId(highlightedIndex) : undefined}
-					aria-labelledby={labelId}
-					className="atl-select__options"
-					id={listId}
-					onKeyDown={handleOptionsKeyDown}
-					ref={optionsRef}
-					role="listbox"
-					tabIndex={-1}
-				>
-					{options.map(renderOption)}
-				</div>
-			</AtlDropdown>
-
-			{helper ? <span className="atl-select__helper">{helper}</span> : null}
+		<div className={className}>
+			<div className="atl-select" ref={anchorRef}>
+				<AtlInput
+					ref={inputRef}
+					className="atl-select__input"
+					disabled={disabled}
+					helperText={helperText}
+					iconLeft={selectedOption?.icon}
+					iconRight={<ChevronDownIcon size={24} />}
+					iconRightRotated={dropdown.isOpen}
+					label={label}
+					onKeyDown={handleKeyDown}
+					onMouseDown={handleTriggerMouseDown}
+					placeholder={placeholder}
+					readOnly
+					readOnlyStyled={false}
+					rootRef={inputRootRef}
+					size={size}
+					status={status}
+					testId={`${testId}-input`}
+					value={displayValue}
+				/>
+			</div>
+			<AtlPopup anchorRef={anchorRef} flip={flip} inputRootRef={inputRootRef} isOpen={dropdown.isOpen} testId={`${testId}-popup`} onClose={dropdown.close}>
+				<AtlDropdown
+					emptyState={emptyState}
+					footerText={footerText}
+					headerSlot={dropdownHeader}
+					highlightedIndex={highlightedIndex}
+					items={filteredOptions}
+					maxHeight={maxDropdownHeight}
+					multiSelect={multiSelect}
+					optionIdPrefix={`${testId}-option`}
+					selectAllText={selectAllText}
+					selectedValues={selectedValues}
+					showFooter={showFooter}
+					testId={`${testId}-dropdown-list`}
+					onSelect={handleSelect}
+					onSelectAll={onSelectAll}
+				/>
+			</AtlPopup>
 		</div>
 	);
-}
+};

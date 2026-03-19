@@ -1,0 +1,44 @@
+.atl-table {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: var(--md-sys-shape-corner-large);
+  background: var(--md-sys-color-surface-container-low);
+  overflow: hidden;
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.875rem 1rem;
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+      text-align: left;
+    }
+
+    th {
+      color: var(--md-sys-color-on-surface-variant);
+      font: var(--md-sys-typescale-title-small-font);
+    }
+
+    td {
+      color: var(--md-sys-color-on-surface);
+      font: var(--md-sys-typescale-body-medium-font);
+    }
+  }
+
+  &__empty {
+    padding: 2rem;
+    color: var(--md-sys-color-on-surface-variant);
+    text-align: center;
+    font: var(--md-sys-typescale-body-medium-font);
+  }
+
+  &__pagination {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    padding: 0 1rem 1rem;
+  }
+}

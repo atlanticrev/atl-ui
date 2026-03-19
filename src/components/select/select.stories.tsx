@@ -1,27 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import type { ComponentProps } from 'react';
 import { useState } from 'react';
 
+import type { SelectOption } from './types';
 import { AtlSelect } from './index';
 
-const options = [
+const options: SelectOption<string>[] = [
 	{ value: 'figma', label: 'Figma' },
 	{ value: 'notion', label: 'Notion' },
 	{ value: 'linear', label: 'Linear' },
 	{ value: 'slack', label: 'Slack' },
 ];
 
-type SelectArgs = ComponentProps<typeof AtlSelect>;
-
-const SelectDemo = ({ label, helper, options: selectOptions }: SelectArgs) => {
-	const [value, setValue] = useState(selectOptions[0]?.value ?? '');
+const SelectDemo = ({ helperText, label, searchable = false }: { helperText?: string; label: string; searchable?: boolean }) => {
+	const [value, setValue] = useState(options[0]?.value ?? '');
 
 	return (
-		<div style={{ display: 'grid', gap: '1rem' }}>
+		<div style={{ display: 'grid', gap: '1rem', width: 320 }}>
 			<AtlSelect
-				helper={helper}
+				testId="select"
+				helperText={helperText}
 				label={label}
-				options={selectOptions}
+				options={options}
+				searchable={searchable}
 				value={value}
 				onChange={setValue}
 			/>
@@ -34,35 +34,8 @@ const meta: Meta<typeof AtlSelect> = {
 	component: AtlSelect,
 	parameters: {
 		layout: 'centered',
-		docs: {
-			description: {
-				component: `
-AtlSelect - single-value dropdown with helper text.
-
-## Features
-- Controlled value
-- Keyboard navigation
-- Optional helper text
-				`,
-			},
-		},
 	},
 	tags: ['autodocs'],
-	argTypes: {
-		label: {
-			control: 'text',
-		},
-		helper: {
-			control: 'text',
-		},
-	},
-	args: {
-		label: 'Workspace',
-		helper: 'Pick the primary workspace',
-		options,
-		value: options[0]?.value ?? '',
-		onChange: () => {},
-	},
 };
 
 export default meta;
@@ -70,5 +43,9 @@ export default meta;
 type Story = StoryObj<typeof AtlSelect>;
 
 export const Default: Story = {
-	render: (args) => <SelectDemo {...args} />,
+	render: () => <SelectDemo helperText="Pick the primary workspace" label="Workspace" />,
+};
+
+export const Searchable: Story = {
+	render: () => <SelectDemo label="Workspace" searchable />,
 };

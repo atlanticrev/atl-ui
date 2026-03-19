@@ -1,0 +1,41 @@
+.atl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 32px;
+  padding: 0 1rem;
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: var(--md-sys-shape-corner-small);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-label-large-font);
+
+  &--size-s {
+    min-height: 28px;
+    padding: 0 0.75rem;
+  }
+
+  &--frozen {
+    background: var(--md-sys-color-secondary-container);
+    border-color: transparent;
+    color: var(--md-sys-color-on-secondary-container);
+  }
+
+  &--danger {
+    background: var(--md-sys-color-error-container);
+    border-color: transparent;
+    color: var(--md-sys-color-on-error-container);
+  }
+
+  &--disabled {
+    opacity: 0.38;
+  }
+
+  &__remove {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+}

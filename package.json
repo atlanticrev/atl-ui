@@ -10,7 +10,8 @@
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
-		}
+		},
+		"./theme.css": "./dist/theme.css"
 	},
 	"files": [
 		"dist"
@@ -22,7 +23,7 @@
 		"node": ">=18.18.0"
 	},
 	"scripts": {
-		"build": "tsup",
+		"build": "npm run build:js && npm run build:css",
 		"dev": "tsup --watch",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
 		"lint": "biome lint .",
@@ -33,7 +34,10 @@
 		"test:watch": "vitest",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"release:patch": "npm version patch && npm publish"
+		"release:patch": "npm run verify && npm version patch && npm publish",
+		"verify": "npm run lint && npm run typecheck && npm run build",
+		"build:js": "tsup",
+		"build:css": "sass --no-source-map src/components/theme.scss dist/theme.css"
 	},
 	"peerDependencies": {
 		"react": "^18.0.0",
@@ -59,5 +63,6 @@
 		"typescript": "^5.4.5",
 		"vite": "^5.2.8",
 		"vitest": "^1.4.0"
-	}
+	},
+	"style": "dist/theme.css"
 }

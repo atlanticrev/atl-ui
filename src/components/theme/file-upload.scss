@@ -7,28 +7,26 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem 0.9rem;
-    border-radius: 999px;
-    border: 1px solid var(--atl-border-strong);
-    background: var(--atl-surface);
-    font-weight: 600;
+    min-height: 40px;
+    padding: 0 1.5rem;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: var(--md-sys-shape-corner-full);
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    font: var(--md-sys-typescale-label-large-font);
     cursor: pointer;
-
-    &:hover {
-      background: var(--atl-accent-weak);
-    }
   }
 
   &__input {
     position: absolute;
-    opacity: 0;
-    pointer-events: none;
     width: 1px;
     height: 1px;
+    opacity: 0;
+    pointer-events: none;
   }
 
   &__hint {
-    font-size: 0.8rem;
-    color: var(--atl-muted);
+    color: var(--md-sys-color-on-surface-variant);
+    font: var(--md-sys-typescale-body-small-font);
   }
 }

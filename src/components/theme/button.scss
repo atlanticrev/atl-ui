@@ -1,59 +1,121 @@
 .atl-button {
-  appearance: none;
-  border: 1px solid var(--atl-border-strong);
-  background: var(--atl-surface);
-  color: var(--atl-ink);
-  cursor: pointer;
+  --atl-button-state-hover: color-mix(in srgb, currentColor 8%, transparent);
+  --atl-button-state-pressed: color-mix(in srgb, currentColor 12%, transparent);
+
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.55rem 1.1rem;
-  border-radius: 999px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  min-width: 64px;
+  border: 1px solid transparent;
+  border-radius: var(--md-sys-shape-corner-full);
+  font: var(--md-sys-typescale-label-large-font);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 
-  &__label {
-    line-height: 1;
+  &:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--md-sys-color-primary) 32%, transparent);
+    outline-offset: 2px;
   }
 
-  &--primary {
-    background: var(--atl-accent);
-    border-color: var(--atl-accent);
-    color: #ffffff;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.38;
+    box-shadow: none;
   }
 
-  &--ghost {
+  &__content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  &--size-48 {
+    min-height: 40px;
+    padding: 0 1.5rem;
+  }
+
+  &--size-40,
+  &--size-32,
+  &--size-24 {
+    min-height: 40px;
+    padding: 0 1rem;
+  }
+
+  &--filled {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+    box-shadow: var(--md-sys-elevation-level1);
+
+    &:hover:not(:disabled) {
+      box-shadow: var(--md-sys-elevation-level2);
+      background: color-mix(in srgb, var(--md-sys-color-primary) 92%, var(--md-sys-color-on-primary));
+    }
+
+    &:active:not(:disabled) {
+      background: color-mix(in srgb, var(--md-sys-color-primary) 88%, var(--md-sys-color-on-primary));
+    }
+  }
+
+  &--tonal {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--md-sys-color-secondary-container) 92%, var(--md-sys-color-on-secondary-container));
+    }
+
+    &:active:not(:disabled) {
+      background: color-mix(in srgb, var(--md-sys-color-secondary-container) 88%, var(--md-sys-color-on-secondary-container));
+    }
+  }
+
+  &--outlined {
+    border-color: var(--md-sys-color-outline);
     background: transparent;
-    border-color: var(--atl-border);
-    color: var(--atl-ink);
+    color: var(--md-sys-color-primary);
 
-    &:hover {
-      background: var(--atl-accent-weak);
-      color: var(--atl-ink);
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
     }
 
-    &:active {
-      background: #e6e6e2;
+    &:active:not(:disabled) {
+      background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
     }
+  }
+
+  &--text {
+    background: transparent;
+    color: var(--md-sys-color-primary);
+
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+    }
+
+    &:active:not(:disabled) {
+      background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+    }
+  }
+
+  &--elevated {
+    background: var(--md-sys-color-surface-container-low);
+    color: var(--md-sys-color-primary);
+    box-shadow: var(--md-sys-elevation-level1);
+
+    &:hover:not(:disabled) {
+      box-shadow: var(--md-sys-elevation-level2);
+      background: color-mix(in srgb, var(--md-sys-color-surface-container-low) 92%, var(--md-sys-color-primary));
+    }
+  }
+
+  &--danger {
+    background: var(--md-sys-color-error);
+    color: var(--md-sys-color-on-error);
   }
 
   &--no-motion {
     transition: none;
-  }
-
-  &:hover {
-    background: #0d0d0d;
-    color: #ffffff;
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
   }
 }

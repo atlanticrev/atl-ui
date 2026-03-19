@@ -43,7 +43,7 @@ const AtlToastCard = ({ toast, onDismiss }: ToastCardProps) => {
 				aria-label="Dismiss"
 				className="atl-toast__dismiss"
 				onClick={handleDismiss}
-				variant="ghost"
+				variant="text"
 				type="button"
 			>
 				Dismiss

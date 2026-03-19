@@ -1,402 +1,108 @@
-'use client';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import type { CSSProperties, MouseEvent } from 'react';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-
+import { CheckIcon } from '@/icons/check-icon';
 import { clsx } from '@/lib/clsx';
 
-import type { DropdownMode, DropdownPlacement, DropdownPosition } from './types';
+import type { AtlDropdownProps } from './types';
 
-type DropdownProps = {
-	anchorRef: React.RefObject<HTMLElement | null>;
-	children: React.ReactNode;
-	isOpen: boolean;
-	onClose: () => void;
-	className?: string;
-	offset?: number;
-	placement?: DropdownPlacement;
-	mode?: DropdownMode;
-	mobileBreakpoint?: number;
-};
+const DEFAULT_MAX_HEIGHT = 212;
 
-const DEFAULT_OFFSET = 8;
-const DEFAULT_PLACEMENT: DropdownPlacement = 'bottom-start';
-const DEFAULT_MODE: DropdownMode = 'anchored';
-const DEFAULT_BREAKPOINT = 960;
-
-const getTransformOrigin = (placement: DropdownPlacement) => {
-	switch (placement) {
-		case 'bottom-end':
-			return 'top right';
-		case 'top-start':
-			return 'bottom left';
-		case 'top-end':
-			return 'bottom right';
-		default:
-			return 'top left';
-	}
-};
-
-export const AtlDropdown = ({
-	anchorRef,
-	children,
-	isOpen,
-	onClose,
+export const AtlDropdown = <T,>({
 	className,
-	offset = DEFAULT_OFFSET,
-	placement = DEFAULT_PLACEMENT,
-	mode = DEFAULT_MODE,
-	mobileBreakpoint = DEFAULT_BREAKPOINT,
-}: DropdownProps) => {
-	const [position, setPosition] = useState<DropdownPosition | null>(null);
-	const [isModal, setIsModal] = useState(false);
-
-	const dropdownRef = useRef<HTMLDivElement | null>(null);
-	const placementRef = useRef<DropdownPlacement>(placement);
-	const observerRef = useRef<IntersectionObserver | null>(null);
-	const resizeObserverRef = useRef<ResizeObserver | null>(null);
-	const hasMeasuredRef = useRef(false);
-
-	const resolveIsModal = useCallback(() => {
-		if (mode === 'modal') {
-			return true;
-		}
-
-		if (mode === 'anchored') {
-			return false;
-		}
-
-		if (typeof window === 'undefined') {
-			return false;
-		}
-
-		return window.matchMedia(`(max-width: ${mobileBreakpoint}px)`).matches;
-	}, [mobileBreakpoint, mode]);
-
-	const updatePosition = useCallback(
-		(allowFlip: boolean) => {
-			if (!anchorRef.current) {
-				return;
-			}
-
-			const rect = anchorRef.current.getBoundingClientRect();
-			const dropdownRect = dropdownRef.current?.getBoundingClientRect();
-			const dropdownNode = dropdownRef.current;
-			const dropdownWidth =
-				dropdownRect?.width || dropdownNode?.offsetWidth || dropdownNode?.scrollWidth || rect.width;
-			const dropdownHeight =
-				dropdownRect?.height || dropdownNode?.offsetHeight || dropdownNode?.scrollHeight || 0;
-			const viewportHeight = window.innerHeight;
-			const viewportWidth = window.innerWidth;
-			const scrollX = window.scrollX;
-			const scrollY = window.scrollY;
-			const spaceAbove = rect.top;
-			const spaceBelow = viewportHeight - rect.bottom;
-			const spaceLeft = rect.left;
-			const spaceRight = viewportWidth - rect.right;
-			const computedOffset = offset;
-			const minWidth = rect.width;
-			let computedPlacement: DropdownPlacement = allowFlip ? placement : placementRef.current;
-
-			if (
-				allowFlip &&
-				placement.startsWith('bottom') &&
-				dropdownHeight &&
-				spaceBelow < dropdownHeight + computedOffset
-			) {
-				computedPlacement = computedPlacement.replace('bottom', 'top') as DropdownPlacement;
-			}
-
-			if (
-				allowFlip &&
-				placement.startsWith('top') &&
-				dropdownHeight &&
-				spaceAbove < dropdownHeight + computedOffset
-			) {
-				computedPlacement = computedPlacement.replace('top', 'bottom') as DropdownPlacement;
-			}
-
-			const wouldOverflowRight = rect.left + dropdownWidth > viewportWidth;
-			const wouldOverflowLeft = rect.right - dropdownWidth < 0;
-
-			if (
-				allowFlip &&
-				computedPlacement.endsWith('start') &&
-				dropdownWidth &&
-				wouldOverflowRight &&
-				spaceLeft > spaceRight
-			) {
-				computedPlacement = computedPlacement.replace('start', 'end') as DropdownPlacement;
-			}
-
-			if (
-				allowFlip &&
-				computedPlacement.endsWith('end') &&
-				dropdownWidth &&
-				wouldOverflowLeft &&
-				spaceRight > spaceLeft
-			) {
-				computedPlacement = computedPlacement.replace('end', 'start') as DropdownPlacement;
-			}
-
-			const isBottomPlacement = computedPlacement.startsWith('bottom');
-			const isEndPlacement = computedPlacement.endsWith('end');
-
-			let top = isBottomPlacement ? rect.bottom + scrollY + computedOffset : rect.top + scrollY - computedOffset;
-			let left = isEndPlacement ? rect.right + scrollX : rect.left + scrollX;
-
-			if (allowFlip && dropdownHeight) {
-				const dropdownTop = isBottomPlacement ? top : top - dropdownHeight;
-				const overflowTop = Math.max(0, scrollY + 8 - dropdownTop);
-				const overflowBottom = Math.max(0, dropdownTop + dropdownHeight - (scrollY + viewportHeight - 8));
-				top += overflowTop;
-				top -= overflowBottom;
-			}
-
-			if (allowFlip && dropdownWidth) {
-				const dropdownLeft = isEndPlacement ? left - dropdownWidth : left;
-				const overflowLeft = Math.max(0, scrollX + 8 - dropdownLeft);
-				const overflowRight = Math.max(0, dropdownLeft + dropdownWidth - (scrollX + viewportWidth - 8));
-				left += overflowLeft;
-				left -= overflowRight;
-			}
-
-			setPosition({
-				top,
-				left,
-				minWidth,
-				transformOrigin: getTransformOrigin(computedPlacement),
-				placement: computedPlacement,
-			});
-
-			if (allowFlip) {
-				placementRef.current = computedPlacement;
-			}
-		},
-		[anchorRef, offset, placement],
-	);
-
-	const handlePointerDown = useCallback(
-		(event: PointerEvent) => {
-			if (!dropdownRef.current || !anchorRef.current) {
-				return;
-			}
-
-			const targetNode = event.target as Node;
-			const clickInsideDropdown = dropdownRef.current.contains(targetNode);
-			const clickInsideAnchor = anchorRef.current.contains(targetNode);
-
-			if (!clickInsideDropdown && !clickInsideAnchor) {
-				onClose();
-			}
-		},
-		[anchorRef, onClose],
-	);
-
-	const handleEscapeKey = useCallback(
-		(event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				onClose();
-			}
-		},
-		[onClose],
-	);
-
-	useLayoutEffect(() => {
-		if (!isOpen) {
-			hasMeasuredRef.current = false;
-			return;
-		}
-
-		placementRef.current = placement;
-		if (isModal) {
-			return;
-		}
-		updatePosition(true);
-	}, [isOpen, placement, updatePosition, isModal]);
-
-	useLayoutEffect(() => {
-		if (!isOpen || isModal || hasMeasuredRef.current) {
-			return;
-		}
-
-		if (!dropdownRef.current) {
-			return;
-		}
-
-		updatePosition(true);
-		hasMeasuredRef.current = true;
-	}, [isOpen, isModal, updatePosition]);
+	emptyState,
+	footerText,
+	headerSlot,
+	highlightedIndex = -1,
+	id,
+	items,
+	maxHeight = DEFAULT_MAX_HEIGHT,
+	multiSelect = false,
+	onSelect,
+	onSelectAll,
+	optionIdPrefix,
+	selectAllText = 'Select all',
+	selectedValues = [],
+	showFooter = false,
+	testId,
+}: AtlDropdownProps<T>): JSX.Element => {
+	const listRef = useRef<HTMLDivElement>(null);
+	const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
+	const showEmptyState = items.length === 0 && emptyState;
 
 	useEffect(() => {
-		const nextIsModal = resolveIsModal();
-		setIsModal(nextIsModal);
-
-		if (mode !== 'auto') {
+		if (!listRef.current) {
 			return;
 		}
 
-		if (typeof window === 'undefined') {
-			return;
-		}
+		const selector = highlightedIndex >= 0 ? '[data-highlighted="true"]' : '[data-selected="true"]';
+		listRef.current.querySelector(selector)?.scrollIntoView({ block: 'nearest' });
+	}, [highlightedIndex]);
 
-		const mediaQuery = window.matchMedia(`(max-width: ${mobileBreakpoint}px)`);
-		const handleChange = (event: MediaQueryListEvent) => {
-			setIsModal(event.matches);
-		};
+	const handleSelectAll = useCallback(() => onSelectAll?.(), [onSelectAll]);
 
-		if (mediaQuery.addEventListener) {
-			mediaQuery.addEventListener('change', handleChange);
-		} else {
-			mediaQuery.addListener(handleChange);
-		}
+	return (
+		<div className={clsx('atl-dropdown-list', className)} data-testid={testId}>
+			{headerSlot}
+			<div className="atl-dropdown-list__main" id={id} role="listbox">
+				{showEmptyState ? (
+					<div className="atl-dropdown-list__empty" role="option" tabIndex={-1}>
+						{emptyState}
+					</div>
+				) : (
+					<div className="atl-dropdown-list__items" ref={listRef} style={{ maxHeight }}>
+						{items.map((item, index) => {
+							const isSelected = selectedSet.has(item.value);
+							const isHighlighted = index === highlightedIndex;
+							const optionId = optionIdPrefix ? `${optionIdPrefix}-${index}` : undefined;
 
-		return () => {
-			if (mediaQuery.removeEventListener) {
-				mediaQuery.removeEventListener('change', handleChange);
-			} else {
-				mediaQuery.removeListener(handleChange);
-			}
-		};
-	}, [mobileBreakpoint, mode, resolveIsModal]);
-
-	useEffect(() => {
-		if (!isOpen || !dropdownRef.current || isModal) {
-			return;
-		}
-
-		if (resizeObserverRef.current) {
-			resizeObserverRef.current.disconnect();
-		}
-
-		resizeObserverRef.current = new ResizeObserver(() => {
-			updatePosition(true);
-		});
-
-		resizeObserverRef.current.observe(dropdownRef.current);
-
-		if (observerRef.current) {
-			observerRef.current.disconnect();
-		}
-
-		observerRef.current = new IntersectionObserver(
-			(entries) => {
-				const entry = entries[0];
-				if (!entry) {
-					return;
-				}
-
-				if (entry.intersectionRatio < 1) {
-					updatePosition(true);
-				}
-			},
-			{ threshold: [1] },
-		);
-
-		observerRef.current.observe(dropdownRef.current);
-
-		return () => {
-			observerRef.current?.disconnect();
-			observerRef.current = null;
-			resizeObserverRef.current?.disconnect();
-			resizeObserverRef.current = null;
-		};
-	}, [isOpen, isModal, updatePosition]);
-
-	useEffect(() => {
-		if (!isOpen) {
-			return;
-		}
-
-		window.addEventListener('pointerdown', handlePointerDown);
-		window.addEventListener('keydown', handleEscapeKey);
-
-		return () => {
-			window.removeEventListener('pointerdown', handlePointerDown);
-			window.removeEventListener('keydown', handleEscapeKey);
-		};
-	}, [isOpen, handleEscapeKey, handlePointerDown]);
-
-	useEffect(() => {
-		if (!isOpen || isModal) {
-			return;
-		}
-
-		const handleResize = () => updatePosition(true);
-		const handleScroll = () => updatePosition(true);
-
-		window.addEventListener('resize', handleResize);
-		window.addEventListener('scroll', handleScroll, true);
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-			window.removeEventListener('scroll', handleScroll, true);
-		};
-	}, [isOpen, isModal, updatePosition]);
-
-	const wrapperStyle = useMemo<CSSProperties | undefined>(() => {
-		if (isModal) {
-			return undefined;
-		}
-
-		if (!position) {
-			return {
-				top: 0,
-				left: 0,
-				minWidth: 0,
-				visibility: 'hidden',
-				['--dropdown-translate-x' as string]: '0',
-				['--dropdown-translate-y' as string]: '0',
-			};
-		}
-
-		const translateX = position.placement.endsWith('end') ? '-100%' : '0';
-		const translateY = position.placement.startsWith('top') ? '-100%' : '0';
-
-		return {
-			top: position.top,
-			left: position.left,
-			minWidth: position.minWidth,
-			transformOrigin: position.transformOrigin,
-			['--dropdown-translate-x' as string]: translateX,
-			['--dropdown-translate-y' as string]: translateY,
-		};
-	}, [position, isModal]);
-
-	if (!isOpen) {
-		return null;
-	}
-
-	const handleOverlayClick = (event: MouseEvent<HTMLDivElement>) => {
-		if (event.target === event.currentTarget) {
-			onClose();
-		}
-	};
-
-	const content = isModal ? (
-		// biome-ignore lint/a11y/noStaticElementInteractions: <overlay>
-		<div
-			className="atl-dropdown atl-dropdown__overlay"
-			onClick={handleOverlayClick}
-			role="presentation"
-		>
-			<div
-				className={clsx('atl-dropdown__panel', className)}
-				ref={dropdownRef}
-			>
-				{children}
+							return (
+								<button
+									aria-disabled={item.disabled || undefined}
+									aria-selected={isSelected}
+									className={clsx(
+										'atl-dropdown-list__item',
+										isSelected && 'atl-dropdown-list__item--selected',
+										isHighlighted && 'atl-dropdown-list__item--highlighted',
+										item.disabled && 'atl-dropdown-list__item--disabled',
+									)}
+									data-highlighted={isHighlighted || undefined}
+									data-selected={isSelected || undefined}
+									data-testid={`${testId}-item-${String(item.value)}`}
+									id={optionId}
+									key={String(item.value)}
+									role="option"
+									tabIndex={-1}
+									type="button"
+									onClick={() => !item.disabled && onSelect?.(item.value)}
+								>
+									{item.icon && <span className="atl-dropdown-list__item-icon">{item.icon}</span>}
+									<span className="atl-dropdown-list__item-text">
+										<span className="atl-dropdown-list__item-label">{item.label}</span>
+										{item.description && (
+											<span className="atl-dropdown-list__item-description">{item.description}</span>
+										)}
+									</span>
+									{isSelected && (
+										<span className="atl-dropdown-list__item-checkmark">
+											<CheckIcon size={24} />
+										</span>
+									)}
+								</button>
+							);
+						})}
+					</div>
+				)}
 			</div>
-		</div>
-	) : (
-		<div
-			className={clsx('atl-dropdown', className)}
-			ref={dropdownRef}
-			style={wrapperStyle}
-		>
-			{children}
+			{showFooter && (
+				<div className="atl-dropdown-list__footer">
+					{footerText && <span className="atl-dropdown-list__footer-text">{footerText}</span>}
+					{multiSelect && onSelectAll && (
+						<button className="atl-dropdown-list__select-all" type="button" onClick={handleSelectAll}>
+							{selectAllText}
+						</button>
+					)}
+				</div>
+			)}
 		</div>
 	);
-
-	return createPortal(content, document.body);
 };

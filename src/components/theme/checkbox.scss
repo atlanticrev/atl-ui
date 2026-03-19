@@ -1,0 +1,47 @@
+.atl-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--md-sys-color-on-surface);
+  font: var(--md-sys-typescale-body-medium-font);
+  cursor: pointer;
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.38;
+  }
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--md-sys-color-on-surface-variant);
+    border-radius: 2px;
+    background: transparent;
+    color: transparent;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+
+    &--checked {
+      border-color: var(--md-sys-color-primary);
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+    }
+
+    &--l,
+    &--m {
+      width: 18px;
+      height: 18px;
+    }
+
+    &--s {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}

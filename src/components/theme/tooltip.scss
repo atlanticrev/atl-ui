@@ -1,0 +1,45 @@
+.atl-tooltip {
+  position: relative;
+  display: inline-flex;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+
+  &__panel {
+    position: absolute;
+    z-index: 30;
+    max-width: 200px;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--md-sys-shape-corner-extra-small);
+    background: var(--md-sys-color-inverse-surface);
+    color: var(--md-sys-color-inverse-on-surface);
+    font: var(--md-sys-typescale-body-small-font);
+    box-shadow: var(--md-sys-elevation-level2);
+
+    &--top {
+      bottom: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--bottom {
+      top: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--left {
+      top: 50%;
+      right: calc(100% + 0.5rem);
+      transform: translateY(-50%);
+    }
+
+    &--right {
+      top: 50%;
+      left: calc(100% + 0.5rem);
+      transform: translateY(-50%);
+    }
+  }
+}

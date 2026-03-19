@@ -1,0 +1,54 @@
+.atl-radio-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--md-sys-color-on-surface);
+  font: var(--md-sys-typescale-body-medium-font);
+  cursor: pointer;
+
+  &__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--md-sys-color-on-surface-variant);
+    border-radius: 50%;
+    transition: border-color 0.2s ease;
+
+    &::after {
+      content: '';
+      width: 50%;
+      height: 50%;
+      border-radius: 50%;
+      background: transparent;
+      transition: background-color 0.2s ease;
+    }
+
+    &--checked {
+      border-color: var(--md-sys-color-primary);
+
+      &::after {
+        background: var(--md-sys-color-primary);
+      }
+    }
+
+    &--invalid {
+      border-color: var(--md-sys-color-error);
+    }
+
+    &--16 {
+      width: 20px;
+      height: 20px;
+    }
+
+    &--24 {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

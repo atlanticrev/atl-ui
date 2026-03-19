@@ -1,0 +1,14 @@
+.atl-spinner-icon {
+  display: inline-block;
+  animation: atl-spinner-rotate 0.9s linear infinite;
+}
+
+@keyframes atl-spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

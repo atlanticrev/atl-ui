@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { AtlButton } from './index';
 
-const BUTTON_VARIANTS = ['primary', 'ghost'] as const;
+const BUTTON_VARIANTS = ['filled', 'tonal', 'outlined', 'text', 'elevated'] as const;
 
 const meta: Meta<typeof AtlButton> = {
 	title: 'Components/AtlButton',
@@ -12,12 +12,12 @@ const meta: Meta<typeof AtlButton> = {
 		docs: {
 			description: {
 				component: `
-AtlButton - base action component with primary and ghost variants.
+AtlButton - Material 3 action component.
 
 ## Features
-- 2 variants: primary, ghost
-- Disabled state
-- Optional motion toggle
+- variants: filled, tonal, outlined, text, elevated
+- loading state
+- icon support
 				`,
 			},
 		},
@@ -28,18 +28,10 @@ AtlButton - base action component with primary and ghost variants.
 			control: 'select',
 			options: BUTTON_VARIANTS,
 		},
-		disabled: {
-			control: 'boolean',
-		},
-		disableMotion: {
-			control: 'boolean',
-		},
 	},
 	args: {
 		children: 'AtlButton',
-		variant: 'primary',
-		disabled: false,
-		disableMotion: false,
+		variant: 'filled',
 	},
 };
 
@@ -52,14 +44,12 @@ export const Default: Story = {};
 export const Variants: Story = {
 	render: () => (
 		<div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-			<AtlButton variant="primary">Primary</AtlButton>
-			<AtlButton variant="ghost">Ghost</AtlButton>
-			<AtlButton variant="primary" disabled>
-				Disabled
-			</AtlButton>
-			<AtlButton variant="ghost" disableMotion>
-				No motion
-			</AtlButton>
+			<AtlButton variant="filled">Filled</AtlButton>
+			<AtlButton variant="tonal">Tonal</AtlButton>
+			<AtlButton variant="outlined">Outlined</AtlButton>
+			<AtlButton variant="text">Text</AtlButton>
+			<AtlButton variant="elevated">Elevated</AtlButton>
+			<AtlButton disabled variant="filled">Disabled</AtlButton>
 		</div>
 	),
 };
