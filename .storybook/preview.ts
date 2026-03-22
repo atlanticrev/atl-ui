@@ -20,14 +20,15 @@ const preview: Preview = {
 	decorators: [
 		(Story, context) => {
 			const themeMode = context.globals.themeMode === 'dark' ? 'dark' : 'light';
+			const isFullscreen = context.parameters.layout === 'fullscreen';
 
 			return createElement(
 				'div',
 				{
 					['data-theme']: themeMode,
 					style: {
-						minHeight: '100vh',
-						padding: '24px',
+						minHeight: isFullscreen ? '100vh' : undefined,
+						padding: isFullscreen ? 0 : '24px',
 						background: 'var(--md-sys-color-background)',
 						color: 'var(--md-sys-color-on-background)',
 					},

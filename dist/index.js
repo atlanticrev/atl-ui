@@ -1,4 +1,4 @@
-import { forwardRef, memo, useState, useId, useRef, useEffect, useLayoutEffect, useCallback, createContext, useMemo, useContext, createElement } from 'react';
+import { forwardRef, memo, useId, createContext, useState, useRef, useEffect, useCallback, useLayoutEffect, useMemo, useContext, createElement } from 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import { createPortal } from 'react-dom';
 
@@ -196,6 +196,201 @@ function AtlFileUpload({ label, onFileSelected, accept, hint, className }) {
     hint ? /* @__PURE__ */ jsx("span", { className: "atl-file-upload__hint", children: hint }) : null
   ] });
 }
+var AtlInputFooter = ({
+  helperText,
+  helperTextId,
+  maxLength,
+  showCharacterCount,
+  status,
+  value
+}) => {
+  const shouldShowCounter = Boolean(showCharacterCount && maxLength);
+  if (!helperText && !shouldShowCounter) {
+    return null;
+  }
+  return /* @__PURE__ */ jsxs("div", { className: "atl-input__footer", children: [
+    helperText && /* @__PURE__ */ jsx(
+      "span",
+      {
+        className: clsx(
+          "atl-input__helper",
+          status === "error" && "atl-input__helper--error",
+          status === "success" && "atl-input__helper--success"
+        ),
+        id: helperTextId,
+        children: helperText
+      }
+    ),
+    shouldShowCounter && /* @__PURE__ */ jsxs("output", { "aria-atomic": "true", "aria-live": "polite", className: "atl-input__counter", children: [
+      /* @__PURE__ */ jsx("span", { className: "atl-input__counter-current", children: value?.length ?? 0 }),
+      /* @__PURE__ */ jsxs("span", { className: "atl-input__counter-total", children: [
+        "/",
+        maxLength
+      ] })
+    ] })
+  ] });
+};
+
+// src/components/input/input-outline.utils.ts
+var EMPTY_INPUT_OUTLINE_METRICS = {
+  height: 0,
+  radius: 0,
+  width: 0
+};
+var INPUT_LABEL_GAP_OFFSET = 8;
+var INPUT_LABEL_GAP_PADDING = 16;
+var DECIMAL_PRECISION = 1e3;
+var clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+var formatSvgNumber = (value) => {
+  const roundedValue = Math.round(value * DECIMAL_PRECISION) / DECIMAL_PRECISION;
+  return Number.isInteger(roundedValue) ? String(roundedValue) : String(roundedValue).replace(/\.?0+$/, "");
+};
+var buildSharpOutlinePath = (left, top, right, bottom, gapStart, gapEnd) => {
+  const hasGap = gapEnd > gapStart;
+  if (!hasGap) {
+    return [
+      "M",
+      formatSvgNumber(left),
+      formatSvgNumber(top),
+      "H",
+      formatSvgNumber(right),
+      "V",
+      formatSvgNumber(bottom),
+      "H",
+      formatSvgNumber(left),
+      "V",
+      formatSvgNumber(top)
+    ].join(" ");
+  }
+  return [
+    "M",
+    formatSvgNumber(left),
+    formatSvgNumber(top),
+    "H",
+    formatSvgNumber(gapStart),
+    "M",
+    formatSvgNumber(gapEnd),
+    formatSvgNumber(top),
+    "H",
+    formatSvgNumber(right),
+    "V",
+    formatSvgNumber(bottom),
+    "H",
+    formatSvgNumber(left),
+    "V",
+    formatSvgNumber(top)
+  ].join(" ");
+};
+var buildRoundedOutlinePath = (left, top, right, bottom, radius, gapStart, gapEnd) => {
+  const topStart = left + radius;
+  const topEnd = right - radius;
+  const hasGap = gapEnd > gapStart;
+  const path = [
+    "M",
+    formatSvgNumber(topStart),
+    formatSvgNumber(top),
+    "H",
+    formatSvgNumber(hasGap ? gapStart : topEnd)
+  ];
+  if (hasGap) {
+    path.push(
+      "M",
+      formatSvgNumber(gapEnd),
+      formatSvgNumber(top),
+      "H",
+      formatSvgNumber(topEnd)
+    );
+  }
+  path.push(
+    "A",
+    formatSvgNumber(radius),
+    formatSvgNumber(radius),
+    "0 0 1",
+    formatSvgNumber(right),
+    formatSvgNumber(top + radius),
+    "V",
+    formatSvgNumber(bottom - radius),
+    "A",
+    formatSvgNumber(radius),
+    formatSvgNumber(radius),
+    "0 0 1",
+    formatSvgNumber(right - radius),
+    formatSvgNumber(bottom),
+    "H",
+    formatSvgNumber(left + radius),
+    "A",
+    formatSvgNumber(radius),
+    formatSvgNumber(radius),
+    "0 0 1",
+    formatSvgNumber(left),
+    formatSvgNumber(bottom - radius),
+    "V",
+    formatSvgNumber(top + radius),
+    "A",
+    formatSvgNumber(radius),
+    formatSvgNumber(radius),
+    "0 0 1",
+    formatSvgNumber(left + radius),
+    formatSvgNumber(top)
+  );
+  return path.join(" ");
+};
+var buildInputOutlinePath = ({
+  height,
+  notchStart,
+  notchWidth,
+  radius,
+  strokeWidth,
+  width
+}) => {
+  if (width <= strokeWidth || height <= strokeWidth) {
+    return "";
+  }
+  const inset = strokeWidth / 2;
+  const left = inset;
+  const top = inset;
+  const right = width - inset;
+  const bottom = height - inset;
+  const maxRadius = Math.min((width - strokeWidth) / 2, (height - strokeWidth) / 2);
+  const normalizedRadius = clamp(radius - inset, 0, maxRadius);
+  const topStart = left + normalizedRadius;
+  const topEnd = right - normalizedRadius;
+  const gapStart = clamp(notchStart, topStart, topEnd);
+  const gapEnd = clamp(notchStart + notchWidth, gapStart, topEnd);
+  if (normalizedRadius === 0) {
+    return buildSharpOutlinePath(left, top, right, bottom, gapStart, gapEnd);
+  }
+  return buildRoundedOutlinePath(left, top, right, bottom, normalizedRadius, gapStart, gapEnd);
+};
+var AtlInputOutline = ({
+  labelWidth,
+  metrics,
+  strokeWidth
+}) => {
+  if (!metrics.width || !metrics.height) {
+    return null;
+  }
+  const path = buildInputOutlinePath({
+    height: metrics.height,
+    notchStart: INPUT_LABEL_GAP_OFFSET,
+    notchWidth: labelWidth > 0 ? labelWidth + INPUT_LABEL_GAP_PADDING : 0,
+    radius: metrics.radius,
+    strokeWidth,
+    width: metrics.width
+  });
+  return /* @__PURE__ */ jsx(
+    "svg",
+    {
+      "aria-hidden": "true",
+      className: "atl-input__outline",
+      focusable: "false",
+      height: metrics.height,
+      viewBox: `0 0 ${metrics.width} ${metrics.height}`,
+      width: metrics.width,
+      children: /* @__PURE__ */ jsx("path", { className: "atl-input__outline-path", d: path })
+    }
+  );
+};
 var AtlTooltip = ({ children, className, open, placement = "top", testId, title, trigger = "hover" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const visible = open ?? isOpen;
@@ -229,6 +424,106 @@ var AtlTooltip = ({ children, className, open, placement = "top", testId, title,
     }
   );
 };
+var AtlInputRightIcon = ({
+  icon,
+  iconRotated,
+  onClick,
+  testId,
+  tooltip,
+  tooltipOpen
+}) => {
+  const className = clsx(
+    "atl-input__icon",
+    "atl-input__icon--right",
+    onClick && "atl-input__icon--clickable",
+    iconRotated && "atl-input__icon--rotated"
+  );
+  const iconElement = onClick ? /* @__PURE__ */ jsx("button", { className, tabIndex: -1, type: "button", onClick, children: icon }) : /* @__PURE__ */ jsx("span", { className, children: icon });
+  if (!tooltip) {
+    return iconElement;
+  }
+  return /* @__PURE__ */ jsx(AtlTooltip, { open: tooltipOpen, placement: "top", testId: `${testId}-icon-tooltip`, title: tooltip, children: iconElement });
+};
+var getLabelWidth = (node) => node?.getBoundingClientRect().width ?? 0;
+var getOutlineMetrics = (node) => {
+  if (!node) {
+    return EMPTY_INPUT_OUTLINE_METRICS;
+  }
+  const rect = node.getBoundingClientRect();
+  const styles = getComputedStyle(node);
+  return {
+    height: rect.height,
+    radius: Number.parseFloat(styles.borderTopLeftRadius) || 0,
+    width: rect.width
+  };
+};
+var useInputLayout = ({
+  onBlur,
+  onChange,
+  onFocus,
+  rootRef,
+  value
+}) => {
+  const [internalHasValue, setInternalHasValue] = useState(value !== void 0 && value !== "");
+  const [isFocused, setIsFocused] = useState(false);
+  const [labelWidth, setLabelWidth] = useState(0);
+  const [outlineMetrics, setOutlineMetrics] = useState(EMPTY_INPUT_OUTLINE_METRICS);
+  const measureRef = useRef(null);
+  const rootNodeRef = useRef(null);
+  const mutableRootRef = rootRef;
+  const hasValue = value !== void 0 && value !== "" || internalHasValue;
+  const isLabelFloated = hasValue || isFocused;
+  useEffect(() => {
+    setInternalHasValue(value !== void 0 && value !== "");
+  }, [value]);
+  const syncLayout = useCallback(() => {
+    setLabelWidth(isLabelFloated ? getLabelWidth(measureRef.current) : 0);
+    setOutlineMetrics(getOutlineMetrics(rootNodeRef.current));
+  }, [isLabelFloated]);
+  useLayoutEffect(() => {
+    syncLayout();
+  }, [syncLayout]);
+  useLayoutEffect(() => {
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(syncLayout);
+    if (measureRef.current) {
+      observer?.observe(measureRef.current);
+    }
+    if (rootNodeRef.current) {
+      observer?.observe(rootNodeRef.current);
+    }
+    return () => observer?.disconnect();
+  }, [syncLayout]);
+  const setRootNode = useCallback((node) => {
+    rootNodeRef.current = node;
+    if (mutableRootRef) {
+      mutableRootRef.current = node;
+    }
+    setOutlineMetrics(getOutlineMetrics(node));
+  }, [mutableRootRef]);
+  const handleChange = useCallback((event) => {
+    setInternalHasValue(event.target.value !== "");
+    onChange?.(event.target.value);
+  }, [onChange]);
+  const handleFocus = useCallback((event) => {
+    setIsFocused(true);
+    onFocus?.(event);
+  }, [onFocus]);
+  const handleBlur = useCallback((event) => {
+    setIsFocused(false);
+    onBlur?.(event);
+  }, [onBlur]);
+  return {
+    handleBlur,
+    handleChange,
+    handleFocus,
+    isFocused,
+    isLabelFloated,
+    labelWidth,
+    measureRef,
+    outlineMetrics,
+    setRootNode
+  };
+};
 var AtlInput = memo(forwardRef(function AtlInput2({
   className,
   description,
@@ -257,70 +552,32 @@ var AtlInput = memo(forwardRef(function AtlInput2({
   variant = "text",
   ...rest
 }, ref) {
-  const [isFocused, setIsFocused] = useState(false);
-  const [labelWidth, setLabelWidth] = useState(0);
-  const [internalHasValue, setInternalHasValue] = useState(false);
   const generatedId = useId();
-  const measureRef = useRef(null);
-  const inputRootRef = useRef(null);
-  const mutableRootRef = rootRef;
   const applyReadOnlyStyles = readOnlyStyled ?? readOnly;
-  const hasValue = value !== void 0 && value !== "" || internalHasValue;
-  const isLabelFloated = hasValue || isFocused;
-  const currentLength = value?.length ?? 0;
-  const showFooter = helperText || showCharacterCount;
   const inputMode = variant === "number" ? "decimal" : void 0;
   const inputId = testId || generatedId;
   const helperTextId = helperText ? `${inputId}-helper` : void 0;
   const descriptionId = description ? `${inputId}-description` : void 0;
   const isInvalid = status === "error";
   const describedBy = [descriptionId, helperTextId].filter(Boolean).join(" ") || void 0;
-  useEffect(() => {
-    setInternalHasValue(value !== void 0 && value !== "");
-  }, [value]);
-  useLayoutEffect(() => {
-    if (measureRef.current && isLabelFloated) {
-      setLabelWidth(measureRef.current.getBoundingClientRect().width);
-      return;
-    }
-    setLabelWidth(0);
-  }, [isLabelFloated]);
-  const handleChange = useCallback((event) => {
-    setInternalHasValue(event.target.value !== "");
-    onChange?.(event.target.value);
-  }, [onChange]);
-  const handleFocus = useCallback((event) => {
-    setIsFocused(true);
-    onFocus?.(event);
-  }, [onFocus]);
-  const handleBlur = useCallback((event) => {
-    setIsFocused(false);
-    onBlur?.(event);
-  }, [onBlur]);
-  const renderRightIcon = () => {
-    if (!iconRight) {
-      return null;
-    }
-    const iconElement = onIconRightClick ? /* @__PURE__ */ jsx(
-      "button",
-      {
-        className: clsx(
-          "atl-input__icon",
-          "atl-input__icon--right",
-          "atl-input__icon--clickable",
-          iconRightRotated && "atl-input__icon--rotated"
-        ),
-        tabIndex: -1,
-        type: "button",
-        onClick: onIconRightClick,
-        children: iconRight
-      }
-    ) : /* @__PURE__ */ jsx("span", { className: clsx("atl-input__icon", "atl-input__icon--right", iconRightRotated && "atl-input__icon--rotated"), children: iconRight });
-    if (!iconRightTooltip) {
-      return iconElement;
-    }
-    return /* @__PURE__ */ jsx(AtlTooltip, { open: iconRightTooltipOpen, placement: "top", testId: `${inputId}-icon-tooltip`, title: iconRightTooltip, children: iconElement });
-  };
+  const {
+    handleBlur,
+    handleChange,
+    handleFocus,
+    isFocused,
+    isLabelFloated,
+    labelWidth,
+    measureRef,
+    outlineMetrics,
+    setRootNode
+  } = useInputLayout({
+    onBlur,
+    onChange,
+    onFocus,
+    rootRef,
+    value
+  });
+  const strokeWidth = isFocused ? 2 : 1;
   return /* @__PURE__ */ jsxs("div", { className: clsx("atl-input", className), "data-size": size, "data-testid": testId || void 0, children: [
     label && /* @__PURE__ */ jsx("span", { "aria-hidden": "true", className: "atl-input__label-measure", ref: measureRef, children: label }),
     /* @__PURE__ */ jsxs(
@@ -334,13 +591,7 @@ var AtlInput = memo(forwardRef(function AtlInput2({
           disabled && "atl-input__root--disabled",
           applyReadOnlyStyles && "atl-input__root--readonly"
         ),
-        ref: (node) => {
-          inputRootRef.current = node;
-          if (mutableRootRef) {
-            mutableRootRef.current = node;
-          }
-        },
-        style: { "--label-width": `${labelWidth}px` },
+        ref: setRootNode,
         children: [
           label && /* @__PURE__ */ jsx("span", { className: clsx("atl-input__label", isLabelFloated && "atl-input__label--floated", iconLeft && "atl-input__label--with-icon"), children: label }),
           iconLeft && /* @__PURE__ */ jsx("span", { className: "atl-input__icon", children: iconLeft }),
@@ -368,21 +619,32 @@ var AtlInput = memo(forwardRef(function AtlInput2({
             ),
             description && /* @__PURE__ */ jsx("span", { className: "atl-input__description", id: descriptionId, children: description })
           ] }),
-          renderRightIcon(),
-          /* @__PURE__ */ jsx("span", { className: clsx("atl-input__border", label && isLabelFloated && "atl-input__border--with-gap") })
+          iconRight && /* @__PURE__ */ jsx(
+            AtlInputRightIcon,
+            {
+              icon: iconRight,
+              iconRotated: iconRightRotated,
+              onClick: onIconRightClick,
+              testId: inputId,
+              tooltip: iconRightTooltip,
+              tooltipOpen: iconRightTooltipOpen
+            }
+          ),
+          /* @__PURE__ */ jsx(AtlInputOutline, { labelWidth, metrics: outlineMetrics, strokeWidth })
         ]
       }
     ),
-    showFooter && /* @__PURE__ */ jsxs("div", { className: "atl-input__footer", children: [
-      helperText && /* @__PURE__ */ jsx("span", { className: clsx("atl-input__helper", status === "error" && "atl-input__helper--error", status === "success" && "atl-input__helper--success"), id: helperTextId, children: helperText }),
-      showCharacterCount && maxLength && /* @__PURE__ */ jsxs("output", { "aria-atomic": "true", "aria-live": "polite", className: "atl-input__counter", children: [
-        /* @__PURE__ */ jsx("span", { className: "atl-input__counter-current", children: currentLength }),
-        /* @__PURE__ */ jsxs("span", { className: "atl-input__counter-total", children: [
-          "/",
-          maxLength
-        ] })
-      ] })
-    ] })
+    /* @__PURE__ */ jsx(
+      AtlInputFooter,
+      {
+        helperText,
+        helperTextId,
+        maxLength,
+        showCharacterCount,
+        status,
+        value
+      }
+    )
   ] });
 }));
 function AtlProgress({ label, value }) {
