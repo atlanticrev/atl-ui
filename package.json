@@ -1,6 +1,6 @@
 {
 	"name": "@atlanticrev/atl-ui",
-	"version": "1.0.7",
+	"version": "1.0.8",
 	"private": false,
 	"type": "module",
 	"sideEffects": false,
