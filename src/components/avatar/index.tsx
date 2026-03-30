@@ -1,51 +1,56 @@
-import { useMemo } from 'react';
+import type { CSSProperties } from 'react';
+import { useState } from 'react';
 
-import { AtlCircleIcon } from '@/components/circle-icon';
-import { SuitcaseIcon } from '@/icons/suitcase-icon';
+import { clsx } from '@/lib/clsx';
 
-import { AVATAR_CONFIG } from './config';
-import type { AtlAvatarProps } from './types';
+import type { AtlAvatarProps, BorderRadiusValue } from './types';
 
-const getInitials = (name: string): string => {
-	const words = name.trim().split(/\s+/);
-
-	if (words.length === 1) {
-		return words[0].slice(0, 2).toUpperCase();
+const getBorderRadius = (value: BorderRadiusValue | undefined): string => {
+	if (value === undefined) {
+		return '50%';
 	}
 
-	return words.slice(0, 2).map((word) => word[0]?.toUpperCase() ?? '').join('');
+	return typeof value === 'number' ? `${value}px` : value;
 };
 
-export const AtlAvatar = ({
-	backgroundColor,
-	className,
-	fullName,
-	imageUrl,
-	initials,
-	logoIcon,
-	size = 32,
-	type,
-	variant,
-}: AtlAvatarProps): JSX.Element => {
-	const resolvedInitials = useMemo(() => initials ?? getInitials(fullName), [fullName, initials]);
-	const config = AVATAR_CONFIG[variant][type];
-	const bgColor = backgroundColor ?? config?.backgroundColor;
+const normalizeInitials = (value: string): string => {
+	return value.trim().replace(/\s+/g, '').slice(0, 3).toUpperCase();
+};
 
-	if (type === 'photo' && imageUrl) {
-		return <AtlCircleIcon className={className} contentType="image" imageAlt={fullName} imageUrl={imageUrl} size={size} />;
-	}
+export const AtlAvatar = (props: AtlAvatarProps): JSX.Element => {
+	const [failedImage, setFailedImage] = useState<string | null>(null);
+	const resolvedInitials = normalizeInitials(props.initials);
+	const shouldRenderIcon = Boolean(props.icon);
+	const shouldRenderImage = !shouldRenderIcon && Boolean(props.image) && failedImage !== props.image;
+	const shouldShowInitials = !shouldRenderIcon && (!props.image || failedImage === props.image);
+	const shouldShowLoader = !shouldRenderIcon && Boolean(props.image) && failedImage === props.image;
+	const style = {
+		'--atl-avatar-bg': props.backgroundColor,
+		'--atl-avatar-icon-color': props.iconColor,
+		'--atl-avatar-icon-scale': props.iconScale,
+		'--atl-avatar-icon-size': props.iconSize,
+		'--atl-avatar-image-fit': props.objectFit,
+		'--atl-avatar-image-padding': props.imagePadding,
+		'--atl-avatar-text-color': props.textColor,
+		border: props.border ? `${props.border.width}px solid ${props.border.color}` : undefined,
+		borderRadius: getBorderRadius(props.borderRadius),
+		height: props.size ?? 32,
+		width: props.size ?? 32,
+	} as CSSProperties;
 
-	if (type === 'logo' && logoIcon) {
-		return <AtlCircleIcon backgroundColor={bgColor} className={className} contentType="icon" icon={logoIcon} size={size} />;
-	}
+	const handleImageError = () => {
+		setFailedImage(props.image ?? null);
+		props.onImageError?.();
+	};
 
-	if (type === 'logo' && imageUrl) {
-		return <AtlCircleIcon backgroundColor={bgColor} className={className} contentType="image" imageAlt={fullName} imagePadding="20%" imageUrl={imageUrl} objectFit="contain" size={size} />;
-	}
-
-	if (type === 'company') {
-		return <AtlCircleIcon backgroundColor={bgColor} className={className} contentType="icon" icon={SuitcaseIcon} iconColor={config?.iconColor} size={size} />;
-	}
-
-	return <AtlCircleIcon backgroundColor={bgColor} className={className} contentType="initials" initials={resolvedInitials} size={size} textColor={config?.textColor} />;
+	return (
+		<div className={clsx('atl-avatar', props.className)} style={style}>
+			{shouldRenderIcon && props.icon && <span className="atl-avatar__icon"><props.icon /></span>}
+			{shouldRenderImage && (
+				<img alt={props.imageAlt ?? ''} className="atl-avatar__image" src={props.image} onError={handleImageError} />
+			)}
+			{shouldShowInitials && <span className="atl-avatar__initials">{resolvedInitials}</span>}
+			{shouldShowLoader && <span aria-hidden="true" className="atl-avatar__loader" />}
+		</div>
+	);
 };

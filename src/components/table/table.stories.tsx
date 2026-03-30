@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { AtlTable } from './index';
+import { AtlSimpleTable } from './index';
 
-const meta: Meta<typeof AtlTable> = {
-	title: 'Components/AtlTable',
-	component: AtlTable,
+const meta: Meta<typeof AtlSimpleTable> = {
+	title: 'Components/AtlSimpleTable',
+	component: AtlSimpleTable,
 	parameters: { layout: 'padded' },
 	tags: ['autodocs'],
 	args: {
@@ -22,4 +22,4 @@ const meta: Meta<typeof AtlTable> = {
 
 export default meta;
 
-export const Default: StoryObj<typeof AtlTable> = {};
+export const Default: StoryObj<typeof AtlSimpleTable> = {};

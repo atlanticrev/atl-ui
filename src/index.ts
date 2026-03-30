@@ -4,6 +4,7 @@ export {
 export { AtlCard } from './components/card';
 export { AtlDropdown } from './components/dropdown';
 export { AtlFileUpload } from './components/file-upload';
+export type { AtlFileUploadProps, FileUploadStatus } from './components/file-upload/types';
 export { AtlInput } from './components/input/input';
 export { AtlProgress } from './components/progress';
 export { AtlSelect } from './components/select';
@@ -30,25 +31,28 @@ export type {
 } from './components/toast-provider/types';
 
 export { AtlAvatar } from './components/avatar';
-export type { AtlAvatarProps, AvatarSize, AvatarType, AvatarVariant } from './components/avatar/types';
+export type {
+	AtlAvatarProps,
+	AvatarSize,
+	BorderRadiusValue,
+	SvgIconComponent,
+} from './components/avatar/types';
 export { AtlBreadcrumbs } from './components/breadcrumbs';
 export type { AtlBreadcrumbsProps, BreadcrumbItem } from './components/breadcrumbs/types';
 export { AtlCheckbox } from './components/checkbox';
-export type { AtlCheckboxProps, CheckboxSize } from './components/checkbox/types';
+export type { AtlCheckboxProps, ControlSize } from './components/checkbox/types';
 export { AtlChip } from './components/chip';
 export type { AtlChipProps, ChipSize, ChipVariant, CustomChipColors } from './components/chip/types';
-export { AtlCircleIcon } from './components/circle-icon';
-export type { AtlCircleIconProps, SvgIconComponent } from './components/circle-icon/types';
 export { AtlPopup } from './components/popup';
 export type { AtlPopupProps } from './components/popup/types';
 export { AtlRadioButton } from './components/radio-button';
-export type { AtlRadioButtonProps, RadioButtonSize } from './components/radio-button/types';
+export type { AtlRadioButtonProps } from './components/radio-button/types';
 export { AtlSidebar } from './components/sidebar';
 export type { AtlSidebarProps, SidebarItem } from './components/sidebar/types';
 export { AtlSwitcher } from './components/switcher';
-export type { AtlSwitcherProps, SwitcherSize } from './components/switcher/types';
-export { AtlTable } from './components/table';
-export type { AtlTableProps, TableColumn, TableLocale, TablePaginationConfig } from './components/table/types';
+export type { AtlSwitcherProps } from './components/switcher/types';
+export { AtlSimpleTable } from './components/table';
+export type { AtlSimpleTableProps, SimpleTableColumn, SimpleTableLocale, SimpleTablePaginationConfig } from './components/table/types';
 export { AtlTabs } from './components/tabs';
 export type { AtlTabsProps, TabItem, TabsSize } from './components/tabs/types';
 export { AtlTooltip } from './components/tooltip';

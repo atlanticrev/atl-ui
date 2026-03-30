@@ -1,6 +1,6 @@
 import type { CSSProperties, HTMLAttributes, Key, ReactNode } from 'react';
 
-export type TableColumn<RecordType> = {
+export type SimpleTableColumn<RecordType> = {
 	align?: 'left' | 'center' | 'right';
 	className?: string;
 	dataIndex?: string | number;
@@ -10,25 +10,25 @@ export type TableColumn<RecordType> = {
 	width?: string | number;
 };
 
-export type TablePaginationConfig = {
+export type SimpleTablePaginationConfig = {
 	current?: number;
 	onChange?: (page: number, pageSize: number) => void;
 	pageSize?: number;
 	total?: number;
 };
 
-export type TableLocale = {
+export type SimpleTableLocale = {
 	emptyText?: ReactNode;
 };
 
-export type AtlTableProps<RecordType extends object = object> = {
+export type AtlSimpleTableProps<RecordType extends object = object> = {
 	ariaLabel?: string;
 	className?: string;
-	columns?: TableColumn<RecordType>[];
+	columns?: SimpleTableColumn<RecordType>[];
 	dataSource?: RecordType[] | null;
-	locale?: TableLocale;
+	locale?: SimpleTableLocale;
 	onRow?: (record: RecordType, index?: number) => HTMLAttributes<HTMLTableRowElement>;
-	pagination?: TablePaginationConfig | false;
+	pagination?: SimpleTablePaginationConfig | false;
 	rowClassName?: string | ((record: RecordType, index: number) => string);
 	rowKey?: string | ((record: RecordType) => string);
 	style?: CSSProperties;

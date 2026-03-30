@@ -39,16 +39,16 @@ function clsx(...values) {
   return classes.join(" ");
 }
 var AtlButton = forwardRef(
-  ({ children, className, disableMotion, disabled, htmlType, iconLeft, iconRight, iconSize = 24, isDisabled, loading = false, size = 48, type, variant = "filled", ...props }, ref) => {
+  ({ children, className, disableMotion, disabled, iconLeft, iconRight, iconSize = 24, loading = false, size = 48, type = "button", variant = "filled", ...props }, ref) => {
     const isIconOnly = !children && Boolean(iconLeft || iconRight);
     return /* @__PURE__ */ jsx(
       "button",
       {
         ...props,
         className: clsx("atl-button", `atl-button--${variant}`, `atl-button--size-${size}`, loading && "atl-button--loading", isIconOnly && "atl-button--icon-only", disableMotion && "atl-button--no-motion", className),
-        disabled: disabled || isDisabled || loading,
+        disabled: disabled || loading,
         ref,
-        type: htmlType ?? type ?? "button",
+        type,
         children: /* @__PURE__ */ jsxs("span", { className: "atl-button__content", children: [
           loading ? /* @__PURE__ */ jsx(SpinnerIcon, { size: iconSize }) : iconLeft,
           children && /* @__PURE__ */ jsx("span", { className: "atl-button__label", children }),
@@ -168,34 +168,30 @@ var AtlDropdown = ({
     ] })
   ] });
 };
-function AtlFileUpload({ label, onFileSelected, accept, hint, className }) {
+var getSelectedLabel = (files) => {
+  if (files.length === 0) {
+    return "";
+  }
+  if (files.length === 1) {
+    return files[0].name;
+  }
+  return `${files.length} files selected`;
+};
+var AtlFileUpload = ({ accept, className, disabled = false, helperText, label, multiple = false, onChange, status = "default", testId }) => {
   const inputId = useId();
+  const [selectedLabel, setSelectedLabel] = useState("");
   const handleChange = (event) => {
-    onFileSelected(event.target.files?.[0] ?? null);
+    const nextFiles = Array.from(event.target.files ?? []);
+    setSelectedLabel(getSelectedLabel(nextFiles));
+    onChange?.(nextFiles);
   };
-  const classes = clsx("atl-file-upload", className);
-  return /* @__PURE__ */ jsxs("div", { className: classes, children: [
-    /* @__PURE__ */ jsx(
-      "label",
-      {
-        className: "atl-file-upload__button",
-        htmlFor: inputId,
-        children: label
-      }
-    ),
-    /* @__PURE__ */ jsx(
-      "input",
-      {
-        className: "atl-file-upload__input",
-        id: inputId,
-        type: "file",
-        accept,
-        onChange: handleChange
-      }
-    ),
-    hint ? /* @__PURE__ */ jsx("span", { className: "atl-file-upload__hint", children: hint }) : null
+  return /* @__PURE__ */ jsxs("div", { className: clsx("atl-file-upload", `atl-file-upload--${status}`, disabled && "atl-file-upload--disabled", className), "data-testid": testId, children: [
+    /* @__PURE__ */ jsx("label", { className: "atl-file-upload__button", htmlFor: inputId, children: label }),
+    /* @__PURE__ */ jsx("input", { accept, className: "atl-file-upload__input", disabled, id: inputId, multiple, type: "file", onChange: handleChange }),
+    selectedLabel && /* @__PURE__ */ jsx("span", { className: "atl-file-upload__value", children: selectedLabel }),
+    helperText && /* @__PURE__ */ jsx("span", { className: "atl-file-upload__helper", children: helperText })
   ] });
-}
+};
 var AtlInputFooter = ({
   helperText,
   helperTextId,
@@ -237,8 +233,6 @@ var EMPTY_INPUT_OUTLINE_METRICS = {
   radius: 0,
   width: 0
 };
-var INPUT_LABEL_GAP_OFFSET = 8;
-var INPUT_LABEL_GAP_PADDING = 16;
 var DECIMAL_PRECISION = 1e3;
 var clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 var formatSvgNumber = (value) => {
@@ -362,18 +356,14 @@ var buildInputOutlinePath = ({
   }
   return buildRoundedOutlinePath(left, top, right, bottom, normalizedRadius, gapStart, gapEnd);
 };
-var AtlInputOutline = ({
-  labelWidth,
-  metrics,
-  strokeWidth
-}) => {
+var AtlInputOutline = ({ labelOffset, labelWidth, metrics, strokeWidth }) => {
   if (!metrics.width || !metrics.height) {
     return null;
   }
   const path = buildInputOutlinePath({
     height: metrics.height,
-    notchStart: INPUT_LABEL_GAP_OFFSET,
-    notchWidth: labelWidth > 0 ? labelWidth + INPUT_LABEL_GAP_PADDING : 0,
+    notchStart: labelWidth > 0 ? labelOffset : 0,
+    notchWidth: labelWidth,
     radius: metrics.radius,
     strokeWidth,
     width: metrics.width
@@ -387,42 +377,135 @@ var AtlInputOutline = ({
       height: metrics.height,
       viewBox: `0 0 ${metrics.width} ${metrics.height}`,
       width: metrics.width,
-      children: /* @__PURE__ */ jsx("path", { className: "atl-input__outline-path", d: path })
+      children: /* @__PURE__ */ jsx(
+        "path",
+        {
+          className: "atl-input__outline-path",
+          d: path
+        }
+      )
     }
   );
 };
-var AtlTooltip = ({ children, className, open, placement = "top", testId, title, trigger = "hover" }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const visible = open ?? isOpen;
-  const show = useCallback(() => setIsOpen(true), []);
-  const hide = useCallback(() => setIsOpen(false), []);
+var useClickOutside = ({
+  enabled = true,
+  onOutsideClick,
+  refs
+}) => {
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+    const handlePointerDown = (event) => {
+      const targetNode = event.target;
+      if (!(targetNode instanceof Node)) {
+        return;
+      }
+      const isInside = refs.some((ref) => ref.current?.contains(targetNode));
+      if (!isInside) {
+        onOutsideClick();
+      }
+    };
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+    };
+  }, [enabled, onOutsideClick, refs]);
+};
+var useKeyPress = ({
+  elementRef,
+  enabled = true,
+  key,
+  onKeyPress,
+  preventDefault = false
+}) => {
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+    const handleKeyDown = (event) => {
+      const activeElement = document.activeElement;
+      const matchesTarget = !elementRef?.current || activeElement === elementRef.current;
+      if (!matchesTarget || event.key !== key) {
+        return;
+      }
+      if (preventDefault) {
+        event.preventDefault();
+      }
+      onKeyPress();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [elementRef, enabled, key, onKeyPress, preventDefault]);
+};
+
+// src/hooks/use-overlay-dismiss.ts
+var useOverlayDismiss = ({
+  closeOnEscape = true,
+  closeOnOutsideClick = true,
+  enabled = true,
+  onClose,
+  refs
+}) => {
+  useClickOutside({
+    enabled: enabled && closeOnOutsideClick,
+    onOutsideClick: onClose,
+    refs
+  });
+  useKeyPress({
+    enabled: enabled && closeOnEscape,
+    key: "Escape",
+    onKeyPress: onClose
+  });
+};
+var useOverlayState = ({ defaultOpen = false, onOpenChange, open }) => {
+  const [internalOpen, setInternalOpen] = useState(defaultOpen);
+  const isControlled = open !== void 0;
+  const isOpen = isControlled ? open : internalOpen;
+  const setOpen = useCallback((nextOpen) => {
+    if (!isControlled) {
+      setInternalOpen(nextOpen);
+    }
+    onOpenChange?.(nextOpen);
+  }, [isControlled, onOpenChange]);
+  const openOverlay = useCallback(() => setOpen(true), [setOpen]);
+  const closeOverlay = useCallback(() => setOpen(false), [setOpen]);
+  const toggleOverlay = useCallback(() => setOpen(!isOpen), [isOpen, setOpen]);
+  return useMemo(() => ({ closeOverlay, isOpen, openOverlay, setOpen, toggleOverlay }), [closeOverlay, isOpen, openOverlay, setOpen, toggleOverlay]);
+};
+var AtlTooltip = ({ children, className, defaultOpen = false, onOpenChange, open, placement = "top", testId, title, trigger = "hover" }) => {
+  const triggerRef = useRef(null);
+  const panelRef = useRef(null);
+  const overlay = useOverlayState({ defaultOpen, onOpenChange, open });
+  const isClickTrigger = trigger === "click";
+  const show = useCallback(() => overlay.openOverlay(), [overlay]);
+  const hide = useCallback(() => overlay.closeOverlay(), [overlay]);
   const toggle = useCallback((event) => {
     event.preventDefault();
-    setIsOpen((current) => !current);
-  }, []);
+    overlay.toggleOverlay();
+  }, [overlay]);
   const handleKeyDown = useCallback((event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      setIsOpen((current) => !current);
+      overlay.toggleOverlay();
     }
-  }, []);
-  return /* @__PURE__ */ jsxs(
-    "button",
-    {
-      className: clsx("atl-tooltip", className),
-      onBlur: hide,
-      onClick: trigger === "click" ? toggle : void 0,
-      onFocus: show,
-      onKeyDown: trigger === "click" ? handleKeyDown : void 0,
-      onMouseEnter: trigger === "hover" ? show : void 0,
-      onMouseLeave: trigger === "hover" ? hide : void 0,
-      type: "button",
-      children: [
-        children,
-        visible && /* @__PURE__ */ jsx("span", { className: clsx("atl-tooltip__panel", `atl-tooltip__panel--${placement}`), "data-testid": testId, role: "tooltip", children: title })
-      ]
-    }
-  );
+  }, [overlay]);
+  const panel = overlay.isOpen ? /* @__PURE__ */ jsx("span", { className: clsx("atl-tooltip__panel", `atl-tooltip__panel--${placement}`), "data-testid": testId, ref: panelRef, role: "tooltip", children: title }) : null;
+  useOverlayDismiss({
+    closeOnEscape: isClickTrigger,
+    closeOnOutsideClick: isClickTrigger,
+    enabled: overlay.isOpen,
+    onClose: hide,
+    refs: [triggerRef, panelRef]
+  });
+  return /* @__PURE__ */ jsxs("button", { className: clsx("atl-tooltip", className), onBlur: isClickTrigger ? void 0 : hide, onClick: isClickTrigger ? toggle : void 0, onFocus: show, onKeyDown: isClickTrigger ? handleKeyDown : void 0, onMouseEnter: isClickTrigger ? void 0 : show, onMouseLeave: isClickTrigger ? void 0 : hide, ref: triggerRef, type: "button", children: [
+    children,
+    panel
+  ] });
 };
 var AtlInputRightIcon = ({
   icon,
@@ -445,6 +528,7 @@ var AtlInputRightIcon = ({
   return /* @__PURE__ */ jsx(AtlTooltip, { open: tooltipOpen, placement: "top", testId: `${testId}-icon-tooltip`, title: tooltip, children: iconElement });
 };
 var getLabelWidth = (node) => node?.getBoundingClientRect().width ?? 0;
+var getLabelOffset = (node) => node ? Number.parseFloat(getComputedStyle(node).getPropertyValue("--atl-input-label-offset")) || 0 : 0;
 var getOutlineMetrics = (node) => {
   if (!node) {
     return EMPTY_INPUT_OUTLINE_METRICS;
@@ -457,15 +541,10 @@ var getOutlineMetrics = (node) => {
     width: rect.width
   };
 };
-var useInputLayout = ({
-  onBlur,
-  onChange,
-  onFocus,
-  rootRef,
-  value
-}) => {
+var useInputLayout = ({ onBlur, onChange, onFocus, rootRef, value }) => {
   const [internalHasValue, setInternalHasValue] = useState(value !== void 0 && value !== "");
   const [isFocused, setIsFocused] = useState(false);
+  const [labelOffset, setLabelOffset] = useState(0);
   const [labelWidth, setLabelWidth] = useState(0);
   const [outlineMetrics, setOutlineMetrics] = useState(EMPTY_INPUT_OUTLINE_METRICS);
   const measureRef = useRef(null);
@@ -477,6 +556,7 @@ var useInputLayout = ({
     setInternalHasValue(value !== void 0 && value !== "");
   }, [value]);
   const syncLayout = useCallback(() => {
+    setLabelOffset(isLabelFloated ? getLabelOffset(rootNodeRef.current) : 0);
     setLabelWidth(isLabelFloated ? getLabelWidth(measureRef.current) : 0);
     setOutlineMetrics(getOutlineMetrics(rootNodeRef.current));
   }, [isLabelFloated]);
@@ -493,31 +573,44 @@ var useInputLayout = ({
     }
     return () => observer?.disconnect();
   }, [syncLayout]);
-  const setRootNode = useCallback((node) => {
-    rootNodeRef.current = node;
-    if (mutableRootRef) {
-      mutableRootRef.current = node;
-    }
-    setOutlineMetrics(getOutlineMetrics(node));
-  }, [mutableRootRef]);
-  const handleChange = useCallback((event) => {
-    setInternalHasValue(event.target.value !== "");
-    onChange?.(event.target.value);
-  }, [onChange]);
-  const handleFocus = useCallback((event) => {
-    setIsFocused(true);
-    onFocus?.(event);
-  }, [onFocus]);
-  const handleBlur = useCallback((event) => {
-    setIsFocused(false);
-    onBlur?.(event);
-  }, [onBlur]);
+  const setRootNode = useCallback(
+    (node) => {
+      rootNodeRef.current = node;
+      if (mutableRootRef) {
+        mutableRootRef.current = node;
+      }
+      setOutlineMetrics(getOutlineMetrics(node));
+    },
+    [mutableRootRef]
+  );
+  const handleChange = useCallback(
+    (event) => {
+      setInternalHasValue(event.target.value !== "");
+      onChange?.(event.target.value);
+    },
+    [onChange]
+  );
+  const handleFocus = useCallback(
+    (event) => {
+      setIsFocused(true);
+      onFocus?.(event);
+    },
+    [onFocus]
+  );
+  const handleBlur = useCallback(
+    (event) => {
+      setIsFocused(false);
+      onBlur?.(event);
+    },
+    [onBlur]
+  );
   return {
     handleBlur,
     handleChange,
     handleFocus,
     isFocused,
     isLabelFloated,
+    labelOffset,
     labelWidth,
     measureRef,
     outlineMetrics,
@@ -566,6 +659,7 @@ var AtlInput = memo(forwardRef(function AtlInput2({
     handleFocus,
     isFocused,
     isLabelFloated,
+    labelOffset,
     labelWidth,
     measureRef,
     outlineMetrics,
@@ -593,7 +687,17 @@ var AtlInput = memo(forwardRef(function AtlInput2({
         ),
         ref: setRootNode,
         children: [
-          label && /* @__PURE__ */ jsx("span", { className: clsx("atl-input__label", isLabelFloated && "atl-input__label--floated", iconLeft && "atl-input__label--with-icon"), children: label }),
+          label && /* @__PURE__ */ jsx(
+            "span",
+            {
+              className: clsx(
+                "atl-input__label",
+                isLabelFloated && "atl-input__label--floated",
+                iconLeft && "atl-input__label--with-icon"
+              ),
+              children: label
+            }
+          ),
           iconLeft && /* @__PURE__ */ jsx("span", { className: "atl-input__icon", children: iconLeft }),
           /* @__PURE__ */ jsxs("div", { className: "atl-input__content", children: [
             /* @__PURE__ */ jsx(
@@ -630,7 +734,15 @@ var AtlInput = memo(forwardRef(function AtlInput2({
               tooltipOpen: iconRightTooltipOpen
             }
           ),
-          /* @__PURE__ */ jsx(AtlInputOutline, { labelWidth, metrics: outlineMetrics, strokeWidth })
+          /* @__PURE__ */ jsx(
+            AtlInputOutline,
+            {
+              labelOffset,
+              labelWidth,
+              metrics: outlineMetrics,
+              strokeWidth
+            }
+          )
         ]
       }
     ),
@@ -660,6 +772,135 @@ function AtlProgress({ label, value }) {
     ) })
   ] });
 }
+var VIEWPORT_PADDING = 8;
+var createPopupStyle = ({
+  anchorRect,
+  flip,
+  gap,
+  popupRect
+}) => {
+  const popupHeight = popupRect.height || 0;
+  const popupWidth = popupRect.width || anchorRect.width;
+  const spaceBelow = window.innerHeight - anchorRect.bottom;
+  const showAbove = flip && popupHeight > spaceBelow && anchorRect.top > spaceBelow;
+  const top = showAbove ? anchorRect.top - popupHeight - gap : anchorRect.bottom + gap;
+  const left = Math.min(anchorRect.left, window.innerWidth - popupWidth - VIEWPORT_PADDING);
+  return {
+    left: Math.max(VIEWPORT_PADDING, left),
+    minWidth: anchorRect.width,
+    top: Math.max(VIEWPORT_PADDING, top)
+  };
+};
+var usePopupPosition = ({
+  anchorRef,
+  flip,
+  gap,
+  inputRootRef,
+  isOpen,
+  popupRef
+}) => {
+  const [style, setStyle] = useState({});
+  useLayoutEffect(() => {
+    const anchorElement = inputRootRef?.current ?? anchorRef.current;
+    const popupElement = popupRef.current;
+    if (!isOpen || !anchorElement || !popupElement) {
+      return;
+    }
+    const updatePosition = () => {
+      setStyle(
+        createPopupStyle({
+          anchorRect: anchorElement.getBoundingClientRect(),
+          flip,
+          gap,
+          popupRect: popupElement.getBoundingClientRect()
+        })
+      );
+    };
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+    const resizeObserver = typeof ResizeObserver === "undefined" ? void 0 : new ResizeObserver(updatePosition);
+    resizeObserver?.observe(anchorElement);
+    resizeObserver?.observe(popupElement);
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+      resizeObserver?.disconnect();
+    };
+  }, [anchorRef, flip, gap, inputRootRef, isOpen, popupRef]);
+  return style;
+};
+var AtlPopup = ({ anchorRef, children, className, closeOnEscape = true, closeOnOutsideClick = true, flip = false, gap = 4, inputRootRef, isOpen, onClose, testId }) => {
+  const popupRef = useRef(null);
+  const popupStyle = usePopupPosition({ anchorRef, flip, gap, inputRootRef, isOpen, popupRef });
+  useOverlayDismiss({
+    closeOnEscape,
+    closeOnOutsideClick,
+    enabled: isOpen,
+    onClose,
+    refs: [anchorRef, popupRef]
+  });
+  if (!isOpen) {
+    return null;
+  }
+  return createPortal(
+    /* @__PURE__ */ jsx("div", { className: clsx("atl-popup", className), "data-testid": testId, ref: popupRef, style: popupStyle, children }),
+    document.body
+  );
+};
+var ComboboxPopup = ({
+  anchorRef,
+  emptyState,
+  flip,
+  footerText,
+  headerSlot,
+  highlightedIndex,
+  id,
+  inputRootRef,
+  isOpen,
+  items,
+  maxHeight,
+  multiSelect = false,
+  onClose,
+  onSelect,
+  onSelectAll,
+  optionIdPrefix,
+  selectedValues,
+  selectAllText,
+  showFooter = false,
+  testId
+}) => {
+  return /* @__PURE__ */ jsx(AtlPopup, { anchorRef, flip, inputRootRef, isOpen, testId: `${testId}-popup`, onClose, children: /* @__PURE__ */ jsx(
+    AtlDropdown,
+    {
+      emptyState,
+      footerText,
+      headerSlot,
+      highlightedIndex,
+      id,
+      items,
+      maxHeight,
+      multiSelect,
+      optionIdPrefix,
+      selectAllText,
+      selectedValues,
+      showFooter,
+      testId: `${testId}-dropdown-list`,
+      onSelect,
+      onSelectAll
+    }
+  ) });
+};
+var useComboboxRefs = () => {
+  const inputRef = useRef(null);
+  const anchorRef = useRef(null);
+  const inputRootRef = useRef(null);
+  return {
+    anchorRef,
+    inputRef,
+    inputRootRef
+  };
+};
 var useDropdownState = (disabled = false) => {
   const [isOpen, setIsOpen] = useState(false);
   const open = useCallback(() => {
@@ -681,6 +922,26 @@ var useDropdownState = (disabled = false) => {
     open,
     toggle
   };
+};
+
+// src/components/combobox/default-filter.ts
+var defaultComboboxFilter = (option, searchValue) => {
+  return option.label.toLowerCase().includes(searchValue.toLowerCase());
+};
+
+// src/components/combobox/use-filtered-options.ts
+var useFilteredOptions = ({
+  filterFn,
+  options,
+  searchValue
+}) => {
+  return useMemo(() => {
+    if (!searchValue.trim()) {
+      return options;
+    }
+    const runFilter = filterFn ?? defaultComboboxFilter;
+    return options.filter((option) => runFilter(option, searchValue));
+  }, [filterFn, options, searchValue]);
 };
 var useKeyboardNavigation = ({
   initialHighlightIndex,
@@ -776,75 +1037,6 @@ var useKeyboardNavigation = ({
     setHighlightedIndex
   };
 };
-var useClickOutside = ({
-  enabled = true,
-  onOutsideClick,
-  refs
-}) => {
-  useEffect(() => {
-    if (!enabled) {
-      return;
-    }
-    const handlePointerDown = (event) => {
-      const targetNode = event.target;
-      if (!(targetNode instanceof Node)) {
-        return;
-      }
-      const isInside = refs.some((ref) => ref.current?.contains(targetNode));
-      if (!isInside) {
-        onOutsideClick();
-      }
-    };
-    document.addEventListener("mousedown", handlePointerDown);
-    document.addEventListener("touchstart", handlePointerDown);
-    return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
-      document.removeEventListener("touchstart", handlePointerDown);
-    };
-  }, [enabled, onOutsideClick, refs]);
-};
-var VIEWPORT_PADDING = 8;
-var usePopupPosition = ({
-  anchorRef,
-  flip,
-  gap,
-  inputRootRef,
-  isOpen,
-  popupRef
-}) => {
-  const [style, setStyle] = useState({});
-  useLayoutEffect(() => {
-    if (!isOpen || !anchorRef.current) {
-      return;
-    }
-    const anchorRect = (inputRootRef?.current ?? anchorRef.current).getBoundingClientRect();
-    const popupRect = popupRef.current?.getBoundingClientRect();
-    const popupHeight = popupRect?.height ?? 0;
-    const popupWidth = popupRect?.width ?? anchorRect.width;
-    const spaceBelow = window.innerHeight - anchorRect.bottom;
-    const showAbove = flip && popupHeight > spaceBelow && anchorRect.top > spaceBelow;
-    const top = showAbove ? anchorRect.top - popupHeight - gap : anchorRect.bottom + gap;
-    const left = Math.min(anchorRect.left, window.innerWidth - popupWidth - VIEWPORT_PADDING);
-    setStyle({
-      left: Math.max(VIEWPORT_PADDING, left),
-      minWidth: anchorRect.width,
-      top: Math.max(VIEWPORT_PADDING, top)
-    });
-  }, [anchorRef, flip, gap, inputRootRef, isOpen, popupRef]);
-  return style;
-};
-var AtlPopup = ({ anchorRef, children, className, flip = false, gap = 4, inputRootRef, isOpen, onClose, testId }) => {
-  const popupRef = useRef(null);
-  const popupStyle = usePopupPosition({ anchorRef, flip, gap, inputRootRef, isOpen, popupRef });
-  useClickOutside({ enabled: isOpen, onOutsideClick: onClose, refs: [anchorRef, popupRef] });
-  if (!isOpen) {
-    return null;
-  }
-  return createPortal(
-    /* @__PURE__ */ jsx("div", { className: clsx("atl-popup", className), "data-testid": testId, ref: popupRef, style: popupStyle, children }),
-    document.body
-  );
-};
 var ChevronDownIcon = ({ size = 24, ...props }) => {
   return /* @__PURE__ */ jsx(
     "svg",
@@ -889,10 +1081,45 @@ var SearchIcon = ({ size = 20, ...props }) => {
     }
   );
 };
-var DEFAULT_MAX_HEIGHT2 = 212;
-var defaultFilter = (option, searchValue) => {
-  return option.label.toLowerCase().includes(searchValue.toLowerCase());
+var useSelectValue = ({
+  multiSelect,
+  onChange,
+  options,
+  value
+}) => {
+  const selectedValues = useMemo(() => {
+    if (multiSelect) {
+      return value ?? [];
+    }
+    return value === void 0 ? [] : [value];
+  }, [multiSelect, value]);
+  const selectedOption = useMemo(() => {
+    return multiSelect ? void 0 : options.find((option) => option.value === value);
+  }, [multiSelect, options, value]);
+  const displayValue = useMemo(() => {
+    if (multiSelect) {
+      return selectedValues.length > 0 ? `${selectedValues.length} selected` : "";
+    }
+    return selectedOption?.label ?? "";
+  }, [multiSelect, selectedOption, selectedValues.length]);
+  const handleSelectValue = useCallback((selected) => {
+    if (multiSelect) {
+      const currentValues = value ?? [];
+      const nextValues = currentValues.includes(selected) ? currentValues.filter((item) => item !== selected) : [...currentValues, selected];
+      onChange?.(nextValues);
+      return false;
+    }
+    onChange?.(selected);
+    return true;
+  }, [multiSelect, onChange, value]);
+  return {
+    displayValue,
+    handleSelectValue,
+    selectedOption,
+    selectedValues
+  };
 };
+var DEFAULT_MAX_HEIGHT2 = 212;
 var AtlSelect = ({
   className,
   disabled = false,
@@ -918,33 +1145,22 @@ var AtlSelect = ({
   value
 }) => {
   const [searchValue, setSearchValue] = useState("");
-  const inputRef = useRef(null);
-  const anchorRef = useRef(null);
-  const inputRootRef = useRef(null);
+  const { anchorRef, inputRef, inputRootRef } = useComboboxRefs();
   const dropdown = useDropdownState(disabled);
-  const filteredOptions = useMemo(() => {
-    if (!searchable || !searchValue.trim()) {
-      return options;
-    }
-    const runFilter = filterFn ?? defaultFilter;
-    return options.filter((option) => runFilter(option, searchValue));
-  }, [filterFn, options, searchValue, searchable]);
-  const selectedValues = useMemo(() => {
-    if (multiSelect) {
-      return value ?? [];
-    }
-    return value === void 0 ? [] : [value];
-  }, [multiSelect, value]);
-  const selectedOption = useMemo(() => {
-    return multiSelect ? void 0 : options.find((option) => option.value === value);
-  }, [multiSelect, options, value]);
-  const displayValue = useMemo(() => {
-    if (multiSelect) {
-      return selectedValues.length > 0 ? `${selectedValues.length} selected` : "";
-    }
-    return selectedOption?.label ?? "";
-  }, [multiSelect, selectedOption, selectedValues.length]);
-  const initialHighlightIndex = filteredOptions.findIndex((option) => selectedValues.includes(option.value));
+  const filteredOptions = useFilteredOptions({
+    filterFn: searchable ? filterFn : void 0,
+    options,
+    searchValue: searchable ? searchValue : ""
+  });
+  const { displayValue, handleSelectValue, selectedOption, selectedValues } = useSelectValue({
+    multiSelect,
+    onChange,
+    options,
+    value
+  });
+  const initialHighlightIndex = useMemo(() => {
+    return filteredOptions.findIndex((option) => selectedValues.includes(option.value));
+  }, [filteredOptions, selectedValues]);
   const { handleKeyDown, highlightedIndex } = useKeyboardNavigation({
     initialHighlightIndex,
     inputRef,
@@ -952,14 +1168,10 @@ var AtlSelect = ({
     onClose: dropdown.close,
     onOpen: dropdown.open,
     onSelect: (selected) => {
-      if (multiSelect) {
-        const currentValues = value ?? [];
-        const nextValues = currentValues.includes(selected) ? currentValues.filter((item) => item !== selected) : [...currentValues, selected];
-        onChange?.(nextValues);
-        return;
+      const shouldClose = handleSelectValue(selected);
+      if (shouldClose) {
+        dropdown.close();
       }
-      onChange?.(selected);
-      dropdown.close();
     },
     options: filteredOptions
   });
@@ -967,17 +1179,13 @@ var AtlSelect = ({
     event.preventDefault();
     dropdown.toggle();
     requestAnimationFrame(() => inputRef.current?.focus());
-  }, [dropdown]);
+  }, [dropdown, inputRef]);
   const handleSelect = useCallback((selected) => {
-    if (multiSelect) {
-      const currentValues = value ?? [];
-      const nextValues = currentValues.includes(selected) ? currentValues.filter((item) => item !== selected) : [...currentValues, selected];
-      onChange?.(nextValues);
-      return;
+    const shouldClose = handleSelectValue(selected);
+    if (shouldClose) {
+      dropdown.close();
     }
-    onChange?.(selected);
-    dropdown.close();
-  }, [dropdown, multiSelect, onChange, value]);
+  }, [dropdown, handleSelectValue]);
   const handleSearchKeyDown = useCallback((event) => {
     event.stopPropagation();
     handleKeyDown(event);
@@ -995,7 +1203,6 @@ var AtlSelect = ({
       onKeyDown: handleSearchKeyDown
     }
   ) }) : void 0;
-  const emptyState = /* @__PURE__ */ jsx("span", { children: noResultsText });
   return /* @__PURE__ */ jsxs("div", { className, children: [
     /* @__PURE__ */ jsx("div", { className: "atl-select", ref: anchorRef, children: /* @__PURE__ */ jsx(
       AtlInput,
@@ -1020,25 +1227,30 @@ var AtlSelect = ({
         value: displayValue
       }
     ) }),
-    /* @__PURE__ */ jsx(AtlPopup, { anchorRef, flip, inputRootRef, isOpen: dropdown.isOpen, testId: `${testId}-popup`, onClose: dropdown.close, children: /* @__PURE__ */ jsx(
-      AtlDropdown,
+    /* @__PURE__ */ jsx(
+      ComboboxPopup,
       {
-        emptyState,
+        anchorRef,
+        emptyState: /* @__PURE__ */ jsx("span", { children: noResultsText }),
+        flip,
         footerText,
         headerSlot: dropdownHeader,
         highlightedIndex,
+        inputRootRef,
+        isOpen: dropdown.isOpen,
         items: filteredOptions,
         maxHeight: maxDropdownHeight,
         multiSelect,
-        optionIdPrefix: `${testId}-option`,
-        selectAllText,
-        selectedValues,
-        showFooter,
-        testId: `${testId}-dropdown-list`,
+        onClose: dropdown.close,
         onSelect: handleSelect,
-        onSelectAll
+        onSelectAll,
+        optionIdPrefix: `${testId}-option`,
+        selectedValues,
+        selectAllText,
+        showFooter,
+        testId
       }
-    ) })
+    )
   ] });
 };
 var TOAST_LIMIT = 3;
@@ -1144,124 +1356,39 @@ var getBorderRadius = (value) => {
   }
   return typeof value === "number" ? `${value}px` : value;
 };
-var AtlCircleIcon = (props) => {
+var normalizeInitials = (value) => {
+  return value.trim().replace(/\s+/g, "").slice(0, 3).toUpperCase();
+};
+var AtlAvatar = (props) => {
+  const [failedImage, setFailedImage] = useState(null);
+  const resolvedInitials = normalizeInitials(props.initials);
+  const shouldRenderIcon = Boolean(props.icon);
+  const shouldRenderImage = !shouldRenderIcon && Boolean(props.image) && failedImage !== props.image;
+  const shouldShowInitials = !shouldRenderIcon && (!props.image || failedImage === props.image);
+  const shouldShowLoader = !shouldRenderIcon && Boolean(props.image) && failedImage === props.image;
   const style = {
-    "--atl-circle-icon-bg": props.backgroundColor,
-    "--atl-circle-icon-icon-color": props.contentType === "icon" ? props.iconColor : void 0,
-    "--atl-circle-icon-icon-scale": props.contentType === "icon" ? props.iconScale : void 0,
-    "--atl-circle-icon-icon-size": props.contentType === "icon" ? props.iconSize : void 0,
-    "--atl-circle-icon-image-fit": props.contentType === "image" ? props.objectFit : void 0,
-    "--atl-circle-icon-image-padding": props.contentType === "image" ? props.imagePadding : void 0,
-    "--atl-circle-icon-text-color": props.contentType === "initials" ? props.textColor : void 0,
+    "--atl-avatar-bg": props.backgroundColor,
+    "--atl-avatar-icon-color": props.iconColor,
+    "--atl-avatar-icon-scale": props.iconScale,
+    "--atl-avatar-icon-size": props.iconSize,
+    "--atl-avatar-image-fit": props.objectFit,
+    "--atl-avatar-image-padding": props.imagePadding,
+    "--atl-avatar-text-color": props.textColor,
     border: props.border ? `${props.border.width}px solid ${props.border.color}` : void 0,
     borderRadius: getBorderRadius(props.borderRadius),
-    height: props.size,
-    width: props.size
+    height: props.size ?? 32,
+    width: props.size ?? 32
   };
-  return /* @__PURE__ */ jsxs("div", { className: clsx("atl-circle-icon", props.className), style, children: [
-    props.contentType === "image" && /* @__PURE__ */ jsx("img", { alt: props.imageAlt ?? "", className: "atl-circle-icon__image", src: props.imageUrl, onError: props.onImageError }),
-    props.contentType === "initials" && /* @__PURE__ */ jsx("span", { className: "atl-circle-icon__initials", children: props.initials }),
-    props.contentType === "icon" && /* @__PURE__ */ jsx("span", { className: "atl-circle-icon__icon", children: /* @__PURE__ */ jsx(props.icon, {}) }),
-    props.contentType === "custom" && props.children
+  const handleImageError = () => {
+    setFailedImage(props.image ?? null);
+    props.onImageError?.();
+  };
+  return /* @__PURE__ */ jsxs("div", { className: clsx("atl-avatar", props.className), style, children: [
+    shouldRenderIcon && props.icon && /* @__PURE__ */ jsx("span", { className: "atl-avatar__icon", children: /* @__PURE__ */ jsx(props.icon, {}) }),
+    shouldRenderImage && /* @__PURE__ */ jsx("img", { alt: props.imageAlt ?? "", className: "atl-avatar__image", src: props.image, onError: handleImageError }),
+    shouldShowInitials && /* @__PURE__ */ jsx("span", { className: "atl-avatar__initials", children: resolvedInitials }),
+    shouldShowLoader && /* @__PURE__ */ jsx("span", { "aria-hidden": "true", className: "atl-avatar__loader" })
   ] });
-};
-var SuitcaseIcon = ({ size = 24, ...props }) => {
-  return /* @__PURE__ */ jsxs(
-    "svg",
-    {
-      "aria-hidden": "true",
-      focusable: "false",
-      fill: "none",
-      height: size,
-      viewBox: "0 0 24 24",
-      width: size,
-      xmlns: "http://www.w3.org/2000/svg",
-      ...props,
-      children: [
-        /* @__PURE__ */ jsx(
-          "path",
-          {
-            d: "M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M5 9h14v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9Z",
-            stroke: "currentColor",
-            strokeLinecap: "round",
-            strokeLinejoin: "round",
-            strokeWidth: "1.5"
-          }
-        ),
-        /* @__PURE__ */ jsx("path", { d: "M5 11h14", stroke: "currentColor", strokeLinecap: "round", strokeWidth: "1.5" })
-      ]
-    }
-  );
-};
-
-// src/components/avatar/config.ts
-var AVATAR_CONFIG = {
-  beneficiary: {
-    company: {
-      backgroundColor: "var(--md-sys-color-secondary-container)",
-      iconColor: "var(--md-sys-color-on-secondary-container)"
-    },
-    initials: {
-      backgroundColor: "var(--md-sys-color-secondary-container)",
-      textColor: "var(--md-sys-color-on-secondary-container)"
-    },
-    photo: {
-      backgroundColor: "transparent"
-    }
-  },
-  company: {
-    initials: {
-      backgroundColor: "var(--md-sys-color-primary-container)",
-      textColor: "var(--md-sys-color-on-primary-container)"
-    },
-    logo: {
-      backgroundColor: "var(--md-sys-color-primary-container)"
-    }
-  },
-  user: {
-    initials: {
-      backgroundColor: "var(--md-sys-color-primary)",
-      textColor: "var(--md-sys-color-on-primary)"
-    },
-    photo: {
-      backgroundColor: "transparent"
-    }
-  }
-};
-var getInitials = (name) => {
-  const words = name.trim().split(/\s+/);
-  if (words.length === 1) {
-    return words[0].slice(0, 2).toUpperCase();
-  }
-  return words.slice(0, 2).map((word) => word[0]?.toUpperCase() ?? "").join("");
-};
-var AtlAvatar = ({
-  backgroundColor,
-  className,
-  fullName,
-  imageUrl,
-  initials,
-  logoIcon,
-  size = 32,
-  type,
-  variant
-}) => {
-  const resolvedInitials = useMemo(() => initials ?? getInitials(fullName), [fullName, initials]);
-  const config = AVATAR_CONFIG[variant][type];
-  const bgColor = backgroundColor ?? config?.backgroundColor;
-  if (type === "photo" && imageUrl) {
-    return /* @__PURE__ */ jsx(AtlCircleIcon, { className, contentType: "image", imageAlt: fullName, imageUrl, size });
-  }
-  if (type === "logo" && logoIcon) {
-    return /* @__PURE__ */ jsx(AtlCircleIcon, { backgroundColor: bgColor, className, contentType: "icon", icon: logoIcon, size });
-  }
-  if (type === "logo" && imageUrl) {
-    return /* @__PURE__ */ jsx(AtlCircleIcon, { backgroundColor: bgColor, className, contentType: "image", imageAlt: fullName, imagePadding: "20%", imageUrl, objectFit: "contain", size });
-  }
-  if (type === "company") {
-    return /* @__PURE__ */ jsx(AtlCircleIcon, { backgroundColor: bgColor, className, contentType: "icon", icon: SuitcaseIcon, iconColor: config?.iconColor, size });
-  }
-  return /* @__PURE__ */ jsx(AtlCircleIcon, { backgroundColor: bgColor, className, contentType: "initials", initials: resolvedInitials, size, textColor: config?.textColor });
 };
 var AtlBreadcrumbs = ({ className, items }) => {
   return /* @__PURE__ */ jsx("nav", { "aria-label": "Breadcrumb", className: clsx("atl-breadcrumbs", className), children: items.map((item, index) => {
@@ -1272,11 +1399,11 @@ var AtlBreadcrumbs = ({ className, items }) => {
     ] }, item.testId);
   }) });
 };
-var AtlCheckbox = ({ checked = false, className, disabled = false, indeterminate = false, label, loading = false, onChange, onClick, size = "M", testId }) => {
+var AtlCheckbox = ({ checked = false, className, disabled = false, indeterminate = false, invalid = false, label, loading = false, onChange, onClick, size = "m", testId }) => {
   const handleChange = useCallback((event) => onChange?.(event.target.checked), [onChange]);
   return /* @__PURE__ */ jsxs("label", { className: clsx("atl-checkbox", className, disabled && "atl-checkbox--disabled"), children: [
     /* @__PURE__ */ jsx("input", { checked, className: "atl-checkbox__input", "data-testid": testId, disabled, type: "checkbox", onChange: handleChange, onClick }),
-    /* @__PURE__ */ jsx("span", { className: clsx("atl-checkbox__control", `atl-checkbox__control--${size.toLowerCase()}`, (checked || indeterminate) && "atl-checkbox__control--checked"), children: loading ? /* @__PURE__ */ jsx(SpinnerIcon, { size: 14 }) : checked ? /* @__PURE__ */ jsx(CheckIcon, { size: 16 }) : indeterminate ? "\u2014" : null }),
+    /* @__PURE__ */ jsx("span", { className: clsx("atl-checkbox__control", `atl-checkbox__control--${size}`, (checked || indeterminate) && "atl-checkbox__control--checked", invalid && "atl-checkbox__control--invalid"), children: loading ? /* @__PURE__ */ jsx(SpinnerIcon, { size: 14 }) : checked ? /* @__PURE__ */ jsx(CheckIcon, { size: 16 }) : indeterminate ? "\u2014" : null }),
     label && /* @__PURE__ */ jsx("span", { children: label })
   ] });
 };
@@ -1311,7 +1438,7 @@ var AtlChip = ({ customColors, disabled = false, label, onRemove, size = "M", te
     withCross && /* @__PURE__ */ jsx("button", { className: "atl-chip__remove", disabled, type: "button", onClick: onRemove, children: /* @__PURE__ */ jsx(CrossIcon, {}) })
   ] });
 };
-var AtlRadioButton = ({ checked, disabled, invalid = false, label, size = 24, testId, ...props }) => {
+var AtlRadioButton = ({ checked, disabled, invalid = false, label, size = "m", testId, ...props }) => {
   return /* @__PURE__ */ jsxs("label", { className: "atl-radio-button", children: [
     /* @__PURE__ */ jsx("input", { ...props, checked, className: "atl-radio-button__input", "data-testid": testId, disabled, type: "radio" }),
     /* @__PURE__ */ jsx("span", { className: clsx("atl-radio-button__control", `atl-radio-button__control--${size}`, checked && "atl-radio-button__control--checked", invalid && "atl-radio-button__control--invalid") }),
@@ -1336,35 +1463,7 @@ var AtlSidebar = ({ collapsed = false, footer, footerItems = [], items, loading 
     ] })
   ] });
 };
-var useKeyPress = ({
-  elementRef,
-  enabled = true,
-  key,
-  onKeyPress,
-  preventDefault = false
-}) => {
-  useEffect(() => {
-    if (!enabled) {
-      return;
-    }
-    const handleKeyDown = (event) => {
-      const activeElement = document.activeElement;
-      const matchesTarget = !elementRef?.current || activeElement === elementRef.current;
-      if (!matchesTarget || event.key !== key) {
-        return;
-      }
-      if (preventDefault) {
-        event.preventDefault();
-      }
-      onKeyPress();
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [elementRef, enabled, key, onKeyPress, preventDefault]);
-};
-var AtlSwitcher = ({ checked = false, className, disabled = false, onChange, size = "L", testId }) => {
+var AtlSwitcher = ({ checked = false, className, disabled = false, invalid = false, onChange, size = "l", testId }) => {
   const buttonRef = useRef(null);
   const toggle = useCallback(() => {
     if (!disabled) {
@@ -1373,7 +1472,7 @@ var AtlSwitcher = ({ checked = false, className, disabled = false, onChange, siz
   }, [checked, disabled, onChange]);
   useKeyPress({ elementRef: buttonRef, key: " ", onKeyPress: toggle, preventDefault: true });
   useKeyPress({ elementRef: buttonRef, key: "Enter", onKeyPress: toggle, preventDefault: true });
-  return /* @__PURE__ */ jsx("button", { "aria-checked": checked, className: clsx("atl-switcher", `atl-switcher--${size.toLowerCase()}`, checked && "atl-switcher--checked", disabled && "atl-switcher--disabled", className), "data-testid": testId, disabled, ref: buttonRef, role: "switch", type: "button", onClick: toggle, children: /* @__PURE__ */ jsx("span", { className: "atl-switcher__knob" }) });
+  return /* @__PURE__ */ jsx("button", { "aria-checked": checked, className: clsx("atl-switcher", `atl-switcher--${size}`, checked && "atl-switcher--checked", disabled && "atl-switcher--disabled", invalid && "atl-switcher--invalid", className), "data-testid": testId, disabled, ref: buttonRef, role: "switch", type: "button", onClick: toggle, children: /* @__PURE__ */ jsx("span", { className: "atl-switcher__knob" }) });
 };
 var DEFAULT_PAGE_SIZE = 10;
 var resolveCellValue = (record, dataIndex) => {
@@ -1382,7 +1481,7 @@ var resolveCellValue = (record, dataIndex) => {
   }
   return record[dataIndex];
 };
-var AtlTable = ({ ariaLabel, className, columns = [], dataSource, locale, onRow, pagination = false, rowClassName, rowKey, style }) => {
+var AtlSimpleTable = ({ ariaLabel, className, columns = [], dataSource, locale, onRow, pagination = false, rowClassName, rowKey, style }) => {
   const paginationConfig = pagination || void 0;
   const pageSize = paginationConfig?.pageSize ? paginationConfig.pageSize : DEFAULT_PAGE_SIZE;
   const currentPage = paginationConfig?.current ? paginationConfig.current : 1;
@@ -1395,11 +1494,11 @@ var AtlTable = ({ ariaLabel, className, columns = [], dataSource, locale, onRow,
     return dataSource.slice(start, start + pageSize);
   }, [currentPage, dataSource, pageSize, paginationConfig]);
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  return /* @__PURE__ */ jsxs("div", { className: clsx("atl-table", className), style, children: [
-    /* @__PURE__ */ jsxs("table", { "aria-label": ariaLabel, className: "atl-table__table", children: [
+  return /* @__PURE__ */ jsxs("div", { className: clsx("atl-simple-table", className), style, children: [
+    /* @__PURE__ */ jsxs("table", { "aria-label": ariaLabel, className: "atl-simple-table__table", children: [
       /* @__PURE__ */ jsx("thead", { children: /* @__PURE__ */ jsx("tr", { children: columns.map((column, index) => /* @__PURE__ */ jsx("th", { style: { textAlign: column.align, width: column.width }, children: typeof column.title === "function" ? column.title({}) : column.title }, column.key ?? String(column.dataIndex ?? index))) }) }),
       /* @__PURE__ */ jsxs("tbody", { children: [
-        pagedData.length === 0 && /* @__PURE__ */ jsx("tr", { children: /* @__PURE__ */ jsx("td", { className: "atl-table__empty", colSpan: Math.max(columns.length, 1), children: locale?.emptyText ?? "No data" }) }),
+        pagedData.length === 0 && /* @__PURE__ */ jsx("tr", { children: /* @__PURE__ */ jsx("td", { className: "atl-simple-table__empty", colSpan: Math.max(columns.length, 1), children: locale?.emptyText ?? "No data" }) }),
         pagedData.map((record, index) => {
           const resolvedKey = typeof rowKey === "function" ? rowKey(record) : typeof rowKey === "string" ? String(record[rowKey]) : String(index);
           const rowProps = onRow?.(record, index) ?? {};
@@ -1412,7 +1511,7 @@ var AtlTable = ({ ariaLabel, className, columns = [], dataSource, locale, onRow,
         })
       ] })
     ] }),
-    paginationConfig && totalPages > 1 && /* @__PURE__ */ jsxs("div", { className: "atl-table__pagination", children: [
+    paginationConfig && totalPages > 1 && /* @__PURE__ */ jsxs("div", { className: "atl-simple-table__pagination", children: [
       /* @__PURE__ */ jsx(AtlButton, { disabled: currentPage <= 1, size: 32, variant: "outlined", onClick: () => paginationConfig.onChange?.(currentPage - 1, pageSize), children: "Prev" }),
       /* @__PURE__ */ jsx(AtlButton, { disabled: currentPage >= totalPages, size: 32, variant: "outlined", onClick: () => paginationConfig.onChange?.(currentPage + 1, pageSize), children: "Next" })
     ] })
@@ -1513,9 +1612,8 @@ var AtlModal = ({ cancelText = "Cancel", children, className, confirmText = "Con
   const contentRef = useRef(null);
   const handleCancel = onCancel ?? onClose;
   const handleConfirm = onConfirm ?? onClose;
-  useClickOutside({ enabled: isOpen, onOutsideClick: onClose, refs: [contentRef] });
+  useOverlayDismiss({ enabled: isOpen, onClose, refs: [contentRef] });
   useFocusTrap({ enabled: isOpen, rootRef: contentRef });
-  useKeyPress({ enabled: isOpen, key: "Escape", onKeyPress: onClose });
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -1544,9 +1642,6 @@ var AtlModal = ({ cancelText = "Cancel", children, className, confirmText = "Con
   );
 };
 var DEFAULT_MAX_HEIGHT3 = 212;
-var defaultFilter2 = (option, searchValue) => {
-  return option.label.toLowerCase().includes(searchValue.toLowerCase());
-};
 var AtlAutocomplete = ({
   className,
   disabled = false,
@@ -1570,20 +1665,18 @@ var AtlAutocomplete = ({
 }) => {
   const [searchValue, setSearchValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const inputRef = useRef(null);
-  const anchorRef = useRef(null);
-  const inputRootRef = useRef(null);
+  const { anchorRef, inputRef, inputRootRef } = useComboboxRefs();
   const dropdown = useDropdownState(disabled);
   const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
-  const filteredOptions = useMemo(() => {
-    if (!searchValue.trim()) {
-      return options;
-    }
-    const runFilter = filterFn ?? defaultFilter2;
-    return options.filter((option) => runFilter(option, searchValue));
-  }, [filterFn, options, searchValue]);
+  const filteredOptions = useFilteredOptions({
+    filterFn,
+    options,
+    searchValue
+  });
   const displayValue = isTyping ? searchValue : selectedOption?.label ?? "";
-  const initialHighlightIndex = filteredOptions.findIndex((option) => option.value === value);
+  const initialHighlightIndex = useMemo(() => {
+    return filteredOptions.findIndex((option) => option.value === value);
+  }, [filteredOptions, value]);
   const { handleKeyDown, highlightedIndex, setHighlightedIndex } = useKeyboardNavigation({
     initialHighlightIndex,
     inputRef,
@@ -1664,23 +1757,28 @@ var AtlAutocomplete = ({
         onFocus: handleInputFocus
       }
     ) }),
-    /* @__PURE__ */ jsx(AtlPopup, { anchorRef, flip, inputRootRef, isOpen: dropdown.isOpen, testId: `${testId}-popup`, onClose: dropdown.close, children: /* @__PURE__ */ jsx(
-      AtlDropdown,
+    /* @__PURE__ */ jsx(
+      ComboboxPopup,
       {
+        anchorRef,
         emptyState,
+        flip,
         highlightedIndex,
         id: `${testId}-listbox`,
+        inputRootRef,
+        isOpen: dropdown.isOpen,
         items: filteredOptions,
         maxHeight: maxDropdownHeight,
+        onClose: dropdown.close,
+        onSelect: handleSelect,
         optionIdPrefix: `${testId}-option`,
         selectedValues: value === void 0 ? [] : [value],
-        testId: `${testId}-dropdown-list`,
-        onSelect: handleSelect
+        testId
       }
-    ) })
+    )
   ] });
 };
 
-export { AtlAutocomplete, AtlAvatar, AtlBreadcrumbs, AtlButton, AtlCard, AtlCheckbox, AtlChip, AtlCircleIcon, AtlDropdown, AtlFileUpload, AtlInput, AtlModal, AtlPopup, AtlProgress, AtlRadioButton, AtlSelect, AtlSidebar, AtlSwitcher, AtlTable, AtlTabs, AtlToastProvider, AtlTooltip, useAtlToast };
+export { AtlAutocomplete, AtlAvatar, AtlBreadcrumbs, AtlButton, AtlCard, AtlCheckbox, AtlChip, AtlDropdown, AtlFileUpload, AtlInput, AtlModal, AtlPopup, AtlProgress, AtlRadioButton, AtlSelect, AtlSidebar, AtlSimpleTable, AtlSwitcher, AtlTabs, AtlToastProvider, AtlTooltip, useAtlToast };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

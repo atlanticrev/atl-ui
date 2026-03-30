@@ -1,15 +1,7 @@
-import type {
-	ChangeEvent,
-	FocusEvent,
-	MutableRefObject,
-	RefObject,
-} from 'react';
+import type { ChangeEvent, FocusEvent, MutableRefObject, RefObject } from 'react';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import {
-	EMPTY_INPUT_OUTLINE_METRICS,
-	type InputOutlineMetrics,
-} from './input-outline.utils';
+import { EMPTY_INPUT_OUTLINE_METRICS, type InputOutlineMetrics } from './input-outline.utils';
 
 type UseInputLayoutParams = {
 	onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
@@ -20,6 +12,8 @@ type UseInputLayoutParams = {
 };
 
 const getLabelWidth = (node: HTMLSpanElement | null): number => node?.getBoundingClientRect().width ?? 0;
+const getLabelOffset = (node: HTMLLabelElement | null): number =>
+	node ? Number.parseFloat(getComputedStyle(node).getPropertyValue('--atl-input-label-offset')) || 0 : 0;
 
 const getOutlineMetrics = (node: HTMLLabelElement | null): InputOutlineMetrics => {
 	if (!node) {
@@ -36,15 +30,10 @@ const getOutlineMetrics = (node: HTMLLabelElement | null): InputOutlineMetrics =
 	};
 };
 
-export const useInputLayout = ({
-	onBlur,
-	onChange,
-	onFocus,
-	rootRef,
-	value,
-}: UseInputLayoutParams) => {
+export const useInputLayout = ({ onBlur, onChange, onFocus, rootRef, value }: UseInputLayoutParams) => {
 	const [internalHasValue, setInternalHasValue] = useState(value !== undefined && value !== '');
 	const [isFocused, setIsFocused] = useState(false);
+	const [labelOffset, setLabelOffset] = useState(0);
 	const [labelWidth, setLabelWidth] = useState(0);
 	const [outlineMetrics, setOutlineMetrics] = useState<InputOutlineMetrics>(EMPTY_INPUT_OUTLINE_METRICS);
 
@@ -59,6 +48,7 @@ export const useInputLayout = ({
 	}, [value]);
 
 	const syncLayout = useCallback(() => {
+		setLabelOffset(isLabelFloated ? getLabelOffset(rootNodeRef.current) : 0);
 		setLabelWidth(isLabelFloated ? getLabelWidth(measureRef.current) : 0);
 		setOutlineMetrics(getOutlineMetrics(rootNodeRef.current));
 	}, [isLabelFloated]);
@@ -68,10 +58,7 @@ export const useInputLayout = ({
 	}, [syncLayout]);
 
 	useLayoutEffect(() => {
-		const observer =
-			typeof ResizeObserver === 'undefined'
-				? null
-				: new ResizeObserver(syncLayout);
+		const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(syncLayout);
 
 		if (measureRef.current) {
 			observer?.observe(measureRef.current);
@@ -84,30 +71,41 @@ export const useInputLayout = ({
 		return () => observer?.disconnect();
 	}, [syncLayout]);
 
-	const setRootNode = useCallback((node: HTMLLabelElement | null) => {
-		rootNodeRef.current = node;
+	const setRootNode = useCallback(
+		(node: HTMLLabelElement | null) => {
+			rootNodeRef.current = node;
 
-		if (mutableRootRef) {
-			mutableRootRef.current = node;
-		}
+			if (mutableRootRef) {
+				mutableRootRef.current = node;
+			}
+			setOutlineMetrics(getOutlineMetrics(node));
+		},
+		[mutableRootRef],
+	);
 
-		setOutlineMetrics(getOutlineMetrics(node));
-	}, [mutableRootRef]);
+	const handleChange = useCallback(
+		(event: ChangeEvent<HTMLInputElement>) => {
+			setInternalHasValue(event.target.value !== '');
+			onChange?.(event.target.value);
+		},
+		[onChange],
+	);
 
-	const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-		setInternalHasValue(event.target.value !== '');
-		onChange?.(event.target.value);
-	}, [onChange]);
+	const handleFocus = useCallback(
+		(event: FocusEvent<HTMLInputElement>) => {
+			setIsFocused(true);
+			onFocus?.(event);
+		},
+		[onFocus],
+	);
 
-	const handleFocus = useCallback((event: FocusEvent<HTMLInputElement>) => {
-		setIsFocused(true);
-		onFocus?.(event);
-	}, [onFocus]);
-
-	const handleBlur = useCallback((event: FocusEvent<HTMLInputElement>) => {
-		setIsFocused(false);
-		onBlur?.(event);
-	}, [onBlur]);
+	const handleBlur = useCallback(
+		(event: FocusEvent<HTMLInputElement>) => {
+			setIsFocused(false);
+			onBlur?.(event);
+		},
+		[onBlur],
+	);
 
 	return {
 		handleBlur,
@@ -115,6 +113,7 @@ export const useInputLayout = ({
 		handleFocus,
 		isFocused,
 		isLabelFloated,
+		labelOffset,
 		labelWidth,
 		measureRef,
 		outlineMetrics,

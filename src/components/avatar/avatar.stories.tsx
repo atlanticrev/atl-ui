@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { SuitcaseIcon } from '@/icons/suitcase-icon';
+
 import { AtlAvatar } from './index';
 
 const meta: Meta<typeof AtlAvatar> = {
@@ -8,20 +10,18 @@ const meta: Meta<typeof AtlAvatar> = {
 	parameters: { layout: 'centered' },
 	tags: ['autodocs'],
 	args: {
-		fullName: 'Jane Doe',
-		type: 'initials',
-		variant: 'user',
+		initials: 'JD',
+		size: 48,
 	},
 };
 
 export default meta;
 
-export const Default: StoryObj<typeof AtlAvatar> = {};
+export const Initials: StoryObj<typeof AtlAvatar> = {};
 
-export const Company: StoryObj<typeof AtlAvatar> = {
+export const Icon: StoryObj<typeof AtlAvatar> = {
 	args: {
-		fullName: 'Atlantic Rev',
-		type: 'company',
-		variant: 'beneficiary',
+		backgroundColor: 'var(--md-sys-color-primary-container)',
+		icon: SuitcaseIcon,
 	},
 };

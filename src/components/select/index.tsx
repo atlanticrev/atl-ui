@@ -1,21 +1,19 @@
 import type { KeyboardEvent } from 'react';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
+import { ComboboxPopup } from '@/components/combobox/combobox-popup';
+import { useComboboxRefs } from '@/components/combobox/use-combobox-refs';
 import { useDropdownState } from '@/components/combobox/use-dropdown-state';
+import { useFilteredOptions } from '@/components/combobox/use-filtered-options';
 import { useKeyboardNavigation } from '@/components/combobox/use-keyboard-navigation';
-import { AtlDropdown } from '@/components/dropdown';
 import { AtlInput } from '@/components/input/input';
-import { AtlPopup } from '@/components/popup';
 import { ChevronDownIcon } from '@/icons/chevron-down-icon';
 import { SearchIcon } from '@/icons/search-icon';
 
-import type { AtlSelectProps, SelectOption } from './types';
+import type { AtlSelectProps } from './types';
+import { useSelectValue } from './use-select-value';
 
 const DEFAULT_MAX_HEIGHT = 212;
-
-const defaultFilter = <T,>(option: SelectOption<T>, searchValue: string): boolean => {
-	return option.label.toLowerCase().includes(searchValue.toLowerCase());
-};
 
 export const AtlSelect = <T,>({
 	className,
@@ -42,36 +40,22 @@ export const AtlSelect = <T,>({
 	value,
 }: AtlSelectProps<T>): JSX.Element => {
 	const [searchValue, setSearchValue] = useState('');
-	const inputRef = useRef<HTMLInputElement>(null);
-	const anchorRef = useRef<HTMLDivElement>(null);
-	const inputRootRef = useRef<HTMLLabelElement>(null);
+	const { anchorRef, inputRef, inputRootRef } = useComboboxRefs();
 	const dropdown = useDropdownState(disabled);
-	const filteredOptions = useMemo(() => {
-		if (!searchable || !searchValue.trim()) {
-			return options;
-		}
-
-		const runFilter = filterFn ?? defaultFilter;
-		return options.filter((option) => runFilter(option, searchValue));
-	}, [filterFn, options, searchValue, searchable]);
-	const selectedValues = useMemo(() => {
-		if (multiSelect) {
-			return (value as T[] | undefined) ?? [];
-		}
-
-		return value === undefined ? [] : [value as T];
-	}, [multiSelect, value]);
-	const selectedOption = useMemo(() => {
-		return multiSelect ? undefined : options.find((option) => option.value === value);
-	}, [multiSelect, options, value]);
-	const displayValue = useMemo(() => {
-		if (multiSelect) {
-			return selectedValues.length > 0 ? `${selectedValues.length} selected` : '';
-		}
-
-		return selectedOption?.label ?? '';
-	}, [multiSelect, selectedOption, selectedValues.length]);
-	const initialHighlightIndex = filteredOptions.findIndex((option) => selectedValues.includes(option.value));
+	const filteredOptions = useFilteredOptions({
+		filterFn: searchable ? filterFn : undefined,
+		options,
+		searchValue: searchable ? searchValue : '',
+	});
+	const { displayValue, handleSelectValue, selectedOption, selectedValues } = useSelectValue({
+		multiSelect,
+		onChange,
+		options,
+		value,
+	});
+	const initialHighlightIndex = useMemo(() => {
+		return filteredOptions.findIndex((option) => selectedValues.includes(option.value));
+	}, [filteredOptions, selectedValues]);
 	const { handleKeyDown, highlightedIndex } = useKeyboardNavigation({
 		initialHighlightIndex,
 		inputRef,
@@ -79,17 +63,11 @@ export const AtlSelect = <T,>({
 		onClose: dropdown.close,
 		onOpen: dropdown.open,
 		onSelect: (selected) => {
-			if (multiSelect) {
-				const currentValues = (value as T[] | undefined) ?? [];
-				const nextValues = currentValues.includes(selected)
-					? currentValues.filter((item) => item !== selected)
-					: [...currentValues, selected];
-				(onChange as ((values: T[]) => void) | undefined)?.(nextValues);
-				return;
-			}
+			const shouldClose = handleSelectValue(selected);
 
-			(onChange as ((nextValue: T) => void) | undefined)?.(selected);
-			dropdown.close();
+			if (shouldClose) {
+				dropdown.close();
+			}
 		},
 		options: filteredOptions,
 	});
@@ -98,20 +76,14 @@ export const AtlSelect = <T,>({
 		event.preventDefault();
 		dropdown.toggle();
 		requestAnimationFrame(() => inputRef.current?.focus());
-	}, [dropdown]);
+	}, [dropdown, inputRef]);
 	const handleSelect = useCallback((selected: T) => {
-		if (multiSelect) {
-			const currentValues = (value as T[] | undefined) ?? [];
-			const nextValues = currentValues.includes(selected)
-				? currentValues.filter((item) => item !== selected)
-				: [...currentValues, selected];
-			(onChange as ((values: T[]) => void) | undefined)?.(nextValues);
-			return;
-		}
+		const shouldClose = handleSelectValue(selected);
 
-		(onChange as ((nextValue: T) => void) | undefined)?.(selected);
-		dropdown.close();
-	}, [dropdown, multiSelect, onChange, value]);
+		if (shouldClose) {
+			dropdown.close();
+		}
+	}, [dropdown, handleSelectValue]);
 	const handleSearchKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
 		event.stopPropagation();
 		handleKeyDown(event);
@@ -130,7 +102,6 @@ export const AtlSelect = <T,>({
 			/>
 		</div>
 	) : undefined;
-	const emptyState = <span>{noResultsText}</span>;
 
 	return (
 		<div className={className}>
@@ -156,24 +127,27 @@ export const AtlSelect = <T,>({
 					value={displayValue}
 				/>
 			</div>
-			<AtlPopup anchorRef={anchorRef} flip={flip} inputRootRef={inputRootRef} isOpen={dropdown.isOpen} testId={`${testId}-popup`} onClose={dropdown.close}>
-				<AtlDropdown
-					emptyState={emptyState}
-					footerText={footerText}
-					headerSlot={dropdownHeader}
-					highlightedIndex={highlightedIndex}
-					items={filteredOptions}
-					maxHeight={maxDropdownHeight}
-					multiSelect={multiSelect}
-					optionIdPrefix={`${testId}-option`}
-					selectAllText={selectAllText}
-					selectedValues={selectedValues}
-					showFooter={showFooter}
-					testId={`${testId}-dropdown-list`}
-					onSelect={handleSelect}
-					onSelectAll={onSelectAll}
-				/>
-			</AtlPopup>
+			<ComboboxPopup
+				anchorRef={anchorRef}
+				emptyState={<span>{noResultsText}</span>}
+				flip={flip}
+				footerText={footerText}
+				headerSlot={dropdownHeader}
+				highlightedIndex={highlightedIndex}
+				inputRootRef={inputRootRef}
+				isOpen={dropdown.isOpen}
+				items={filteredOptions}
+				maxHeight={maxDropdownHeight}
+				multiSelect={multiSelect}
+				onClose={dropdown.close}
+				onSelect={handleSelect}
+				onSelectAll={onSelectAll}
+				optionIdPrefix={`${testId}-option`}
+				selectedValues={selectedValues}
+				selectAllText={selectAllText}
+				showFooter={showFooter}
+				testId={testId}
+			/>
 		</div>
 	);
 };

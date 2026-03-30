@@ -1,20 +1,27 @@
-import type { SvgIconComponent } from '@/components/circle-icon/types';
+import type { ComponentType, SVGProps } from 'react';
 
-export type AvatarVariant = 'company' | 'beneficiary' | 'user';
-export type CompanyAvatarType = 'logo' | 'initials';
-export type BeneficiaryAvatarType = 'photo' | 'initials' | 'company';
-export type UserAvatarType = 'photo' | 'initials';
-export type AvatarType = CompanyAvatarType | BeneficiaryAvatarType | UserAvatarType;
-export type AvatarSize = 24 | 32 | 40 | 48 | 64;
+export type SvgIconComponent = ComponentType<SVGProps<SVGSVGElement>>;
+export type BorderRadiusValue = `${number}%` | `${number}px` | number;
+export type AvatarSize = 24 | 32 | 40 | 48 | 64 | number;
 
 export type AtlAvatarProps = {
 	backgroundColor?: string;
+	border?: {
+		color: string;
+		width: number;
+	};
+	borderRadius?: BorderRadiusValue;
 	className?: string;
-	fullName: string;
-	imageUrl?: string;
-	initials?: string;
-	logoIcon?: SvgIconComponent;
+	icon?: SvgIconComponent;
+	iconColor?: string;
+	iconScale?: number;
+	iconSize?: number | string;
+	image?: string;
+	imageAlt?: string;
+	imagePadding?: string;
+	initials: string;
+	objectFit?: 'cover' | 'contain';
+	onImageError?: () => void;
 	size?: AvatarSize;
-	type: AvatarType;
-	variant: AvatarVariant;
+	textColor?: string;
 };

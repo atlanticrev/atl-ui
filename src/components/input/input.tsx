@@ -49,6 +49,7 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 		handleFocus,
 		isFocused,
 		isLabelFloated,
+		labelOffset,
 		labelWidth,
 		measureRef,
 		outlineMetrics,
@@ -65,7 +66,7 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 	return (
 		<div className={clsx('atl-input', className)} data-size={size} data-testid={testId || undefined}>
 			{label && <span aria-hidden="true" className="atl-input__label-measure" ref={measureRef}>{label}</span>}
-			
+
 			<label
 				className={clsx(
 					'atl-input__root',
@@ -78,13 +79,19 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 				ref={setRootNode}
 			>
 				{label && (
-					<span className={clsx('atl-input__label', isLabelFloated && 'atl-input__label--floated', iconLeft && 'atl-input__label--with-icon')}>
+					<span
+						className={clsx(
+							'atl-input__label',
+							isLabelFloated && 'atl-input__label--floated',
+							iconLeft && 'atl-input__label--with-icon',
+						)}
+					>
 						{label}
 					</span>
 				)}
 
 				{iconLeft && <span className="atl-input__icon">{iconLeft}</span>}
-				
+
 				<div className="atl-input__content">
 					<input
 						{...rest}
@@ -104,10 +111,10 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 						onChange={handleChange}
 						onFocus={handleFocus}
 					/>
-					
+
 					{description && <span className="atl-input__description" id={descriptionId}>{description}</span>}
 				</div>
-				
+
 				{iconRight && (
 					<AtlInputRightIcon
 						icon={iconRight}
@@ -119,7 +126,12 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 					/>
 				)}
 
-				<AtlInputOutline labelWidth={labelWidth} metrics={outlineMetrics} strokeWidth={strokeWidth} />
+				<AtlInputOutline
+					labelOffset={labelOffset}
+					labelWidth={labelWidth}
+					metrics={outlineMetrics}
+					strokeWidth={strokeWidth}
+				/>
 			</label>
 
 			<AtlInputFooter

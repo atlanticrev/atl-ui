@@ -8,6 +8,7 @@
   --atl-input-support-font: var(--md-sys-typescale-body-small-font);
   --atl-input-label-font: var(--md-sys-typescale-body-large-font);
   --atl-input-label-floated-font: var(--md-sys-typescale-body-small-font);
+  --atl-input-label-floating-padding-inline: 4px;
 
   display: flex;
   flex-direction: column;
@@ -25,6 +26,7 @@
     --atl-input-background: var(--md-sys-color-surface-container-highest);
     --atl-input-border-color: var(--md-sys-color-outline);
     --atl-input-border-width: 1px;
+    --atl-input-radius: var(--md-sys-shape-corner-extra-small);
 
     position: relative;
     display: flex;
@@ -32,18 +34,10 @@
     gap: var(--atl-input-gap);
     width: 100%;
     padding: var(--atl-input-padding-block) var(--atl-input-padding-inline);
-    border-radius: var(--md-sys-shape-corner-extra-small);
+    border-radius: var(--atl-input-radius);
+    background-color: var(--atl-input-background);
     cursor: text;
     transition: background-color 0.2s ease;
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: var(--atl-input-border-width);
-      border-radius: calc(var(--md-sys-shape-corner-extra-small) - var(--atl-input-border-width));
-      background-color: var(--atl-input-background);
-      z-index: 0;
-    }
 
     &:hover:not(.atl-input__root--disabled):not(.atl-input__root--readonly) {
       --atl-input-background: color-mix(
@@ -95,7 +89,7 @@
     &--floated {
       top: 0;
       left: var(--atl-input-label-offset);
-      padding: 0 4px;
+      padding: 0 var(--atl-input-label-floating-padding-inline);
       background: transparent;
       font: var(--atl-input-label-floated-font);
       transform: translateY(-50%);
@@ -114,6 +108,7 @@
     position: absolute;
     left: -9999px;
     visibility: hidden;
+    padding: 0 var(--atl-input-label-floating-padding-inline);
     font: var(--atl-input-label-floated-font);
   }
 

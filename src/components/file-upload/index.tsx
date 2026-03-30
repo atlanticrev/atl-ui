@@ -1,43 +1,40 @@
 import type { ChangeEvent } from 'react';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 
 import { clsx } from '@/lib/clsx';
 
-type FileUploadProps = {
-	label: string;
-	onFileSelected: (file: File | null) => void;
-	accept?: string;
-	hint?: string;
-	className?: string;
+import type { AtlFileUploadProps } from './types';
+
+const getSelectedLabel = (files: File[]): string => {
+	if (files.length === 0) {
+		return '';
+	}
+
+	if (files.length === 1) {
+		return files[0].name;
+	}
+
+	return `${files.length} files selected`;
 };
 
-export function AtlFileUpload({ label, onFileSelected, accept, hint, className }: FileUploadProps) {
+export const AtlFileUpload = ({ accept, className, disabled = false, helperText, label, multiple = false, onChange, status = 'default', testId }: AtlFileUploadProps): JSX.Element => {
 	const inputId = useId();
+	const [selectedLabel, setSelectedLabel] = useState('');
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-		onFileSelected(event.target.files?.[0] ?? null);
+		const nextFiles = Array.from(event.target.files ?? []);
+		setSelectedLabel(getSelectedLabel(nextFiles));
+		onChange?.(nextFiles);
 	};
 
-	const classes = clsx('atl-file-upload', className);
-
 	return (
-		<div className={classes}>
-			<label
-				className="atl-file-upload__button"
-				htmlFor={inputId}
-			>
+		<div className={clsx('atl-file-upload', `atl-file-upload--${status}`, disabled && 'atl-file-upload--disabled', className)} data-testid={testId}>
+			<label className="atl-file-upload__button" htmlFor={inputId}>
 				{label}
 			</label>
-
-			<input
-				className="atl-file-upload__input"
-				id={inputId}
-				type="file"
-				accept={accept}
-				onChange={handleChange}
-			/>
-
-			{hint ? <span className="atl-file-upload__hint">{hint}</span> : null}
+			<input accept={accept} className="atl-file-upload__input" disabled={disabled} id={inputId} multiple={multiple} type="file" onChange={handleChange} />
+			{selectedLabel && <span className="atl-file-upload__value">{selectedLabel}</span>}
+			{helperText && <span className="atl-file-upload__helper">{helperText}</span>}
 		</div>
 	);
-}
+};

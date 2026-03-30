@@ -41,14 +41,19 @@
       border-color: var(--md-sys-color-error);
     }
 
-    &--16 {
+    &--s {
+      width: 16px;
+      height: 16px;
+    }
+
+    &--m {
       width: 20px;
       height: 20px;
     }
 
-    &--24 {
-      width: 20px;
-      height: 20px;
+    &--l {
+      width: 24px;
+      height: 24px;
     }
   }
 }

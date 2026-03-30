@@ -20,6 +20,10 @@
     cursor: not-allowed;
   }
 
+  &--invalid {
+    border-color: var(--md-sys-color-error);
+  }
+
   &--m {
     width: 44px;
     height: 28px;

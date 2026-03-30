@@ -4,9 +4,8 @@ import { createPortal } from 'react-dom';
 
 import { AtlButton } from '@/components/button';
 import { CloseCircleIcon } from '@/icons/close-circle-icon';
-import { useClickOutside } from '@/hooks/use-click-outside';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
-import { useKeyPress } from '@/hooks/use-key-press';
+import { useOverlayDismiss } from '@/hooks/use-overlay-dismiss';
 import { clsx } from '@/lib/clsx';
 
 import type { AtlModalProps } from './types';
@@ -16,9 +15,8 @@ export const AtlModal = ({ cancelText = 'Cancel', children, className, confirmTe
 	const handleCancel = onCancel ?? onClose;
 	const handleConfirm = onConfirm ?? onClose;
 
-	useClickOutside({ enabled: isOpen, onOutsideClick: onClose, refs: [contentRef] });
+	useOverlayDismiss({ enabled: isOpen, onClose, refs: [contentRef] });
 	useFocusTrap({ enabled: isOpen, rootRef: contentRef });
-	useKeyPress({ enabled: isOpen, key: 'Escape', onKeyPress: onClose });
 
 	useEffect(() => {
 		if (!isOpen) {

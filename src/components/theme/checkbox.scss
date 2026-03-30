@@ -33,6 +33,10 @@
       color: var(--md-sys-color-on-primary);
     }
 
+    &--invalid {
+      border-color: var(--md-sys-color-error);
+    }
+
     &--l,
     &--m {
       width: 18px;

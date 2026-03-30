@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { AtlButton } from '@/components/button';
-
 import { AtlTooltip } from './index';
 
 const meta: Meta<typeof AtlTooltip> = {
@@ -12,7 +10,7 @@ const meta: Meta<typeof AtlTooltip> = {
 	args: {
 		testId: 'tooltip',
 		title: 'Helpful information',
-		children: <AtlButton>Hover me</AtlButton>,
+		children: <span>Hover me</span>,
 	},
 };
 

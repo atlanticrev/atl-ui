@@ -1,5 +1,5 @@
 import * as react from 'react';
-import { ButtonHTMLAttributes, ReactNode, ElementType, ComponentPropsWithoutRef, InputHTMLAttributes, RefObject, ComponentType, SVGProps, ReactElement, Key, HTMLAttributes, CSSProperties } from 'react';
+import { ButtonHTMLAttributes, ReactNode, ElementType, ComponentPropsWithoutRef, InputHTMLAttributes, RefObject, ComponentType, SVGProps, MouseEvent, ReactElement, Key, HTMLAttributes, CSSProperties } from 'react';
 import * as react_jsx_runtime from 'react/jsx-runtime';
 
 type ButtonVariant = 'filled' | 'tonal' | 'outlined' | 'text' | 'elevated' | 'danger';
@@ -9,11 +9,9 @@ type ButtonIconSize = 16 | 24;
 declare const AtlButton: react.ForwardRefExoticComponent<ButtonHTMLAttributes<HTMLButtonElement> & {
     children?: ReactNode;
     disableMotion?: boolean;
-    htmlType?: "button" | "submit" | "reset";
     iconLeft?: ReactNode;
     iconRight?: ReactNode;
     iconSize?: ButtonIconSize;
-    isDisabled?: boolean;
     loading?: boolean;
     size?: ButtonSize;
     variant?: ButtonVariant;
@@ -53,14 +51,20 @@ type AtlDropdownProps<T = string> = {
 
 declare const AtlDropdown: <T>({ className, emptyState, footerText, headerSlot, highlightedIndex, id, items, maxHeight, multiSelect, onSelect, onSelectAll, optionIdPrefix, selectAllText, selectedValues, showFooter, testId, }: AtlDropdownProps<T>) => JSX.Element;
 
-type FileUploadProps = {
-    label: string;
-    onFileSelected: (file: File | null) => void;
+type FileUploadStatus = 'default' | 'error' | 'success';
+type AtlFileUploadProps = {
     accept?: string;
-    hint?: string;
     className?: string;
+    disabled?: boolean;
+    helperText?: string;
+    label: string;
+    multiple?: boolean;
+    onChange?: (files: File[]) => void;
+    status?: FileUploadStatus;
+    testId?: string;
 };
-declare function AtlFileUpload({ label, onFileSelected, accept, hint, className }: FileUploadProps): react_jsx_runtime.JSX.Element;
+
+declare const AtlFileUpload: ({ accept, className, disabled, helperText, label, multiple, onChange, status, testId }: AtlFileUploadProps) => JSX.Element;
 
 type AtlInputSize = 'xl' | 'l' | 'm' | 's' | 'xs';
 type AtlInputStatus = 'default' | 'error' | 'success';
@@ -180,8 +184,8 @@ declare const useAtlToast: () => ToastContextValue;
 
 type SvgIconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 type BorderRadiusValue = `${number}%` | `${number}px` | number;
-type InitialsTypographyVariant = 'headline';
-type CircleIconBaseProps = {
+type AvatarSize = 24 | 32 | 40 | 48 | 64 | number;
+type AtlAvatarProps = {
     backgroundColor?: string;
     border?: {
         color: string;
@@ -189,54 +193,21 @@ type CircleIconBaseProps = {
     };
     borderRadius?: BorderRadiusValue;
     className?: string;
-    size: number;
-};
-type CircleIconImageProps = CircleIconBaseProps & {
-    contentType: 'image';
-    imageAlt?: string;
-    imagePadding?: string;
-    imageUrl: string;
-    objectFit?: 'cover' | 'contain';
-    onImageError?: () => void;
-};
-type CircleIconInitialsProps = CircleIconBaseProps & {
-    contentType: 'initials';
-    initials: string;
-    textColor?: string;
-    typography?: InitialsTypographyVariant;
-};
-type CircleIconIconProps = CircleIconBaseProps & {
-    contentType: 'icon';
-    icon: SvgIconComponent;
+    icon?: SvgIconComponent;
     iconColor?: string;
     iconScale?: number;
     iconSize?: number | string;
-};
-type CircleIconCustomProps = CircleIconBaseProps & {
-    children: ReactNode;
-    contentType: 'custom';
-};
-type AtlCircleIconProps = CircleIconImageProps | CircleIconInitialsProps | CircleIconIconProps | CircleIconCustomProps;
-
-type AvatarVariant = 'company' | 'beneficiary' | 'user';
-type CompanyAvatarType = 'logo' | 'initials';
-type BeneficiaryAvatarType = 'photo' | 'initials' | 'company';
-type UserAvatarType = 'photo' | 'initials';
-type AvatarType = CompanyAvatarType | BeneficiaryAvatarType | UserAvatarType;
-type AvatarSize = 24 | 32 | 40 | 48 | 64;
-type AtlAvatarProps = {
-    backgroundColor?: string;
-    className?: string;
-    fullName: string;
-    imageUrl?: string;
-    initials?: string;
-    logoIcon?: SvgIconComponent;
+    image?: string;
+    imageAlt?: string;
+    imagePadding?: string;
+    initials: string;
+    objectFit?: 'cover' | 'contain';
+    onImageError?: () => void;
     size?: AvatarSize;
-    type: AvatarType;
-    variant: AvatarVariant;
+    textColor?: string;
 };
 
-declare const AtlAvatar: ({ backgroundColor, className, fullName, imageUrl, initials, logoIcon, size, type, variant, }: AtlAvatarProps) => JSX.Element;
+declare const AtlAvatar: (props: AtlAvatarProps) => JSX.Element;
 
 type BreadcrumbItem = {
     label: string;
@@ -250,21 +221,22 @@ type AtlBreadcrumbsProps = {
 
 declare const AtlBreadcrumbs: ({ className, items }: AtlBreadcrumbsProps) => JSX.Element;
 
-type CheckboxSize = 'L' | 'M' | 'S';
+type ControlSize = 's' | 'm' | 'l';
 type AtlCheckboxProps = {
     checked?: boolean;
     className?: string;
     disabled?: boolean;
     indeterminate?: boolean;
+    invalid?: boolean;
     label?: string;
     loading?: boolean;
     onChange?: (checked: boolean) => void;
-    onClick?: (event: React.MouseEvent<HTMLInputElement>) => void;
-    size?: CheckboxSize;
-    testId: string;
+    onClick?: (event: MouseEvent<HTMLInputElement>) => void;
+    size?: ControlSize;
+    testId?: string;
 };
 
-declare const AtlCheckbox: ({ checked, className, disabled, indeterminate, label, loading, onChange, onClick, size, testId }: AtlCheckboxProps) => JSX.Element;
+declare const AtlCheckbox: ({ checked, className, disabled, indeterminate, invalid, label, loading, onChange, onClick, size, testId }: AtlCheckboxProps) => JSX.Element;
 
 type ChipSize = 'M' | 'S';
 type ChipVariant = 'default' | 'frozen' | 'danger';
@@ -285,28 +257,27 @@ type AtlChipProps = {
 
 declare const AtlChip: ({ customColors, disabled, label, onRemove, size, testId, variant, withCross }: AtlChipProps) => JSX.Element;
 
-declare const AtlCircleIcon: (props: AtlCircleIconProps) => JSX.Element;
-
 type AtlPopupProps = {
     anchorRef: RefObject<HTMLElement | null>;
     children: ReactNode;
     className?: string;
+    closeOnEscape?: boolean;
+    closeOnOutsideClick?: boolean;
     flip?: boolean;
     gap?: number;
     inputRootRef?: RefObject<HTMLElement | null>;
     isOpen: boolean;
     onClose: () => void;
-    testId: string;
+    testId?: string;
 };
 
-declare const AtlPopup: ({ anchorRef, children, className, flip, gap, inputRootRef, isOpen, onClose, testId }: AtlPopupProps) => JSX.Element | null;
+declare const AtlPopup: ({ anchorRef, children, className, closeOnEscape, closeOnOutsideClick, flip, gap, inputRootRef, isOpen, onClose, testId }: AtlPopupProps) => JSX.Element | null;
 
-type RadioButtonSize = 16 | 24;
 type AtlRadioButtonProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> & {
     invalid?: boolean;
     label?: string;
-    size?: RadioButtonSize;
-    testId: string;
+    size?: ControlSize;
+    testId?: string;
 };
 
 declare const AtlRadioButton: ({ checked, disabled, invalid, label, size, testId, ...props }: AtlRadioButtonProps) => JSX.Element;
@@ -329,19 +300,19 @@ type AtlSidebarProps = {
 
 declare const AtlSidebar: ({ collapsed, footer, footerItems, items, loading, onItemClick, selectedKey, testId }: AtlSidebarProps) => JSX.Element;
 
-type SwitcherSize = 'L' | 'M';
 type AtlSwitcherProps = {
     checked?: boolean;
     className?: string;
     disabled?: boolean;
+    invalid?: boolean;
     onChange?: (checked: boolean) => void;
-    size?: SwitcherSize;
-    testId: string;
+    size?: Extract<ControlSize, 'm' | 'l'>;
+    testId?: string;
 };
 
-declare const AtlSwitcher: ({ checked, className, disabled, onChange, size, testId }: AtlSwitcherProps) => JSX.Element;
+declare const AtlSwitcher: ({ checked, className, disabled, invalid, onChange, size, testId }: AtlSwitcherProps) => JSX.Element;
 
-type TableColumn<RecordType> = {
+type SimpleTableColumn<RecordType> = {
     align?: 'left' | 'center' | 'right';
     className?: string;
     dataIndex?: string | number;
@@ -350,29 +321,29 @@ type TableColumn<RecordType> = {
     title?: ReactNode | ((properties: Record<string, unknown>) => ReactNode);
     width?: string | number;
 };
-type TablePaginationConfig = {
+type SimpleTablePaginationConfig = {
     current?: number;
     onChange?: (page: number, pageSize: number) => void;
     pageSize?: number;
     total?: number;
 };
-type TableLocale = {
+type SimpleTableLocale = {
     emptyText?: ReactNode;
 };
-type AtlTableProps<RecordType extends object = object> = {
+type AtlSimpleTableProps<RecordType extends object = object> = {
     ariaLabel?: string;
     className?: string;
-    columns?: TableColumn<RecordType>[];
+    columns?: SimpleTableColumn<RecordType>[];
     dataSource?: RecordType[] | null;
-    locale?: TableLocale;
+    locale?: SimpleTableLocale;
     onRow?: (record: RecordType, index?: number) => HTMLAttributes<HTMLTableRowElement>;
-    pagination?: TablePaginationConfig | false;
+    pagination?: SimpleTablePaginationConfig | false;
     rowClassName?: string | ((record: RecordType, index: number) => string);
     rowKey?: string | ((record: RecordType) => string);
     style?: CSSProperties;
 };
 
-declare const AtlTable: <RecordType extends object>({ ariaLabel, className, columns, dataSource, locale, onRow, pagination, rowClassName, rowKey, style }: AtlTableProps<RecordType>) => JSX.Element;
+declare const AtlSimpleTable: <RecordType extends object>({ ariaLabel, className, columns, dataSource, locale, onRow, pagination, rowClassName, rowKey, style }: AtlSimpleTableProps<RecordType>) => JSX.Element;
 
 type TabsSize = 40 | 32;
 type TabItem = {
@@ -397,14 +368,16 @@ type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right';
 type AtlTooltipProps = {
     children: ReactNode;
     className?: string;
+    defaultOpen?: boolean;
+    onOpenChange?: (isOpen: boolean) => void;
     open?: boolean;
     placement?: TooltipPlacement;
-    testId: string;
+    testId?: string;
     title: ReactNode;
     trigger?: 'hover' | 'click';
 };
 
-declare const AtlTooltip: ({ children, className, open, placement, testId, title, trigger }: AtlTooltipProps) => JSX.Element;
+declare const AtlTooltip: ({ children, className, defaultOpen, onOpenChange, open, placement, testId, title, trigger }: AtlTooltipProps) => JSX.Element;
 
 type ModalContentSize = 520 | 620 | 760 | 848;
 type AtlModalProps = HTMLAttributes<HTMLDivElement> & {
@@ -447,4 +420,4 @@ type AtlAutocompleteProps<T = string> = AutocompleteBaseProps & {
 
 declare const AtlAutocomplete: <T>({ className, disabled, filterFn, flip, helperText, inputPattern, label, maxDropdownHeight, noResultsIcon, noResultsText, onChange, options, placeholder, searchPlaceholder, showDescription, size, status, testId, value, }: AtlAutocompleteProps<T>) => JSX.Element;
 
-export { AtlAutocomplete, type AtlAutocompleteProps, AtlAvatar, type AtlAvatarProps, AtlBreadcrumbs, type AtlBreadcrumbsProps, AtlButton, AtlCard, AtlCheckbox, type AtlCheckboxProps, AtlChip, type AtlChipProps, AtlCircleIcon, type AtlCircleIconProps, AtlDropdown, type AtlDropdownProps, AtlFileUpload, AtlInput, type AtlInputProps, type AtlInputSize, type AtlInputStatus, type AtlInputVariant, AtlModal, type AtlModalProps, AtlPopup, type AtlPopupProps, AtlProgress, AtlRadioButton, type AtlRadioButtonProps, AtlSelect, AtlSidebar, type AtlSidebarProps, AtlSwitcher, type AtlSwitcherProps, AtlTable, type AtlTableProps, AtlTabs, type AtlTabsProps, AtlToastProvider, AtlTooltip, type AtlTooltipProps, type AutocompleteOption, type AvatarSize, type AvatarType, type AvatarVariant, type BreadcrumbItem, type ButtonVariant, type CheckboxSize, type ChipSize, type ChipVariant, type CustomChipColors, type DropdownItem, type ModalContentSize, type RadioButtonSize, type SelectOption, type SidebarItem, type SvgIconComponent, type SwitcherSize, type TabItem, type TableColumn, type TableLocale, type TablePaginationConfig, type TabsSize, type ToastContextValue, type ToastItem, type ToastOptions, type ToastVariant, type TooltipPlacement, useAtlToast };
+export { AtlAutocomplete, type AtlAutocompleteProps, AtlAvatar, type AtlAvatarProps, AtlBreadcrumbs, type AtlBreadcrumbsProps, AtlButton, AtlCard, AtlCheckbox, type AtlCheckboxProps, AtlChip, type AtlChipProps, AtlDropdown, type AtlDropdownProps, AtlFileUpload, type AtlFileUploadProps, AtlInput, type AtlInputProps, type AtlInputSize, type AtlInputStatus, type AtlInputVariant, AtlModal, type AtlModalProps, AtlPopup, type AtlPopupProps, AtlProgress, AtlRadioButton, type AtlRadioButtonProps, AtlSelect, AtlSidebar, type AtlSidebarProps, AtlSimpleTable, type AtlSimpleTableProps, AtlSwitcher, type AtlSwitcherProps, AtlTabs, type AtlTabsProps, AtlToastProvider, AtlTooltip, type AtlTooltipProps, type AutocompleteOption, type AvatarSize, type BorderRadiusValue, type BreadcrumbItem, type ButtonVariant, type ChipSize, type ChipVariant, type ControlSize, type CustomChipColors, type DropdownItem, type FileUploadStatus, type ModalContentSize, type SelectOption, type SidebarItem, type SimpleTableColumn, type SimpleTableLocale, type SimpleTablePaginationConfig, type SvgIconComponent, type TabItem, type TabsSize, type ToastContextValue, type ToastItem, type ToastOptions, type ToastVariant, type TooltipPlacement, useAtlToast };

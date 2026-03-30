@@ -3,6 +3,10 @@
   gap: 0.5rem;
   justify-items: start;
 
+  &--disabled {
+    opacity: 0.38;
+  }
+
   &__button {
     display: inline-flex;
     align-items: center;
@@ -17,6 +21,19 @@
     cursor: pointer;
   }
 
+  &--disabled &__button {
+    cursor: not-allowed;
+  }
+
+  &--error &__button {
+    border-color: var(--md-sys-color-error);
+    color: var(--md-sys-color-error);
+  }
+
+  &--success &__button {
+    border-color: var(--md-sys-color-primary);
+  }
+
   &__input {
     position: absolute;
     width: 1px;
@@ -25,8 +42,20 @@
     pointer-events: none;
   }
 
-  &__hint {
-    color: var(--md-sys-color-on-surface-variant);
+  &__value,
+  &__helper {
     font: var(--md-sys-typescale-body-small-font);
+  }
+
+  &__value {
+    color: var(--md-sys-color-on-surface);
+  }
+
+  &__helper {
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  &--error &__helper {
+    color: var(--md-sys-color-error);
   }
 }

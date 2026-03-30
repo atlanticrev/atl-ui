@@ -7,18 +7,17 @@ import { AtlFileUpload } from './index';
 type FileUploadArgs = ComponentProps<typeof AtlFileUpload>;
 
 const FileUploadDemo = (args: FileUploadArgs) => {
-	const [fileName, setFileName] = useState<string>('');
+	const [message, setMessage] = useState('');
+
+	const handleChange = (files: File[]) => {
+		setMessage(files.length > 0 ? `Received ${files.length} file(s)` : 'No files selected');
+		args.onChange?.(files);
+	};
 
 	return (
 		<div style={{ display: 'grid', gap: '0.5rem' }}>
-			<AtlFileUpload
-				{...args}
-				onFileSelected={(file) => {
-					setFileName(file?.name ?? '');
-					args.onFileSelected?.(file ?? null);
-				}}
-			/>
-			{fileName ? <span style={{ fontSize: '0.85rem' }}>Selected: {fileName}</span> : null}
+			<AtlFileUpload {...args} onChange={handleChange} />
+			{message && <span style={{ fontSize: '0.85rem' }}>{message}</span>}
 		</div>
 	);
 };
@@ -26,37 +25,13 @@ const FileUploadDemo = (args: FileUploadArgs) => {
 const meta: Meta<typeof AtlFileUpload> = {
 	title: 'Components/AtlFileUpload',
 	component: AtlFileUpload,
-	parameters: {
-		layout: 'centered',
-		docs: {
-			description: {
-				component: `
-AtlFileUpload - minimal file picker with label and hint.
-
-## Features
-- Accept filter support
-- Optional hint text
-				`,
-			},
-		},
-	},
+	parameters: { layout: 'centered' },
 	tags: ['autodocs'],
-	argTypes: {
-		label: {
-			control: 'text',
-		},
-		hint: {
-			control: 'text',
-		},
-		accept: {
-			control: 'text',
-		},
-	},
 	args: {
-		label: 'Choose file',
-		hint: 'PDF or PNG, up to 4MB',
 		accept: '.pdf,.png',
-		onFileSelected: () => {},
+		helperText: 'PDF or PNG, up to 4MB',
+		label: 'Choose file',
+		onChange: () => {},
 	},
 };
 
@@ -65,5 +40,12 @@ export default meta;
 type Story = StoryObj<typeof AtlFileUpload>;
 
 export const Default: Story = {
+	render: (args) => <FileUploadDemo {...args} />,
+};
+
+export const Multiple: Story = {
+	args: {
+		multiple: true,
+	},
 	render: (args) => <FileUploadDemo {...args} />,
 };

@@ -1,20 +1,17 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ComboboxPopup } from '@/components/combobox/combobox-popup';
+import { useComboboxRefs } from '@/components/combobox/use-combobox-refs';
 import { useDropdownState } from '@/components/combobox/use-dropdown-state';
+import { useFilteredOptions } from '@/components/combobox/use-filtered-options';
 import { useKeyboardNavigation } from '@/components/combobox/use-keyboard-navigation';
-import { AtlDropdown } from '@/components/dropdown';
 import { AtlInput } from '@/components/input/input';
-import { AtlPopup } from '@/components/popup';
 import { ChevronDownIcon } from '@/icons/chevron-down-icon';
 import { SearchIcon } from '@/icons/search-icon';
 
-import type { AtlAutocompleteProps, AutocompleteOption } from './types';
+import type { AtlAutocompleteProps } from './types';
 
 const DEFAULT_MAX_HEIGHT = 212;
-
-const defaultFilter = <T,>(option: AutocompleteOption<T>, searchValue: string): boolean => {
-	return option.label.toLowerCase().includes(searchValue.toLowerCase());
-};
 
 export const AtlAutocomplete = <T,>({
 	className,
@@ -39,21 +36,18 @@ export const AtlAutocomplete = <T,>({
 }: AtlAutocompleteProps<T>): JSX.Element => {
 	const [searchValue, setSearchValue] = useState('');
 	const [isTyping, setIsTyping] = useState(false);
-	const inputRef = useRef<HTMLInputElement>(null);
-	const anchorRef = useRef<HTMLDivElement>(null);
-	const inputRootRef = useRef<HTMLLabelElement>(null);
+	const { anchorRef, inputRef, inputRootRef } = useComboboxRefs();
 	const dropdown = useDropdownState(disabled);
 	const selectedOption = useMemo(() => options.find((option) => option.value === value), [options, value]);
-	const filteredOptions = useMemo(() => {
-		if (!searchValue.trim()) {
-			return options;
-		}
-
-		const runFilter = filterFn ?? defaultFilter;
-		return options.filter((option) => runFilter(option, searchValue));
-	}, [filterFn, options, searchValue]);
+	const filteredOptions = useFilteredOptions({
+		filterFn,
+		options,
+		searchValue,
+	});
 	const displayValue = isTyping ? searchValue : selectedOption?.label ?? '';
-	const initialHighlightIndex = filteredOptions.findIndex((option) => option.value === value);
+	const initialHighlightIndex = useMemo(() => {
+		return filteredOptions.findIndex((option) => option.value === value);
+	}, [filteredOptions, value]);
 	const { handleKeyDown, highlightedIndex, setHighlightedIndex } = useKeyboardNavigation({
 		initialHighlightIndex,
 		inputRef,
@@ -140,19 +134,22 @@ export const AtlAutocomplete = <T,>({
 					onFocus={handleInputFocus}
 				/>
 			</div>
-			<AtlPopup anchorRef={anchorRef} flip={flip} inputRootRef={inputRootRef} isOpen={dropdown.isOpen} testId={`${testId}-popup`} onClose={dropdown.close}>
-				<AtlDropdown
-					emptyState={emptyState}
-					highlightedIndex={highlightedIndex}
-					id={`${testId}-listbox`}
-					items={filteredOptions}
-					maxHeight={maxDropdownHeight}
-					optionIdPrefix={`${testId}-option`}
-					selectedValues={value === undefined ? [] : [value]}
-					testId={`${testId}-dropdown-list`}
-					onSelect={handleSelect}
-				/>
-			</AtlPopup>
+			<ComboboxPopup
+				anchorRef={anchorRef}
+				emptyState={emptyState}
+				flip={flip}
+				highlightedIndex={highlightedIndex}
+				id={`${testId}-listbox`}
+				inputRootRef={inputRootRef}
+				isOpen={dropdown.isOpen}
+				items={filteredOptions}
+				maxHeight={maxDropdownHeight}
+				onClose={dropdown.close}
+				onSelect={handleSelect}
+				optionIdPrefix={`${testId}-option`}
+				selectedValues={value === undefined ? [] : [value]}
+				testId={testId}
+			/>
 		</div>
 	);
 };

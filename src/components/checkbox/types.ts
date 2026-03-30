@@ -1,14 +1,17 @@
-export type CheckboxSize = 'L' | 'M' | 'S';
+import type { MouseEvent } from 'react';
+
+export type ControlSize = 's' | 'm' | 'l';
 
 export type AtlCheckboxProps = {
 	checked?: boolean;
 	className?: string;
 	disabled?: boolean;
 	indeterminate?: boolean;
+	invalid?: boolean;
 	label?: string;
 	loading?: boolean;
 	onChange?: (checked: boolean) => void;
-	onClick?: (event: React.MouseEvent<HTMLInputElement>) => void;
-	size?: CheckboxSize;
-	testId: string;
+	onClick?: (event: MouseEvent<HTMLInputElement>) => void;
+	size?: ControlSize;
+	testId?: string;
 };

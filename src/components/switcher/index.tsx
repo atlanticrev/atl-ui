@@ -5,7 +5,7 @@ import { clsx } from '@/lib/clsx';
 
 import type { AtlSwitcherProps } from './types';
 
-export const AtlSwitcher = ({ checked = false, className, disabled = false, onChange, size = 'L', testId }: AtlSwitcherProps): JSX.Element => {
+export const AtlSwitcher = ({ checked = false, className, disabled = false, invalid = false, onChange, size = 'l', testId }: AtlSwitcherProps): JSX.Element => {
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const toggle = useCallback(() => {
 		if (!disabled) {
@@ -17,7 +17,7 @@ export const AtlSwitcher = ({ checked = false, className, disabled = false, onCh
 	useKeyPress({ elementRef: buttonRef, key: 'Enter', onKeyPress: toggle, preventDefault: true });
 
 	return (
-		<button aria-checked={checked} className={clsx('atl-switcher', `atl-switcher--${size.toLowerCase()}`, checked && 'atl-switcher--checked', disabled && 'atl-switcher--disabled', className)} data-testid={testId} disabled={disabled} ref={buttonRef} role="switch" type="button" onClick={toggle}>
+		<button aria-checked={checked} className={clsx('atl-switcher', `atl-switcher--${size}`, checked && 'atl-switcher--checked', disabled && 'atl-switcher--disabled', invalid && 'atl-switcher--invalid', className)} data-testid={testId} disabled={disabled} ref={buttonRef} role="switch" type="button" onClick={toggle}>
 			<span className="atl-switcher__knob" />
 		</button>
 	);

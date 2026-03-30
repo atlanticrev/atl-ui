@@ -1,10 +1,11 @@
-export type SwitcherSize = 'L' | 'M';
+import type { ControlSize } from '@/components/checkbox/types';
 
 export type AtlSwitcherProps = {
 	checked?: boolean;
 	className?: string;
 	disabled?: boolean;
+	invalid?: boolean;
 	onChange?: (checked: boolean) => void;
-	size?: SwitcherSize;
-	testId: string;
+	size?: Extract<ControlSize, 'm' | 'l'>;
+	testId?: string;
 };
