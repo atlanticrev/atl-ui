@@ -1,0 +1,37 @@
+.atl-input {
+  &__label {
+    position: absolute;
+    top: 50%;
+    left: var(--atl-input-label-offset);
+    z-index: 2;
+    color: var(--atl-color-ink-muted);
+    font: var(--atl-input-label-font);
+    transform: translateY(-50%);
+    transition: all 0.15s ease;
+    pointer-events: none;
+
+    &--floated {
+      top: 0;
+      left: var(--atl-input-label-offset);
+      padding: 0 var(--atl-input-label-floating-padding-inline);
+      font: var(--atl-input-label-floated-font);
+      transform: translateY(-50%);
+    }
+
+    &--with-icon {
+      left: calc(var(--atl-input-label-offset) + var(--atl-input-icon-size) + 12px);
+
+      &.atl-input__label--floated {
+        left: var(--atl-input-label-offset);
+      }
+    }
+  }
+
+  &__label-measure {
+    position: absolute;
+    left: -9999px;
+    visibility: hidden;
+    padding: 0 var(--atl-input-label-floating-padding-inline);
+    font: var(--atl-input-label-floated-font);
+  }
+}

@@ -1,6 +1,10 @@
 import type { ComponentType, SVGProps } from 'react';
 
-export type SvgIconComponent = ComponentType<SVGProps<SVGSVGElement>>;
+export type SvgIconComponent = ComponentType<
+	SVGProps<SVGSVGElement> & {
+		size?: number;
+	}
+>;
 export type BorderRadiusValue = `${number}%` | `${number}px` | number;
 export type AvatarSize = 24 | 32 | 40 | 48 | 64 | number;
 

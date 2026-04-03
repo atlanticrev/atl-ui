@@ -1,0 +1,61 @@
+.columnTitle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.25rem;
+}
+
+.headerCell {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.fileCell,
+.authorCell {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  accent-color: var(--atl-color-accent);
+}
+
+.fileIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.875rem;
+  background: var(--atl-color-surface-muted);
+  color: var(--atl-color-ink);
+}
+
+.fileMeta,
+.authorMeta {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.fileTitle,
+.authorName {
+  color: var(--atl-color-ink);
+  font: var(--atl-type-title-sm);
+}
+
+.fileSubline,
+.authorEmail,
+.modifiedAt {
+  color: var(--atl-color-ink-muted);
+  font: var(--atl-type-body-md);
+}
+
+.rowMenu {
+  margin-left: auto;
+  color: var(--atl-color-ink-soft);
+}

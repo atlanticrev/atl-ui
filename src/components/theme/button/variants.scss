@@ -1,0 +1,67 @@
+.atl-button {
+  &--filled {
+    border-color: var(--atl-color-accent);
+    background: var(--atl-color-accent);
+    color: var(--atl-color-accent-ink);
+    box-shadow: var(--atl-shadow-sm);
+  }
+
+  &--filled:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--atl-color-accent) 92%, var(--atl-color-accent-ink));
+    box-shadow: var(--atl-shadow-md);
+  }
+
+  &--filled:active:not(:disabled) {
+    background: color-mix(in srgb, var(--atl-color-accent) 86%, var(--atl-color-accent-ink));
+  }
+
+  &--tonal {
+    border-color: transparent;
+    background: var(--atl-color-accent-muted);
+    color: var(--atl-color-accent);
+  }
+
+  &--tonal:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--atl-color-accent-muted) 88%, var(--atl-color-accent));
+  }
+
+  &--outlined {
+    border-color: var(--atl-color-border-strong);
+    background: var(--atl-color-surface);
+    color: var(--atl-color-accent);
+  }
+
+  &--text {
+    border-color: transparent;
+    background: transparent;
+    color: var(--atl-color-accent);
+  }
+
+  &--outlined:hover:not(:disabled),
+  &--text:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--atl-color-accent) 8%, transparent);
+  }
+
+  &--outlined:active:not(:disabled),
+  &--text:active:not(:disabled) {
+    background: color-mix(in srgb, var(--atl-color-accent) 12%, transparent);
+  }
+
+  &--elevated {
+    border-color: var(--atl-color-border);
+    background: var(--atl-color-surface);
+    color: var(--atl-color-accent);
+    box-shadow: var(--atl-shadow-sm);
+  }
+
+  &--elevated:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--atl-color-surface) 90%, var(--atl-color-accent));
+    box-shadow: var(--atl-shadow-md);
+  }
+
+  &--danger {
+    border-color: var(--atl-color-danger);
+    background: var(--atl-color-danger);
+    color: var(--atl-color-danger-ink);
+  }
+}

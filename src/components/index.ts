@@ -8,6 +8,11 @@ export type { AtlFileUploadProps, FileUploadStatus } from './file-upload/types';
 export { AtlInput } from './input/input';
 export type { AtlInputProps, AtlInputSize, AtlInputStatus, AtlInputVariant } from './input/input.type';
 export { AtlProgress } from './progress';
+export type {
+	AtlProgressProps,
+	AtlProgressSize,
+	AtlProgressStatus,
+} from './progress/types';
 export { AtlSelect } from './select';
 export type { SelectOption } from './select/types';
 export { AtlToastProvider, useAtlToast } from './toast-provider';
@@ -35,7 +40,12 @@ export type { AtlSidebarProps, SidebarItem } from './sidebar/types';
 export { AtlSwitcher } from './switcher';
 export type { AtlSwitcherProps } from './switcher/types';
 export { AtlSimpleTable } from './table';
-export type { AtlSimpleTableProps, SimpleTableColumn, SimpleTableLocale, SimpleTablePaginationConfig } from './table/types';
+export type {
+	AtlSimpleTableProps,
+	SimpleTableColumn,
+	SimpleTableLocale,
+	SimpleTablePaginationConfig,
+} from './table/types';
 export { AtlTabs } from './tabs';
 export type { AtlTabsProps, TabItem, TabsSize } from './tabs/types';
 export { AtlTooltip } from './tooltip';

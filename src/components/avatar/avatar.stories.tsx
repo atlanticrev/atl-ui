@@ -21,7 +21,7 @@ export const Initials: StoryObj<typeof AtlAvatar> = {};
 
 export const Icon: StoryObj<typeof AtlAvatar> = {
 	args: {
-		backgroundColor: 'var(--md-sys-color-primary-container)',
+		backgroundColor: 'var(--atl-accent-weak)',
 		icon: SuitcaseIcon,
 	},
 };

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 
 import { AtlSimpleTable } from './index';
 
@@ -17,6 +18,7 @@ const meta: Meta<typeof AtlSimpleTable> = {
 			{ name: 'Atlantic', status: 'Active' },
 			{ name: 'Pacific', status: 'Paused' },
 		],
+		onRow: fn(),
 	},
 };
 

@@ -1,0 +1,82 @@
+.atl-input {
+  &__content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-width: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  &__field {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--atl-color-ink);
+    font: var(--atl-input-font);
+
+    &::placeholder {
+      color: var(--atl-color-ink-muted);
+    }
+  }
+
+  &__description,
+  &__helper,
+  &__counter {
+    font: var(--atl-input-support-font);
+  }
+
+  &__description,
+  &__helper,
+  &__counter,
+  &__icon {
+    color: var(--atl-color-ink-muted);
+  }
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+
+    &--clickable {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    &--rotated {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__outline {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  &__outline-path {
+    fill: none;
+    stroke: var(--atl-input-border-color);
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+    stroke-width: var(--atl-input-border-width);
+    transition: stroke 0.2s ease, stroke-width 0.2s ease;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 4px 16px 0;
+  }
+}

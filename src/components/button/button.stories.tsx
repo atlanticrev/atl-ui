@@ -12,7 +12,7 @@ const meta: Meta<typeof AtlButton> = {
 		docs: {
 			description: {
 				component: `
-AtlButton - Material 3 action component.
+AtlButton - monochrome action component.
 
 ## Features
 - variants: filled, tonal, outlined, text, elevated

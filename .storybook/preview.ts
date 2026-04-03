@@ -1,6 +1,8 @@
 import type { Preview } from '@storybook/react';
 import { createElement } from 'react';
 
+import './preview.scss';
+import '../src/components/core.scss';
 import '../src/components/theme.scss';
 
 const preview: Preview = {
@@ -20,17 +22,27 @@ const preview: Preview = {
 	decorators: [
 		(Story, context) => {
 			const themeMode = context.globals.themeMode === 'dark' ? 'dark' : 'light';
-			const isFullscreen = context.parameters.layout === 'fullscreen';
+			const layout = context.parameters.layout ?? 'padded';
+			const isDocs = context.viewMode === 'docs';
+			const isFullscreen = layout === 'fullscreen';
+			const isCentered = layout === 'centered';
 
 			return createElement(
 				'div',
 				{
 					['data-theme']: themeMode,
 					style: {
-						minHeight: isFullscreen ? '100vh' : undefined,
-						padding: isFullscreen ? 0 : '24px',
-						background: 'var(--md-sys-color-background)',
-						color: 'var(--md-sys-color-on-background)',
+						display: isCentered ? 'flex' : 'block',
+						alignItems: isCentered ? 'center' : undefined,
+						justifyContent: isCentered ? 'center' : undefined,
+						flex: '1 1 auto',
+						boxSizing: 'border-box',
+						width: '100%',
+						maxWidth: '100%',
+						minHeight: isDocs ? undefined : '100vh',
+						padding: isDocs ? 0 : isFullscreen ? 0 : '24px',
+						background: 'var(--atl-color-bg)',
+						color: 'var(--atl-color-ink)',
 					},
 				},
 				createElement(Story),
@@ -41,10 +53,10 @@ const preview: Preview = {
 		actions: { argTypesRegex: '^on[A-Z].*' },
 		controls: { matchers: { color: /(background|color)$/i, date: /Date$/ } },
 		backgrounds: {
-			default: 'material',
+			default: 'canvas',
 			values: [
-				{ name: 'material', value: '#fef7ff' },
-				{ name: 'material-dark', value: '#141218' },
+				{ name: 'canvas', value: '#f7f7f6' },
+				{ name: 'canvas-dark', value: '#13161b' },
 			],
 		},
 	},

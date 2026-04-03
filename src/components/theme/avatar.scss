@@ -1,11 +1,13 @@
 .atl-avatar {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--atl-avatar-bg, var(--md-sys-color-secondary-container));
+  background: var(--atl-avatar-bg, var(--atl-color-accent-muted));
   position: relative;
-  color: var(--atl-avatar-text-color, var(--md-sys-color-on-secondary-container));
+  aspect-ratio: 1 / 1;
+  color: var(--atl-avatar-text-color, var(--atl-color-accent));
 
   &__image {
     width: 100%;
@@ -15,10 +17,8 @@
   }
 
   &__initials {
-    font: var(--md-sys-typescale-title-small-font);
+    font: var(--atl-type-title-sm);
   }
-
-
 
   &__loader {
     position: absolute;

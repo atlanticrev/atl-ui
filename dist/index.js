@@ -4,10 +4,41 @@ import { createPortal } from 'react-dom';
 
 // src/components/button/index.tsx
 var SpinnerIcon = ({ size = 16 }) => {
-  return /* @__PURE__ */ jsxs("svg", { "aria-hidden": "true", className: "atl-spinner-icon", focusable: "false", fill: "none", height: size, viewBox: "0 0 16 16", width: size, xmlns: "http://www.w3.org/2000/svg", children: [
-    /* @__PURE__ */ jsx("circle", { cx: "8", cy: "8", opacity: "0.2", r: "6", stroke: "currentColor", strokeWidth: "2" }),
-    /* @__PURE__ */ jsx("path", { d: "M14 8a6 6 0 0 0-6-6", stroke: "currentColor", strokeLinecap: "round", strokeWidth: "2" })
-  ] });
+  return /* @__PURE__ */ jsxs(
+    "svg",
+    {
+      "aria-hidden": "true",
+      className: "atl-spinner-icon",
+      focusable: "false",
+      fill: "none",
+      height: size,
+      viewBox: "0 0 16 16",
+      width: size,
+      xmlns: "http://www.w3.org/2000/svg",
+      children: [
+        /* @__PURE__ */ jsx(
+          "circle",
+          {
+            cx: "8",
+            cy: "8",
+            opacity: "0.2",
+            r: "6",
+            stroke: "currentColor",
+            strokeWidth: "2"
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          "path",
+          {
+            d: "M14 8a6 6 0 0 0-6-6",
+            stroke: "currentColor",
+            strokeLinecap: "round",
+            strokeWidth: "2"
+          }
+        )
+      ]
+    }
+  );
 };
 
 // src/lib/clsx.ts
@@ -759,19 +790,78 @@ var AtlInput = memo(forwardRef(function AtlInput2({
     )
   ] });
 }));
-function AtlProgress({ label, value }) {
-  const clampedValue = Math.min(100, Math.max(0, value));
-  return /* @__PURE__ */ jsxs("div", { className: "atl-progress", children: [
-    /* @__PURE__ */ jsx("span", { className: "atl-progress__label", children: label }),
-    /* @__PURE__ */ jsx("div", { className: "atl-progress__track", children: /* @__PURE__ */ jsx(
-      "span",
-      {
-        className: "atl-progress__fill",
-        style: { width: `${clampedValue}%` }
-      }
-    ) })
-  ] });
-}
+
+// src/components/progress/utils.ts
+var DEFAULT_PROGRESS_MAX = 100;
+var normalizeProgressMax = (max) => {
+  if (Number.isFinite(max) && max > 0) {
+    return max;
+  }
+  return DEFAULT_PROGRESS_MAX;
+};
+var clampProgressValue = (value, max) => {
+  const numericValue = typeof value === "number" && Number.isFinite(value) ? value : 0;
+  return Math.min(Math.max(numericValue, 0), max);
+};
+var getProgressPercent = (value, max) => Math.round(value / max * 100);
+var INDETERMINATE_FILL_WIDTH = "38%";
+var AtlProgress = ({
+  ariaLabel,
+  className,
+  indeterminate = false,
+  label,
+  max = 100,
+  showValue = true,
+  size = "md",
+  status = "default",
+  testId,
+  value = 0
+}) => {
+  const labelId = useId();
+  const safeMax = normalizeProgressMax(max);
+  const safeValue = clampProgressValue(value, safeMax);
+  const percent = getProgressPercent(safeValue, safeMax);
+  const shouldRenderValue = showValue && !indeterminate;
+  const shouldRenderHeader = Boolean(label) || shouldRenderValue;
+  const fillWidth = indeterminate ? INDETERMINATE_FILL_WIDTH : `${percent}%`;
+  const labelledBy = label ? labelId : void 0;
+  const resolvedAriaLabel = labelledBy ? void 0 : ariaLabel ?? "Progress";
+  return /* @__PURE__ */ jsxs(
+    "div",
+    {
+      className: clsx(
+        "atl-progress",
+        `atl-progress--${size}`,
+        `atl-progress--${status}`,
+        indeterminate && "atl-progress--indeterminate",
+        className
+      ),
+      "data-testid": testId,
+      children: [
+        shouldRenderHeader ? /* @__PURE__ */ jsxs("div", { className: "atl-progress__header", children: [
+          label ? /* @__PURE__ */ jsx("span", { className: "atl-progress__label", id: labelId, children: label }) : null,
+          shouldRenderValue ? /* @__PURE__ */ jsxs("span", { className: "atl-progress__value", children: [
+            percent,
+            "%"
+          ] }) : null
+        ] }) : null,
+        /* @__PURE__ */ jsx(
+          "div",
+          {
+            "aria-label": resolvedAriaLabel,
+            "aria-labelledby": labelledBy,
+            "aria-valuemax": safeMax,
+            "aria-valuemin": 0,
+            "aria-valuenow": indeterminate ? void 0 : safeValue,
+            className: "atl-progress__track",
+            role: "progressbar",
+            children: /* @__PURE__ */ jsx("span", { className: "atl-progress__fill", style: { width: fillWidth } })
+          }
+        )
+      ]
+    }
+  );
+};
 var VIEWPORT_PADDING = 8;
 var createPopupStyle = ({
   anchorRect,
@@ -1075,8 +1165,25 @@ var SearchIcon = ({ size = 20, ...props }) => {
       xmlns: "http://www.w3.org/2000/svg",
       ...props,
       children: [
-        /* @__PURE__ */ jsx("circle", { cx: "9", cy: "9", r: "5.75", stroke: "currentColor", strokeWidth: "1.5" }),
-        /* @__PURE__ */ jsx("path", { d: "M13.5 13.5L17 17", stroke: "currentColor", strokeLinecap: "round", strokeWidth: "1.5" })
+        /* @__PURE__ */ jsx(
+          "circle",
+          {
+            cx: "9",
+            cy: "9",
+            r: "5.75",
+            stroke: "currentColor",
+            strokeWidth: "1.5"
+          }
+        ),
+        /* @__PURE__ */ jsx(
+          "path",
+          {
+            d: "M13.5 13.5L17 17",
+            stroke: "currentColor",
+            strokeLinecap: "round",
+            strokeWidth: "1.5"
+          }
+        )
       ]
     }
   );
@@ -1446,22 +1553,67 @@ var AtlRadioButton = ({ checked, disabled, invalid = false, label, size = "m", t
   ] });
 };
 var SidebarButton = ({ collapsed, item, onClick, selected }) => {
-  return /* @__PURE__ */ jsxs("button", { className: clsx("atl-sidebar__item", selected && "atl-sidebar__item--selected"), type: "button", onClick: () => onClick?.(item.key), children: [
-    item.icon,
-    !collapsed && /* @__PURE__ */ jsx("span", { children: item.label })
-  ] });
+  return /* @__PURE__ */ jsxs(
+    "button",
+    {
+      className: clsx("atl-sidebar__item", selected && "atl-sidebar__item--selected"),
+      type: "button",
+      onClick: () => onClick?.(item.key),
+      children: [
+        item.icon,
+        !collapsed && /* @__PURE__ */ jsx("span", { children: item.label })
+      ]
+    }
+  );
 };
-var AtlSidebar = ({ collapsed = false, footer, footerItems = [], items, loading = false, onItemClick, selectedKey, testId }) => {
-  return /* @__PURE__ */ jsxs("aside", { className: clsx("atl-sidebar", collapsed && "atl-sidebar--collapsed"), "data-testid": testId, children: [
-    /* @__PURE__ */ jsxs("div", { className: "atl-sidebar__group", children: [
-      loading && /* @__PURE__ */ jsx("span", { className: "atl-sidebar__loading", children: "Loading\u2026" }),
-      items.map((item) => /* @__PURE__ */ jsx(SidebarButton, { collapsed, item, selected: item.key === selectedKey, onClick: onItemClick }, item.key))
-    ] }),
-    /* @__PURE__ */ jsxs("div", { className: "atl-sidebar__group", children: [
-      footerItems.map((item) => /* @__PURE__ */ jsx(SidebarButton, { collapsed, item, selected: item.key === selectedKey, onClick: onItemClick }, item.key)),
-      footer
-    ] })
-  ] });
+var AtlSidebar = ({
+  className,
+  collapsed = false,
+  footer,
+  footerItems = [],
+  header,
+  items,
+  loading = false,
+  onItemClick,
+  selectedKey,
+  testId
+}) => {
+  return /* @__PURE__ */ jsxs(
+    "aside",
+    {
+      className: clsx("atl-sidebar", collapsed && "atl-sidebar--collapsed", className),
+      "data-testid": testId,
+      children: [
+        header && /* @__PURE__ */ jsx("div", { className: "atl-sidebar__header", children: header }),
+        /* @__PURE__ */ jsxs("div", { className: "atl-sidebar__group", children: [
+          loading && /* @__PURE__ */ jsx("span", { className: "atl-sidebar__loading", children: "Loading\u2026" }),
+          items.map((item) => /* @__PURE__ */ jsx(
+            SidebarButton,
+            {
+              collapsed,
+              item,
+              onClick: onItemClick,
+              selected: item.key === selectedKey
+            },
+            item.key
+          ))
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "atl-sidebar__group", children: [
+          footerItems.map((item) => /* @__PURE__ */ jsx(
+            SidebarButton,
+            {
+              collapsed,
+              item,
+              onClick: onItemClick,
+              selected: item.key === selectedKey
+            },
+            item.key
+          )),
+          footer
+        ] })
+      ]
+    }
+  );
 };
 var AtlSwitcher = ({ checked = false, className, disabled = false, invalid = false, onChange, size = "l", testId }) => {
   const buttonRef = useRef(null);

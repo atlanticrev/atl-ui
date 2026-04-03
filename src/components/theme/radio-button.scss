@@ -2,8 +2,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--md-sys-color-on-surface);
-  font: var(--md-sys-typescale-body-medium-font);
+  color: var(--atl-color-ink);
+  font: var(--atl-type-body-md);
   cursor: pointer;
 
   &__input {
@@ -16,7 +16,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--md-sys-color-on-surface-variant);
+    border: 2px solid var(--atl-color-border-strong);
     border-radius: 50%;
     transition: border-color 0.2s ease;
 
@@ -30,15 +30,15 @@
     }
 
     &--checked {
-      border-color: var(--md-sys-color-primary);
+      border-color: var(--atl-color-accent);
 
       &::after {
-        background: var(--md-sys-color-primary);
+        background: var(--atl-color-accent);
       }
     }
 
     &--invalid {
-      border-color: var(--md-sys-color-error);
+      border-color: var(--atl-color-danger);
     }
 
     &--s {

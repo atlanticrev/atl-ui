@@ -1,6 +1,4 @@
-export {
-	AtlButton,
-} from './components/button';
+export { AtlButton } from './components/button';
 export { AtlCard } from './components/card';
 export { AtlDropdown } from './components/dropdown';
 export { AtlFileUpload } from './components/file-upload';
@@ -9,9 +7,7 @@ export { AtlInput } from './components/input/input';
 export { AtlProgress } from './components/progress';
 export { AtlSelect } from './components/select';
 export { AtlToastProvider, useAtlToast } from './components/toast-provider';
-export type {
-	ButtonVariant,
-} from './components/button/types';
+export type { ButtonVariant } from './components/button/types';
 export type {
 	AtlDropdownProps,
 	DropdownItem,
@@ -22,6 +18,11 @@ export type {
 	AtlInputStatus,
 	AtlInputVariant,
 } from './components/input/input.type';
+export type {
+	AtlProgressProps,
+	AtlProgressSize,
+	AtlProgressStatus,
+} from './components/progress/types';
 export type { SelectOption } from './components/select/types';
 export type {
 	ToastContextValue,
@@ -52,7 +53,12 @@ export type { AtlSidebarProps, SidebarItem } from './components/sidebar/types';
 export { AtlSwitcher } from './components/switcher';
 export type { AtlSwitcherProps } from './components/switcher/types';
 export { AtlSimpleTable } from './components/table';
-export type { AtlSimpleTableProps, SimpleTableColumn, SimpleTableLocale, SimpleTablePaginationConfig } from './components/table/types';
+export type {
+	AtlSimpleTableProps,
+	SimpleTableColumn,
+	SimpleTableLocale,
+	SimpleTablePaginationConfig,
+} from './components/table/types';
 export { AtlTabs } from './components/tabs';
 export type { AtlTabsProps, TabItem, TabsSize } from './components/tabs/types';
 export { AtlTooltip } from './components/tooltip';

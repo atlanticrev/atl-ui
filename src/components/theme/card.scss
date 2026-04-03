@@ -1,6 +1,7 @@
 .atl-card {
-  background: var(--md-sys-color-surface-container-low);
-  border-radius: var(--md-sys-shape-corner-large);
-  padding: 1.5rem;
-  box-shadow: var(--md-sys-elevation-level1);
+  background: var(--atl-color-surface);
+  border-radius: var(--atl-radius-md);
+  border: 1px solid var(--atl-color-border);
+  padding: 1.25rem;
+  box-shadow: var(--atl-shadow-sm);
 }

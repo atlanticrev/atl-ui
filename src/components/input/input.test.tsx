@@ -25,12 +25,14 @@ const createRect = ({ height = 0, width = 0, x = 0, y = 0 }: MockRectParams = {}
 const createRootStyles = (): CSSStyleDeclaration =>
 	({
 		borderTopLeftRadius: '4px',
-		getPropertyValue: (propertyName: string) => (propertyName === '--atl-input-label-offset' ? '16px' : ''),
+		getPropertyValue: (propertyName: string) =>
+			propertyName === '--atl-input-label-floating-padding-inline' ? '4px' : '',
+		paddingLeft: '14px',
 	}) as CSSStyleDeclaration;
 
 const EXPECTED_OUTLINE_PATH = [
-	'M 4 0.5 H 16',
-	'M 44 0.5 H 96',
+	'M 4 0.5 H 10',
+	'M 38 0.5 H 96',
 	'A 3.5 3.5 0 0 1 99.5 4',
 	'V 36',
 	'A 3.5 3.5 0 0 1 96 39.5',
@@ -60,6 +62,14 @@ describe('AtlInput', () => {
 				return createRect({
 					height: 40,
 					width: 100,
+				});
+			}
+
+			if (this.classList.contains('atl-input__field')) {
+				return createRect({
+					height: 16,
+					width: 60,
+					x: 14,
 				});
 			}
 

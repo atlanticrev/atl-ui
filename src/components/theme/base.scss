@@ -10,14 +10,17 @@
 html,
 body {
   margin: 0;
-  background: var(--md-sys-color-background);
-  color: var(--md-sys-color-on-background);
-  font: var(--md-sys-typescale-body-large-font);
+  background: var(--atl-color-bg);
+  color: var(--atl-color-ink);
+  font: var(--atl-type-body-lg);
   font-family: var(--atl-font-sans);
 }
 
 body {
   min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button,

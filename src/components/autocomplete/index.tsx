@@ -117,7 +117,7 @@ export const AtlAutocomplete = <T,>({
 					description={!isTyping && showDescription ? selectedOption?.description : undefined}
 					disabled={disabled}
 					helperText={helperText}
-					iconLeft={dropdown.isOpen || selectedOption?.icon ? selectedOption?.icon ?? <SearchIcon /> : undefined}
+					iconLeft={selectedOption?.icon}
 					iconRight={<ChevronDownIcon size={24} />}
 					iconRightRotated={dropdown.isOpen}
 					label={label}

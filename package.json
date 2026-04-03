@@ -11,7 +11,9 @@
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
 		},
-		"./theme.css": "./dist/theme.css"
+		"./core.css": "./dist/core.css",
+		"./theme.css": "./dist/theme.css",
+		"./default.css": "./dist/default.css"
 	},
 	"files": [
 		"dist"
@@ -37,7 +39,10 @@
 		"release:patch": "npm run verify && npm version patch && npm publish",
 		"verify": "npm run lint && npm run typecheck && npm run build",
 		"build:js": "tsup",
-		"build:css": "sass --no-source-map src/components/theme.scss dist/theme.css"
+		"build:css": "npm run build:css:core && npm run build:css:theme && npm run build:css:default",
+		"build:css:core": "sass --no-source-map src/components/core.scss dist/core.css",
+		"build:css:theme": "sass --no-source-map src/components/theme.scss dist/theme.css",
+		"build:css:default": "sass --no-source-map src/components/default.scss dist/default.css"
 	},
 	"peerDependencies": {
 		"react": "^18.0.0",
@@ -64,5 +69,5 @@
 		"vite": "^5.2.8",
 		"vitest": "^1.4.0"
 	},
-	"style": "dist/theme.css"
+	"style": "dist/default.css"
 }

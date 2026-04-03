@@ -47,7 +47,6 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 		handleBlur,
 		handleChange,
 		handleFocus,
-		isFocused,
 		isLabelFloated,
 		labelOffset,
 		labelWidth,
@@ -61,7 +60,8 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 		rootRef,
 		value,
 	});
-	const strokeWidth = isFocused ? 2 : 1;
+	const strokeWidth = 1;
+	const labelStyle = isLabelFloated ? { left: `${labelOffset}px` } : undefined;
 
 	return (
 		<div className={clsx('atl-input', className)} data-size={size} data-testid={testId || undefined}>
@@ -85,6 +85,7 @@ export const AtlInput = memo(forwardRef<HTMLInputElement, AtlInputProps>(functio
 							isLabelFloated && 'atl-input__label--floated',
 							iconLeft && 'atl-input__label--with-icon',
 						)}
+						style={labelStyle}
 					>
 						{label}
 					</span>

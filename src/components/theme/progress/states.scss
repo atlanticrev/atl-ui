@@ -1,0 +1,65 @@
+.atl-progress {
+  &--running,
+  &--completed {
+    --atl-progress-fill: var(--atl-color-accent);
+  }
+
+  &--failed {
+    --atl-progress-fill: var(--atl-color-danger);
+  }
+
+  &--aborted {
+    --atl-progress-fill: var(--atl-color-border-strong);
+  }
+
+  &--running &__fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 255 255 / 0.1) 35%,
+      rgb(255 255 255 / 0.32) 50%,
+      transparent 100%
+    );
+    animation: atl-progress-sheen 1.4s linear infinite;
+  }
+
+  &--indeterminate &__fill {
+    transition: none;
+    animation: atl-progress-slide 1.2s ease-in-out infinite;
+  }
+
+  &--indeterminate &__fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 255 255 / 0.24) 50%,
+      transparent 100%
+    );
+  }
+}
+
+@keyframes atl-progress-sheen {
+  from {
+    transform: translateX(-120%);
+  }
+
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes atl-progress-slide {
+  from {
+    transform: translateX(-110%);
+  }
+
+  to {
+    transform: translateX(180%);
+  }
+}

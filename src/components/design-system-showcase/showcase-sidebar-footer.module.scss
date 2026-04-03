@@ -1,0 +1,85 @@
+.footer {
+  display: grid;
+  gap: 1rem;
+  padding: 0.5rem 0.25rem 0;
+}
+
+.footerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--atl-color-ink-soft);
+}
+
+.footerLabel {
+  font: var(--atl-type-label-md);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.footerDots {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.folderList {
+  display: grid;
+  gap: 0.125rem;
+}
+
+.folderItem {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: var(--atl-radius-sm);
+  color: var(--atl-color-ink-muted);
+  font: var(--atl-type-body-lg);
+  font-weight: 500;
+}
+
+.folderChevron {
+  color: var(--atl-color-ink-soft);
+}
+
+.folderText {
+  flex: 1 1 auto;
+}
+
+.storageCard {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--atl-color-border);
+  border-radius: var(--atl-radius-md);
+  background: var(--atl-color-surface);
+  box-shadow: var(--atl-shadow-sm);
+}
+
+.storageTitle {
+  color: var(--atl-color-ink-soft);
+  font: var(--atl-type-label-md);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.storageTrack {
+  overflow: hidden;
+  height: 0.5rem;
+  border-radius: var(--atl-radius-full);
+  background: var(--atl-color-surface-strong);
+}
+
+.storageFill {
+  display: block;
+  width: 72%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--atl-color-accent);
+}
+
+.storageMeta {
+  color: var(--atl-color-ink-muted);
+  font: var(--atl-type-body-sm);
+}

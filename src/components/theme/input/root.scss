@@ -1,0 +1,74 @@
+.atl-input {
+  --atl-input-label-offset: 16px;
+  --atl-input-padding-block: 12px;
+  --atl-input-padding-inline: 14px;
+  --atl-input-icon-size: 20px;
+  --atl-input-gap: 10px;
+  --atl-input-font: var(--atl-type-body-lg);
+  --atl-input-support-font: var(--atl-type-body-sm);
+  --atl-input-label-font: var(--atl-type-body-lg);
+  --atl-input-label-floated-font: var(--atl-type-body-sm);
+  --atl-input-label-floating-padding-inline: 4px;
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &[data-size='s'],
+  &[data-size='xs'] {
+    --atl-input-padding-block: 10px;
+    --atl-input-padding-inline: 12px;
+    --atl-input-font: var(--atl-type-body-md);
+    --atl-input-label-font: var(--atl-type-body-md);
+  }
+
+  &__root {
+    --atl-input-background: var(--atl-color-surface);
+    --atl-input-border-color: var(--atl-color-border);
+    --atl-input-border-width: 1px;
+    --atl-input-radius: var(--atl-radius-xs);
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--atl-input-gap);
+    width: 100%;
+    padding: var(--atl-input-padding-block) var(--atl-input-padding-inline);
+    border-radius: var(--atl-input-radius);
+    background-color: var(--atl-input-background);
+    cursor: text;
+    box-shadow: var(--atl-shadow-sm);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover:not(.atl-input__root--disabled):not(.atl-input__root--readonly) {
+      --atl-input-border-color: var(--atl-color-border-strong);
+    }
+
+    &:focus-within {
+      --atl-input-border-color: var(--atl-color-accent);
+
+      .atl-input__label {
+        color: var(--atl-color-accent);
+      }
+    }
+
+    &--error {
+      --atl-input-border-color: var(--atl-color-danger);
+
+      .atl-input__label,
+      .atl-input__helper {
+        color: var(--atl-color-danger);
+      }
+    }
+
+    &--success {
+      --atl-input-border-color: var(--atl-color-success);
+    }
+
+    &--disabled,
+    &--readonly {
+      background: var(--atl-color-surface-muted);
+      opacity: 0.72;
+    }
+  }
+}

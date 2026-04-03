@@ -12,8 +12,21 @@ type UseInputLayoutParams = {
 };
 
 const getLabelWidth = (node: HTMLSpanElement | null): number => node?.getBoundingClientRect().width ?? 0;
-const getLabelOffset = (node: HTMLLabelElement | null): number =>
-	node ? Number.parseFloat(getComputedStyle(node).getPropertyValue('--atl-input-label-offset')) || 0 : 0;
+const getFloatingLabelOffset = (node: HTMLLabelElement | null): number => {
+	if (!node) {
+		return 0;
+	}
+
+	const styles = getComputedStyle(node);
+	const floatingPadding =
+		Number.parseFloat(styles.getPropertyValue('--atl-input-label-floating-padding-inline')) || 0;
+	const paddingLeft = Number.parseFloat(styles.paddingLeft) || 0;
+	const rootRect = node.getBoundingClientRect();
+	const field = node.querySelector<HTMLInputElement>('.atl-input__field');
+	const textOffset = field ? field.getBoundingClientRect().left - rootRect.left : paddingLeft;
+
+	return Math.max(textOffset - floatingPadding, 0);
+};
 
 const getOutlineMetrics = (node: HTMLLabelElement | null): InputOutlineMetrics => {
 	if (!node) {
@@ -48,7 +61,7 @@ export const useInputLayout = ({ onBlur, onChange, onFocus, rootRef, value }: Us
 	}, [value]);
 
 	const syncLayout = useCallback(() => {
-		setLabelOffset(isLabelFloated ? getLabelOffset(rootNodeRef.current) : 0);
+		setLabelOffset(isLabelFloated ? getFloatingLabelOffset(rootNodeRef.current) : 0);
 		setLabelWidth(isLabelFloated ? getLabelWidth(measureRef.current) : 0);
 		setOutlineMetrics(getOutlineMetrics(rootNodeRef.current));
 	}, [isLabelFloated]);

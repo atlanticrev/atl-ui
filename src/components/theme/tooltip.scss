@@ -12,11 +12,11 @@
     z-index: 30;
     max-width: 200px;
     padding: 0.5rem 0.75rem;
-    border-radius: var(--md-sys-shape-corner-extra-small);
-    background: var(--md-sys-color-inverse-surface);
-    color: var(--md-sys-color-inverse-on-surface);
-    font: var(--md-sys-typescale-body-small-font);
-    box-shadow: var(--md-sys-elevation-level2);
+    border-radius: var(--atl-radius-xs);
+    background: var(--atl-color-inverse-surface);
+    color: var(--atl-color-ink-inverse);
+    font: var(--atl-type-body-sm);
+    box-shadow: var(--atl-shadow-md);
 
     &--top {
       bottom: calc(100% + 0.5rem);

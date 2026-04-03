@@ -1,4 +1,7 @@
-import { buildInputOutlinePath, type InputOutlineMetrics } from './input-outline.utils';
+import {
+	buildInputOutlinePath,
+	type InputOutlineMetrics,
+} from './input-outline.utils';
 
 type AtlInputOutlineProps = {
 	labelOffset: number;
@@ -7,7 +10,12 @@ type AtlInputOutlineProps = {
 	strokeWidth: number;
 };
 
-export const AtlInputOutline = ({ labelOffset, labelWidth, metrics, strokeWidth }: AtlInputOutlineProps) => {
+export const AtlInputOutline = ({
+	labelOffset,
+	labelWidth,
+	metrics,
+	strokeWidth,
+}: AtlInputOutlineProps) => {
 	if (!metrics.width || !metrics.height) {
 		return null;
 	}

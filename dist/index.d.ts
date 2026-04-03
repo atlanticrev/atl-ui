@@ -115,11 +115,22 @@ declare const AtlInput: react.MemoExoticComponent<react.ForwardRefExoticComponen
     variant?: AtlInputVariant;
 } & react.RefAttributes<HTMLInputElement>>>;
 
-type ProgressProps = {
-    label: string;
-    value: number;
+type AtlProgressStatus = 'default' | 'running' | 'completed' | 'failed' | 'aborted';
+type AtlProgressSize = 'sm' | 'md';
+type AtlProgressProps = {
+    ariaLabel?: string;
+    className?: string;
+    indeterminate?: boolean;
+    label?: ReactNode;
+    max?: number;
+    showValue?: boolean;
+    size?: AtlProgressSize;
+    status?: AtlProgressStatus;
+    testId?: string;
+    value?: number | null;
 };
-declare function AtlProgress({ label, value }: ProgressProps): react_jsx_runtime.JSX.Element;
+
+declare const AtlProgress: ({ ariaLabel, className, indeterminate, label, max, showValue, size, status, testId, value, }: AtlProgressProps) => JSX.Element;
 
 type ComboboxOption<T = string> = {
     description?: string;
@@ -182,7 +193,9 @@ type ToastProviderProps = {
 declare const AtlToastProvider: ({ children }: ToastProviderProps) => react_jsx_runtime.JSX.Element;
 declare const useAtlToast: () => ToastContextValue;
 
-type SvgIconComponent = ComponentType<SVGProps<SVGSVGElement>>;
+type SvgIconComponent = ComponentType<SVGProps<SVGSVGElement> & {
+    size?: number;
+}>;
 type BorderRadiusValue = `${number}%` | `${number}px` | number;
 type AvatarSize = 24 | 32 | 40 | 48 | 64 | number;
 type AtlAvatarProps = {
@@ -288,9 +301,11 @@ type SidebarItem = {
     label: string;
 };
 type AtlSidebarProps = {
+    className?: string;
     collapsed?: boolean;
     footer?: ReactNode;
     footerItems?: SidebarItem[];
+    header?: ReactNode;
     items: SidebarItem[];
     loading?: boolean;
     onItemClick?: (key: string) => void;
@@ -298,7 +313,7 @@ type AtlSidebarProps = {
     testId: string;
 };
 
-declare const AtlSidebar: ({ collapsed, footer, footerItems, items, loading, onItemClick, selectedKey, testId }: AtlSidebarProps) => JSX.Element;
+declare const AtlSidebar: ({ className, collapsed, footer, footerItems, header, items, loading, onItemClick, selectedKey, testId, }: AtlSidebarProps) => JSX.Element;
 
 type AtlSwitcherProps = {
     checked?: boolean;
@@ -420,4 +435,4 @@ type AtlAutocompleteProps<T = string> = AutocompleteBaseProps & {
 
 declare const AtlAutocomplete: <T>({ className, disabled, filterFn, flip, helperText, inputPattern, label, maxDropdownHeight, noResultsIcon, noResultsText, onChange, options, placeholder, searchPlaceholder, showDescription, size, status, testId, value, }: AtlAutocompleteProps<T>) => JSX.Element;
 
-export { AtlAutocomplete, type AtlAutocompleteProps, AtlAvatar, type AtlAvatarProps, AtlBreadcrumbs, type AtlBreadcrumbsProps, AtlButton, AtlCard, AtlCheckbox, type AtlCheckboxProps, AtlChip, type AtlChipProps, AtlDropdown, type AtlDropdownProps, AtlFileUpload, type AtlFileUploadProps, AtlInput, type AtlInputProps, type AtlInputSize, type AtlInputStatus, type AtlInputVariant, AtlModal, type AtlModalProps, AtlPopup, type AtlPopupProps, AtlProgress, AtlRadioButton, type AtlRadioButtonProps, AtlSelect, AtlSidebar, type AtlSidebarProps, AtlSimpleTable, type AtlSimpleTableProps, AtlSwitcher, type AtlSwitcherProps, AtlTabs, type AtlTabsProps, AtlToastProvider, AtlTooltip, type AtlTooltipProps, type AutocompleteOption, type AvatarSize, type BorderRadiusValue, type BreadcrumbItem, type ButtonVariant, type ChipSize, type ChipVariant, type ControlSize, type CustomChipColors, type DropdownItem, type FileUploadStatus, type ModalContentSize, type SelectOption, type SidebarItem, type SimpleTableColumn, type SimpleTableLocale, type SimpleTablePaginationConfig, type SvgIconComponent, type TabItem, type TabsSize, type ToastContextValue, type ToastItem, type ToastOptions, type ToastVariant, type TooltipPlacement, useAtlToast };
+export { AtlAutocomplete, type AtlAutocompleteProps, AtlAvatar, type AtlAvatarProps, AtlBreadcrumbs, type AtlBreadcrumbsProps, AtlButton, AtlCard, AtlCheckbox, type AtlCheckboxProps, AtlChip, type AtlChipProps, AtlDropdown, type AtlDropdownProps, AtlFileUpload, type AtlFileUploadProps, AtlInput, type AtlInputProps, type AtlInputSize, type AtlInputStatus, type AtlInputVariant, AtlModal, type AtlModalProps, AtlPopup, type AtlPopupProps, AtlProgress, type AtlProgressProps, type AtlProgressSize, type AtlProgressStatus, AtlRadioButton, type AtlRadioButtonProps, AtlSelect, AtlSidebar, type AtlSidebarProps, AtlSimpleTable, type AtlSimpleTableProps, AtlSwitcher, type AtlSwitcherProps, AtlTabs, type AtlTabsProps, AtlToastProvider, AtlTooltip, type AtlTooltipProps, type AutocompleteOption, type AvatarSize, type BorderRadiusValue, type BreadcrumbItem, type ButtonVariant, type ChipSize, type ChipVariant, type ControlSize, type CustomChipColors, type DropdownItem, type FileUploadStatus, type ModalContentSize, type SelectOption, type SidebarItem, type SimpleTableColumn, type SimpleTableLocale, type SimpleTablePaginationConfig, type SvgIconComponent, type TabItem, type TabsSize, type ToastContextValue, type ToastItem, type ToastOptions, type ToastVariant, type TooltipPlacement, useAtlToast };

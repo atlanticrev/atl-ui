@@ -1,8 +1,9 @@
 .atl-select,
 .atl-autocomplete {
-  width: 320px;
+  width: 100%;
 
   &__search {
     padding: 0.75rem;
+    border-bottom: 1px solid var(--atl-color-border);
   }
 }

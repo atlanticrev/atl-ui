@@ -3,8 +3,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  color: var(--md-sys-color-on-surface-variant);
-  font: var(--md-sys-typescale-label-large-font);
+  color: var(--atl-color-ink-muted);
+  font: var(--atl-type-label-lg);
 
   &__item {
     display: inline-flex;
@@ -22,6 +22,6 @@
   }
 
   &__current {
-    color: var(--md-sys-color-on-surface);
+    color: var(--atl-color-ink);
   }
 }

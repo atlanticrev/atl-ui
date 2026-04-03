@@ -13,11 +13,11 @@
     justify-content: center;
     min-height: 40px;
     padding: 0 1.5rem;
-    border: 1px solid var(--md-sys-color-outline);
-    border-radius: var(--md-sys-shape-corner-full);
+    border: 1px solid var(--atl-color-border-strong);
+    border-radius: var(--atl-radius-full);
     background: transparent;
-    color: var(--md-sys-color-primary);
-    font: var(--md-sys-typescale-label-large-font);
+    color: var(--atl-color-accent);
+    font: var(--atl-type-label-lg);
     cursor: pointer;
   }
 
@@ -26,12 +26,12 @@
   }
 
   &--error &__button {
-    border-color: var(--md-sys-color-error);
-    color: var(--md-sys-color-error);
+    border-color: var(--atl-color-danger);
+    color: var(--atl-color-danger);
   }
 
   &--success &__button {
-    border-color: var(--md-sys-color-primary);
+    border-color: var(--atl-color-success);
   }
 
   &__input {
@@ -44,18 +44,18 @@
 
   &__value,
   &__helper {
-    font: var(--md-sys-typescale-body-small-font);
+    font: var(--atl-type-body-sm);
   }
 
   &__value {
-    color: var(--md-sys-color-on-surface);
+    color: var(--atl-color-ink);
   }
 
   &__helper {
-    color: var(--md-sys-color-on-surface-variant);
+    color: var(--atl-color-ink-muted);
   }
 
   &--error &__helper {
-    color: var(--md-sys-color-error);
+    color: var(--atl-color-danger);
   }
 }
