@@ -387,7 +387,12 @@ var buildInputOutlinePath = ({
   }
   return buildRoundedOutlinePath(left, top, right, bottom, normalizedRadius, gapStart, gapEnd);
 };
-var AtlInputOutline = ({ labelOffset, labelWidth, metrics, strokeWidth }) => {
+var AtlInputOutline = ({
+  labelOffset,
+  labelWidth,
+  metrics,
+  strokeWidth
+}) => {
   if (!metrics.width || !metrics.height) {
     return null;
   }
@@ -559,7 +564,18 @@ var AtlInputRightIcon = ({
   return /* @__PURE__ */ jsx(AtlTooltip, { open: tooltipOpen, placement: "top", testId: `${testId}-icon-tooltip`, title: tooltip, children: iconElement });
 };
 var getLabelWidth = (node) => node?.getBoundingClientRect().width ?? 0;
-var getLabelOffset = (node) => node ? Number.parseFloat(getComputedStyle(node).getPropertyValue("--atl-input-label-offset")) || 0 : 0;
+var getFloatingLabelOffset = (node) => {
+  if (!node) {
+    return 0;
+  }
+  const styles = getComputedStyle(node);
+  const floatingPadding = Number.parseFloat(styles.getPropertyValue("--atl-input-label-floating-padding-inline")) || 0;
+  const paddingLeft = Number.parseFloat(styles.paddingLeft) || 0;
+  const rootRect = node.getBoundingClientRect();
+  const field = node.querySelector(".atl-input__field");
+  const textOffset = field ? field.getBoundingClientRect().left - rootRect.left : paddingLeft;
+  return Math.max(textOffset - floatingPadding, 0);
+};
 var getOutlineMetrics = (node) => {
   if (!node) {
     return EMPTY_INPUT_OUTLINE_METRICS;
@@ -587,7 +603,7 @@ var useInputLayout = ({ onBlur, onChange, onFocus, rootRef, value }) => {
     setInternalHasValue(value !== void 0 && value !== "");
   }, [value]);
   const syncLayout = useCallback(() => {
-    setLabelOffset(isLabelFloated ? getLabelOffset(rootNodeRef.current) : 0);
+    setLabelOffset(isLabelFloated ? getFloatingLabelOffset(rootNodeRef.current) : 0);
     setLabelWidth(isLabelFloated ? getLabelWidth(measureRef.current) : 0);
     setOutlineMetrics(getOutlineMetrics(rootNodeRef.current));
   }, [isLabelFloated]);
@@ -688,7 +704,6 @@ var AtlInput = memo(forwardRef(function AtlInput2({
     handleBlur,
     handleChange,
     handleFocus,
-    isFocused,
     isLabelFloated,
     labelOffset,
     labelWidth,
@@ -702,7 +717,8 @@ var AtlInput = memo(forwardRef(function AtlInput2({
     rootRef,
     value
   });
-  const strokeWidth = isFocused ? 2 : 1;
+  const strokeWidth = 1;
+  const labelStyle = isLabelFloated ? { left: `${labelOffset}px` } : void 0;
   return /* @__PURE__ */ jsxs("div", { className: clsx("atl-input", className), "data-size": size, "data-testid": testId || void 0, children: [
     label && /* @__PURE__ */ jsx("span", { "aria-hidden": "true", className: "atl-input__label-measure", ref: measureRef, children: label }),
     /* @__PURE__ */ jsxs(
@@ -726,6 +742,7 @@ var AtlInput = memo(forwardRef(function AtlInput2({
                 isLabelFloated && "atl-input__label--floated",
                 iconLeft && "atl-input__label--with-icon"
               ),
+              style: labelStyle,
               children: label
             }
           ),
@@ -1892,7 +1909,7 @@ var AtlAutocomplete = ({
         description: !isTyping && showDescription ? selectedOption?.description : void 0,
         disabled,
         helperText,
-        iconLeft: dropdown.isOpen || selectedOption?.icon ? selectedOption?.icon ?? /* @__PURE__ */ jsx(SearchIcon, {}) : void 0,
+        iconLeft: selectedOption?.icon,
         iconRight: /* @__PURE__ */ jsx(ChevronDownIcon, { size: 24 }),
         iconRightRotated: dropdown.isOpen,
         label,
