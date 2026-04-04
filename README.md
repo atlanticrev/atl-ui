@@ -14,6 +14,7 @@ Public package surface:
 
 ```text
 @atlanticrev/atl-ui
+@atlanticrev/atl-ui/forms
 @atlanticrev/atl-ui/core.css
 @atlanticrev/atl-ui/theme.css
 @atlanticrev/atl-ui/default.css
@@ -129,6 +130,82 @@ The intended customization order is:
 
 `core.css` is the stable structural layer.
 `theme.css` is only a default theme implementation.
+
+## Forms
+
+The package also ships a headless forms module:
+
+```ts
+import {
+	AtlFormProvider,
+	useAtlField,
+	useAtlForm,
+	useAtlFormState,
+} from '@atlanticrev/atl-ui/forms';
+```
+
+Minimal example:
+
+```tsx
+import { AtlButton, AtlInput } from '@atlanticrev/atl-ui';
+import {
+	AtlFormProvider,
+	useAtlField,
+	useAtlForm,
+	useAtlFormState,
+} from '@atlanticrev/atl-ui/forms';
+
+type LoginForm = {
+	email: string;
+};
+
+const EmailField = () => {
+	const email = useAtlField<LoginForm>('email');
+
+	return (
+		<AtlInput
+			helperText={email.message}
+			label="Email"
+			status={email.invalid ? 'error' : 'default'}
+			value={String(email.value ?? '')}
+			onBlur={email.onBlur}
+			onChange={(value) => email.setValue(value)}
+		/>
+	);
+};
+
+export const LoginFormView = () => {
+	const form = useAtlForm<LoginForm>({
+		defaultValues: {
+			email: '',
+		},
+	});
+	const isSubmitting = useAtlFormState(form, (state) => state.isSubmitting);
+
+	return (
+		<AtlFormProvider form={form}>
+			<form onSubmit={form.handleSubmit(async (values) => console.log(values))}>
+				<EmailField />
+				<AtlButton disabled={isSubmitting} type="submit">
+					Submit
+				</AtlButton>
+			</form>
+		</AtlFormProvider>
+	);
+};
+```
+
+Included in `@atlanticrev/atl-ui/forms`:
+
+- `useAtlForm`
+- `AtlFormProvider`
+- `useAtlField`
+- `useAtlWatch`
+- `useAtlFormState`
+- `AtlController`
+- bindings for `AtlInput`, `AtlSelect`, `AtlCheckbox`, `AtlSwitcher`, `AtlAutocomplete`, and `AtlRadioButton`
+- runtime/SDUI helpers via `AtlRuntimeForm`, runtime schema types, and `createRuntimeResolver`
+- optional `createZodResolver` adapter without coupling the core store to Zod
 
 ## Button variants
 

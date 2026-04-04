@@ -11,6 +11,10 @@
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
 		},
+		"./forms": {
+			"types": "./dist/forms.d.ts",
+			"import": "./dist/forms.js"
+		},
 		"./core.css": "./dist/core.css",
 		"./theme.css": "./dist/theme.css",
 		"./default.css": "./dist/default.css"

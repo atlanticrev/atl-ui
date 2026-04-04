@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup';
 import { TsconfigPathsPlugin } from '@esbuild-plugins/tsconfig-paths';
 
 export default defineConfig({
-	entry: ['src/index.ts'],
+	entry: ['src/index.ts', 'src/forms/index.ts'],
 	format: ['esm'],
 	dts: true,
 	treeshake: true,
