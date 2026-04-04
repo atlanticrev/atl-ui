@@ -39,13 +39,16 @@ export const AtlModal = ({ cancelText = 'Cancel', children, className, confirmTe
 				{header ?? (
 					<div className="atl-modal__header">
 						{title && <p className="atl-modal__title">{title}</p>}
+
 						{!isCloseHidden && <button className="atl-modal__close" type="button" onClick={onClose}><CloseCircleIcon size={24} /></button>}
 					</div>
 				)}
 				<div className="atl-modal__body">{children}</div>
+
 				{footer ?? (
 					<div className="atl-modal__footer">
 						<AtlButton variant="text" onClick={handleCancel}>{cancelText}</AtlButton>
+
 						<AtlButton disabled={isDisabled || isLoading} loading={isLoading} variant={confirmVariant} onClick={handleConfirm}>{confirmText}</AtlButton>
 					</div>
 				)}

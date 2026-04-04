@@ -62,6 +62,7 @@ export const AtlToastProvider = ({ children }: ToastProviderProps) => {
 		setToasts((prev) => prev.filter((toast) => toast.id !== id));
 
 		const timeoutId = timeoutsRef.current.get(id);
+
 		if (timeoutId) {
 			window.clearTimeout(timeoutId);
 			timeoutsRef.current.delete(id);

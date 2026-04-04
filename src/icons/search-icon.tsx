@@ -23,6 +23,7 @@ export const SearchIcon = ({ size = 20, ...props }: SearchIconProps): JSX.Elemen
 				stroke="currentColor"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M13.5 13.5L17 17"
 				stroke="currentColor"

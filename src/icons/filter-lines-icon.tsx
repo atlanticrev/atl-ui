@@ -22,12 +22,14 @@ export const FilterLinesIcon = ({ size = 20, ...props }: FilterLinesIconProps): 
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M6.5 10H13.5"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M8.5 14.5H11.5"
 				stroke="currentColor"

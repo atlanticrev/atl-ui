@@ -13,11 +13,14 @@ const renderFileTitle = (record: ShowcaseFile): JSX.Element => (
 			className={styles.checkbox}
 			type="checkbox"
 		/>
+
 		<div className={styles.fileIcon}>
 			<record.icon size={18} />
 		</div>
+
 		<div className={styles.fileMeta}>
 			<div className={styles.fileTitle}>{record.title}</div>
+
 			<div className={styles.fileSubline}>{record.meta}</div>
 		</div>
 	</div>
@@ -30,8 +33,10 @@ const renderAuthor = (record: ShowcaseFile): JSX.Element => (
 			initials={record.author.initials}
 			size={40}
 		/>
+
 		<div className={styles.authorMeta}>
 			<div className={styles.authorName}>{record.author.name}</div>
+
 			<div className={styles.authorEmail}>{record.author.email}</div>
 		</div>
 	</div>
@@ -57,6 +62,7 @@ export const showcaseTableColumns: Array<SimpleTableColumn<ShowcaseFile>> = [
 					className={styles.checkbox}
 					type="checkbox"
 				/>
+
 				<span className={styles.columnTitle}>File name</span>
 			</span>
 		),

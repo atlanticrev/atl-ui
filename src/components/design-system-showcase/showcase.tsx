@@ -10,8 +10,10 @@ export const DesignSystemShowcase = (): JSX.Element => {
 				<div className={styles.sidebarColumn}>
 					<DesignSystemShowcaseSidebar />
 				</div>
+
 				<div className={styles.contentColumn}>
 					<DesignSystemShowcaseActions />
+
 					<DesignSystemShowcaseTable />
 				</div>
 			</div>

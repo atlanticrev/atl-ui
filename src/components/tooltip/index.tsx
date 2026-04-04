@@ -39,6 +39,7 @@ export const AtlTooltip = ({ children, className, defaultOpen = false, onOpenCha
 	return (
 		<button className={clsx('atl-tooltip', className)} onBlur={isClickTrigger ? undefined : hide} onClick={isClickTrigger ? toggle : undefined} onFocus={show} onKeyDown={isClickTrigger ? handleKeyDown : undefined} onMouseEnter={isClickTrigger ? undefined : show} onMouseLeave={isClickTrigger ? undefined : hide} ref={triggerRef} type="button">
 			{children}
+
 			{panel}
 		</button>
 	);

@@ -25,11 +25,13 @@ export const CreditCardIcon = ({ size = 20, ...props }: CreditCardIconProps): JS
 				x="2.75"
 				y="4.5"
 			/>
+
 			<path
 				d="M2.75 8H17.25"
 				stroke="currentColor"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M6 12H8.75"
 				stroke="currentColor"

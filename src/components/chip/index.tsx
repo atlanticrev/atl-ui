@@ -11,6 +11,7 @@ export const AtlChip = ({ customColors, disabled = false, label, onRemove, size 
 	return (
 		<span className={clsx('atl-chip', `atl-chip--size-${size.toLowerCase()}`, `atl-chip--${variant}`, disabled && 'atl-chip--disabled')} data-testid={testId} style={inlineStyles}>
 			<span>{label}</span>
+
 			{withCross && <button className="atl-chip__remove" disabled={disabled} type="button" onClick={onRemove}><CrossIcon /></button>}
 		</span>
 	);

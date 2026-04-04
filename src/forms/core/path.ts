@@ -42,6 +42,7 @@ export const setByPath = <T>(source: T, path: string, value: unknown): T => {
 	}
 
 	let cursor: unknown = nextValue;
+
 	for (const [index, key] of keys.entries()) {
 		const isLast = index === keys.length - 1;
 		const nextKey = keys[index + 1];
@@ -72,11 +73,13 @@ export const deleteByPath = <T>(source: T, path: string): T => {
 	}
 
 	let cursor: unknown = nextValue;
+
 	for (const [index, key] of keys.entries()) {
 		const isLast = index === keys.length - 1;
 
 		if (Array.isArray(cursor)) {
 			const listIndex = Number(key);
+
 			if (isLast) {
 				cursor.splice(listIndex, 1);
 				break;

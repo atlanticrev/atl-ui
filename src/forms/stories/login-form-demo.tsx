@@ -45,6 +45,7 @@ const LoginFields = () => {
 	return (
 		<div style={{ display: 'grid', gap: '1rem' }}>
 			<AtlInput {...email.inputProps} autoComplete="email" label="Email" testId="login-email" />
+
 			<AtlInput
 				{...password.inputProps}
 				autoComplete="current-password"
@@ -91,6 +92,7 @@ export const LoginFormDemo = () => {
 					<AtlButton loading={isSubmitting} type="submit" variant="filled">
 						Log in
 					</AtlButton>
+
 					<AtlButton type="button" variant="outlined" onClick={handleReset}>
 						Reset
 					</AtlButton>

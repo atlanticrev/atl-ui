@@ -45,10 +45,15 @@ export const Variants: Story = {
 	render: () => (
 		<div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
 			<AtlButton variant="filled">Filled</AtlButton>
+
 			<AtlButton variant="tonal">Tonal</AtlButton>
+
 			<AtlButton variant="outlined">Outlined</AtlButton>
+
 			<AtlButton variant="text">Text</AtlButton>
+
 			<AtlButton variant="elevated">Elevated</AtlButton>
+
 			<AtlButton disabled variant="filled">Disabled</AtlButton>
 		</div>
 	),

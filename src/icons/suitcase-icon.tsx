@@ -23,6 +23,7 @@ export const SuitcaseIcon = ({ size = 24, ...props }: SuitcaseIconProps): JSX.El
 				strokeLinejoin="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M5 11h14"
 				stroke="currentColor"

@@ -40,6 +40,7 @@ export const DesignSystemShowcaseTableToolbar = ({
 	return (
 		<div className={styles.header}>
 			<h2 className={styles.title}>All files</h2>
+
 			<div className={styles.toolbar}>
 				<AtlTabs
 					activeKey={activeKey}
@@ -49,6 +50,7 @@ export const DesignSystemShowcaseTableToolbar = ({
 					onChange={onTabChange}
 					testId="design-system-file-filters"
 				/>
+
 				<div className={styles.searchRow}>
 					<AtlInput
 						className={styles.search}
@@ -57,6 +59,7 @@ export const DesignSystemShowcaseTableToolbar = ({
 						value={searchValue}
 						onChange={onSearchValueChange}
 					/>
+
 					<AtlButton
 						iconLeft={<FilterLinesIcon size={18} />}
 						size={40}

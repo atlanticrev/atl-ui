@@ -35,9 +35,11 @@ const ToastDemo = () => {
 			<AtlButton onClick={() => enqueueToast('Saved changes', { variant: 'success' })}>
 				Success toast
 			</AtlButton>
+
 			<AtlButton variant="tonal" onClick={() => enqueueToast('Network issue', { variant: 'error' })}>
 				Error toast
 			</AtlButton>
+
 			<AtlButton variant="tonal" onClick={() => enqueueToast('New version available', { variant: 'info' })}>
 				Info toast
 			</AtlButton>

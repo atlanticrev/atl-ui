@@ -18,6 +18,7 @@ export const AtlBreadcrumbs = ({ className, items }: AtlBreadcrumbsProps): JSX.E
 						) : (
 							<span className={isLast ? 'atl-breadcrumbs__current' : undefined} data-testid={item.testId}>{item.label}</span>
 						)}
+
 						{!isLast && <ChevronDownIcon size={16} style={{ transform: 'rotate(-90deg)' }} />}
 					</span>
 				);

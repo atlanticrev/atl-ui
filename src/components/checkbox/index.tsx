@@ -12,9 +12,11 @@ export const AtlCheckbox = ({ checked = false, className, disabled = false, inde
 	return (
 		<label className={clsx('atl-checkbox', className, disabled && 'atl-checkbox--disabled')}>
 			<input checked={checked} className="atl-checkbox__input" data-testid={testId} disabled={disabled} type="checkbox" onChange={handleChange} onClick={onClick} />
+
 			<span className={clsx('atl-checkbox__control', `atl-checkbox__control--${size}`, (checked || indeterminate) && 'atl-checkbox__control--checked', invalid && 'atl-checkbox__control--invalid')}>
 				{loading ? <SpinnerIcon size={14} /> : checked ? <CheckIcon size={16} /> : indeterminate ? '—' : null}
 			</span>
+
 			{label && <span>{label}</span>}
 		</label>
 	);

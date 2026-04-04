@@ -32,8 +32,11 @@ export const AtlFileUpload = ({ accept, className, disabled = false, helperText,
 			<label className="atl-file-upload__button" htmlFor={inputId}>
 				{label}
 			</label>
+
 			<input accept={accept} className="atl-file-upload__input" disabled={disabled} id={inputId} multiple={multiple} type="file" onChange={handleChange} />
+
 			{selectedLabel && <span className="atl-file-upload__value">{selectedLabel}</span>}
+
 			{helperText && <span className="atl-file-upload__helper">{helperText}</span>}
 		</div>
 	);

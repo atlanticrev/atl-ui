@@ -11,6 +11,7 @@ const Demo = () => {
 	return (
 		<>
 			<AtlButton onClick={() => setOpen(true)}>Open modal</AtlButton>
+
 			<AtlModal isOpen={open} testId="modal" title="Confirm action" onClose={() => setOpen(false)}>
 				<div style={{ minWidth: 320 }}>Modal content</div>
 			</AtlModal>

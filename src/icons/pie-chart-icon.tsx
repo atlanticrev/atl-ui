@@ -22,6 +22,7 @@ export const PieChartIcon = ({ size = 20, ...props }: PieChartIconProps): JSX.El
 				strokeLinejoin="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d={`
 					M8.75 5.02C5.88 5.57 3.75 8.1 3.75 11.12C3.75 14.54 6.52 17.31 9.94 17.31C12.96 17.31

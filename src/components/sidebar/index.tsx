@@ -17,6 +17,7 @@ const SidebarButton = ({ collapsed, item, onClick, selected }: SidebarButtonProp
 			onClick={() => onClick?.(item.key)}
 		>
 			{item.icon}
+
 			{!collapsed && <span>{item.label}</span>}
 		</button>
 	);
@@ -40,8 +41,10 @@ export const AtlSidebar = ({
 			data-testid={testId}
 		>
 			{header && <div className="atl-sidebar__header">{header}</div>}
+
 			<div className="atl-sidebar__group">
 				{loading && <span className="atl-sidebar__loading">Loading…</span>}
+
 				{items.map((item) => (
 					<SidebarButton
 						collapsed={collapsed}
@@ -52,6 +55,7 @@ export const AtlSidebar = ({
 					/>
 				))}
 			</div>
+
 			<div className="atl-sidebar__group">
 				{footerItems.map((item) => (
 					<SidebarButton
@@ -62,6 +66,7 @@ export const AtlSidebar = ({
 						selected={item.key === selectedKey}
 					/>
 				))}
+
 				{footer}
 			</div>
 		</aside>

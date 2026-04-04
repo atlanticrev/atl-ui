@@ -38,8 +38,10 @@ export const AtlSimpleTable = <RecordType extends object>({ ariaLabel, className
 						{columns.map((column, index) => <th key={column.key ?? String(column.dataIndex ?? index)} style={{ textAlign: column.align, width: column.width }}>{typeof column.title === 'function' ? column.title({}) : column.title}</th>)}
 					</tr>
 				</thead>
+
 				<tbody>
 					{pagedData.length === 0 && <tr><td className="atl-simple-table__empty" colSpan={Math.max(columns.length, 1)}>{locale?.emptyText ?? 'No data'}</td></tr>}
+
 					{pagedData.map((record, index) => {
 						const resolvedKey = typeof rowKey === 'function' ? rowKey(record) : typeof rowKey === 'string' ? String(record[rowKey as keyof RecordType]) : String(index);
 						const rowProps = onRow?.(record, index) ?? {};
@@ -58,9 +60,11 @@ export const AtlSimpleTable = <RecordType extends object>({ ariaLabel, className
 					})}
 				</tbody>
 			</table>
+
 			{paginationConfig && totalPages > 1 && (
 				<div className="atl-simple-table__pagination">
 					<AtlButton disabled={currentPage <= 1} size={32} variant="outlined" onClick={() => paginationConfig.onChange?.(currentPage - 1, pageSize)}>Prev</AtlButton>
+
 					<AtlButton disabled={currentPage >= totalPages} size={32} variant="outlined" onClick={() => paginationConfig.onChange?.(currentPage + 1, pageSize)}>Next</AtlButton>
 				</div>
 			)}

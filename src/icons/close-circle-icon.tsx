@@ -23,6 +23,7 @@ export const CloseCircleIcon = ({ size = 24, ...props }: CloseCircleIconProps): 
 				stroke="currentColor"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M15 9L9 15M9 9L15 15"
 				stroke="currentColor"

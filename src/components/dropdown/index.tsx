@@ -76,12 +76,15 @@ export const AtlDropdown = <T,>({
 									onClick={() => !item.disabled && onSelect?.(item.value)}
 								>
 									{item.icon && <span className="atl-dropdown-list__item-icon">{item.icon}</span>}
+
 									<span className="atl-dropdown-list__item-text">
 										<span className="atl-dropdown-list__item-label">{item.label}</span>
+
 										{item.description && (
 											<span className="atl-dropdown-list__item-description">{item.description}</span>
 										)}
 									</span>
+
 									{isSelected && (
 										<span className="atl-dropdown-list__item-checkmark">
 											<CheckIcon size={24} />
@@ -93,9 +96,11 @@ export const AtlDropdown = <T,>({
 					</div>
 				)}
 			</div>
+
 			{showFooter && (
 				<div className="atl-dropdown-list__footer">
 					{footerText && <span className="atl-dropdown-list__footer-text">{footerText}</span>}
+
 					{multiSelect && onSelectAll && (
 						<button className="atl-dropdown-list__select-all" type="button" onClick={handleSelectAll}>
 							{selectAllText}

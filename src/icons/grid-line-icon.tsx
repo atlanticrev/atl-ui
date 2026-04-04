@@ -25,6 +25,7 @@ export const GridLineIcon = ({ size = 20, ...props }: GridLineIconProps): JSX.El
 				x="3.25"
 				y="3.25"
 			/>
+
 			<rect
 				height="5.5"
 				rx="1.25"
@@ -34,6 +35,7 @@ export const GridLineIcon = ({ size = 20, ...props }: GridLineIconProps): JSX.El
 				x="11.25"
 				y="3.25"
 			/>
+
 			<rect
 				height="5.5"
 				rx="1.25"
@@ -43,6 +45,7 @@ export const GridLineIcon = ({ size = 20, ...props }: GridLineIconProps): JSX.El
 				x="3.25"
 				y="11.25"
 			/>
+
 			<rect
 				height="5.5"
 				rx="1.25"

@@ -127,6 +127,7 @@ export const AtlSelect = <T,>({
 					value={displayValue}
 				/>
 			</div>
+
 			<ComboboxPopup
 				anchorRef={anchorRef}
 				emptyState={<span>{noResultsText}</span>}

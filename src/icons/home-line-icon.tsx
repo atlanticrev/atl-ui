@@ -25,6 +25,7 @@ export const HomeLineIcon = ({ size = 20, ...props }: HomeLineIconProps): JSX.El
 				strokeLinejoin="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M7.5 16V11.25H12.5V16"
 				stroke="currentColor"

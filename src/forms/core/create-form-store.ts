@@ -182,6 +182,7 @@ export const createFormStore = <Values extends AtlFormValues, Context = unknown>
 			}
 
 			const nextErrors = { ...state.errors };
+
 			for (const name of targetNames) {
 				delete nextErrors[name];
 			}
@@ -213,6 +214,7 @@ export const createFormStore = <Values extends AtlFormValues, Context = unknown>
 			emitForm();
 
 			const isValid = await validateForm('submit');
+
 			if (!isValid) {
 				await onInvalid?.({ ...state.errors }, cloneValue(state.values));
 				return;
@@ -343,11 +345,13 @@ export const createFormStore = <Values extends AtlFormValues, Context = unknown>
 		},
 		unregisterField: (name, override) => {
 			const registration = registrations.get(name);
+
 			if (!registration) {
 				return;
 			}
 
 			const mountCount = registration.mountCount - 1;
+
 			if (mountCount > 0) {
 				registrations.set(name, {
 					...registration,

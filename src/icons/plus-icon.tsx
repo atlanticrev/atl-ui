@@ -22,6 +22,7 @@ export const PlusIcon = ({ size = 20, ...props }: PlusIconProps): JSX.Element =>
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M4.5 10H15.5"
 				stroke="currentColor"

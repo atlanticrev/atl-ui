@@ -22,12 +22,14 @@ export const DotsVerticalIcon = ({ size = 20, ...props }: DotsVerticalIconProps)
 				fill="currentColor"
 				r="1.1"
 			/>
+
 			<circle
 				cx="10"
 				cy="10"
 				fill="currentColor"
 				r="1.1"
 			/>
+
 			<circle
 				cx="10"
 				cy="14.75"

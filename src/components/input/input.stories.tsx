@@ -35,6 +35,7 @@ const CheckIcon = () => (
 const CrossIcon = () => (
 	<IconBase>
 		<line x1="6" x2="18" y1="6" y2="18" />
+
 		<line x1="18" x2="6" y1="6" y2="18" />
 	</IconBase>
 );
@@ -42,6 +43,7 @@ const CrossIcon = () => (
 const SpinnerIcon = () => (
 	<IconBase>
 		<circle cx="12" cy="12" r="9" opacity="0.3" />
+
 		<path d="M21 12a9 9 0 0 0-9-9" />
 	</IconBase>
 );
@@ -369,6 +371,7 @@ export const AllSizes: Story = {
 				value="500.00"
 				variant="number"
 			/>
+
 			<AtlInput
 				helperText="Size L - for number inputs"
 				label="Amount"
@@ -377,8 +380,11 @@ export const AllSizes: Story = {
 				value="500.00"
 				variant="number"
 			/>
+
 			<AtlInput helperText="Size M - default" label="Label" size="m" testId="size-m" value="Value" />
+
 			<AtlInput helperText="Size S" label="Label" size="s" testId="size-s" value="Value" />
+
 			<AtlInput helperText="Size XS - compact" label="Label" size="xs" testId="size-xs" value="Value" />
 		</div>
 	),
@@ -394,7 +400,9 @@ export const AllStatuses: Story = {
 			}}
 		>
 			<AtlInput helperText="Default state" label="Default" status="default" testId="status-default" value="Value" />
+
 			<AtlInput helperText="This field has an error" label="Error" status="error" testId="status-error" value="Invalid" />
+
 			<AtlInput
 				helperText="This field is valid"
 				iconRight={<CheckIcon />}
@@ -417,8 +425,11 @@ export const AllStates: Story = {
 			}}
 		>
 			<AtlInput helperText="Empty state with label as placeholder" label="Empty" testId="state-empty" />
+
 			<AtlInput helperText="Filled state with floating label" label="Filled" testId="state-filled" value="Some value" />
+
 			<AtlInput disabled helperText="Disabled state" label="Disabled" testId="state-disabled" value="Disabled value" />
+
 			<AtlInput readOnly helperText="Read only state" label="Read Only" testId="state-readonly" value="Read only value" />
 		</div>
 	),

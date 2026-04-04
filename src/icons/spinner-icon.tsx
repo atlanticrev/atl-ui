@@ -22,6 +22,7 @@ export const SpinnerIcon = ({ size = 16 }: SpinnerIconProps): JSX.Element => {
 				stroke="currentColor"
 				strokeWidth="2"
 			/>
+
 			<path
 				d="M14 8a6 6 0 0 0-6-6"
 				stroke="currentColor"

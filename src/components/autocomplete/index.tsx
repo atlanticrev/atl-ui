@@ -134,6 +134,7 @@ export const AtlAutocomplete = <T,>({
 					onFocus={handleInputFocus}
 				/>
 			</div>
+
 			<ComboboxPopup
 				anchorRef={anchorRef}
 				emptyState={emptyState}

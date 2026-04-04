@@ -17,6 +17,7 @@ const FileUploadDemo = (args: FileUploadArgs) => {
 	return (
 		<div style={{ display: 'grid', gap: '0.5rem' }}>
 			<AtlFileUpload {...args} onChange={handleChange} />
+
 			{message && <span style={{ fontSize: '0.85rem' }}>{message}</span>}
 		</div>
 	);

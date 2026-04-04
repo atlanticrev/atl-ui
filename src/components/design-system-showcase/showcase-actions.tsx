@@ -11,7 +11,9 @@ export const DesignSystemShowcaseActions = (): JSX.Element => {
 		<div className={styles.root}>
 			<div className={styles.breadcrumbs}>
 				<span>Untitled UI</span>
+
 				<span className={styles.separator}>/</span>
+
 				<strong>All files</strong>
 			</div>
 
@@ -27,7 +29,9 @@ export const DesignSystemShowcaseActions = (): JSX.Element => {
 							<div className={styles.actionIcon}>
 								<action.icon size={18} />
 							</div>
+
 							<div className={styles.actionTitle}>{action.title}</div>
+
 							<PlusIcon
 								className={styles.actionPlus}
 								size={18}
@@ -39,6 +43,7 @@ export const DesignSystemShowcaseActions = (): JSX.Element => {
 
 			<section className={styles.section}>
 				<h2 className={styles.sectionTitle}>Recent</h2>
+
 				<div className={styles.recentGrid}>
 					{showcaseRecentFiles.map((file) => (
 						<AtlCard
@@ -48,10 +53,13 @@ export const DesignSystemShowcaseActions = (): JSX.Element => {
 							<div className={styles.recentIcon}>
 								<file.icon size={18} />
 							</div>
+
 							<div className={styles.recentBody}>
 								<div className={styles.recentTitle}>{file.title}</div>
+
 								<div className={styles.recentMeta}>{file.meta}</div>
 							</div>
+
 							<AtlButton
 								aria-label={`Open actions for ${file.title}`}
 								className={styles.menuButton}

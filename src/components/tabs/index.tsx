@@ -18,6 +18,7 @@ export const AtlTabs = ({ activeKey, className, contentClassName, items, onChang
 					);
 				})}
 			</div>
+
 			<div className={contentClassName}>{activeTab?.children}</div>
 		</div>
 	);

@@ -16,6 +16,7 @@ const Demo = () => {
 	return (
 		<div ref={anchorRef} style={{ padding: 40 }}>
 			<AtlButton onClick={() => setOpen((current) => !current)}>Toggle popup</AtlButton>
+
 			<AtlPopup anchorRef={anchorRef} isOpen={open} testId="popup" onClose={() => setOpen(false)}>
 				<div style={{ padding: 12, background: 'white', borderRadius: 8 }}>Popup content</div>
 			</AtlPopup>

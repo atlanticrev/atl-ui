@@ -25,6 +25,7 @@ export const BellLineIcon = ({ size = 20, ...props }: BellLineIconProps): JSX.El
 				strokeLinejoin="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M8.25 14.25C8.46 14.84 9.03 15.25 9.69 15.25H10.31C10.97 15.25 11.54 14.84 11.75 14.25"
 				stroke="currentColor"

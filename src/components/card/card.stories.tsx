@@ -24,6 +24,7 @@ AtlCard - surface container for grouping content.
 		children: (
 			<>
 				<strong>Neutral card</strong>
+
 				<p style={{ margin: '0.5rem 0 0', color: 'var(--atl-muted)' }}>
 					Minimal surface for grouping content.
 				</p>
@@ -42,6 +43,7 @@ export const AsLink: Story = {
 	render: () => (
 		<AtlCard as="a" href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
 			<strong>AtlCard as link</strong>
+
 			<p style={{ margin: '0.5rem 0 0', color: 'var(--atl-muted)' }}>
 				Supports polymorphic usage via the `as` prop.
 			</p>
@@ -54,12 +56,15 @@ export const Overview: Story = {
 		<div style={{ display: 'grid', gap: '1rem', maxWidth: 520 }}>
 			<AtlCard>
 				<strong>Neutral card</strong>
+
 				<p style={{ margin: '0.5rem 0 0', color: 'var(--atl-muted)' }}>
 					Minimal surface for grouping content.
 				</p>
 			</AtlCard>
+
 			<AtlCard as="a" href="#" style={{ textDecoration: 'none', color: 'inherit' }}>
 				<strong>AtlCard as link</strong>
+
 				<p style={{ margin: '0.5rem 0 0', color: 'var(--atl-muted)' }}>
 					Supports polymorphic usage via the `as` prop.
 				</p>

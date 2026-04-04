@@ -21,18 +21,21 @@ export const UsersPlusIcon = ({ size = 20, ...props }: UsersPlusIconProps): JSX.
 				stroke="currentColor"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M3.75 14.75C3.75 12.96 5.54 11.5 7.75 11.5C9.96 11.5 11.75 12.96 11.75 14.75"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M14.25 6V10"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M12.25 8H16.25"
 				stroke="currentColor"

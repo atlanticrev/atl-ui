@@ -31,7 +31,9 @@ export const AtlButton = forwardRef<HTMLButtonElement, AtlButtonProps>(
 			>
 				<span className="atl-button__content">
 					{loading ? <SpinnerIcon size={iconSize} /> : iconLeft}
+
 					{children && <span className="atl-button__label">{children}</span>}
+
 					{!loading && iconRight}
 				</span>
 			</button>

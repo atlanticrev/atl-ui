@@ -44,6 +44,7 @@ describe('usePopupPosition', () => {
 		};
 
 		vi.spyOn(anchorElement, 'getBoundingClientRect').mockImplementation(() => anchorRect);
+
 		vi.spyOn(popupElement, 'getBoundingClientRect').mockImplementation(() => createRect({
 			height: 80,
 			width: 150,

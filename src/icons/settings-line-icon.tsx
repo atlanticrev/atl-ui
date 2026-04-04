@@ -24,48 +24,56 @@ export const SettingsLineIcon = ({ size = 20, ...props }: SettingsLineIconProps)
 				stroke="currentColor"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M10 4.5V3.75"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M10 16.25V15.5"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M15.5 10H16.25"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M3.75 10H4.5"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M13.89 6.11L14.42 5.58"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M5.58 14.42L6.11 13.89"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M13.89 13.89L14.42 14.42"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M5.58 5.58L6.11 6.11"
 				stroke="currentColor"

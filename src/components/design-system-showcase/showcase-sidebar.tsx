@@ -11,8 +11,10 @@ export const DesignSystemShowcaseSidebar = (): JSX.Element => {
 		<div className={styles.brand}>
 			<div className={styles.logoMark}>
 				<span className={styles.logoDot} />
+
 				<span className={styles.logoLine} />
 			</div>
+
 			<div className={styles.brandText}>Untitled UI</div>
 		</div>
 	);
@@ -21,6 +23,7 @@ export const DesignSystemShowcaseSidebar = (): JSX.Element => {
 		<div className={footerStyles.footer}>
 			<div className={footerStyles.footerHeader}>
 				<span className={footerStyles.footerLabel}>File browser</span>
+
 				<span className={footerStyles.footerDots}>⋮</span>
 			</div>
 
@@ -34,7 +37,9 @@ export const DesignSystemShowcaseSidebar = (): JSX.Element => {
 							className={footerStyles.folderChevron}
 							size={16}
 						/>
+
 						<FolderLineIcon size={18} />
+
 						<span className={footerStyles.folderText}>{folder}</span>
 					</div>
 				))}
@@ -42,9 +47,11 @@ export const DesignSystemShowcaseSidebar = (): JSX.Element => {
 
 			<div className={footerStyles.storageCard}>
 				<div className={footerStyles.storageTitle}>Storage</div>
+
 				<div className={footerStyles.storageTrack}>
 					<span className={footerStyles.storageFill} />
 				</div>
+
 				<div className={footerStyles.storageMeta}>14.4 GB of 20 GB used (72%)</div>
 			</div>
 		</div>

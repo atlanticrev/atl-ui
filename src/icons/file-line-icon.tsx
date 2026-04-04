@@ -26,18 +26,21 @@ export const FileLineIcon = ({ size = 20, ...props }: FileLineIconProps): JSX.El
 				strokeLinejoin="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M10.75 3.98V6.75H13.52"
 				stroke="currentColor"
 				strokeLinejoin="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M7.25 10H11.75"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeWidth="1.5"
 			/>
+
 			<path
 				d="M7.25 12.75H10.25"
 				stroke="currentColor"
