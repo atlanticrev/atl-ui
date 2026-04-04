@@ -26,6 +26,9 @@
     --atl-input-background: var(--atl-color-surface);
     --atl-input-border-color: var(--atl-color-border);
     --atl-input-border-width: 1px;
+    --atl-input-hover-border-color: var(--atl-color-border-strong);
+    --atl-input-focus-border-color: var(--atl-color-accent);
+    --atl-input-focus-label-color: var(--atl-color-accent);
     --atl-input-radius: var(--atl-radius-xs);
 
     position: relative;
@@ -41,28 +44,39 @@
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
 
     &:hover:not(.atl-input__root--disabled):not(.atl-input__root--readonly) {
-      --atl-input-border-color: var(--atl-color-border-strong);
+      --atl-input-border-color: var(--atl-input-hover-border-color);
     }
 
     &:focus-within {
-      --atl-input-border-color: var(--atl-color-accent);
+      --atl-input-border-color: var(--atl-input-focus-border-color);
 
       .atl-input__label {
-        color: var(--atl-color-accent);
+        color: var(--atl-input-focus-label-color);
       }
     }
 
     &--error {
       --atl-input-border-color: var(--atl-color-danger);
+      --atl-input-hover-border-color: var(--atl-color-danger);
+      --atl-input-focus-border-color: var(--atl-color-danger);
+      --atl-input-focus-label-color: var(--atl-color-danger);
 
       .atl-input__label,
-      .atl-input__helper {
+      .atl-input__icon--right {
         color: var(--atl-color-danger);
       }
     }
 
     &--success {
       --atl-input-border-color: var(--atl-color-success);
+      --atl-input-hover-border-color: var(--atl-color-success);
+      --atl-input-focus-border-color: var(--atl-color-success);
+      --atl-input-focus-label-color: var(--atl-color-success);
+
+      .atl-input__label,
+      .atl-input__icon--right {
+        color: var(--atl-color-success);
+      }
     }
 
     &--disabled,

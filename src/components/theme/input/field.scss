@@ -20,6 +20,24 @@
     &::placeholder {
       color: var(--atl-color-ink-muted);
     }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 1000px transparent inset;
+      -webkit-text-fill-color: var(--atl-color-ink);
+      caret-color: var(--atl-color-ink);
+      transition: background-color 9999s ease-in-out 0s;
+    }
+
+    &:-moz-autofill,
+    &:-moz-autofill:hover,
+    &:-moz-autofill:focus {
+      box-shadow: 0 0 0 1000px transparent inset;
+      color: var(--atl-color-ink);
+      caret-color: var(--atl-color-ink);
+    }
   }
 
   &__description,
@@ -33,6 +51,16 @@
   &__counter,
   &__icon {
     color: var(--atl-color-ink-muted);
+  }
+
+  &__helper {
+    &--error {
+      color: var(--atl-color-danger);
+    }
+
+    &--success {
+      color: var(--atl-color-success);
+    }
   }
 
   &__icon {
