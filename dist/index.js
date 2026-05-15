@@ -1,6 +1,6 @@
 import { SpinnerIcon, clsx, ChevronDownIcon, useOverlayDismiss } from './chunk-7IR54A7B.js';
 export { AtlAutocomplete, AtlCheckbox, AtlDropdown, AtlInput, AtlPopup, AtlRadioButton, AtlSelect, AtlSwitcher, AtlTooltip } from './chunk-7IR54A7B.js';
-import { forwardRef, createContext, useId, useState, useRef, useCallback, useMemo, useContext, createElement, useEffect } from 'react';
+import { forwardRef, createContext, useId, useState, useRef, useCallback, useMemo, useContext, createElement, useEffect, Fragment } from 'react';
 import { jsx, jsxs } from 'react/jsx-runtime';
 import { createPortal } from 'react-dom';
 
@@ -539,7 +539,134 @@ var AtlModal = ({ cancelText = "Cancel", children, className, confirmText = "Con
     document.body
   );
 };
+var DEFAULT_LINE_HEIGHT = "1em";
+var DEFAULT_RECT_HEIGHT = "1rem";
+var DEFAULT_CIRCLE_SIZE = 40;
+var getShapeStyle = ({
+  borderRadius,
+  height,
+  size,
+  variant,
+  width
+}) => {
+  if (variant === "circle") {
+    const circleSize = size ?? width ?? DEFAULT_CIRCLE_SIZE;
+    return {
+      borderRadius: "50%",
+      height: circleSize,
+      width: circleSize
+    };
+  }
+  const resolvedHeight = height ?? (variant === "line" ? DEFAULT_LINE_HEIGHT : DEFAULT_RECT_HEIGHT);
+  const resolvedWidth = width ?? "100%";
+  const resolvedRadius = borderRadius ?? (variant === "line" ? "999px" : "var(--atl-radius-sm)");
+  return {
+    borderRadius: resolvedRadius,
+    height: resolvedHeight,
+    width: resolvedWidth
+  };
+};
+var renderSkeletonShape = ({
+  borderRadius,
+  className,
+  height,
+  size,
+  testId,
+  variant,
+  width
+}) => /* @__PURE__ */ jsx(
+  "span",
+  {
+    "aria-hidden": "true",
+    className: clsx("atl-skeleton", `atl-skeleton--${variant}`, className),
+    "data-testid": testId,
+    style: getShapeStyle({
+      borderRadius,
+      height,
+      size,
+      variant,
+      width
+    })
+  }
+);
+var AtlSkeletonRepeat = ({
+  children,
+  className,
+  count,
+  gap = 12,
+  testId
+}) => {
+  const items = Array.from({ length: count }, (_, index) => index);
+  return /* @__PURE__ */ jsx(
+    "div",
+    {
+      className: clsx("atl-skeleton-repeat", className),
+      "data-testid": testId,
+      style: { gap },
+      children: items.map((index) => /* @__PURE__ */ jsx(Fragment, { children }, index))
+    }
+  );
+};
+var getResolvedVariant = (variant, hasChildren) => {
+  if (variant) {
+    return variant;
+  }
+  return hasChildren ? "overlay" : "rect";
+};
+var AtlSkeletonComponent = ({
+  borderRadius,
+  children,
+  className,
+  height,
+  loading = true,
+  size,
+  testId,
+  variant,
+  width
+}) => {
+  const hasChildren = children !== void 0 && children !== null;
+  const resolvedVariant = getResolvedVariant(variant, hasChildren);
+  const shouldUseOverlay = loading && hasChildren && resolvedVariant === "overlay";
+  if (!loading) {
+    return hasChildren ? children : null;
+  }
+  if (!shouldUseOverlay && resolvedVariant !== "overlay") {
+    return renderSkeletonShape({
+      borderRadius,
+      className,
+      height,
+      size,
+      testId,
+      variant: resolvedVariant,
+      width
+    });
+  }
+  if (!hasChildren) {
+    return renderSkeletonShape({
+      borderRadius,
+      className,
+      height,
+      size,
+      testId,
+      variant: "rect",
+      width
+    });
+  }
+  return /* @__PURE__ */ jsxs(
+    "div",
+    {
+      className: clsx("atl-skeleton-wrapper", className),
+      "data-testid": testId,
+      children: [
+        /* @__PURE__ */ jsx("div", { "aria-hidden": "true", className: "atl-skeleton-wrapper__placeholder", children }),
+        /* @__PURE__ */ jsx("span", { "aria-hidden": "true", className: "atl-skeleton atl-skeleton--overlay" })
+      ]
+    }
+  );
+};
+var AtlSkeleton = AtlSkeletonComponent;
+AtlSkeleton.Repeat = AtlSkeletonRepeat;
 
-export { AtlAvatar, AtlBreadcrumbs, AtlButton, AtlCard, AtlChip, AtlFileUpload, AtlModal, AtlProgress, AtlSidebar, AtlSimpleTable, AtlTabs, AtlToastProvider, useAtlToast };
+export { AtlAvatar, AtlBreadcrumbs, AtlButton, AtlCard, AtlChip, AtlFileUpload, AtlModal, AtlProgress, AtlSidebar, AtlSimpleTable, AtlSkeleton, AtlTabs, AtlToastProvider, useAtlToast };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

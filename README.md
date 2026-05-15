@@ -26,6 +26,8 @@ Public package surface:
 npm install @atlanticrev/atl-ui
 ```
 
+Supported host versions: React 18 and React 19.
+
 If you install from GitHub Packages, make sure your npm auth is configured for the `@atlanticrev` scope.
 
 ## Usage

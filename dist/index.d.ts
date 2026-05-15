@@ -1,5 +1,5 @@
 import * as react from 'react';
-import { ButtonHTMLAttributes, ReactNode, ElementType, ComponentPropsWithoutRef, ComponentType, SVGProps, RefObject, ReactElement, Key, HTMLAttributes, CSSProperties } from 'react';
+import { ButtonHTMLAttributes, ReactNode, ElementType, ComponentPropsWithoutRef, ComponentType, SVGProps, RefObject, ReactElement, Key, HTMLAttributes, CSSProperties, JSX as JSX$1 } from 'react';
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { A as AtlInputSize, a as AtlInputStatus, b as AtlInputVariant, c as AtlSelectProps, d as AtlCheckboxProps, e as AtlRadioButtonProps, f as AtlSwitcherProps, g as AtlAutocompleteProps } from './types-lO5EwfVY.js';
 export { h as AtlInputProps, i as AutocompleteOption, C as ControlSize, S as SelectOption } from './types-lO5EwfVY.js';
@@ -325,4 +325,32 @@ declare const AtlModal: ({ cancelText, children, className, confirmText, confirm
 
 declare const AtlAutocomplete: <T>({ className, disabled, filterFn, flip, helperText, inputPattern, label, maxDropdownHeight, noResultsIcon, noResultsText, onChange, options, placeholder, searchPlaceholder, showDescription, size, status, testId, value, }: AtlAutocompleteProps<T>) => JSX.Element;
 
-export { AtlAutocomplete, AtlAutocompleteProps, AtlAvatar, type AtlAvatarProps, AtlBreadcrumbs, type AtlBreadcrumbsProps, AtlButton, AtlCard, AtlCheckbox, AtlCheckboxProps, AtlChip, type AtlChipProps, AtlDropdown, type AtlDropdownProps, AtlFileUpload, type AtlFileUploadProps, AtlInput, AtlInputSize, AtlInputStatus, AtlInputVariant, AtlModal, type AtlModalProps, AtlPopup, type AtlPopupProps, AtlProgress, type AtlProgressProps, type AtlProgressSize, type AtlProgressStatus, AtlRadioButton, AtlRadioButtonProps, AtlSelect, AtlSidebar, type AtlSidebarProps, AtlSimpleTable, type AtlSimpleTableProps, AtlSwitcher, AtlSwitcherProps, AtlTabs, type AtlTabsProps, AtlToastProvider, AtlTooltip, type AtlTooltipProps, type AvatarSize, type BorderRadiusValue, type BreadcrumbItem, type ButtonVariant, type ChipSize, type ChipVariant, type CustomChipColors, type DropdownItem, type FileUploadStatus, type ModalContentSize, type SidebarItem, type SimpleTableColumn, type SimpleTableLocale, type SimpleTablePaginationConfig, type SvgIconComponent, type TabItem, type TabsSize, type ToastContextValue, type ToastItem, type ToastOptions, type ToastVariant, type TooltipPlacement, useAtlToast };
+type AtlSkeletonShapeVariant = 'line' | 'rect' | 'circle';
+type AtlSkeletonVariant = 'overlay' | AtlSkeletonShapeVariant;
+type AtlSkeletonProps = {
+    borderRadius?: CSSProperties['borderRadius'];
+    children?: ReactNode;
+    className?: string;
+    height?: CSSProperties['height'];
+    loading?: boolean;
+    size?: CSSProperties['width'];
+    testId?: string;
+    variant?: AtlSkeletonVariant;
+    width?: CSSProperties['width'];
+};
+type AtlSkeletonRepeatProps = {
+    children: ReactNode;
+    className?: string;
+    count: number;
+    gap?: CSSProperties['gap'];
+    testId?: string;
+};
+
+declare const AtlSkeletonRepeat: ({ children, className, count, gap, testId, }: AtlSkeletonRepeatProps) => JSX$1.Element;
+
+type AtlSkeletonComponentType = ((props: AtlSkeletonProps) => ReactNode) & {
+    Repeat: typeof AtlSkeletonRepeat;
+};
+declare const AtlSkeleton: AtlSkeletonComponentType;
+
+export { AtlAutocomplete, AtlAutocompleteProps, AtlAvatar, type AtlAvatarProps, AtlBreadcrumbs, type AtlBreadcrumbsProps, AtlButton, AtlCard, AtlCheckbox, AtlCheckboxProps, AtlChip, type AtlChipProps, AtlDropdown, type AtlDropdownProps, AtlFileUpload, type AtlFileUploadProps, AtlInput, AtlInputSize, AtlInputStatus, AtlInputVariant, AtlModal, type AtlModalProps, AtlPopup, type AtlPopupProps, AtlProgress, type AtlProgressProps, type AtlProgressSize, type AtlProgressStatus, AtlRadioButton, AtlRadioButtonProps, AtlSelect, AtlSidebar, type AtlSidebarProps, AtlSimpleTable, type AtlSimpleTableProps, AtlSkeleton, type AtlSkeletonProps, type AtlSkeletonRepeatProps, type AtlSkeletonShapeVariant, type AtlSkeletonVariant, AtlSwitcher, AtlSwitcherProps, AtlTabs, type AtlTabsProps, AtlToastProvider, AtlTooltip, type AtlTooltipProps, type AvatarSize, type BorderRadiusValue, type BreadcrumbItem, type ButtonVariant, type ChipSize, type ChipVariant, type CustomChipColors, type DropdownItem, type FileUploadStatus, type ModalContentSize, type SidebarItem, type SimpleTableColumn, type SimpleTableLocale, type SimpleTablePaginationConfig, type SvgIconComponent, type TabItem, type TabsSize, type ToastContextValue, type ToastItem, type ToastOptions, type ToastVariant, type TooltipPlacement, useAtlToast };

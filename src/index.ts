@@ -67,3 +67,10 @@ export { AtlModal } from './components/modal';
 export type { AtlModalProps, ModalContentSize } from './components/modal/types';
 export { AtlAutocomplete } from './components/autocomplete';
 export type { AtlAutocompleteProps, AutocompleteOption } from './components/autocomplete/types';
+export { AtlSkeleton } from './components/skeleton';
+export type {
+	AtlSkeletonProps,
+	AtlSkeletonRepeatProps,
+	AtlSkeletonShapeVariant,
+	AtlSkeletonVariant,
+} from './components/skeleton/types';

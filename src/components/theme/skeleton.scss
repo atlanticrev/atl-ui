@@ -1,0 +1,58 @@
+.atl-skeleton {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--atl-color-surface-strong);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0%) 0%,
+      rgb(255 255 255 / 48%) 50%,
+      rgb(255 255 255 / 0%) 100%
+    );
+    animation: atl-skeleton-shimmer 1.6s ease-in-out infinite;
+  }
+
+  &--line,
+  &--circle {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &--overlay {
+    grid-area: 1 / 1;
+    min-height: 100%;
+    border-radius: inherit;
+  }
+}
+
+.atl-skeleton-wrapper {
+  display: grid;
+
+  &__placeholder {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .atl-skeleton--overlay {
+    grid-area: 1 / 1;
+  }
+}
+
+.atl-skeleton-repeat {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes atl-skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
