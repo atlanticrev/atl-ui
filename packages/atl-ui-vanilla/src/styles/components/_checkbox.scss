@@ -1,0 +1,70 @@
+@layer alt.components {
+  :where(.alt-checkbox) {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: var(--alt-color-ink);
+    font: var(--alt-type-body-md);
+    cursor: pointer;
+  }
+
+  :where(.alt-checkbox__control) {
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-content: center;
+    width: var(--alt-checkbox-size, 18px);
+    height: var(--alt-checkbox-size, 18px);
+    margin: 0.125rem 0 0;
+    border: 1px solid var(--alt-color-border-strong);
+    border-radius: 6px;
+    appearance: none;
+    background: var(--alt-color-surface);
+    color: var(--alt-color-accent-ink);
+    cursor: inherit;
+    transition: background-color var(--alt-motion-normal), border-color var(--alt-motion-normal);
+  }
+
+  :where(.alt-checkbox__control)::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: currentColor;
+    clip-path: polygon(14% 44%, 0 59%, 41% 100%, 100% 20%, 84% 6%, 40% 72%);
+    transform: scale(0);
+    transition: transform var(--alt-motion-fast);
+  }
+
+  :where(.alt-checkbox__control):checked,
+  :where(.alt-checkbox__control):indeterminate {
+    border-color: var(--alt-color-accent);
+    background: var(--alt-color-accent);
+  }
+
+  :where(.alt-checkbox__control):checked::before {
+    transform: scale(1);
+  }
+
+  :where(.alt-checkbox__control):indeterminate::before {
+    height: 2px;
+    clip-path: none;
+    transform: scale(1);
+  }
+
+  :where(.alt-checkbox__control):focus-visible {
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  :where(.alt-checkbox__control)[aria-invalid='true'] {
+    border-color: var(--alt-color-danger);
+  }
+
+  :where(.alt-checkbox):has(.alt-checkbox__control:disabled) {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+
+  :where(.alt-checkbox)[data-size='s'] {
+    --alt-checkbox-size: 16px;
+  }
+}

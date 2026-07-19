@@ -1,0 +1,86 @@
+@layer alt.components {
+  :where(alt-toast-region, .alt-toast-region) {
+    position: fixed;
+    z-index: var(--alt-toast-z-index, 80);
+    right: max(1.5rem, env(safe-area-inset-right));
+    bottom: max(1.5rem, env(safe-area-inset-bottom));
+    display: block;
+    width: min(360px, calc(100vw - 2rem));
+    pointer-events: none;
+  }
+
+  .alt-toast-region__stack {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .alt-toast {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 0.5rem 0.75rem;
+    min-width: 0;
+    padding: 0.875rem 1rem;
+    border: 1px solid transparent;
+    border-radius: var(--alt-radius-sm);
+    background: var(--alt-color-inverse-surface);
+    color: var(--alt-color-ink-inverse);
+    box-shadow: var(--alt-shadow-lg);
+    pointer-events: auto;
+    animation: alt-toast-enter var(--alt-motion-normal) both;
+  }
+
+  .alt-toast[data-status='error'] {
+    border-color: color-mix(in srgb, var(--alt-color-danger) 60%, transparent);
+  }
+
+  .alt-toast[data-status='success'] {
+    border-color: color-mix(in srgb, var(--alt-color-success) 60%, transparent);
+  }
+
+  .alt-toast__message {
+    min-width: 0;
+    font: var(--alt-type-body-md);
+    overflow-wrap: anywhere;
+  }
+
+  .alt-toast__dismiss {
+    display: inline-grid;
+    place-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--alt-color-inverse-accent);
+    cursor: pointer;
+  }
+
+  .alt-toast__dismiss:focus-visible {
+    border-radius: 50%;
+    outline: 0;
+    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 32%, transparent);
+  }
+
+  .alt-toast[data-state='closing'] {
+    animation: alt-toast-exit var(--alt-motion-fast) both;
+  }
+
+  @keyframes alt-toast-enter {
+    from { opacity: 0; transform: translateY(0.5rem); }
+  }
+
+  @keyframes alt-toast-exit {
+    to { opacity: 0; transform: translateX(1rem); }
+  }
+
+  @media (max-width: 480px) {
+    :where(alt-toast-region, .alt-toast-region) {
+      right: 1rem;
+      bottom: max(1rem, env(safe-area-inset-bottom));
+      left: 1rem;
+      width: auto;
+    }
+  }
+}

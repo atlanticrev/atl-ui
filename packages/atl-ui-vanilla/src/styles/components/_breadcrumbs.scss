@@ -1,0 +1,52 @@
+@layer alt.components {
+  :where(.alt-breadcrumbs) {
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-label-lg);
+  }
+
+  :where(.alt-breadcrumbs__list) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  :where(.alt-breadcrumbs__item) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  :where(.alt-breadcrumbs__link) {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :where(.alt-breadcrumbs__link):hover {
+    color: var(--alt-color-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  :where(.alt-breadcrumbs__link):focus-visible {
+    border-radius: 2px;
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  :where(.alt-breadcrumbs__current) {
+    overflow: hidden;
+    color: var(--alt-color-ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :where(.alt-breadcrumbs__separator) {
+    display: inline-flex;
+    color: var(--alt-color-ink-soft);
+  }
+}

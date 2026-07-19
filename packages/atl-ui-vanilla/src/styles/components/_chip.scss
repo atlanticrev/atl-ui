@@ -1,0 +1,54 @@
+@layer alt.components {
+  :where(.alt-chip) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 28px;
+    padding: 0 0.875rem;
+    border: 1px solid var(--alt-chip-border, var(--alt-color-border));
+    border-radius: var(--alt-radius-sm);
+    background: var(--alt-chip-bg, var(--alt-color-surface-muted));
+    color: var(--alt-chip-color, var(--alt-color-ink-muted));
+    font: var(--alt-type-label-lg);
+  }
+
+  :where(.alt-chip)[data-size='s'],
+  :where(.alt-chip--small) {
+    min-height: 24px;
+    padding-inline: 0.75rem;
+  }
+
+  :where(.alt-chip)[data-variant='frozen'],
+  :where(.alt-chip--frozen) {
+    --alt-chip-border: transparent;
+    --alt-chip-bg: var(--alt-color-accent-muted);
+    --alt-chip-color: var(--alt-color-accent);
+  }
+
+  :where(.alt-chip)[data-variant='danger'],
+  :where(.alt-chip--danger) {
+    --alt-chip-border: transparent;
+    --alt-chip-bg: var(--alt-color-danger-muted);
+    --alt-chip-color: var(--alt-color-danger);
+  }
+
+  :where(.alt-chip)[aria-disabled='true'] {
+    opacity: 0.38;
+  }
+
+  :where(.alt-chip__remove) {
+    display: inline-grid;
+    place-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  :where(.alt-chip__remove):focus-visible {
+    border-radius: 50%;
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+}

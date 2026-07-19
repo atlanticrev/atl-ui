@@ -1,0 +1,92 @@
+@layer alt.components {
+  :where(alt-input, .alt-input) {
+    --alt-input-padding-block: 0.75rem;
+    --alt-input-padding-inline: 0.875rem;
+    --alt-input-font: var(--alt-type-body-lg);
+    --alt-input-label-font: var(--alt-type-body-lg);
+    --alt-input-label-float-font: var(--alt-type-body-sm);
+    --alt-input-border-color: var(--alt-color-border);
+
+    display: block;
+    width: 100%;
+    color: var(--alt-color-ink);
+    font: var(--alt-input-font);
+  }
+
+  :where(alt-input, .alt-input):is([data-size='s'], [data-size='xs']) {
+    --alt-input-padding-block: 0.625rem;
+    --alt-input-padding-inline: 0.75rem;
+    --alt-input-font: var(--alt-type-body-md);
+    --alt-input-label-font: var(--alt-type-body-md);
+  }
+
+  .alt-input__root {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    min-height: 48px;
+    padding: var(--alt-input-padding-block) var(--alt-input-padding-inline);
+    border: 1px solid var(--alt-input-border-color);
+    border-radius: var(--alt-input-radius, var(--alt-radius-xs));
+    background: var(--alt-input-bg, var(--alt-color-surface));
+    box-shadow: var(--alt-shadow-sm);
+    cursor: text;
+    transition: background-color var(--alt-motion-normal), border-color var(--alt-motion-normal),
+      box-shadow var(--alt-motion-normal);
+  }
+
+  :where(alt-input, .alt-input):hover .alt-input__root {
+    --alt-input-border-color: var(--alt-color-border-strong);
+  }
+
+  :where(alt-input, .alt-input):focus-within .alt-input__root {
+    --alt-input-border-color: var(--alt-color-accent);
+    box-shadow: var(--alt-shadow-sm), var(--alt-focus-ring);
+  }
+
+  :where(alt-input, .alt-input):is([data-status='error'], [aria-invalid='true']) {
+    --alt-input-border-color: var(--alt-color-danger);
+    --alt-input-state-color: var(--alt-color-danger);
+  }
+
+  :where(alt-input, .alt-input)[data-status='success'] {
+    --alt-input-border-color: var(--alt-color-success);
+    --alt-input-state-color: var(--alt-color-success);
+  }
+
+  :where(alt-input, .alt-input):is([disabled], [readonly], [data-readonly-styled='true']) .alt-input__root {
+    --alt-input-bg: var(--alt-color-surface-muted);
+    opacity: 0.72;
+  }
+
+  .alt-input__label {
+    position: absolute;
+    top: 50%;
+    left: var(--alt-input-padding-inline);
+    z-index: 2;
+    max-width: calc(100% - (2 * var(--alt-input-padding-inline)));
+    overflow: hidden;
+    color: var(--alt-input-state-color, var(--alt-color-ink-muted));
+    font: var(--alt-input-label-font);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: color var(--alt-motion-fast), font-size var(--alt-motion-fast), top var(--alt-motion-fast);
+  }
+
+  :where(alt-input, .alt-input):is(:focus-within, [data-filled='true']) .alt-input__label {
+    top: 0;
+    max-width: calc(100% - 2rem);
+    padding-inline: 0.25rem;
+    background: linear-gradient(var(--alt-color-surface), var(--alt-color-surface));
+    font: var(--alt-input-label-float-font);
+  }
+
+  :where(alt-input, .alt-input)[data-has-leading-icon='true']:not(:focus-within, [data-filled='true'])
+    .alt-input__label:not([data-floated='true']) {
+    left: calc(var(--alt-input-padding-inline) + 2rem);
+  }
+}

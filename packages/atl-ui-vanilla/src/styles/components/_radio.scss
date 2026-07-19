@@ -1,0 +1,60 @@
+@layer alt.components {
+  :where(.alt-radio) {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: var(--alt-color-ink);
+    font: var(--alt-type-body-md);
+    cursor: pointer;
+  }
+
+  :where(.alt-radio__control) {
+    display: inline-grid;
+    flex: 0 0 auto;
+    place-content: center;
+    width: var(--alt-radio-size, 20px);
+    height: var(--alt-radio-size, 20px);
+    margin: 0.0625rem 0 0;
+    border: 2px solid var(--alt-color-border-strong);
+    border-radius: 50%;
+    appearance: none;
+    background: var(--alt-color-surface);
+    cursor: inherit;
+    transition: border-color var(--alt-motion-normal);
+  }
+
+  :where(.alt-radio__control)::before {
+    content: '';
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+    background: var(--alt-color-accent);
+    transform: scale(0);
+    transition: transform var(--alt-motion-fast);
+  }
+
+  :where(.alt-radio__control):checked {
+    border-color: var(--alt-color-accent);
+  }
+
+  :where(.alt-radio__control):checked::before {
+    transform: scale(1);
+  }
+
+  :where(.alt-radio__control):focus-visible {
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  :where(.alt-radio__control)[aria-invalid='true'] {
+    border-color: var(--alt-color-danger);
+  }
+
+  :where(.alt-radio):has(.alt-radio__control:disabled) {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+
+  :where(.alt-radio)[data-size='s'] { --alt-radio-size: 16px; }
+  :where(.alt-radio)[data-size='l'] { --alt-radio-size: 24px; }
+}

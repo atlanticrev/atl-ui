@@ -1,0 +1,64 @@
+@layer alt.components {
+  :where(.alt-skeleton) {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--alt-skeleton-radius, 0);
+    background: var(--alt-color-surface-strong);
+  }
+
+  :where(.alt-skeleton)::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0%) 0%,
+      rgb(255 255 255 / 48%) 50%,
+      rgb(255 255 255 / 0%) 100%
+    );
+    transform: translateX(-100%);
+    animation: alt-skeleton-shimmer 1.6s ease-in-out infinite;
+  }
+
+  :where(.alt-skeleton)[data-shape='line'] {
+    --alt-skeleton-radius: var(--alt-radius-full);
+    display: inline-block;
+    min-height: 1em;
+    vertical-align: middle;
+  }
+
+  :where(.alt-skeleton)[data-shape='circle'] {
+    --alt-skeleton-radius: 50%;
+    display: inline-block;
+    aspect-ratio: 1;
+    vertical-align: middle;
+  }
+
+  :where(.alt-skeleton)[data-shape='overlay'] {
+    grid-area: 1 / 1;
+    min-height: 100%;
+    border-radius: inherit;
+  }
+
+  :where(.alt-skeleton-wrapper) {
+    display: grid;
+  }
+
+  :where(.alt-skeleton-wrapper__placeholder) {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  :where(.alt-skeleton-repeat) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--alt-skeleton-repeat-gap, 0);
+  }
+
+  @keyframes alt-skeleton-shimmer {
+    to { transform: translateX(100%); }
+  }
+}

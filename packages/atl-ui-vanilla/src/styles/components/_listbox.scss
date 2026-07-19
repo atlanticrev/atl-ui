@@ -1,0 +1,86 @@
+@layer alt.components {
+  :where(.alt-listbox) {
+    min-width: var(--alt-listbox-min-width, 280px);
+    max-height: var(--alt-listbox-max-height, 320px);
+    padding: 0.25rem;
+    margin: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    list-style: none;
+    scrollbar-gutter: stable;
+  }
+
+  .alt-listbox__option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 40px;
+    padding: 0.625rem 0.875rem;
+    border: 0;
+    border-radius: calc(var(--alt-radius-sm) - 3px);
+    background: transparent;
+    color: var(--alt-color-ink);
+    font: var(--alt-type-body-lg);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .alt-listbox__option:is(:hover, [data-active='true']) {
+    background: color-mix(in srgb, var(--alt-color-ink) 8%, transparent);
+  }
+
+  .alt-listbox__option[aria-selected='true'] {
+    background: var(--alt-color-accent-muted);
+    color: var(--alt-color-accent);
+  }
+
+  .alt-listbox__option:focus-visible {
+    outline: 0;
+    box-shadow: inset var(--alt-focus-ring);
+  }
+
+  .alt-listbox__option:is([aria-disabled='true'], :disabled) {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+
+  .alt-listbox__option-text {
+    display: grid;
+    flex: 1 1 auto;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  .alt-listbox__option-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .alt-listbox__option-description,
+  .alt-listbox__footer-text {
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-body-sm);
+  }
+
+  .alt-listbox__option-icon,
+  .alt-listbox__option-check {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  .alt-listbox__empty {
+    padding: 0.625rem 0.875rem;
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-body-lg);
+  }
+
+  .alt-listbox__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0.875rem;
+    border-top: 1px solid var(--alt-color-border);
+  }
+}

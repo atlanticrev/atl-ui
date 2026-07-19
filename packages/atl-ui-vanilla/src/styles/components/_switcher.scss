@@ -1,0 +1,68 @@
+@layer alt.components {
+  :where(.alt-switcher) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--alt-color-ink);
+    font: var(--alt-type-body-md);
+    cursor: pointer;
+  }
+
+  :where(.alt-switcher__control) {
+    position: relative;
+    flex: 0 0 auto;
+    width: var(--alt-switcher-width, 52px);
+    height: var(--alt-switcher-height, 32px);
+    margin: 0;
+    border: 2px solid var(--alt-color-border-strong);
+    border-radius: var(--alt-radius-full);
+    appearance: none;
+    background: var(--alt-color-surface-strong);
+    cursor: inherit;
+    transition: background-color var(--alt-motion-normal), border-color var(--alt-motion-normal);
+  }
+
+  :where(.alt-switcher__control)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: var(--alt-switcher-knob, 16px);
+    height: var(--alt-switcher-knob, 16px);
+    border-radius: 50%;
+    background: var(--alt-color-border-strong);
+    transform: translateY(-50%);
+    transition: background-color var(--alt-motion-normal), transform var(--alt-motion-normal);
+  }
+
+  :where(.alt-switcher__control):checked {
+    border-color: var(--alt-color-accent);
+    background: var(--alt-color-accent);
+  }
+
+  :where(.alt-switcher__control):checked::before {
+    background: var(--alt-color-accent-ink);
+    transform: translate(var(--alt-switcher-travel, 20px), -50%);
+  }
+
+  :where(.alt-switcher__control):focus-visible {
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  :where(.alt-switcher__control)[aria-invalid='true'] {
+    border-color: var(--alt-color-danger);
+  }
+
+  :where(.alt-switcher):has(.alt-switcher__control:disabled) {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+
+  :where(.alt-switcher)[data-size='m'] {
+    --alt-switcher-width: 44px;
+    --alt-switcher-height: 28px;
+    --alt-switcher-knob: 12px;
+    --alt-switcher-travel: 16px;
+  }
+}

@@ -1,0 +1,25 @@
+@layer alt.components {
+  .alt-input__description,
+  .alt-input__helper,
+  .alt-input__counter {
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-body-sm);
+  }
+
+  .alt-input__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 1.25rem;
+    padding: 0.25rem 1rem 0;
+  }
+
+  :where(alt-input, .alt-input)[data-status='error'] .alt-input__helper,
+  :where(alt-input, .alt-input)[aria-invalid='true'] .alt-input__helper {
+    color: var(--alt-color-danger);
+  }
+
+  :where(alt-input, .alt-input)[data-status='success'] .alt-input__helper {
+    color: var(--alt-color-success);
+  }
+}

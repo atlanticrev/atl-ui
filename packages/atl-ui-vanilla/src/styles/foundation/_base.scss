@@ -1,0 +1,61 @@
+@layer alt.reset {
+  :where([class^='alt-'], [class*=' alt-']),
+  :where([class^='alt-'], [class*=' alt-'])::before,
+  :where([class^='alt-'], [class*=' alt-'])::after {
+    box-sizing: border-box;
+  }
+
+  :where(html, body) {
+    margin: 0;
+    background: var(--alt-color-bg);
+    color: var(--alt-color-ink);
+    font: var(--alt-type-body-lg);
+    font-family: var(--alt-font-sans);
+  }
+
+  :where(body) {
+    min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :where(button, input, select, textarea) {
+    font: inherit;
+  }
+
+  :where(
+    alt-input,
+    alt-select,
+    alt-tabs,
+    alt-toast-region,
+    alt-avatar,
+    alt-file-upload,
+    alt-progress
+  ) {
+    box-sizing: border-box;
+  }
+
+  :where(.alt-visually-hidden) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+@layer alt.utilities {
+  @media (prefers-reduced-motion: reduce) {
+    :where([class^='alt-'], [class*=' alt-']) {
+      scroll-behavior: auto;
+      transition-duration: 0.01ms;
+      animation-duration: 0.01ms;
+      animation-iteration-count: 1;
+    }
+  }
+}

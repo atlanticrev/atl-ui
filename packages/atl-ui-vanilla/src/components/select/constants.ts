@@ -1,0 +1,30 @@
+export const SELECT_OBSERVED_ATTRIBUTES = [
+	'description',
+	'disabled',
+	'form',
+	'helper-text',
+	'label',
+	'multiple',
+	'name',
+	'open',
+	'placeholder',
+	'required',
+	'size',
+	'status',
+	'value',
+];
+
+export const SELECT_PRE_UPGRADE_PROPERTIES = [
+	'disabled',
+	'helperText',
+	'multiple',
+	'name',
+	'open',
+	'options',
+	'placeholder',
+	'required',
+	'size',
+	'status',
+	'value',
+	'values',
+];

@@ -2,6 +2,7 @@
 	"name": "@atlanticrev/atl-ui",
 	"version": "1.0.12",
 	"private": false,
+	"workspaces": ["packages/*"],
 	"type": "module",
 	"sideEffects": false,
 	"main": "dist/index.js",
@@ -19,9 +20,7 @@
 		"./theme.css": "./dist/theme.css",
 		"./default.css": "./dist/default.css"
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com"
 	},
@@ -30,18 +29,23 @@
 	},
 	"scripts": {
 		"build": "npm run build:js && npm run build:css",
+		"build:vanilla": "npm run build --workspace @atlanticrev/atl-ui-vanilla",
 		"dev": "tsup --watch",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
+		"typecheck:vanilla": "npm run typecheck --workspace @atlanticrev/atl-ui-vanilla",
 		"lint": "biome lint .",
 		"format": "biome format --write .",
 		"check": "biome check --write --unsafe .",
 		"lint:ci": "biome lint .",
 		"test": "vitest run",
+		"test:vanilla": "vitest run packages/atl-ui-vanilla",
 		"test:watch": "vitest",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
 		"release:patch": "npm run verify && npm version patch && npm publish",
 		"verify": "npm run lint && npm run typecheck && npm run build",
+		"verify:pilot": "npm run verify:vanilla",
+		"verify:vanilla": "npm run lint && npm run verify --workspace @atlanticrev/atl-ui-vanilla",
 		"build:js": "tsup",
 		"build:css": "npm run build:css:core && npm run build:css:theme && npm run build:css:default",
 		"build:css:core": "sass --no-source-map src/components/core.scss dist/core.css",

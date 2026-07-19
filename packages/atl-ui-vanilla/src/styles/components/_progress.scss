@@ -1,0 +1,99 @@
+@layer alt.components {
+  :where(alt-progress, .alt-progress) {
+    --alt-progress-fill: var(--alt-color-accent);
+    --alt-progress-height: 12px;
+
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+    color: var(--alt-color-ink);
+  }
+
+  :where(alt-progress, .alt-progress)[data-size='sm'] {
+    --alt-progress-height: 8px;
+    gap: 0.375rem;
+  }
+
+  :where(alt-progress, .alt-progress)[data-status='failed'] {
+    --alt-progress-fill: var(--alt-color-danger);
+  }
+
+  :where(alt-progress, .alt-progress)[data-status='aborted'] {
+    --alt-progress-fill: var(--alt-color-border-strong);
+  }
+
+  .alt-progress__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .alt-progress__label,
+  .alt-progress__value {
+    font: var(--alt-type-label-md);
+  }
+
+  .alt-progress__label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .alt-progress__value {
+    flex: 0 0 auto;
+    color: var(--alt-color-ink-muted);
+  }
+
+  .alt-progress__control {
+    width: 100%;
+    height: var(--alt-progress-height);
+    overflow: hidden;
+    border: 1px solid var(--alt-color-border);
+    border-radius: var(--alt-radius-full);
+    appearance: none;
+    background: var(--alt-color-surface-strong);
+  }
+
+  .alt-progress__control::-webkit-progress-bar {
+    background: var(--alt-color-surface-strong);
+  }
+
+  .alt-progress__control::-webkit-progress-value {
+    border-radius: var(--alt-radius-full);
+    background: var(--alt-progress-fill);
+    transition: width 220ms ease;
+  }
+
+  .alt-progress__control::-moz-progress-bar {
+    border-radius: var(--alt-radius-full);
+    background: var(--alt-progress-fill);
+  }
+
+  .alt-progress__track {
+    height: var(--alt-progress-height);
+    overflow: hidden;
+    border: 1px solid var(--alt-color-border);
+    border-radius: var(--alt-radius-full);
+    background: var(--alt-color-surface-strong);
+  }
+
+  .alt-progress__fill {
+    position: relative;
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--alt-progress-fill);
+    transition: width 220ms ease;
+  }
+
+  :where(alt-progress, .alt-progress)[data-indeterminate='true'] .alt-progress__fill {
+    width: 40%;
+    animation: alt-progress-slide 1.2s ease-in-out infinite;
+  }
+
+  @keyframes alt-progress-slide {
+    from { transform: translateX(-110%); }
+    to { transform: translateX(260%); }
+  }
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-alt-theme="light">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ATL UI Vanilla pilot</title>
+	</head>
+	<body>
+		<main class="alt-demo">
+			<header class="alt-demo__header">
+				<div>
+					<p class="alt-demo__eyebrow">Zero runtime dependencies · Light DOM</p>
+					<h1>ATL UI Vanilla pilot</h1>
+				</div>
+				<button class="alt-button" data-variant="tonal" id="theme-button" type="button">Dark theme</button>
+			</header>
+
+			<section class="alt-card alt-demo__section">
+				<h2>Native recipes</h2>
+				<div class="alt-demo__row">
+					<button class="alt-button" data-variant="filled" type="button">Publish</button>
+					<button class="alt-button" data-variant="tonal" type="button">Save draft</button>
+					<button class="alt-button" data-variant="danger" type="button">Delete</button>
+					<label class="alt-checkbox">
+						<input class="alt-checkbox__control" checked type="checkbox" />
+						<span class="alt-checkbox__label">Cross-post automatically</span>
+					</label>
+				</div>
+			</section>
+
+			<section class="alt-card alt-demo__section">
+				<h2>Form controls</h2>
+				<form class="alt-demo__form" id="post-form">
+					<alt-input
+						helper-text="Required, up to 40 characters"
+						label="Post title"
+						max-length="40"
+						name="title"
+						required
+						show-character-count
+					></alt-input>
+					<alt-select label="Primary channel" name="channel" placeholder="Choose a channel" required>
+						<alt-option label="YouTube" value="youtube"></alt-option>
+						<alt-option label="TikTok" value="tiktok"></alt-option>
+						<alt-option label="Instagram" value="instagram"></alt-option>
+					</alt-select>
+					<alt-select label="Destinations" multiple name="destinations" placeholder="Choose destinations">
+						<alt-option label="YouTube" selected value="youtube"></alt-option>
+						<alt-option label="TikTok" value="tiktok"></alt-option>
+						<alt-option label="Instagram" selected value="instagram"></alt-option>
+					</alt-select>
+					<div class="alt-demo__row">
+						<button class="alt-button" data-variant="filled" type="submit">Validate & submit</button>
+						<button class="alt-button" type="reset">Reset</button>
+					</div>
+					<output class="alt-demo__output" id="form-output">Form is ready.</output>
+				</form>
+			</section>
+
+			<section class="alt-card alt-demo__section">
+				<h2>Tabs</h2>
+				<alt-tabs active-key="drafts" id="content-tabs">
+					<div role="tablist">
+						<button data-key="drafts" role="tab" type="button">Drafts</button>
+						<button data-key="scheduled" role="tab" type="button">Scheduled</button>
+						<button data-key="published" role="tab" type="button">Published</button>
+					</div>
+					<section data-key="drafts" role="tabpanel">3 drafts need review.</section>
+					<section data-key="scheduled" role="tabpanel">2 posts are scheduled.</section>
+					<section data-key="published" role="tabpanel">12 posts were published.</section>
+				</alt-tabs>
+			</section>
+
+			<section class="alt-card alt-demo__section">
+				<h2>Toast region</h2>
+				<div class="alt-demo__row">
+					<button class="alt-button" data-status="success" id="success-toast" type="button">Success toast</button>
+					<button class="alt-button" data-status="error" id="error-toast" type="button">Error toast</button>
+				</div>
+			</section>
+		</main>
+		<alt-toast-region default-duration="0" id="toast-region"></alt-toast-region>
+		<script type="module" src="/main.ts"></script>
+	</body>
+</html>

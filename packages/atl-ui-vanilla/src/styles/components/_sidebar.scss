@@ -1,0 +1,72 @@
+@layer alt.components {
+  :where(.alt-sidebar) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: var(--alt-sidebar-width, 264px);
+    min-height: 100%;
+    padding: 1rem;
+    border-radius: var(--alt-radius-md);
+    background: var(--alt-color-surface-soft);
+    color: var(--alt-color-ink);
+  }
+
+  :where(.alt-sidebar)[data-collapsed='true'],
+  :where(.alt-sidebar--collapsed) {
+    --alt-sidebar-width: 88px;
+  }
+
+  :where(.alt-sidebar__header) {
+    padding: 0 0.25rem 1rem;
+  }
+
+  :where(.alt-sidebar__group) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  :where(.alt-sidebar__group):last-child {
+    margin-top: auto;
+  }
+
+  :where(.alt-sidebar__item) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 40px;
+    padding: 0 0.75rem;
+    border: 0;
+    border-radius: var(--alt-radius-sm);
+    background: transparent;
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-body-lg);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--alt-motion-normal), color var(--alt-motion-normal);
+  }
+
+  :where(.alt-sidebar__item):hover {
+    background: var(--alt-color-surface-muted);
+    color: var(--alt-color-ink);
+  }
+
+  :where(.alt-sidebar__item):is([aria-current='page'], [data-selected='true']) {
+    background: var(--alt-color-surface);
+    color: var(--alt-color-accent);
+    box-shadow: var(--alt-shadow-sm);
+  }
+
+  :where(.alt-sidebar__item):focus-visible {
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  :where(.alt-sidebar__loading) {
+    padding: 1rem;
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-body-sm);
+  }
+}

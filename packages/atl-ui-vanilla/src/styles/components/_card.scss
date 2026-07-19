@@ -1,0 +1,20 @@
+@layer alt.components {
+  :where(.alt-card) {
+    border: 1px solid var(--alt-card-border, var(--alt-color-border));
+    border-radius: var(--alt-card-radius, var(--alt-radius-md));
+    padding: var(--alt-card-padding, 1.25rem);
+    background: var(--alt-card-bg, var(--alt-color-surface));
+    color: var(--alt-color-ink);
+    box-shadow: var(--alt-card-shadow, var(--alt-shadow-sm));
+  }
+
+  :where(.alt-card)[data-variant='flat'] {
+    --alt-card-shadow: none;
+  }
+
+  :where(.alt-card)[data-variant='soft'] {
+    --alt-card-bg: var(--alt-color-surface-soft);
+    --alt-card-border: transparent;
+    --alt-card-shadow: none;
+  }
+}

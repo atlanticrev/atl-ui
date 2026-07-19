@@ -1,0 +1,76 @@
+@layer alt.components {
+  :where(.alt-dialog) {
+    width: min(calc(100% - 2rem), var(--alt-dialog-width, 560px));
+    max-height: calc(100dvh - 3rem);
+    padding: 0;
+    overflow: auto;
+    border: 1px solid var(--alt-color-border);
+    border-radius: var(--alt-radius-lg);
+    background: var(--alt-color-surface);
+    color: var(--alt-color-ink);
+    box-shadow: var(--alt-shadow-lg);
+  }
+
+  :where(.alt-dialog)::backdrop {
+    background: color-mix(in srgb, var(--alt-color-scrim) 32%, transparent);
+    backdrop-filter: blur(var(--alt-dialog-backdrop-blur, 0));
+  }
+
+  :where(.alt-dialog)[data-size='520'] { --alt-dialog-width: 520px; }
+  :where(.alt-dialog)[data-size='620'] { --alt-dialog-width: 620px; }
+  :where(.alt-dialog)[data-size='760'] { --alt-dialog-width: 760px; }
+  :where(.alt-dialog)[data-size='848'] { --alt-dialog-width: 848px; }
+
+  :where(.alt-dialog__header, .alt-dialog__body, .alt-dialog__footer) {
+    padding-inline: 1.5rem;
+  }
+
+  :where(.alt-dialog__header) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.5rem 0.75rem;
+    border-bottom: 1px solid var(--alt-color-border);
+  }
+
+  :where(.alt-dialog__title) {
+    margin: 0;
+    color: var(--alt-color-ink);
+    font: var(--alt-type-title-lg);
+  }
+
+  :where(.alt-dialog__close) {
+    display: inline-grid;
+    place-content: center;
+    padding: 0.25rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--alt-color-ink-muted);
+    cursor: pointer;
+  }
+
+  :where(.alt-dialog__close):focus-visible {
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  :where(.alt-dialog__body) {
+    padding-block: 1.25rem 1.5rem;
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-body-md);
+  }
+
+  :where(.alt-dialog__footer) {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding-block: 1rem 1.5rem;
+    border-top: 1px solid var(--alt-color-border);
+  }
+
+  :where(.alt-dialog):not([open]) {
+    display: none;
+  }
+}

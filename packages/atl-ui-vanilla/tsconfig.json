@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": false,
+		"forceConsistentCasingInFileNames": true,
+		"lib": ["DOM", "ES2022"],
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"noEmit": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"target": "ES2022"
+	},
+	"include": ["demo", "src", "tests", "tsup.config.ts", "vitest.config.ts"]
+}

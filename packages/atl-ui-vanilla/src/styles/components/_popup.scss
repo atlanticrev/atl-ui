@@ -1,0 +1,36 @@
+@layer alt.components {
+  :where(.alt-popup, .alt-select__popup) {
+    position: fixed;
+    z-index: var(--alt-popup-z-index, 50);
+    inset: auto;
+    min-width: var(--alt-popup-min-width, 280px);
+    max-width: min(var(--alt-popup-max-width, 420px), calc(100vw - 1rem));
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--alt-color-border);
+    border-radius: var(--alt-radius-sm);
+    background: var(--alt-color-surface);
+    color: var(--alt-color-ink);
+    box-shadow: var(--alt-shadow-md);
+  }
+
+  :where(.alt-popup, .alt-select__popup):not(:popover-open, [data-open='true']) {
+    display: none;
+  }
+
+  .alt-select__search {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--alt-color-border);
+  }
+
+  @supports (position-anchor: --alt-anchor) {
+    :where(.alt-popup, .alt-select__popup)[data-anchor-positioning='true'] {
+      position-anchor: var(--alt-popup-anchor);
+      top: anchor(bottom);
+      left: anchor(left);
+      margin-top: var(--alt-popup-offset, 0.25rem);
+      position-try-fallbacks: flip-block, flip-inline;
+    }
+  }
+}
