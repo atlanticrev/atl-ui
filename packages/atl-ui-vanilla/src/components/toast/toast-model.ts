@@ -1,10 +1,15 @@
 import { ToastTimer } from './toast-timer';
-import type { AltToastOptions, AltToastStatus } from './types';
+import type { AltToastDismissReason, AltToastOptions, AltToastStatus } from './types';
+
+export type ToastPhase = 'queued' | 'entering' | 'open' | 'closing' | 'collapsing';
 
 export type ToastRecord = {
+	closeReason?: AltToastDismissReason;
 	dismissible: boolean;
 	id: string;
 	message: string;
+	persist: boolean;
+	phase: ToastPhase;
 	status: AltToastStatus;
 	timer: ToastTimer;
 };
@@ -28,12 +33,20 @@ export const createToastRecord = (
 			: options;
 	const id = normalized.id ?? `alt-toast-${++nextToastId}`;
 	const duration = normalizeDuration(normalized.duration, defaultDuration);
+	const timer = new ToastTimer(normalized.persist ? 0 : duration, () => onElapsed(id));
+	timer.pause('lifecycle');
 
 	return {
 		dismissible: normalized.dismissible ?? true,
 		id,
 		message: normalized.message,
+		persist: normalized.persist ?? duration === 0,
+		phase: 'queued',
 		status: normalized.status ?? 'info',
-		timer: new ToastTimer(duration, () => onElapsed(id)),
+		timer,
 	};
+};
+
+export const getToastMessage = (options: AltToastOptions | string): string => {
+	return typeof options === 'string' ? options : options.message;
 };

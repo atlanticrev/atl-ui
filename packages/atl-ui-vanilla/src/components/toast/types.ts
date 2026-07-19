@@ -5,6 +5,8 @@ export type AltToastOptions = {
 	duration?: number;
 	id?: string;
 	message: string;
+	persist?: boolean;
+	preventDuplicate?: boolean;
 	status?: AltToastStatus;
 };
 
@@ -21,5 +23,6 @@ export type AltToastElementApi = HTMLElement & {
 	defaultDuration: number;
 	dismiss: (id: string) => boolean;
 	max: number;
+	preventDuplicate: boolean;
 	push: (options: AltToastOptions | string) => string;
 };

@@ -20,11 +20,14 @@ defineAltTabs();
 defineAltToastRegion();
 ```
 
-Можно импортировать только нужный entry point, например `@atlanticrev/atl-ui-vanilla/input`. Вызовы `define*`
-идемпотентны. Импорт и вызов регистрации на сервере безопасны; без browser environment define вернёт
-`undefined`.
+Можно импортировать только нужный entry point, например `@atlanticrev/atl-ui-vanilla/input`. Вызовы
+`define*` идемпотентны. Импорт и вызов регистрации на сервере безопасны; без browser environment define
+вернёт `undefined`.
 
 ## Native recipes
+
+Полный контракт кнопки, loading, иконки, tones и группы описаны в
+[`docs/button.md`](docs/button.md).
 
 ```html
 <button class="alt-button" data-size="40" data-variant="filled" type="button">Publish</button>
@@ -57,10 +60,13 @@ select.options = [{ label: 'Instagram', value: 'instagram' }];
 select.addEventListener('alt-change', (event) => console.log(event.detail.values));
 ```
 
-Input держит настоящий `<input>` внутри light DOM. Select полностью управляет видимыми trigger/listbox, но
-использует скрытый native `<select>` как carrier для FormData, reset и validation.
+Input держит настоящий `<input>` внутри light DOM. Select полностью управляет видимыми trigger/listbox,
+но использует скрытый native `<select>` как carrier для FormData, reset и validation.
 
 ## Tabs и Toast
+
+Полный контракт очереди, lifecycle, таймеров и события закрытия описан в
+[`docs/toast.md`](docs/toast.md).
 
 ```html
 <alt-tabs active-key="drafts">
@@ -85,18 +91,21 @@ document.querySelector('alt-toast-region').push({
 ## Темы и overrides
 
 `core.css` содержит tokens, `theme.css` — recipes, `default.css` — оба слоя. Тема выбирается через
-`data-alt-theme="light|dark"`. Локальные изменения помещаются после library CSS или в предусмотренный слой:
+`data-alt-theme="light|dark"`. Локальные изменения помещаются после library CSS или в предусмотренный
+слой:
 
 ```css
 @layer alt.overrides {
   .alt-button[data-variant='filled'] {
     --alt-button-bg: #141414;
+    --alt-button-bg-hover: #2b2b2b;
+    --alt-button-bg-active: #050505;
   }
 }
 ```
 
-Поддерживается актуальный evergreen browser baseline. Popover API и CSS Anchor Positioning используются как
-progressive enhancement; dismiss и вычисляемое positioning имеют browser-API fallback.
+Поддерживается актуальный evergreen browser baseline. Popover API и CSS Anchor Positioning используются
+как progressive enhancement; dismiss и вычисляемое positioning имеют browser-API fallback.
 
 ## Визуальная проверка
 
@@ -106,6 +115,7 @@ progressive enhancement; dismiss и вычисляемое positioning имею�
 npm run demo --workspace @atlanticrev/atl-ui-vanilla
 ```
 
-Production-вариант собирается командой `npm run demo:build --workspace @atlanticrev/atl-ui-vanilla`.
+Production-вариант собирается командой
+`npm run demo:build --workspace @atlanticrev/atl-ui-vanilla`.
 
 Архитектура, аудит и порядок миграции описаны в `docs/`.

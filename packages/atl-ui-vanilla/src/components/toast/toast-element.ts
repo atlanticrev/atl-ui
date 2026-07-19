@@ -1,19 +1,14 @@
-import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
+import { createBaseElementClass, upgradeProperties } from '../../core';
 
 import { createToastDom, syncToastDom, type ToastDom } from './toast-dom';
+import { dispatchToastDismissed } from './toast-events';
 import { bindToastInteractions } from './toast-interactions';
-import { createToastRecord, type ToastRecord } from './toast-model';
-import type { AltToastDismissDetail, AltToastDismissReason, AltToastOptions } from './types';
-
-const DEFAULT_DURATION = 5_000;
-const DEFAULT_MAX = 3;
-
-const readNumber = (element: HTMLElement, name: string, fallback: number, minimum: number): number => {
-	const attribute = element.getAttribute(name);
-	if (attribute === null || attribute.trim() === '') return fallback;
-	const value = Number(attribute);
-	return Number.isFinite(value) && value >= minimum ? Math.floor(value) : fallback;
-};
+import type { ToastPhase } from './toast-model';
+import { readDefaultDuration, readMaxToasts, readPreventDuplicate, writePreventDuplicate } from './toast-properties';
+import { ToastStore } from './toast-store';
+import type { ToastPauseReason } from './toast-timer';
+import { bindToastTransitions, type ToastTransitionCoordinator } from './toast-transitions';
+import type { AltToastDismissReason, AltToastOptions } from './types';
 
 export const createAltToastRegionElementClass = (
 	HtmlElementConstructor: typeof HTMLElement,
@@ -21,12 +16,16 @@ export const createAltToastRegionElementClass = (
 	const BaseElement = createBaseElementClass(HtmlElementConstructor);
 
 	return class AltToastRegionElement extends BaseElement {
-		static observedAttributes = ['default-duration', 'max'];
+		static observedAttributes = ['default-duration', 'max', 'prevent-duplicate'];
 		#dom: ToastDom | undefined;
-		#records: ToastRecord[] = [];
+		#transitions: ToastTransitionCoordinator | undefined;
+		#store = new ToastStore(
+			() => this.requestUpdate(),
+			(record, reason) => dispatchToastDismissed(this, record, reason),
+		);
 
 		get defaultDuration(): number {
-			return readNumber(this, 'default-duration', DEFAULT_DURATION, 0);
+			return readDefaultDuration(this);
 		}
 
 		set defaultDuration(value: number) {
@@ -34,11 +33,19 @@ export const createAltToastRegionElementClass = (
 		}
 
 		get max(): number {
-			return readNumber(this, 'max', DEFAULT_MAX, 1);
+			return readMaxToasts(this);
 		}
 
 		set max(value: number) {
 			this.setAttribute('max', String(value));
+		}
+
+		get preventDuplicate(): boolean {
+			return readPreventDuplicate(this);
+		}
+
+		set preventDuplicate(value: boolean) {
+			writePreventDuplicate(this, value);
 		}
 
 		attributeChangedCallback(): void {
@@ -46,74 +53,59 @@ export const createAltToastRegionElementClass = (
 		}
 
 		onConnected(signal: AbortSignal): void {
-			upgradeProperties(this, ['defaultDuration', 'max']);
+			upgradeProperties(this, ['defaultDuration', 'max', 'preventDuplicate']);
 			this.classList.add('alt-toast-region');
 			this.#dom ??= createToastDom(this);
-			bindToastInteractions(this, signal, this.#handleClose, this.#setToastPaused);
+			this.#transitions = bindToastTransitions(this, signal, this.#handleTransition);
+			bindToastInteractions(this, signal, this.#handleClose, this.#setToastPaused, this.#setAllPaused);
+			this.#setAllPaused('document-hidden', this.ownerDocument.hidden);
+		}
+
+		onDisconnected(): void {
+			this.#transitions = undefined;
 		}
 
 		push(options: AltToastOptions | string): string {
-			const record = createToastRecord(options, this.defaultDuration, this.#handleElapsed);
-			const existingIndex = this.#records.findIndex((item) => item.id === record.id);
-
-			if (existingIndex >= 0) {
-				this.#records[existingIndex].timer.cancel();
-				this.#records[existingIndex] = record;
-			} else {
-				this.#records.push(record);
-			}
-
-			this.#enforceMax();
-			this.requestUpdate();
-			return record.id;
+			return this.#store.push(options, this.defaultDuration, this.max, this.preventDuplicate);
 		}
 
 		dismiss(id: string, reason: AltToastDismissReason = 'programmatic'): boolean {
-			const index = this.#records.findIndex((record) => record.id === id);
-			if (index < 0) return false;
-			const [record] = this.#records.splice(index, 1);
-			record.timer.cancel();
-			this.dispatchEvent(
-				createTypedEvent<AltToastDismissDetail>('alt-dismiss', {
-					id: record.id,
-					reason,
-					status: record.status,
-				}),
-			);
-			this.requestUpdate();
-			return true;
+			return this.#store.dismiss(id, reason, this.max);
 		}
 
 		clear(): void {
-			for (const record of [...this.#records]) this.dismiss(record.id, 'clear');
+			this.#store.clear();
 		}
 
 		update(): void {
 			if (!this.#dom) return;
-			this.#enforceMax();
-			syncToastDom(this.#dom, this.#records);
+			this.#store.reconcile(this.max);
+			const records = this.#store.visibleRecords;
+			const items = syncToastDom(this.#dom, records);
 			const window = this.ownerDocument.defaultView;
 			const signal = this.connectionSignal;
 			if (!window || !signal) return;
-			for (const record of this.#records) record.timer.bind(window, signal);
-		}
-
-		#enforceMax(): void {
-			while (this.#records.length > this.max) this.dismiss(this.#records[0].id, 'overflow');
+			this.#store.bindTimers(window, signal);
+			for (const record of records) {
+				const item = items.get(record.id);
+				if (item) this.#transitions?.sync(item, record.phase);
+			}
 		}
 
 		#handleClose = (id: string): void => {
 			this.dismiss(id, 'close');
 		};
 
-		#handleElapsed = (id: string): void => {
-			this.dismiss(id, 'timeout');
+		#handleTransition = (id: string, phase: ToastPhase): void => {
+			this.#store.complete(id, phase, this.max);
 		};
 
-		#setToastPaused = (id: string, paused: boolean): void => {
-			const record = this.#records.find((entry) => entry.id === id);
-			if (paused) record?.timer.pause();
-			else record?.timer.resume();
+		#setToastPaused = (id: string, reason: ToastPauseReason, paused: boolean): void => {
+			this.#store.setPaused(id, reason, paused);
+		};
+
+		#setAllPaused = (reason: ToastPauseReason, paused: boolean): void => {
+			this.#store.setAllPaused(reason, paused);
 		};
 	};
 };

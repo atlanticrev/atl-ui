@@ -1,0 +1,69 @@
+@layer alt.components {
+  .alt-toast-region__item[data-state='entering'] {
+    animation: alt-toast-expand var(--alt-toast-enter-duration, 200ms) ease-out both;
+  }
+
+  .alt-toast-region__item[data-state='entering'] .alt-toast {
+    animation: alt-toast-enter var(--alt-toast-enter-duration, 200ms) ease-out both;
+    will-change: opacity, transform;
+  }
+
+  .alt-toast-region__item[data-state='closing'] .alt-toast {
+    animation: alt-toast-exit var(--alt-toast-exit-duration, 160ms) ease-in both;
+    will-change: opacity, transform;
+  }
+
+  .alt-toast-region__item[data-state='collapsing'] {
+    animation: alt-toast-collapse var(--alt-toast-collapse-duration, 175ms) ease-in-out both;
+    will-change: grid-template-rows;
+  }
+
+  .alt-toast-region__item[data-state='collapsing'] .alt-toast {
+    opacity: 0;
+    transform: translate3d(1rem, 0, 0) scale(0.98);
+  }
+
+  @keyframes alt-toast-expand {
+    from {
+      grid-template-rows: 0fr;
+    }
+
+    to {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  @keyframes alt-toast-collapse {
+    from {
+      grid-template-rows: 1fr;
+    }
+
+    to {
+      grid-template-rows: 0fr;
+    }
+  }
+
+  @keyframes alt-toast-enter {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 0.75rem, 0) scale(0.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  @keyframes alt-toast-exit {
+    from {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    to {
+      opacity: 0;
+      transform: translate3d(1rem, 0, 0) scale(0.98);
+    }
+  }
+}

@@ -3,15 +3,11 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createAltToastRegionElementClass } from '../../src/components/toast';
 import type { AltToastElementApi } from '../../src/components/toast/types';
 
+import { finishToastClose, finishToastEnter, flushToastUpdates, getToastItem } from './toast-test-utils';
+
 const TAG_NAME = 'alt-toast-region-test';
 
-const flushUpdates = async (): Promise<void> => {
-	await Promise.resolve();
-};
-
-const createRegion = (): AltToastElementApi => {
-	return document.createElement(TAG_NAME) as AltToastElementApi;
-};
+const createRegion = (): AltToastElementApi => document.createElement(TAG_NAME) as AltToastElementApi;
 
 beforeAll(() => {
 	if (!customElements.get(TAG_NAME)) {
@@ -24,35 +20,6 @@ beforeEach(() => {
 });
 
 describe('alt-toast-region', () => {
-	it('owns one keyed live-region stack and updates text safely', async () => {
-		const region = createRegion();
-		document.body.append(region);
-		expect(region.defaultDuration).toBe(5_000);
-		region.push({
-			duration: 0,
-			id: 'sync',
-			message: '<strong>Saved</strong>',
-			status: 'success',
-		});
-		await flushUpdates();
-		const stack = region.querySelector('.alt-toast-region__stack');
-		const item = region.querySelector<HTMLElement>('[data-toast-id="sync"]');
-		expect(stack?.getAttribute('aria-live')).toBe('polite');
-		expect(item?.dataset.status).toBe('success');
-		expect(item?.textContent).toContain('<strong>Saved</strong>');
-		expect(item?.querySelector('strong')).toBeNull();
-
-		region.push({
-			duration: 0,
-			id: 'sync',
-			message: 'Updated',
-		});
-		await flushUpdates();
-		expect(region.querySelector('.alt-toast-region__stack')).toBe(stack);
-		expect(region.querySelectorAll('.alt-toast')).toHaveLength(1);
-		expect(region.querySelector('.alt-toast__message')?.textContent).toBe('Updated');
-	});
-
 	it('keeps the newest three by default and reports overflow', async () => {
 		const region = createRegion();
 		const onDismiss = vi.fn();
@@ -65,7 +32,11 @@ describe('alt-toast-region', () => {
 				message: id,
 			});
 		}
-		await flushUpdates();
+		await flushToastUpdates();
+		expect(getToastItem(region, 'one').hasAttribute('data-close-pending')).toBe(true);
+		await finishToastEnter(region, 'one');
+		expect(getToastItem(region, 'one').dataset.state).toBe('closing');
+		await finishToastClose(region, 'one');
 
 		expect(
 			Array.from(region.querySelectorAll<HTMLElement>('.alt-toast')).map((item) => item.dataset.toastId),
@@ -87,22 +58,31 @@ describe('alt-toast-region', () => {
 			id: 'closable',
 			message: 'Close me',
 		});
-		await flushUpdates();
+		await flushToastUpdates();
+		await finishToastEnter(region, 'closable');
 		region.querySelector<HTMLButtonElement>('.alt-toast__dismiss')?.click();
-		await flushUpdates();
+		await flushToastUpdates();
+		expect(region.querySelector('.alt-toast')).not.toBeNull();
+		expect(onDismiss).not.toHaveBeenCalled();
+		await finishToastClose(region, 'closable');
 		expect(region.querySelector('.alt-toast')).toBeNull();
 		expect(onDismiss.mock.calls[0][0].detail.reason).toBe('close');
 
-		region.push({
+		const firstId = region.push({
 			duration: 0,
 			message: 'One',
 		});
-		region.push({
+		const secondId = region.push({
 			duration: 0,
 			message: 'Two',
 		});
+		await flushToastUpdates();
+		await finishToastEnter(region, firstId);
+		await finishToastEnter(region, secondId);
 		region.clear();
-		await flushUpdates();
+		await flushToastUpdates();
+		await finishToastClose(region, firstId);
+		await finishToastClose(region, secondId);
 		expect(region.querySelector('.alt-toast')).toBeNull();
 		expect(onDismiss.mock.calls.at(-1)?.[0].detail.reason).toBe('clear');
 	});

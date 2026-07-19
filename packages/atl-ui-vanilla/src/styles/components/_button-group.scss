@@ -1,0 +1,45 @@
+@layer alt.components {
+  :where(.alt-button-group) {
+    display: inline-flex;
+    align-items: stretch;
+  }
+
+  :where(.alt-button-group)[data-full-width] {
+    display: flex;
+    width: 100%;
+  }
+
+  :where(.alt-button-group)[data-full-width] > :where(.alt-button) {
+    flex: 1 1 0;
+  }
+
+  :where(.alt-button-group):not([data-orientation='vertical']) > :where(.alt-button):not(:first-child) {
+    margin-inline-start: -1px;
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  :where(.alt-button-group):not([data-orientation='vertical']) > :where(.alt-button):not(:last-child) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  :where(.alt-button-group)[data-orientation='vertical'] {
+    flex-direction: column;
+  }
+
+  :where(.alt-button-group)[data-orientation='vertical'] > :where(.alt-button):not(:first-child) {
+    margin-block-start: -1px;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
+
+  :where(.alt-button-group)[data-orientation='vertical'] > :where(.alt-button):not(:last-child) {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  :where(.alt-button-group) > :where(.alt-button):is(:hover, :focus-visible, :active) {
+    z-index: 1;
+  }
+}

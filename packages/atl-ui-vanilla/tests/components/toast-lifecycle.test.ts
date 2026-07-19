@@ -3,11 +3,9 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vite
 import { createAltToastRegionElementClass } from '../../src/components/toast';
 import type { AltToastElementApi } from '../../src/components/toast/types';
 
-const TAG_NAME = 'alt-toast-region-lifecycle-test';
+import { finishToastClose, finishToastEnter, flushToastUpdates, getToastItem } from './toast-test-utils';
 
-const flushUpdates = async (): Promise<void> => {
-	await Promise.resolve();
-};
+const TAG_NAME = 'alt-toast-region-lifecycle-test';
 
 beforeAll(() => {
 	if (!customElements.get(TAG_NAME)) {
@@ -34,7 +32,8 @@ describe('alt-toast-region lifecycle', () => {
 			id: 'paused',
 			message: 'Wait',
 		});
-		await flushUpdates();
+		await flushToastUpdates();
+		await finishToastEnter(region, 'paused');
 		const toast = region.querySelector<HTMLElement>('.alt-toast');
 		toast?.dispatchEvent(
 			new MouseEvent('mouseover', {
@@ -49,7 +48,9 @@ describe('alt-toast-region lifecycle', () => {
 			}),
 		);
 		vi.advanceTimersByTime(100);
-		await flushUpdates();
+		await flushToastUpdates();
+		expect(getToastItem(region, 'paused').dataset.state).toBe('closing');
+		await finishToastClose(region, 'paused');
 		expect(region.querySelector('.alt-toast')).toBeNull();
 	});
 
@@ -61,7 +62,8 @@ describe('alt-toast-region lifecycle', () => {
 			id: 'lifecycle',
 			message: 'Wait',
 		});
-		await flushUpdates();
+		await flushToastUpdates();
+		await finishToastEnter(region, 'lifecycle');
 		vi.advanceTimersByTime(40);
 		region.remove();
 		vi.advanceTimersByTime(100);
@@ -73,9 +75,10 @@ describe('alt-toast-region lifecycle', () => {
 			message: 'Back',
 		});
 		document.body.append(region);
-		await flushUpdates();
+		await flushToastUpdates();
+		await finishToastEnter(region, 'reconnect');
 		vi.advanceTimersByTime(100);
-		await flushUpdates();
+		await flushToastUpdates();
 		expect(region.dismiss('reconnect')).toBe(false);
 	});
 });

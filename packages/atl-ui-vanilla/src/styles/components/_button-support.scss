@@ -1,0 +1,74 @@
+@layer alt.components {
+  :where(.alt-button)[data-full-width],
+  :where(.alt-button--full-width) {
+    width: 100%;
+  }
+
+  :where(.alt-button)[data-elevation='none'] {
+    --alt-button-shadow: none;
+    --alt-button-shadow-hover: none;
+    --alt-button-shadow-active: none;
+    --alt-button-disabled-shadow: none;
+  }
+
+  :where(.alt-button)[data-size='48'] {
+    --alt-button-icon-size: 1.375rem;
+    --alt-button-control-size: 48px;
+
+    min-height: var(--alt-button-control-size);
+    padding-inline: 1rem;
+  }
+
+  :where(.alt-button)[data-size='32'] {
+    --alt-button-icon-size: 1.125rem;
+    --alt-button-control-size: 32px;
+
+    min-height: var(--alt-button-control-size);
+    padding-inline: 0.75rem;
+    font: var(--alt-type-label-md);
+  }
+
+  :where(.alt-button)[data-size='24'] {
+    --alt-button-icon-size: 1rem;
+    --alt-button-control-size: 28px;
+
+    min-height: var(--alt-button-control-size);
+    padding-inline: 0.625rem;
+    font: var(--alt-type-label-md);
+  }
+
+  :where(.alt-button)[data-icon-only] {
+    width: var(--alt-button-control-size, 40px);
+    min-width: 0;
+    padding: 0;
+  }
+
+  .alt-button__content {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+  }
+
+  .alt-button__icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: var(--alt-button-icon-size, 1.25rem);
+    height: var(--alt-button-icon-size, 1.25rem);
+  }
+
+  .alt-button__icon > :where(svg, img) {
+    width: 100%;
+    height: 100%;
+  }
+
+  .alt-button__icon--start {
+    order: -1;
+  }
+
+  .alt-button__icon--end {
+    order: 1;
+  }
+}

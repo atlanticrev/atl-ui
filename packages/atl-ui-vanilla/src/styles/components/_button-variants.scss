@@ -1,0 +1,63 @@
+@layer alt.components {
+  :where(.alt-button)[data-variant='filled'],
+  :where(.alt-button--filled),
+  :where(.alt-button)[data-variant='danger'],
+  :where(.alt-button--danger) {
+    --alt-button-bg: var(--alt-button-tone-main);
+    --alt-button-bg-hover: var(--alt-button-tone-hover);
+    --alt-button-bg-active: var(--alt-button-tone-active);
+    --alt-button-border: var(--alt-button-tone-main);
+    --alt-button-border-hover: var(--alt-button-tone-hover);
+    --alt-button-border-active: var(--alt-button-tone-active);
+    --alt-button-color: var(--alt-button-tone-ink);
+    --alt-button-color-hover: var(--alt-button-tone-ink);
+    --alt-button-color-active: var(--alt-button-tone-ink);
+    --alt-button-shadow: var(--alt-shadow-sm);
+    --alt-button-shadow-hover: var(--alt-shadow-md);
+    --alt-button-shadow-active: none;
+    --alt-button-disabled-border: var(--alt-color-disabled-bg);
+  }
+
+  :where(.alt-button)[data-variant='tonal'],
+  :where(.alt-button--tonal) {
+    --alt-button-bg: var(--alt-button-tone-muted);
+    --alt-button-bg-hover: var(--alt-button-tone-muted-hover);
+    --alt-button-bg-active: var(--alt-button-tone-muted-active);
+    --alt-button-border: transparent;
+    --alt-button-border-hover: transparent;
+    --alt-button-border-active: transparent;
+    --alt-button-disabled-border: var(--alt-color-disabled-bg);
+  }
+
+  :where(.alt-button)[data-variant='outlined'],
+  :where(.alt-button--outlined) {
+    --alt-button-bg: var(--alt-color-surface);
+    --alt-button-bg-hover: var(--alt-button-tone-muted);
+    --alt-button-bg-active: var(--alt-button-tone-muted-hover);
+    --alt-button-border: var(--alt-color-border-strong);
+    --alt-button-border-hover: var(--alt-button-tone-main);
+    --alt-button-border-active: var(--alt-button-tone-active);
+    --alt-button-disabled-bg: transparent;
+  }
+
+  :where(.alt-button)[data-variant='text'],
+  :where(.alt-button--text) {
+    --alt-button-bg: transparent;
+    --alt-button-bg-hover: var(--alt-button-tone-muted);
+    --alt-button-bg-active: var(--alt-button-tone-muted-hover);
+    --alt-button-border: transparent;
+    --alt-button-border-hover: transparent;
+    --alt-button-border-active: transparent;
+    --alt-button-disabled-bg: transparent;
+    --alt-button-disabled-border: transparent;
+  }
+
+  :where(.alt-button)[data-variant='elevated'],
+  :where(.alt-button--elevated) {
+    --alt-button-bg-hover: var(--alt-button-tone-muted);
+    --alt-button-bg-active: var(--alt-button-tone-muted-hover);
+    --alt-button-shadow: var(--alt-shadow-sm);
+    --alt-button-shadow-hover: var(--alt-shadow-md);
+    --alt-button-shadow-active: var(--alt-shadow-sm);
+  }
+}

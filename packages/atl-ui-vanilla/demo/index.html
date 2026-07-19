@@ -20,12 +20,45 @@
 				<div class="alt-demo__row">
 					<button class="alt-button" data-variant="filled" type="button">Publish</button>
 					<button class="alt-button" data-variant="tonal" type="button">Save draft</button>
+					<button class="alt-button" data-variant="outlined" type="button">Outlined</button>
+					<button class="alt-button" data-variant="text" type="button">Text</button>
+					<button class="alt-button" data-variant="elevated" type="button">Elevated</button>
 					<button class="alt-button" data-variant="danger" type="button">Delete</button>
 					<label class="alt-checkbox">
 						<input class="alt-checkbox__control" checked type="checkbox" />
 						<span class="alt-checkbox__label">Cross-post automatically</span>
 					</label>
 				</div>
+			</section>
+
+			<section class="alt-card alt-demo__section">
+				<h2>Button contracts</h2>
+				<div class="alt-demo__row">
+					<button class="alt-button" data-tone="success" data-variant="tonal" type="button">
+						<span aria-hidden="true" class="alt-button__icon">✓</span>
+						<span class="alt-button__content">Approved</span>
+					</button>
+					<button aria-label="Add channel" class="alt-button" data-icon-only type="button">
+						<span aria-hidden="true" class="alt-button__icon">+</span>
+					</button>
+					<button
+						aria-busy="true"
+						class="alt-button"
+						data-loading
+						data-variant="filled"
+						disabled
+						id="publish-button"
+						type="button"
+					>
+						<span aria-labelledby="publish-button" class="alt-button__loading-indicator" role="progressbar"></span>
+						<span class="alt-button__content">Publish</span>
+					</button>
+					<div aria-label="Editor mode" class="alt-button-group" role="group">
+						<button class="alt-button" data-variant="outlined" type="button">Write</button>
+						<button class="alt-button" data-variant="outlined" type="button">Preview</button>
+					</div>
+				</div>
+				<button class="alt-button" data-full-width data-variant="filled" type="button">Continue</button>
 			</section>
 
 			<section class="alt-card alt-demo__section">

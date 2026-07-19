@@ -1,0 +1,53 @@
+@layer alt.components {
+  .alt-toast__dismiss {
+    position: relative;
+    display: inline-grid;
+    place-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--alt-color-inverse-accent);
+    cursor: pointer;
+  }
+
+  .alt-toast__dismiss::before,
+  .alt-toast__dismiss::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.75rem;
+    height: 1.5px;
+    border-radius: 1px;
+    background: currentColor;
+    content: '';
+    transform: translate(-50%, -50%) rotate(45deg);
+    transform-origin: center;
+  }
+
+  .alt-toast__dismiss::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  @media (hover: hover) {
+    .alt-toast__dismiss:hover:not(:disabled) {
+      background: color-mix(in srgb, currentColor 12%, transparent);
+    }
+  }
+
+  .alt-toast__dismiss:active:not(:disabled) {
+    background: color-mix(in srgb, currentColor 20%, transparent);
+  }
+
+  .alt-toast__dismiss:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 32%, transparent);
+  }
+
+  .alt-toast__dismiss:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}

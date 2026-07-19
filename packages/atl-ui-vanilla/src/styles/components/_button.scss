@@ -1,5 +1,29 @@
 @layer alt.components {
   :where(.alt-button) {
+    --alt-button-tone-main: var(--alt-color-accent);
+    --alt-button-tone-hover: var(--alt-color-accent-hover);
+    --alt-button-tone-active: var(--alt-color-accent-active);
+    --alt-button-tone-muted: var(--alt-color-accent-muted);
+    --alt-button-tone-muted-hover: var(--alt-color-accent-muted-hover);
+    --alt-button-tone-muted-active: var(--alt-color-accent-muted-active);
+    --alt-button-tone-ink: var(--alt-color-accent-ink);
+    --alt-button-bg: var(--alt-color-surface);
+    --alt-button-bg-hover: var(--alt-button-tone-muted);
+    --alt-button-bg-active: var(--alt-button-tone-muted-hover);
+    --alt-button-border: var(--alt-color-border);
+    --alt-button-border-hover: var(--alt-button-tone-main);
+    --alt-button-border-active: var(--alt-button-tone-active);
+    --alt-button-color: var(--alt-button-tone-main);
+    --alt-button-color-hover: var(--alt-button-tone-main);
+    --alt-button-color-active: var(--alt-button-tone-active);
+    --alt-button-shadow: none;
+    --alt-button-shadow-hover: var(--alt-shadow-sm);
+    --alt-button-shadow-active: none;
+    --alt-button-disabled-bg: var(--alt-color-disabled-bg);
+    --alt-button-disabled-border: var(--alt-color-disabled-border);
+    --alt-button-disabled-color: var(--alt-color-disabled-ink);
+    --alt-button-disabled-shadow: none;
+
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -8,110 +32,55 @@
     min-width: 64px;
     min-height: 40px;
     padding: 0 0.875rem;
-    border: 1px solid var(--alt-button-border, var(--alt-color-border));
+    border: 1px solid var(--alt-button-state-border, var(--alt-button-border));
     border-radius: var(--alt-button-radius, var(--alt-radius-sm));
-    background: var(--alt-button-bg, var(--alt-color-surface));
-    color: var(--alt-button-color, var(--alt-color-accent));
-    box-shadow: var(--alt-button-shadow, none);
+    background: var(--alt-button-state-bg, var(--alt-button-bg));
+    color: var(--alt-button-state-color, var(--alt-button-color));
+    box-shadow: var(--alt-button-state-shadow, var(--alt-button-shadow));
     font: var(--alt-type-label-lg);
     text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
     cursor: pointer;
-    transition: background-color var(--alt-motion-normal), border-color var(--alt-motion-normal),
-      box-shadow var(--alt-motion-normal), color var(--alt-motion-normal);
+    transition: background-color var(--alt-motion-fast), border-color var(--alt-motion-fast),
+      box-shadow var(--alt-motion-fast), color var(--alt-motion-fast);
+  }
+
+  @media (hover: hover) {
+    :where(.alt-button):hover:not(:disabled, [aria-disabled='true']) {
+      --alt-button-state-bg: var(--alt-button-bg-hover);
+      --alt-button-state-border: var(--alt-button-border-hover);
+      --alt-button-state-color: var(--alt-button-color-hover);
+      --alt-button-state-shadow: var(--alt-button-shadow-hover);
+    }
+  }
+
+  :where(.alt-button):active:not(:disabled, [aria-disabled='true']) {
+    --alt-button-state-bg: var(--alt-button-bg-active);
+    --alt-button-state-border: var(--alt-button-border-active);
+    --alt-button-state-color: var(--alt-button-color-active);
+    --alt-button-state-shadow: var(--alt-button-shadow-active);
   }
 
   :where(.alt-button):focus-visible {
     outline: 0;
-    box-shadow: var(--alt-button-shadow, none), var(--alt-focus-ring);
+    box-shadow: var(--alt-button-state-shadow, var(--alt-button-shadow)), var(--alt-focus-ring);
   }
 
   :where(.alt-button):is(:disabled, [aria-disabled='true']) {
-    opacity: 0.38;
+    --alt-button-state-bg: var(--alt-button-disabled-bg);
+    --alt-button-state-border: var(--alt-button-disabled-border);
+    --alt-button-state-color: var(--alt-button-disabled-color);
+    --alt-button-state-shadow: var(--alt-button-disabled-shadow);
+
     cursor: not-allowed;
-    box-shadow: none;
   }
 
-  :where(.alt-button)[data-variant='filled'],
-  :where(.alt-button--filled) {
-    --alt-button-bg: var(--alt-color-accent);
-    --alt-button-border: var(--alt-color-accent);
-    --alt-button-color: var(--alt-color-accent-ink);
-    --alt-button-shadow: var(--alt-shadow-sm);
-  }
-
-  :where(.alt-button)[data-variant='tonal'],
-  :where(.alt-button--tonal) {
-    --alt-button-bg: var(--alt-color-accent-muted);
-    --alt-button-border: transparent;
-  }
-
-  :where(.alt-button)[data-variant='text'],
-  :where(.alt-button--text) {
-    --alt-button-bg: transparent;
-    --alt-button-border: transparent;
-  }
-
-  :where(.alt-button)[data-variant='elevated'],
-  :where(.alt-button--elevated) {
-    --alt-button-shadow: var(--alt-shadow-sm);
-  }
-
-  :where(.alt-button)[data-variant='danger'],
-  :where(.alt-button--danger) {
-    --alt-button-bg: var(--alt-color-danger);
-    --alt-button-border: var(--alt-color-danger);
-    --alt-button-color: var(--alt-color-danger-ink);
-  }
-
-  :where(.alt-button):hover:not(:disabled, [aria-disabled='true']) {
-    filter: brightness(0.96);
-    box-shadow: var(--alt-button-shadow, none), 0 3px 10px rgb(16 24 40 / 0.08);
-  }
-
-  :where(.alt-button)[data-size='48'] {
-    min-height: 44px;
-    padding-inline: 1rem;
-  }
-
-  :where(.alt-button)[data-size='32'] {
-    min-height: 32px;
-    padding-inline: 0.75rem;
-  }
-
-  :where(.alt-button)[data-size='24'] {
-    min-height: 28px;
-    padding-inline: 0.625rem;
-  }
-
-  :where(.alt-button)[data-icon-only] {
-    width: var(--alt-button-icon-size, 40px);
-    min-width: 0;
-    padding: 0;
-  }
-
-  .alt-button__content {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.375rem;
-  }
-
-  :where(.alt-button)[aria-busy='true'] .alt-button__content {
-    visibility: hidden;
-  }
-
-  :where(.alt-button)[aria-busy='true']::after {
-    content: '';
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid currentColor;
-    border-right-color: transparent;
-    border-radius: 50%;
-    animation: alt-button-spin 0.7s linear infinite;
-  }
-
-  @keyframes alt-button-spin {
-    to { transform: rotate(1turn); }
+  :where(a.alt-button)[aria-disabled='true'] {
+    pointer-events: none;
   }
 }

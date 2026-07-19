@@ -1,0 +1,60 @@
+@layer alt.components {
+  .alt-button__loading-indicator {
+    display: none;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: var(--alt-button-icon-size, 1.25rem);
+    height: var(--alt-button-icon-size, 1.25rem);
+    color: var(--alt-button-loading-color, var(--alt-color-ink-muted));
+  }
+
+  .alt-button__loading-indicator::before {
+    content: '';
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: alt-button-spin 0.7s linear infinite;
+  }
+
+  :where(.alt-button):is([data-loading], [aria-busy='true']) {
+    pointer-events: none;
+    cursor: wait;
+  }
+
+  :where(.alt-button):is([data-loading], [aria-busy='true']) .alt-button__loading-indicator {
+    display: inline-flex;
+  }
+
+  :where(.alt-button):is([data-loading], [aria-busy='true']):not([data-loading-position])
+    .alt-button__loading-indicator,
+  :where(.alt-button)[data-loading-position='center'] .alt-button__loading-indicator {
+    position: absolute;
+  }
+
+  :where(.alt-button):is([data-loading], [aria-busy='true']):not([data-loading-position])
+    .alt-button__content,
+  :where(.alt-button)[data-loading-position='center'] .alt-button__content {
+    opacity: 0;
+  }
+
+  :where(.alt-button)[data-loading-position='end'] .alt-button__loading-indicator {
+    order: 2;
+  }
+
+  @keyframes alt-button-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .alt-button__loading-indicator::before {
+      border-top-color: transparent;
+      border-right-color: currentColor;
+      animation: none;
+    }
+  }
+}

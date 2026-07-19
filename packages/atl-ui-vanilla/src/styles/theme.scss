@@ -1,6 +1,11 @@
 @use './layers';
 @use './foundation/base';
 @use './components/button';
+@use './components/button-tones';
+@use './components/button-variants';
+@use './components/button-support';
+@use './components/button-loading';
+@use './components/button-group';
 @use './components/card';
 @use './components/breadcrumbs';
 @use './components/checkbox';
@@ -20,6 +25,8 @@
 @use './components/popup';
 @use './components/tabs';
 @use './components/toast';
+@use './components/toast-actions';
+@use './components/toast-motion';
 @use './components/avatar';
 @use './components/file-upload';
 @use './components/progress';
