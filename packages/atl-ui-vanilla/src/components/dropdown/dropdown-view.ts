@@ -10,7 +10,13 @@ export const renderDropdown = (
 	views: Map<string, OptionView>,
 	emptyIcon: Node | null,
 ): void => {
+	const labelledBy = host.getAttribute('aria-labelledby');
+	const label = host.getAttribute('aria-label')?.trim() || 'Options';
 	host.dataset.multiple = String(host.hasAttribute('multiple'));
+	dom.list.toggleAttribute('aria-labelledby', Boolean(labelledBy));
+	if (labelledBy) dom.list.setAttribute('aria-labelledby', labelledBy);
+	dom.list.toggleAttribute('aria-label', !labelledBy);
+	if (!labelledBy) dom.list.setAttribute('aria-label', label);
 	dom.list.setAttribute('aria-multiselectable', String(host.hasAttribute('multiple')));
 	dom.list.style.setProperty('--alt-listbox-max-height', `${Number(host.getAttribute('max-height')) || 320}px`);
 	dom.emptyText.textContent = host.getAttribute('empty-text') ?? 'No options';

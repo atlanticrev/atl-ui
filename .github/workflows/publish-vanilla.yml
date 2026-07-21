@@ -1,0 +1,36 @@
+name: Publish ATL UI Vanilla
+
+on:
+  push:
+    tags:
+      - atl-ui-vanilla-v*
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release commit
+        uses: actions/checkout@v6
+
+      - name: Set up Node and GitHub Packages
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version: 22
+          registry-url: https://npm.pkg.github.com
+          scope: '@atlanticrev'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install browser engines
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Publish verified package
+        run: npm publish --workspace @atlanticrev/atl-ui-vanilla
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

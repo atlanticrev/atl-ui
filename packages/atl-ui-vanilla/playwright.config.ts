@@ -11,11 +11,15 @@ export default defineConfig({
 	},
 	fullyParallel: true,
 	outputDir: 'test-results/browser',
+	projects: [
+		{ name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+		{ name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+		{ name: 'webkit', use: { ...devices['Desktop Safari'] } },
+	],
 	reporter: [['list']],
 	snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}',
 	testDir: 'tests/browser',
 	use: {
-		...devices['Desktop Chrome'],
 		// biome-ignore lint/style/useNamingConvention: Playwright names this public option baseURL.
 		baseURL: `http://127.0.0.1:${STORYBOOK_PORT}`,
 		colorScheme: 'light',

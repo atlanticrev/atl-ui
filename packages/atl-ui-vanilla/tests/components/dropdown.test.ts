@@ -58,6 +58,17 @@ describe('alt-dropdown', () => {
 		expect(dropdown.options.map((option) => option.value)).toEqual(['one']);
 	});
 
+	it('gives the owned listbox the consumer accessible name', async () => {
+		const dropdown = document.createElement(TAG_NAME) as AltDropdownElementApi;
+		dropdown.setAttribute('aria-label', 'Channel options');
+		document.body.append(dropdown);
+		await Promise.resolve();
+
+		expect(dropdown.getAttribute('role')).toBe('group');
+		const listbox = dropdown.querySelector('[role="listbox"]');
+		expect(listbox?.getAttribute('aria-label')).toBe('Channel options');
+	});
+
 	it('mounts consumer empty and selection icons without cloning', async () => {
 		const dropdown = document.createElement(TAG_NAME) as AltDropdownElementApi;
 		const emptyIcon = document.createElement('span');

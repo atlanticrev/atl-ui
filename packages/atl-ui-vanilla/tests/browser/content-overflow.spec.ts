@@ -52,7 +52,7 @@ test('mobile catalog search remains usable', async ({ page }) => {
 	expect(box?.width).toBeGreaterThan(120);
 });
 
-test('table scrolls instead of overlapping adjacent cells', async ({ page }) => {
+test('table scrolls instead of overlapping adjacent cells', async ({ browserName, page }) => {
 	await page.setViewportSize({ height: 844, width: 390 });
 	await openStory(page, 'table');
 	const example = page.locator('[data-story-example="Custom render and pagination"]');
@@ -68,10 +68,10 @@ test('table scrolls instead of overlapping adjacent cells', async ({ page }) => 
 		scrollWidth: element.scrollWidth,
 	}));
 	expect(sizes.scrollWidth).toBeGreaterThan(sizes.clientWidth);
-	await expect(example).toHaveScreenshot('table-mobile.png');
+	if (browserName === 'chromium') await expect(example).toHaveScreenshot('table-mobile.png');
 });
 
-test('long labels follow their component overflow contracts', async ({ page }) => {
+test('long labels follow their component overflow contracts', async ({ browserName, page }) => {
 	await page.setViewportSize({ height: 900, width: 390 });
 	await openStory(page, 'chip');
 	const chipExample = page.locator('[data-story-example="Long removable label"]');
@@ -82,7 +82,7 @@ test('long labels follow their component overflow contracts', async ({ page }) =
 	}));
 	expect(labelSizes.scrollWidth).toBeGreaterThan(labelSizes.clientWidth);
 	await expect(chipExample.locator('.alt-chip__remove')).toBeVisible();
-	await expect(chipExample).toHaveScreenshot('chip-long-label.png');
+	if (browserName === 'chromium') await expect(chipExample).toHaveScreenshot('chip-long-label.png');
 });
 
 test('long selected filename ellipsizes without widening its frame', async ({ page }) => {

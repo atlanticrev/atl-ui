@@ -64,6 +64,6 @@
   }
 
   :where(alt-select, .alt-select)[data-status='success'] .alt-select__helper {
-    color: var(--alt-color-success);
+    color: var(--alt-color-success-text);
   }
 }

@@ -63,6 +63,19 @@ describe('alt-table', () => {
 		expect(onPageChange).toHaveBeenCalledOnce();
 	});
 
+	it('makes the horizontal scroll region keyboard accessible', async () => {
+		const table = document.createElement(TAG_NAME) as AltTableElementApi<Row>;
+		table.setAttribute('aria-label', 'Channels');
+		table.columns = [{ dataIndex: 'name', title: 'Name' }];
+		document.body.append(table);
+		await flushUpdates();
+		const scroll = table.querySelector('.alt-simple-table__scroll');
+
+		expect(scroll?.getAttribute('role')).toBe('region');
+		expect(scroll?.getAttribute('tabindex')).toBe('0');
+		expect(scroll?.getAttribute('aria-label')).toBe('Channels scroll area');
+	});
+
 	it('applies column sizing and overflow contracts to headers and cells', async () => {
 		const table = document.createElement(TAG_NAME) as AltTableElementApi<Row>;
 		table.columns = [

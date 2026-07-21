@@ -42,12 +42,12 @@ const states = `
 	<button class="alt-button" data-variant="filled">Enabled</button>
 	<button class="alt-button" data-variant="filled" disabled>Disabled</button>
 	<button class="alt-button" data-loading data-variant="filled" disabled>
-		<span class="alt-button__loading-indicator" role="progressbar"></span>
+		<span aria-hidden="true" class="alt-button__loading-indicator"></span>
 		<span class="alt-button__content">Publishing</span>
 	</button>
 	<button class="alt-button" data-loading data-loading-position="end" data-variant="outlined">
 		<span class="alt-button__content">Syncing</span>
-		<span class="alt-button__loading-indicator" role="progressbar">${customIconMarkup}</span>
+		<span aria-hidden="true" class="alt-button__loading-indicator">${customIconMarkup}</span>
 	</button>
 </div>`;
 

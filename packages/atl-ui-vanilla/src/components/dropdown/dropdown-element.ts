@@ -11,6 +11,8 @@ export const createAltDropdownElementClass = (HtmlElementConstructor: typeof HTM
 
 	return class AltDropdownElement extends DropdownPropertiesElement {
 		static observedAttributes = [
+			'aria-label',
+			'aria-labelledby',
 			'empty-text',
 			'footer-text',
 			'max-height',

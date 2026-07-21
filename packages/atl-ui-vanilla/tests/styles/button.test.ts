@@ -60,15 +60,15 @@ describe('button CSS recipe', () => {
 });
 
 describe('button demo contract', () => {
-	it('uses native disabled loading markup with an accessible progress indicator', () => {
+	it('uses native disabled loading markup with a decorative spinner', () => {
 		const demo = new DOMParser().parseFromString(demoHtml, 'text/html');
 		const button = demo.querySelector<HTMLButtonElement>('.alt-button[data-loading]');
 		const indicator = button?.querySelector('.alt-button__loading-indicator');
 
 		expect(button?.disabled).toBe(true);
 		expect(button?.getAttribute('aria-busy')).toBe('true');
-		expect(indicator?.getAttribute('role')).toBe('progressbar');
-		expect(indicator?.getAttribute('aria-labelledby')).toBe(button?.id);
+		expect(indicator?.getAttribute('aria-hidden')).toBe('true');
+		expect(indicator?.getAttribute('role')).toBeNull();
 		expect(button?.querySelector('.alt-button__content')?.textContent).toContain('Publish');
 	});
 

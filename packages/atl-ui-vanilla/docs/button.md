@@ -55,7 +55,7 @@ Icon-only кнопке всегда требуется доступное имя
   id="publish-button"
   type="button"
 >
-  <span aria-labelledby="publish-button" class="alt-button__loading-indicator" role="progressbar"></span>
+  <span aria-hidden="true" class="alt-button__loading-indicator"></span>
   <span class="alt-button__content">Publish</span>
 </button>
 ```
@@ -68,7 +68,7 @@ Icon-only кнопке всегда требуется доступное имя
 - `data-loading` для визуального состояния;
 - `aria-busy="true"` для assistive technologies;
 - нативный `disabled` для полной блокировки pointer, keyboard и form activation;
-- уникальный `id` кнопки и соответствующий `aria-labelledby` на `progressbar`.
+- `aria-hidden="true"` на декоративном spinner, чтобы состояние объявляла сама кнопка через `aria-busy`.
 
 При центральном loading контент получает `opacity: 0`, а не `visibility: hidden`, поэтому имя кнопки
 остаётся в accessibility tree. После завершения операции удалите `data-loading`, `aria-busy` и `disabled`.

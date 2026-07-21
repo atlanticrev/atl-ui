@@ -38,7 +38,7 @@
   :where(.alt-chip--danger) {
     --alt-chip-border: transparent;
     --alt-chip-bg: var(--alt-color-danger-muted);
-    --alt-chip-color: var(--alt-color-danger);
+    --alt-chip-color: var(--alt-color-danger-text);
   }
 
   :where(.alt-chip)[aria-disabled='true'] {

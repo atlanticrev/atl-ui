@@ -2,7 +2,7 @@
   :where(.alt-button)[data-tone='danger'],
   :where(.alt-button)[data-variant='danger'],
   :where(.alt-button--danger) {
-    --alt-button-tone-main: var(--alt-color-danger);
+    --alt-button-tone-main: var(--alt-color-danger-text);
     --alt-button-tone-hover: var(--alt-color-danger-hover);
     --alt-button-tone-active: var(--alt-color-danger-active);
     --alt-button-tone-muted: var(--alt-color-danger-muted);
@@ -12,7 +12,7 @@
   }
 
   :where(.alt-button)[data-tone='success'] {
-    --alt-button-tone-main: var(--alt-color-success);
+    --alt-button-tone-main: var(--alt-color-success-text);
     --alt-button-tone-hover: var(--alt-color-success-hover);
     --alt-button-tone-active: var(--alt-color-success-active);
     --alt-button-tone-muted: var(--alt-color-success-muted);

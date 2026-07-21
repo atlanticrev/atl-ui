@@ -16,6 +16,7 @@ export const createDropdownDom = (host: HTMLElement): DropdownDom => {
 	const footer = host.ownerDocument.createElement('div');
 	const footerText = host.ownerDocument.createElement('span');
 	const selectAll = host.ownerDocument.createElement('button');
+	host.setAttribute('role', 'group');
 	list.className = 'alt-listbox';
 	list.role = 'listbox';
 	list.tabIndex = 0;

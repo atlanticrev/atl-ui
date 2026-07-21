@@ -20,6 +20,6 @@
   }
 
   :where(alt-input, .alt-input)[data-status='success'] .alt-input__helper {
-    color: var(--alt-color-success);
+    color: var(--alt-color-success-text);
   }
 }

@@ -14,7 +14,9 @@ export const renderTableEmpty = (dom: TableDom, columnCount: number, content: Al
 };
 
 export const renderTablePagination = (host: HTMLElement, dom: TableDom, page: TablePage, visible: boolean): void => {
-	dom.table.setAttribute('aria-label', host.getAttribute('aria-label') ?? 'Data table');
+	const tableLabel = host.getAttribute('aria-label') ?? 'Data table';
+	dom.table.setAttribute('aria-label', tableLabel);
+	dom.scroll.setAttribute('aria-label', `${tableLabel} scroll area`);
 	dom.pagination.hidden = !visible || page.totalPages <= 1;
 	dom.previous.disabled = page.current <= 1;
 	dom.next.disabled = page.current >= page.totalPages;

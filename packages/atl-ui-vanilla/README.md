@@ -171,4 +171,10 @@ HTML каждого примера.
 Production-вариант собирается командой
 `npm run demo:build --workspace @atlanticrev/atl-ui-vanilla`.
 
+Полный browser- и accessibility-набор запускается в Chromium, Firefox и WebKit:
+
+```bash
+npm run test:browser --workspace @atlanticrev/atl-ui-vanilla
+```
+
 Архитектура, аудит и порядок миграции описаны в `docs/`.

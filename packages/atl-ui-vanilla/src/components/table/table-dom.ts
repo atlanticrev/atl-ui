@@ -8,6 +8,7 @@ export type TableDom = {
 	previous: HTMLButtonElement;
 	previousIcon: HTMLSpanElement;
 	previousLabel: HTMLSpanElement;
+	scroll: HTMLDivElement;
 	table: HTMLTableElement;
 	thead: HTMLTableSectionElement;
 };
@@ -27,6 +28,8 @@ export const createTableDom = (host: HTMLElement): TableDom => {
 	const nextIcon = document.createElement('span');
 	const nextLabel = document.createElement('span');
 	scroll.className = 'alt-simple-table__scroll';
+	scroll.role = 'region';
+	scroll.tabIndex = 0;
 	table.className = 'alt-simple-table__table';
 	pagination.className = 'alt-simple-table__pagination';
 	previous.className = 'alt-button';
@@ -57,6 +60,7 @@ export const createTableDom = (host: HTMLElement): TableDom => {
 		previous,
 		previousIcon,
 		previousLabel,
+		scroll,
 		table,
 		thead,
 	};

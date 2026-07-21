@@ -1,6 +1,7 @@
 {
 	"name": "@atlanticrev/atl-ui-vanilla",
 	"version": "0.1.0",
+	"description": "Zero-dependency Atlantic Review UI Web Components and native CSS recipes.",
 	"private": false,
 	"type": "module",
 	"sideEffects": [
@@ -12,6 +13,12 @@
 	],
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
+	"style": "dist/default.css",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/atlanticrev/atl-ui.git",
+		"directory": "packages/atl-ui-vanilla"
+	},
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
@@ -104,6 +111,8 @@
 		"demo": "vite demo --config demo/vite.config.ts --host 127.0.0.1",
 		"demo:build": "vite build demo --config demo/vite.config.ts --outDir ../demo-dist --emptyOutDir",
 		"demo:preview": "vite preview demo --config demo/vite.config.ts --host 127.0.0.1 --outDir ../demo-dist",
+		"prepack": "npm run build",
+		"prepublishOnly": "npm run verify && npm run test:browser",
 		"storybook": "vite demo --config demo/vite.config.ts --host 127.0.0.1 --open /storybook.html",
 		"storybook:build": "npm run demo:build",
 		"storybook:test": "vite demo --config demo/vite.config.ts --host 127.0.0.1 --port 4175 --strictPort",
@@ -120,6 +129,7 @@
 		"registry": "https://npm.pkg.github.com"
 	},
 	"devDependencies": {
+		"@axe-core/playwright": "^4.12.1",
 		"@playwright/test": "^1.61.1"
 	}
 }
