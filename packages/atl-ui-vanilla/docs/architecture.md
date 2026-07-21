@@ -18,8 +18,9 @@ exported CSS. Feature code owns their content and routing.
 
 ### Owned native compounds
 
-Input, file upload, progress, and avatar own their decorative light DOM. Input, file upload, and progress
-keep native controls inside so forms, validation, autofill, and accessibility remain browser-owned.
+Alert, input, file upload, progress, and avatar own bounded decorative light DOM. Alert preserves its authored
+message and action nodes. Input, file upload, and progress keep native controls inside so forms, validation,
+autofill, and accessibility remain browser-owned.
 
 ### Behavioral elements
 

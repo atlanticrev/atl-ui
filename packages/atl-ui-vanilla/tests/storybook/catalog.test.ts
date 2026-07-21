@@ -29,10 +29,10 @@ describe('component storybook catalog', () => {
 	it('contains one uniquely addressable story for every supported component', () => {
 		const ids = stories.map((story) => story.id);
 
-		expect(stories).toHaveLength(22);
+		expect(stories).toHaveLength(23);
 		expect(new Set(ids).size).toBe(ids.length);
 		expect(ids).toEqual(
-			expect.arrayContaining(['autocomplete', 'button', 'dialog', 'input', 'select', 'table', 'toast']),
+			expect.arrayContaining(['alert', 'autocomplete', 'button', 'dialog', 'input', 'select', 'table', 'toast']),
 		);
 	});
 
@@ -47,7 +47,7 @@ describe('component storybook catalog', () => {
 	});
 
 	it('shows arbitrary consumer SVG in every authored icon recipe', () => {
-		const authoredIconStories = ['breadcrumbs', 'button', 'chip', 'dialog', 'sidebar', 'tabs'];
+		const authoredIconStories = ['alert', 'breadcrumbs', 'button', 'chip', 'dialog', 'sidebar', 'tabs'];
 
 		for (const storyId of authoredIconStories) {
 			const icon = document.querySelector(`#${storyId} [data-story-custom-icon="spark"]`);

@@ -1,4 +1,5 @@
 import {
+	defineAltAlert,
 	defineAltAutocomplete,
 	defineAltAvatar,
 	defineAltDialog,
@@ -16,6 +17,7 @@ import {
 import type { ElementEnvironment } from './core';
 
 export type AltElementDefinitions = {
+	alert: CustomElementConstructor | undefined;
 	autocomplete: CustomElementConstructor | undefined;
 	avatar: CustomElementConstructor | undefined;
 	dialog: CustomElementConstructor | undefined;
@@ -33,6 +35,7 @@ export type AltElementDefinitions = {
 
 export const defineAllAltElements = (environment?: ElementEnvironment): AltElementDefinitions => {
 	return {
+		alert: defineAltAlert(environment),
 		autocomplete: defineAltAutocomplete(environment),
 		avatar: defineAltAvatar(environment),
 		dialog: defineAltDialog(environment),

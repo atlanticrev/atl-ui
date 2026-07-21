@@ -1,3 +1,4 @@
+import { alertStory } from './alert.story';
 import { autocompleteStory } from './autocomplete.story';
 import { avatarStory } from './avatar.story';
 import { breadcrumbsStory } from './breadcrumbs.story';
@@ -22,6 +23,7 @@ import { toastStory } from './toast.story';
 import { tooltipStory } from './tooltip.story';
 
 export const stories = [
+	alertStory,
 	buttonStory,
 	cardStory,
 	breadcrumbsStory,

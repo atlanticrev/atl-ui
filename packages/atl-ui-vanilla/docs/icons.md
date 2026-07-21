@@ -15,6 +15,7 @@ SVG или используйте небольшую фабрику `createMyIco
 
 | Компонент | Точки расширения |
 | --- | --- |
+| Alert | `icon`, `iconMapping`, `closeIcon`, authored `[data-alt-alert-icon]` |
 | Button | `.alt-button__icon`; дочерний узел `.alt-button__loading-indicator` |
 | Input | `leadingIcon`, `trailingIcon` |
 | Select | `leadingIcon`, `indicatorIcon`, `options[].icon`, `options[].checkIcon`, authored trigger |
@@ -37,8 +38,8 @@ Checkbox, Radio и Switcher используют CSS-маркеры состоя
 
 ## Встроенный fallback
 
-У `Select.indicatorIcon`, action-иконок Autocomplete, `options[].checkIcon`, `Toast.icon` и
-`Toast.dismissIcon` есть встроенные fallback SVG:
+У `Alert.icon`, `Alert.closeIcon`, `Select.indicatorIcon`, action-иконок Autocomplete,
+`options[].checkIcon`, `Toast.icon` и `Toast.dismissIcon` есть встроенные fallback SVG:
 
 - `undefined` оставляет или восстанавливает fallback;
 - пользовательский `Node` заменяет fallback;

@@ -1,6 +1,10 @@
 @use './layers';
 @use './foundation/base';
 @use './components/icon';
+@use './components/alert';
+@use './components/alert-tones';
+@use './components/alert-variants';
+@use './components/alert-actions';
 @use './components/button';
 @use './components/button-tones';
 @use './components/button-variants';

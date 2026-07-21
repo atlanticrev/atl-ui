@@ -1,0 +1,61 @@
+@layer alt.components {
+  :where(alt-alert, .alt-alert) {
+    --alt-alert-main: var(--alt-color-success);
+    --alt-alert-muted: var(--alt-color-success-muted);
+    --alt-alert-border: var(--alt-color-success-muted-active);
+    --alt-alert-tone-ink: var(--alt-color-success-active);
+    --alt-alert-filled-ink: var(--alt-color-success-ink);
+  }
+
+  :where(alt-alert, .alt-alert)[data-color='info'] {
+    --alt-alert-main: var(--alt-alert-info-main, #1570ef);
+    --alt-alert-muted: var(--alt-alert-info-muted, #eff8ff);
+    --alt-alert-border: var(--alt-alert-info-border, #b2ddff);
+    --alt-alert-tone-ink: var(--alt-alert-info-ink, #1849a9);
+    --alt-alert-filled-ink: var(--alt-alert-info-filled-ink, #ffffff);
+  }
+
+  :where(alt-alert, .alt-alert)[data-color='warning'] {
+    --alt-alert-main: var(--alt-alert-warning-main, #dc6803);
+    --alt-alert-muted: var(--alt-alert-warning-muted, #fffaeb);
+    --alt-alert-border: var(--alt-alert-warning-border, #fedf89);
+    --alt-alert-tone-ink: var(--alt-alert-warning-ink, #93370d);
+    --alt-alert-filled-ink: var(--alt-alert-warning-filled-ink, #181d27);
+  }
+
+  :where(alt-alert, .alt-alert)[data-color='error'] {
+    --alt-alert-main: var(--alt-color-danger);
+    --alt-alert-muted: var(--alt-color-danger-muted);
+    --alt-alert-border: var(--alt-color-danger-muted-active);
+    --alt-alert-tone-ink: var(--alt-color-danger-active);
+    --alt-alert-filled-ink: var(--alt-color-danger-ink);
+  }
+
+  :where([data-alt-theme='dark'], [data-theme='dark']) :where(alt-alert, .alt-alert)[data-color='success'] {
+    --alt-alert-border: var(--alt-color-success-muted-hover);
+    --alt-alert-tone-ink: #75e0a7;
+    --alt-alert-filled-ink: #102a1f;
+  }
+
+  :where([data-alt-theme='dark'], [data-theme='dark']) :where(alt-alert, .alt-alert)[data-color='info'] {
+    --alt-alert-info-main: #53b1fd;
+    --alt-alert-info-muted: #102a44;
+    --alt-alert-info-border: #194f7a;
+    --alt-alert-info-ink: #b2ddff;
+    --alt-alert-info-filled-ink: #102a44;
+  }
+
+  :where([data-alt-theme='dark'], [data-theme='dark']) :where(alt-alert, .alt-alert)[data-color='warning'] {
+    --alt-alert-warning-main: #fdb022;
+    --alt-alert-warning-muted: #3d2f11;
+    --alt-alert-warning-border: #684b14;
+    --alt-alert-warning-ink: #fec84b;
+    --alt-alert-warning-filled-ink: #3d2f11;
+  }
+
+  :where([data-alt-theme='dark'], [data-theme='dark']) :where(alt-alert, .alt-alert)[data-color='error'] {
+    --alt-alert-border: var(--alt-color-danger-muted-active);
+    --alt-alert-tone-ink: #fda29b;
+    --alt-alert-filled-ink: #3a1e23;
+  }
+}

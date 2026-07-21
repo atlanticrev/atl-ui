@@ -4,6 +4,7 @@ export default defineConfig({
 	clean: true,
 	dts: true,
 	entry: {
+		alert: 'src/components/alert/index.ts',
 		autocomplete: 'src/components/autocomplete/index.ts',
 		avatar: 'src/components/avatar/index.ts',
 		controllers: 'src/controllers/index.ts',

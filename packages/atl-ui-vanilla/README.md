@@ -12,7 +12,7 @@ import { defineAllAltElements } from '@atlanticrev/atl-ui-vanilla/define-all';
 defineAllAltElements();
 ```
 
-Можно импортировать только нужный entry point, например `@atlanticrev/atl-ui-vanilla/input`. Вызовы
+Можно импортировать только нужный entry point, например `@atlanticrev/atl-ui-vanilla/alert`. Вызовы
 `define*` идемпотентны. Импорт и вызов регистрации на сервере безопасны; без browser environment define
 вернёт `undefined`.
 
@@ -92,10 +92,20 @@ Input держит настоящий `<input>` внутри light DOM. Select �
 `alt-open-change`, `alt-input` и `alt-change` содержат причину и исходное browser event. Полный контракт
 Select и Autocomplete описан в [`docs/select-autocomplete.md`](docs/select-autocomplete.md).
 
-Отдельные tree-shakeable entry points также доступны для `avatar`, `file-upload`, `progress`, `popup`,
+Отдельные tree-shakeable entry points также доступны для `alert`, `avatar`, `file-upload`, `progress`, `popup`,
 `tooltip`, `dialog`, `dropdown`, `autocomplete` и `table`. Ни один entry point не регистрируется сам.
 
-## Tabs и Toast
+## Alert, Tabs и Toast
+
+Inline feedback через Alert отделён от временных Toast-уведомлений. Полный API severity, variants,
+custom actions/icons и cancelable close event описан в [`docs/alert.md`](docs/alert.md).
+
+```html
+<alt-alert dismissible severity="warning" variant="outlined">
+  <strong class="alt-alert__title">Schedule conflict</strong>
+  This post overlaps another publication.
+</alt-alert>
+```
 
 Полный контракт очереди, lifecycle, таймеров и события закрытия описан в
 [`docs/toast.md`](docs/toast.md).
@@ -156,7 +166,7 @@ npm run storybook --workspace @atlanticrev/atl-ui-vanilla
 Каталог откроется на `/storybook.html`. В нём есть поиск, навигация, light/dark theme и раскрываемый
 HTML каждого примера.
 
-Пилот доступен на `/`, showcase всех 22 компонентов — на `/components.html`.
+Пилот доступен на `/`, showcase компонентов — на `/components.html`.
 
 Production-вариант собирается командой
 `npm run demo:build --workspace @atlanticrev/atl-ui-vanilla`.

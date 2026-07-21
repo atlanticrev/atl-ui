@@ -1,0 +1,43 @@
+@layer alt.components {
+  :where(.alt-alert__close, .alt-alert__action-button) {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2rem;
+    min-height: 2rem;
+    padding: 0 0.5rem;
+    border: 0;
+    border-radius: var(--alt-radius-xs);
+    background: transparent;
+    color: inherit;
+    font: var(--alt-type-label-md);
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .alt-alert__close {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+  }
+
+  .alt-alert__close > :where(svg, .alt-icon) {
+    display: block;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (hover: hover) {
+    :where(.alt-alert__close, .alt-alert__action-button):hover {
+      background: color-mix(in srgb, currentColor 12%, transparent);
+    }
+  }
+
+  :where(.alt-alert__close, .alt-alert__action-button):active {
+    background: color-mix(in srgb, currentColor 20%, transparent);
+  }
+
+  :where(.alt-alert__close, .alt-alert__action-button):focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 28%, transparent);
+  }
+}

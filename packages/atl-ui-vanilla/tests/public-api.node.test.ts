@@ -6,6 +6,7 @@ import {
 	ATL_UI_VANILLA_VERSION,
 	altIconMarkup,
 	defineAllAltElements,
+	defineAltAlert,
 	defineAltAutocomplete,
 	defineAltAvatar,
 	defineAltDialog,
@@ -25,6 +26,7 @@ describe('public API without browser globals', () => {
 	it('imports every element without registration side effects', () => {
 		expect(ATL_UI_VANILLA_VERSION).toBe('0.1.0');
 		expect(altIconMarkup('check')).toContain('<svg');
+		expect(defineAltAlert()).toBeUndefined();
 		expect(defineAltAutocomplete()).toBeUndefined();
 		expect(defineAltAvatar()).toBeUndefined();
 		expect(defineAltDialog()).toBeUndefined();
@@ -39,6 +41,7 @@ describe('public API without browser globals', () => {
 		expect(defineAltToastRegion()).toBeUndefined();
 		expect(defineAltTooltip()).toBeUndefined();
 		expect(defineAllAltElements()).toEqual({
+			alert: undefined,
 			autocomplete: undefined,
 			avatar: undefined,
 			dialog: undefined,

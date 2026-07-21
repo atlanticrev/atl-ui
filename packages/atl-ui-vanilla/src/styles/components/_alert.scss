@@ -1,0 +1,61 @@
+@layer alt.components {
+  :where(alt-alert, .alt-alert) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 0.75rem;
+    width: 100%;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--alt-alert-state-border);
+    border-radius: var(--alt-alert-radius, var(--alt-radius-sm));
+    background: var(--alt-alert-state-bg);
+    color: var(--alt-alert-state-ink);
+    box-shadow: var(--alt-alert-shadow, none);
+    font: var(--alt-type-body-md);
+    overflow-wrap: anywhere;
+    box-sizing: border-box;
+  }
+
+  .alt-alert__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-block-start: 0.0625rem;
+    color: var(--alt-alert-state-icon);
+  }
+
+  .alt-alert__icon > :where(svg, .alt-icon) {
+    display: block;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .alt-alert__message {
+    min-width: 0;
+    color: var(--alt-alert-state-ink);
+  }
+
+  :where(.alt-alert__title, [data-alt-alert-title]) {
+    display: block;
+    margin-block-end: 0.125rem;
+    color: var(--alt-alert-state-title);
+    font: var(--alt-type-title-sm);
+  }
+
+  .alt-alert__action {
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    gap: 0.25rem;
+    margin: -0.3125rem -0.5rem -0.3125rem 0;
+    color: var(--alt-alert-state-action);
+  }
+
+  @media (max-width: 480px) {
+    :where(alt-alert, .alt-alert) {
+      padding-inline: 0.875rem;
+    }
+  }
+}

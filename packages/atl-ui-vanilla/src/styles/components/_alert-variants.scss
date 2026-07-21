@@ -1,0 +1,38 @@
+@layer alt.components {
+  :where(alt-alert, .alt-alert)[data-variant='standard'] {
+    --alt-alert-state-action: var(--alt-alert-tone-ink);
+    --alt-alert-state-bg: var(--alt-alert-muted);
+    --alt-alert-state-border: transparent;
+    --alt-alert-state-icon: var(--alt-alert-main);
+    --alt-alert-state-ink: var(--alt-color-ink);
+    --alt-alert-state-title: var(--alt-alert-tone-ink);
+  }
+
+  :where(alt-alert, .alt-alert)[data-variant='outlined'] {
+    --alt-alert-state-action: var(--alt-alert-tone-ink);
+    --alt-alert-state-bg: var(--alt-color-surface);
+    --alt-alert-state-border: var(--alt-alert-border);
+    --alt-alert-state-icon: var(--alt-alert-main);
+    --alt-alert-state-ink: var(--alt-color-ink);
+    --alt-alert-state-title: var(--alt-alert-tone-ink);
+  }
+
+  :where(alt-alert, .alt-alert)[data-variant='filled'] {
+    --alt-alert-state-action: var(--alt-alert-filled-ink);
+    --alt-alert-state-bg: var(--alt-alert-main);
+    --alt-alert-state-border: var(--alt-alert-main);
+    --alt-alert-state-icon: var(--alt-alert-filled-ink);
+    --alt-alert-state-ink: var(--alt-alert-filled-ink);
+    --alt-alert-state-title: var(--alt-alert-filled-ink);
+  }
+
+  @media (forced-colors: active) {
+    :where(alt-alert, .alt-alert) {
+      --alt-alert-state-bg: Canvas;
+      --alt-alert-state-border: CanvasText;
+      --alt-alert-state-icon: CanvasText;
+      --alt-alert-state-ink: CanvasText;
+      --alt-alert-state-title: CanvasText;
+    }
+  }
+}
