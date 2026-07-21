@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build-storybook",
-  "outputDirectory": "storybook-static",
-  "installCommand": "npm ci"
+	"buildCommand": "npm run demo:build --workspace @atlanticrev/atl-ui-vanilla",
+	"outputDirectory": "packages/atl-ui-vanilla/demo-dist",
+	"installCommand": "npm ci"
 }
