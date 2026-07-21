@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - atl-ui-vanilla-v*
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -34,3 +35,4 @@ jobs:
         run: npm publish --workspace @atlanticrev/atl-ui-vanilla
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_OPTIONS: --max-old-space-size=4096
