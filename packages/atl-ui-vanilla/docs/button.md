@@ -22,17 +22,25 @@
 
 ```html
 <button class="alt-button" data-variant="filled" type="button">
-  <span class="alt-button__icon alt-button__icon--start" aria-hidden="true">+</span>
+  <span class="alt-button__icon alt-button__icon--start" aria-hidden="true">
+    <svg fill="none" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-linecap="round" />
+    </svg>
+  </span>
   <span class="alt-button__content">Add channel</span>
 </button>
 
 <button aria-label="Add channel" class="alt-button" data-icon-only type="button">
-  <span class="alt-button__icon" aria-hidden="true">+</span>
+  <span class="alt-button__icon" aria-hidden="true">
+    <!-- Any consumer-provided inline SVG -->
+    <svg fill="none" viewBox="0 0 24 24">...</svg>
+  </span>
 </button>
 ```
 
-Иконки автоматически масштабируются вместе с кнопкой. Icon-only кнопке всегда требуется доступное имя
-через `aria-label` или `aria-labelledby`.
+`Button` не ограничивает набор иконок: внутрь `.alt-button__icon` можно передать SVG из пакета,
+собственный SVG или DOM-узел стороннего icon set. Иконки автоматически масштабируются вместе с кнопкой.
+Icon-only кнопке всегда требуется доступное имя через `aria-label` или `aria-labelledby`.
 
 ## Loading
 
@@ -53,6 +61,9 @@
 ```
 
 Позиции индикатора: `start`, `center` по умолчанию и `end`. На время операции обязательны:
+
+Пустой `.alt-button__loading-indicator` показывает встроенный CSS spinner. Чтобы заменить его, вложите
+в этот же span собственный SVG — встроенный spinner автоматически отключится.
 
 - `data-loading` для визуального состояния;
 - `aria-busy="true"` для assistive technologies;

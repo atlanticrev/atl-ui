@@ -3,6 +3,8 @@
     display: grid;
     gap: 0.5rem;
     justify-items: start;
+    max-width: 100%;
+    min-width: 0;
     color: var(--alt-color-ink);
   }
 
@@ -20,6 +22,11 @@
     font: var(--alt-type-label-lg);
     cursor: pointer;
     transition: background-color var(--alt-motion-normal), border-color var(--alt-motion-normal);
+  }
+
+  .alt-file-upload__icon {
+    display: inline-flex;
+    flex: 0 0 auto;
   }
 
   .alt-file-upload__button:hover {
@@ -62,11 +69,23 @@
 
   .alt-file-upload__value,
   .alt-file-upload__helper {
+    max-width: 100%;
+    min-width: 0;
     font: var(--alt-type-body-sm);
   }
 
-  .alt-file-upload__value { color: var(--alt-color-ink); }
-  .alt-file-upload__helper { color: var(--alt-color-ink-muted); }
+  .alt-file-upload__value {
+    width: 100%;
+    overflow: hidden;
+    color: var(--alt-color-ink);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .alt-file-upload__helper {
+    color: var(--alt-color-ink-muted);
+    overflow-wrap: anywhere;
+  }
 
   :where(alt-file-upload, .alt-file-upload)[data-status='error'] .alt-file-upload__helper {
     color: var(--alt-color-danger);

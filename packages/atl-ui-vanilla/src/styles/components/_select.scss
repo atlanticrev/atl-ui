@@ -4,7 +4,9 @@
   }
 
   :where(alt-select, .alt-select) {
+    --alt-select-border-width: 1px;
     --alt-select-border-color: var(--alt-color-border);
+    --alt-select-outline-width: 1px;
 
     position: relative;
     display: block;
@@ -21,7 +23,7 @@
     width: 100%;
     min-height: 48px;
     padding: 0.75rem 0.875rem;
-    border: 1px solid var(--alt-select-border-color);
+    border: var(--alt-select-border-width) solid var(--alt-select-border-color);
     border-radius: var(--alt-select-radius, var(--alt-radius-xs));
     background: var(--alt-select-bg, var(--alt-color-surface));
     color: var(--alt-color-ink);
@@ -38,8 +40,9 @@
   .alt-select__trigger:focus-visible,
   :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
     --alt-select-border-color: var(--alt-color-accent);
+    --alt-select-outline-width: 2px;
     outline: 0;
-    box-shadow: var(--alt-shadow-sm), var(--alt-focus-ring);
+    box-shadow: var(--alt-shadow-sm);
   }
 
   :where(alt-select, .alt-select):is([data-status='error'], [aria-invalid='true']) {
@@ -63,6 +66,7 @@
     position: absolute;
     top: 50%;
     left: 0.875rem;
+    z-index: 2;
     max-width: calc(100% - 3rem);
     overflow: hidden;
     color: var(--alt-select-state-color, var(--alt-color-ink-muted));
@@ -74,14 +78,15 @@
     transition: font-size var(--alt-motion-fast), top var(--alt-motion-fast);
   }
 
-  :where(alt-select, .alt-select)[data-label-float='true'] .alt-select__label {
+  :where(alt-select, .alt-select):is(:focus-within, [data-label-float='true']) .alt-select__label {
     top: 0;
     padding-inline: 0.25rem;
-    background: var(--alt-select-bg, var(--alt-color-surface));
     font: var(--alt-type-body-sm);
   }
 
   .alt-select__value {
+    position: relative;
+    z-index: 2;
     flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
@@ -93,15 +98,54 @@
     color: var(--alt-color-ink-soft);
   }
 
-  .alt-select__indicator {
+  .alt-select__indicator,
+  [data-alt-select-indicator] {
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     flex: 0 0 auto;
     color: var(--alt-select-state-color, var(--alt-color-ink-muted));
     transition: transform var(--alt-motion-fast);
   }
 
-  :where(alt-select, .alt-select)[data-open='true'] .alt-select__indicator {
+  :where(alt-select, .alt-select)[data-open='true'] :is(.alt-select__indicator, [data-alt-select-indicator]) {
     transform: rotate(180deg);
+  }
+
+  .alt-select__leading-icon {
+    position: relative;
+    z-index: 2;
+  }
+
+  .alt-select__outline {
+    position: absolute;
+    z-index: 1;
+    inset: calc(0px - var(--alt-select-border-width));
+    display: block;
+    width: calc(100% + var(--alt-select-border-width) + var(--alt-select-border-width));
+    height: calc(100% + var(--alt-select-border-width) + var(--alt-select-border-width));
+    pointer-events: none;
+  }
+
+  .alt-select__outline-path {
+    fill: none;
+    stroke: var(--alt-select-border-color);
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+    stroke-width: var(--alt-select-outline-width);
+    vector-effect: non-scaling-stroke;
+    transition: stroke var(--alt-motion-normal);
+  }
+
+  .alt-select__trigger:has(> .alt-select__outline) {
+    border-color: transparent;
+  }
+
+  @media (forced-colors: active) {
+    .alt-select__trigger:focus-visible,
+    :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
+      --alt-select-border-color: Highlight;
+    }
   }
 
   .alt-select__native {

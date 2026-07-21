@@ -3,6 +3,7 @@ import { createTypedEvent, upgradeProperties } from '../../core';
 import { INPUT_OBSERVED_ATTRIBUTES, syncInputAttributes } from './input-attributes';
 import { replaceInputAccessory, syncInputContent } from './input-content';
 import { createInputDom } from './input-dom';
+import { bindInputOutline } from './input-outline';
 import { createInputPropertiesClass } from './input-properties';
 import type { AltInputChangeDetail } from './types';
 
@@ -11,6 +12,7 @@ export const createAltInputElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 	return class AltInputElement extends InputPropertiesElement {
 		static observedAttributes = INPUT_OBSERVED_ATTRIBUTES;
+		private syncOutline: (() => void) | undefined;
 
 		attributeChangedCallback(name: string, _oldValue: string | null, newValue: string | null): void {
 			if (name === 'value') {
@@ -36,6 +38,7 @@ export const createAltInputElementClass = (HtmlElementConstructor: typeof HTMLEl
 				'variant',
 			]);
 			this.inputDom ??= createInputDom(this);
+			this.syncOutline = bindInputOutline(this, this.inputDom, signal);
 			const field = this.inputDom.field;
 			field.value = this.pendingValue ?? this.getAttribute('value') ?? '';
 			field.defaultValue = this.getAttribute('value') ?? '';
@@ -68,6 +71,7 @@ export const createAltInputElementClass = (HtmlElementConstructor: typeof HTMLEl
 				label: this.getAttribute('label') ?? '',
 				showCharacterCount: this.hasAttribute('show-character-count'),
 			});
+			this.syncOutline?.();
 		}
 
 		private handleInput = (): void => {

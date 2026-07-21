@@ -6,7 +6,9 @@ export type ToastPhase = 'queued' | 'entering' | 'open' | 'closing' | 'collapsin
 export type ToastRecord = {
 	closeReason?: AltToastDismissReason;
 	dismissible: boolean;
+	dismissIcon?: Node | null;
 	id: string;
+	icon?: Node | null;
 	message: string;
 	persist: boolean;
 	phase: ToastPhase;
@@ -38,7 +40,9 @@ export const createToastRecord = (
 
 	return {
 		dismissible: normalized.dismissible ?? true,
+		dismissIcon: normalized.dismissIcon,
 		id,
+		icon: normalized.icon,
 		message: normalized.message,
 		persist: normalized.persist ?? duration === 0,
 		phase: 'queued',

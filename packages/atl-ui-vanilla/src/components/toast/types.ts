@@ -2,8 +2,10 @@ export type AltToastStatus = 'info' | 'success' | 'warning' | 'error';
 
 export type AltToastOptions = {
 	dismissible?: boolean;
+	dismissIcon?: Node | null;
 	duration?: number;
 	id?: string;
+	icon?: Node | null;
 	message: string;
 	persist?: boolean;
 	preventDuplicate?: boolean;

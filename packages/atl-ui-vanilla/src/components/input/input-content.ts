@@ -19,6 +19,7 @@ export const syncInputContent = (host: HTMLElement, dom: InputDom, content: Inpu
 	dom.footer.hidden = dom.helper.hidden && dom.counter.hidden;
 	host.dataset.filled = String(dom.field.value.length > 0);
 	host.dataset.hasLeadingIcon = String(dom.leading.childNodes.length > 0);
+	host.dataset.labelFloat = String(Boolean(dom.field.value || dom.field.placeholder));
 };
 
 export const replaceInputAccessory = (container: HTMLElement, node: Node | null): void => {

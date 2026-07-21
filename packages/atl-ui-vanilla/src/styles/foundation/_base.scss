@@ -24,6 +24,10 @@
     font: inherit;
   }
 
+  :where([hidden]) {
+    display: none !important;
+  }
+
   :where(
     alt-input,
     alt-select,
@@ -31,7 +35,13 @@
     alt-toast-region,
     alt-avatar,
     alt-file-upload,
-    alt-progress
+    alt-progress,
+    alt-popup,
+    alt-tooltip,
+    alt-dialog,
+    alt-dropdown,
+    alt-autocomplete,
+    alt-table
   ) {
     box-sizing: border-box;
   }

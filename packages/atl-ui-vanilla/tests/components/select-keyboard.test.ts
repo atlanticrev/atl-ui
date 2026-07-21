@@ -81,7 +81,9 @@ describe('alt-select keyboard and accessibility', () => {
 
 	it('keeps multiple selection open and ignores disabled option clicks', () => {
 		const select = createSelect();
+		const onChange = vi.fn();
 		select.multiple = true;
+		select.addEventListener('alt-change', onChange);
 		select.show();
 		const disabled = select.querySelector<HTMLElement>('[data-value="two"]') as HTMLElement;
 		disabled.click();
@@ -89,5 +91,8 @@ describe('alt-select keyboard and accessibility', () => {
 		select.querySelector<HTMLElement>('[data-value="one"]')?.click();
 		expect(select.values).toEqual(['one']);
 		expect(select.open).toBe(true);
+		select.querySelector<HTMLElement>('[data-value="one"]')?.click();
+		expect(select.values).toEqual([]);
+		expect(onChange.mock.calls[1]?.[0].detail.reason).toBe('remove');
 	});
 });

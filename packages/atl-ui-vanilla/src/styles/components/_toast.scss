@@ -64,7 +64,7 @@
     --alt-toast-status-color: var(--alt-color-danger);
   }
 
-  .alt-toast__icon {
+	.alt-toast__icon {
     display: inline-grid;
     place-content: center;
     width: 1.25rem;
@@ -72,8 +72,12 @@
     border-radius: 50%;
     background: color-mix(in srgb, var(--alt-toast-status-color) 18%, transparent);
     color: var(--alt-toast-status-color);
-    font: var(--alt-type-label-md);
-  }
+	}
+
+	.alt-toast__icon .alt-icon {
+		width: 0.875rem;
+		height: 0.875rem;
+	}
 
   .alt-toast__message {
     min-width: 0;

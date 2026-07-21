@@ -1,22 +1,12 @@
-import { createTypedEvent } from '../../core';
-
+import { emitSelectChange } from './events';
 import type { SelectInteractionCallbacks } from './interactions';
 import type { SelectModel } from './model';
-import { ALT_SELECT_CHANGE_EVENT, type AltSelectChangeDetail } from './types';
 
 export type SelectOverlayActions = {
-	close: () => void;
+	close: (event?: Event) => void;
 	isOpen: () => boolean;
-	open: () => void;
-	toggle: () => void;
-};
-
-const emitChange = (host: HTMLElement, model: SelectModel): void => {
-	const detail: AltSelectChangeDetail = {
-		value: model.value,
-		values: model.values,
-	};
-	host.dispatchEvent(createTypedEvent(ALT_SELECT_CHANGE_EVENT, detail));
+	open: (event?: Event) => void;
+	toggle: (event?: Event) => void;
 };
 
 export const createSelectionInteractions = (
@@ -25,26 +15,36 @@ export const createSelectionInteractions = (
 	overlay: SelectOverlayActions,
 	render: () => void,
 ): SelectInteractionCallbacks => {
-	const selectActive = (): void => {
+	const shouldCloseOnSelect = (): boolean => {
+		const configured = host.getAttribute('close-on-select');
+		return configured === null ? !host.hasAttribute('multiple') : configured !== 'false';
+	};
+	const selectActive = (event?: Event): void => {
 		if (!overlay.isOpen()) {
-			overlay.open();
+			overlay.open(event);
 			return;
 		}
 
-		if (model.selectActive()) {
-			emitChange(host, model);
+		if (host.hasAttribute('readonly')) {
+			return;
 		}
 
-		host.hasAttribute('multiple') ? render() : overlay.close();
+		const wasSelected = model.activeValue ? model.values.includes(model.activeValue) : false;
+		if (model.selectActive()) {
+			const reason = host.hasAttribute('multiple') && wasSelected ? 'remove' : 'select';
+			emitSelectChange(host, model, reason, event);
+		}
+
+		shouldCloseOnSelect() ? overlay.close(event) : render();
 	};
 
 	return {
-		choose: (value): void => {
+		choose: (value, event): void => {
 			const option = model.options.find((candidate) => candidate.value === value);
 
 			if (option && !option.disabled) {
 				model.activeValue = value;
-				selectActive();
+				selectActive(event);
 			}
 		},
 		close: overlay.close,
@@ -60,5 +60,9 @@ export const createSelectionInteractions = (
 		},
 		selectActive,
 		toggle: overlay.toggle,
+		typeahead: (query): void => {
+			model.moveToMatch(query);
+			render();
+		},
 	};
 };

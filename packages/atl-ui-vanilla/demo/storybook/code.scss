@@ -1,0 +1,22 @@
+@layer alt.overrides {
+  .alt-story-example details {
+    border-top: 1px solid var(--alt-color-border);
+  }
+
+  .alt-story-example summary {
+    padding: 0.75rem 1.25rem;
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-label-md);
+    cursor: pointer;
+  }
+
+  .alt-story-example pre {
+    max-height: 260px;
+    margin: 0;
+    padding: 1rem 1.25rem;
+    overflow: auto;
+    background: var(--alt-color-inverse-surface);
+    color: var(--alt-color-ink-inverse);
+    font: 0.75rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+}

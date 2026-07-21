@@ -1,4 +1,13 @@
 @layer alt.components {
+  .alt-select__leading-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  :where(alt-select, .alt-select)[data-has-leading-icon='true'] .alt-select__label {
+    left: 3rem;
+  }
+
   .alt-select__values {
     display: flex;
     flex: 1 1 auto;

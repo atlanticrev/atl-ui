@@ -1,5 +1,6 @@
 @use './layers';
 @use './foundation/base';
+@use './components/icon';
 @use './components/button';
 @use './components/button-tones';
 @use './components/button-variants';
@@ -23,6 +24,9 @@
 @use './components/select-support';
 @use './components/listbox';
 @use './components/popup';
+@use './components/dropdown';
+@use './components/autocomplete';
+@use './components/tooltip';
 @use './components/tabs';
 @use './components/toast';
 @use './components/toast-actions';

@@ -13,23 +13,10 @@
     cursor: pointer;
   }
 
-  .alt-toast__dismiss::before,
-  .alt-toast__dismiss::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0.75rem;
-    height: 1.5px;
-    border-radius: 1px;
-    background: currentColor;
-    content: '';
-    transform: translate(-50%, -50%) rotate(45deg);
-    transform-origin: center;
-  }
-
-  .alt-toast__dismiss::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
-  }
+	.alt-toast__dismiss .alt-icon {
+		width: 1rem;
+		height: 1rem;
+	}
 
   @media (hover: hover) {
     .alt-toast__dismiss:hover:not(:disabled) {

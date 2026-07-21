@@ -1,3 +1,5 @@
+import { ensureInputOutlineDom } from './input-outline-dom';
+
 export type InputDom = {
 	content: HTMLSpanElement;
 	counter: HTMLSpanElement;
@@ -7,6 +9,8 @@ export type InputDom = {
 	helper: HTMLSpanElement;
 	label: HTMLSpanElement;
 	leading: HTMLSpanElement;
+	outline: SVGSVGElement;
+	outlinePath: SVGPathElement;
 	root: HTMLLabelElement;
 	trailing: HTMLSpanElement;
 };
@@ -32,6 +36,7 @@ const readInputDom = (host: HTMLElement): InputDom | undefined => {
 	if (!helper || !counter) {
 		return undefined;
 	}
+	const outline = ensureInputOutlineDom(root);
 
 	return {
 		content,
@@ -42,6 +47,7 @@ const readInputDom = (host: HTMLElement): InputDom | undefined => {
 		helper,
 		label,
 		leading: icons[0],
+		...outline,
 		root,
 		trailing: icons[1],
 	};
@@ -90,6 +96,7 @@ export const createInputDom = (host: HTMLElement): InputDom => {
 	trailing.dataset.position = 'trailing';
 	content.append(field, description);
 	root.append(label, leading, content, trailing);
+	const outline = ensureInputOutlineDom(root);
 	footer.append(helper, counter);
 	host.replaceChildren(root, footer);
 
@@ -102,6 +109,7 @@ export const createInputDom = (host: HTMLElement): InputDom => {
 		helper,
 		label,
 		leading,
+		...outline,
 		root,
 		trailing,
 	};

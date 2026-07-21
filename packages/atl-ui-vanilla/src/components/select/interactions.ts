@@ -1,14 +1,17 @@
+import { TypeaheadController } from '../../controllers';
+
 import type { SelectDom } from './dom';
 
 export type SelectInteractionCallbacks = {
-	choose: (value: string) => void;
-	close: () => void;
+	choose: (value: string, event?: Event) => void;
+	close: (event?: Event) => void;
 	isOpen: () => boolean;
 	move: (direction: 1 | -1, edge?: 'end' | 'start') => void;
-	open: () => void;
+	open: (event?: Event) => void;
 	refreshOptions: () => void;
-	selectActive: () => void;
-	toggle: () => void;
+	selectActive: (event?: Event) => void;
+	toggle: (event?: Event) => void;
+	typeahead: (query: string) => void;
 };
 
 const optionValueFromEvent = (event: Event, list: HTMLElement): string | undefined => {
@@ -30,11 +33,15 @@ const isOptionMutation = (record: MutationRecord): boolean => {
 	);
 };
 
-const handleKeyDown = (event: KeyboardEvent, callbacks: SelectInteractionCallbacks): void => {
+const handleKeyDown = (
+	event: KeyboardEvent,
+	callbacks: SelectInteractionCallbacks,
+	typeahead: TypeaheadController,
+): void => {
 	const direction = event.key === 'ArrowDown' ? 1 : event.key === 'ArrowUp' ? -1 : undefined;
 
 	if (direction) {
-		callbacks.isOpen() ? callbacks.move(direction) : callbacks.open();
+		callbacks.isOpen() ? callbacks.move(direction) : callbacks.open(event);
 	} else if (event.key === 'Home' || event.key === 'End') {
 		if (!callbacks.isOpen()) {
 			return;
@@ -42,12 +49,14 @@ const handleKeyDown = (event: KeyboardEvent, callbacks: SelectInteractionCallbac
 
 		callbacks.move(event.key === 'Home' ? 1 : -1, event.key === 'Home' ? 'start' : 'end');
 	} else if (event.key === 'Enter' || event.key === ' ') {
-		callbacks.selectActive();
+		callbacks.selectActive(event);
 	} else if (event.key === 'Escape') {
-		callbacks.close();
+		callbacks.close(event);
 	} else if (event.key === 'Tab') {
-		callbacks.close();
+		callbacks.close(event);
 		return;
+	} else if (event.key.length === 1 && !event.altKey && !event.ctrlKey && !event.metaKey && !event.isComposing) {
+		callbacks.typeahead(typeahead.push(event.key));
 	} else {
 		return;
 	}
@@ -61,15 +70,14 @@ export const bindSelectInteractions = (
 	callbacks: SelectInteractionCallbacks,
 	signal: AbortSignal,
 ): void => {
-	dom.trigger.addEventListener('click', callbacks.toggle, { signal });
-	dom.trigger.addEventListener('keydown', (event) => handleKeyDown(event, callbacks), { signal });
+	bindSelectTriggerInteractions(host, dom.trigger, callbacks, signal);
 	dom.list.addEventListener(
 		'click',
 		(event) => {
 			const value = optionValueFromEvent(event, dom.list);
 
 			if (value !== undefined) {
-				callbacks.choose(value);
+				callbacks.choose(value, event);
 			}
 		},
 		{ signal },
@@ -90,4 +98,23 @@ export const bindSelectInteractions = (
 		subtree: true,
 	});
 	signal.addEventListener('abort', () => observer?.disconnect(), { once: true });
+};
+
+export const bindSelectTriggerInteractions = (
+	host: HTMLElement,
+	trigger: HTMLElement,
+	callbacks: SelectInteractionCallbacks,
+	signal: AbortSignal,
+): void => {
+	const view = host.ownerDocument.defaultView;
+	if (!view) return;
+	const typeahead = new TypeaheadController(view, signal);
+	trigger.addEventListener(
+		'click',
+		(event) => {
+			if (!host.hasAttribute('disabled')) callbacks.toggle(event);
+		},
+		{ signal },
+	);
+	trigger.addEventListener('keydown', (event) => handleKeyDown(event, callbacks, typeahead), { signal });
 };

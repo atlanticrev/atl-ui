@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-alt-theme="light">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/storybook.scss" />
+		<title>ATL UI Vanilla Storybook</title>
+	</head>
+	<body>
+		<header class="alt-catalog-header">
+			<a class="alt-catalog-header__brand" href="#top" aria-label="ATL UI Storybook home">
+				<span class="alt-catalog-header__mark">A</span>
+				<span><strong>ATL UI Vanilla</strong><small>Component Storybook</small></span>
+			</a>
+			<div class="alt-catalog-header__actions">
+				<label class="alt-catalog-search">
+					<span class="alt-catalog-search__label">Search components</span>
+					<input id="catalog-search" type="search" placeholder="Search components…" />
+				</label>
+				<button class="alt-button" data-variant="outlined" id="catalog-theme" type="button">
+					Dark theme
+				</button>
+			</div>
+		</header>
+		<div class="alt-catalog-shell" id="top">
+			<aside class="alt-catalog-sidebar">
+				<p class="alt-catalog-sidebar__count" id="catalog-count"></p>
+				<nav aria-label="Component stories" id="catalog-navigation"></nav>
+			</aside>
+			<main class="alt-catalog-content" id="catalog-content"></main>
+		</div>
+		<alt-toast-region default-duration="4000" id="catalog-toasts"></alt-toast-region>
+		<script type="module" src="/storybook.ts"></script>
+	</body>
+</html>

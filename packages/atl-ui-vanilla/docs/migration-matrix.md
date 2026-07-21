@@ -44,8 +44,9 @@
   Combobox ARIA, filtering, async-safe options и form carrier. P3/H.
 - `AtlSidebar` → `<nav class="alt-sidebar">` с authored links/buttons.
   `selectedKey` становится `aria-current`; app владеет routing/collapse state. P3/M.
-- `AtlSimpleTable` → native `<table class="alt-table">`.
-  App рендерит cells/rows и keyed data; headers и sort buttons semantic. P3/H.
+- `AtlSimpleTable` → `<alt-table>` с native `<table>` внутри light DOM.
+  Columns/dataSource — properties, cells и rows обновляются ограниченно по keys; pagination отправляет
+  `alt-page-change`. Editable/virtualized grid остаётся вне пакета. P3/H.
 
 `render`, `filterFn` и ReactNode callbacks не становятся строковыми attributes. Select и Toast используют
 только локальный keyed update для ограниченных списков. Editable или virtualized tables остаются задачей

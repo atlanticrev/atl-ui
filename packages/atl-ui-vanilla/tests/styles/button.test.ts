@@ -51,6 +51,8 @@ describe('button CSS recipe', () => {
 
 	it('keeps loading content accessible and renders a real indicator slot', () => {
 		expect(buttonCss).toContain('.alt-button__loading-indicator');
+		expect(buttonCss).toContain('.alt-button__loading-indicator:empty::before');
+		expect(buttonCss).toContain('.alt-button__loading-indicator > :where(svg, img)');
 		expect(buttonCss).toContain('opacity: 0');
 		expect(buttonCss).toContain('@media (prefers-reduced-motion: reduce)');
 		expect(buttonCss).not.toContain('visibility: hidden');

@@ -3,6 +3,8 @@ import { createBaseElementClass, upgradeProperties } from '../../core';
 import { SELECT_OBSERVED_ATTRIBUTES, SELECT_PRE_UPGRADE_PROPERTIES } from './constants';
 import { defineSelectFormApi } from './form-api';
 import { defineSelectReflectedProperties } from './reflected-properties';
+import { handleSelectAttributeChange } from './select-attribute-change';
+import { defineSelectIndicatorIconProperty, defineSelectLeadingIconProperty } from './select-indicator-icon';
 import { SelectRuntime } from './select-runtime';
 import type { AltSelectOption } from './types';
 
@@ -28,6 +30,23 @@ export const createAltSelectElementClass = (HtmlElementConstructor: typeof HTMLE
 		public set options(value: readonly AltSelectOption[]) {
 			this.#runtime.model.options = value;
 			this.#runtime.render();
+		}
+
+		public get closeOnSelect(): boolean {
+			const configured = this.getAttribute('close-on-select');
+			return configured === null ? !this.hasAttribute('multiple') : configured !== 'false';
+		}
+
+		public set closeOnSelect(value: boolean) {
+			this.setAttribute('close-on-select', String(value));
+		}
+
+		public get triggerElement(): HTMLElement | null {
+			return this.#runtime.triggerElement;
+		}
+
+		public set triggerElement(value: HTMLElement | null) {
+			if (value) this.#runtime.setTriggerElement(value);
 		}
 
 		public get value(): string {
@@ -60,8 +79,16 @@ export const createAltSelectElementClass = (HtmlElementConstructor: typeof HTMLE
 			this.#runtime.toggle();
 		}
 
+		public clear(): void {
+			this.#runtime.clear();
+		}
+
+		public select(value: string): boolean {
+			return this.#runtime.select(value);
+		}
+
 		public override focus(options?: FocusOptions): void {
-			this.querySelector<HTMLButtonElement>('.alt-select__trigger')?.focus(options);
+			this.#runtime.triggerElement?.focus(options);
 		}
 
 		public override onConnected(signal: AbortSignal): void {
@@ -78,32 +105,13 @@ export const createAltSelectElementClass = (HtmlElementConstructor: typeof HTMLE
 		}
 
 		public attributeChangedCallback(name: string, previous: string | null, value: string | null): void {
-			if (previous === value) {
-				return;
-			}
-
-			if (name === 'value') {
-				this.#runtime.model.setValues(value === null ? [] : [value]);
-				this.#runtime.model.defaultValues = value === null ? [] : [value];
-			}
-
-			if (name === 'disabled' && value !== null) {
-				this.#runtime.close();
-			}
-
-			if (name === 'open') {
-				this.#runtime.setOpen(value !== null);
-			}
-
-			if (name === 'multiple') {
-				this.#runtime.model.setMultiple(value !== null);
-			}
-
-			this.requestUpdate();
+			if (handleSelectAttributeChange(this.#runtime, name, previous, value)) this.requestUpdate();
 		}
 	}
 
 	defineSelectReflectedProperties(AltSelectElement.prototype);
+	defineSelectIndicatorIconProperty(AltSelectElement.prototype);
+	defineSelectLeadingIconProperty(AltSelectElement.prototype);
 	defineSelectFormApi(AltSelectElement.prototype);
 	return AltSelectElement;
 };

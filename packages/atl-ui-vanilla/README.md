@@ -7,27 +7,37 @@ auto-registration, Shadow DOM, renderer или Virtual DOM.
 
 ```ts
 import '@atlanticrev/atl-ui-vanilla/default.css';
-import {
-  defineAltInput,
-  defineAltSelect,
-  defineAltTabs,
-  defineAltToastRegion,
-} from '@atlanticrev/atl-ui-vanilla';
+import { defineAllAltElements } from '@atlanticrev/atl-ui-vanilla/define-all';
 
-defineAltInput();
-defineAltSelect();
-defineAltTabs();
-defineAltToastRegion();
+defineAllAltElements();
 ```
 
 Можно импортировать только нужный entry point, например `@atlanticrev/atl-ui-vanilla/input`. Вызовы
 `define*` идемпотентны. Импорт и вызов регистрации на сервере безопасны; без browser environment define
 вернёт `undefined`.
 
+## SVG icons
+
+Иконки не зависят от шрифтов и доступны отдельным tree-shakeable entry point:
+
+```ts
+import { createAltIcon } from '@atlanticrev/atl-ui-vanilla/icons';
+
+button.append(createAltIcon(document, 'plus', { size: 20 }));
+```
+
+Для server markup используйте `altIconMarkup('check')`. Встроенные иконки Select, Autocomplete,
+Dropdown и Toast создаются автоматически как доступные декоративные `<svg>`.
+
+Компоненты не привязаны к этому набору. У всех внутренних и authored icon-позиций есть замена через
+обычный DOM `Node`: включая actions Autocomplete, leading/indicator Select, option/check icons,
+Toast/dismiss, File upload и пагинацию Table. Полная матрица и семантика `undefined`/`null` описаны в
+[`docs/icons.md`](docs/icons.md).
+
 ## Native recipes
 
-Полный контракт кнопки, loading, иконки, tones и группы описаны в
-[`docs/button.md`](docs/button.md).
+Контракты кнопки, loading, иконок, native form controls и authored composition описаны в
+[`docs/button.md`](docs/button.md) и [`docs/native-recipes.md`](docs/native-recipes.md).
 
 ```html
 <button class="alt-button" data-size="40" data-variant="filled" type="button">Publish</button>
@@ -38,7 +48,7 @@ defineAltToastRegion();
 </label>
 ```
 
-## Input и Select
+## Managed и compound components
 
 ```html
 <form id="post-form">
@@ -60,8 +70,30 @@ select.options = [{ label: 'Instagram', value: 'instagram' }];
 select.addEventListener('alt-change', (event) => console.log(event.detail.values));
 ```
 
-Input держит настоящий `<input>` внутри light DOM. Select полностью управляет видимыми trigger/listbox,
-но использует скрытый native `<select>` как carrier для FormData, reset и validation.
+Input держит настоящий `<input>` внутри light DOM. Select принимает авторский trigger и rich option content,
+но использует скрытый native `<select>` как carrier для FormData, reset и validation:
+
+```html
+<alt-select label="Channel">
+  <button class="alt-button" data-alt-select-trigger type="button">
+    <span data-alt-select-value>Choose channel</span>
+    <span aria-hidden="true" data-alt-select-indicator>⌄</span>
+  </button>
+  <alt-option value="youtube"><strong>YouTube</strong><small>Public video</small></alt-option>
+</alt-select>
+
+<alt-autocomplete free-solo label="Tool" multiple>
+  <input data-alt-autocomplete-input type="search" />
+  <button data-alt-autocomplete-trigger type="button">Browse tools</button>
+</alt-autocomplete>
+```
+
+Повторный click по trigger закрывает popup. `alt-before-open-change` можно отменить, а
+`alt-open-change`, `alt-input` и `alt-change` содержат причину и исходное browser event. Полный контракт
+Select и Autocomplete описан в [`docs/select-autocomplete.md`](docs/select-autocomplete.md).
+
+Отдельные tree-shakeable entry points также доступны для `avatar`, `file-upload`, `progress`, `popup`,
+`tooltip`, `dialog`, `dropdown`, `autocomplete` и `table`. Ни один entry point не регистрируется сам.
 
 ## Tabs и Toast
 
@@ -109,11 +141,22 @@ document.querySelector('alt-toast-region').push({
 
 ## Визуальная проверка
 
-Чистая HTML/TypeScript-витрина пилотных компонентов не использует React или Storybook runtime:
+Чистая HTML/TypeScript-витрина не использует React или Storybook runtime:
 
 ```sh
 npm run demo --workspace @atlanticrev/atl-ui-vanilla
 ```
+
+Полный dependency-free Storybook со всеми компонентами, вариантами и состояниями:
+
+```bash
+npm run storybook --workspace @atlanticrev/atl-ui-vanilla
+```
+
+Каталог откроется на `/storybook.html`. В нём есть поиск, навигация, light/dark theme и раскрываемый
+HTML каждого примера.
+
+Пилот доступен на `/`, showcase всех 22 компонентов — на `/components.html`.
 
 Production-вариант собирается командой
 `npm run demo:build --workspace @atlanticrev/atl-ui-vanilla`.

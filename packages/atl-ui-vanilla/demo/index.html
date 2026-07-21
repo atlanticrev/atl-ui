@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/styles.scss" />
 		<title>ATL UI Vanilla pilot</title>
 	</head>
 	<body>
@@ -35,11 +36,11 @@
 				<h2>Button contracts</h2>
 				<div class="alt-demo__row">
 					<button class="alt-button" data-tone="success" data-variant="tonal" type="button">
-						<span aria-hidden="true" class="alt-button__icon">✓</span>
+						<span aria-hidden="true" class="alt-button__icon" data-alt-demo-icon="check"></span>
 						<span class="alt-button__content">Approved</span>
 					</button>
 					<button aria-label="Add channel" class="alt-button" data-icon-only type="button">
-						<span aria-hidden="true" class="alt-button__icon">+</span>
+						<span aria-hidden="true" class="alt-button__icon" data-alt-demo-icon="plus"></span>
 					</button>
 					<button
 						aria-busy="true"

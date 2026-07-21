@@ -1,50 +1,59 @@
-import { bindFormReset } from '../../controllers';
-import { createTypedEvent } from '../../core';
+import { OpenStateController, type OpenChangeReason } from '../../controllers';
 
 import { createSelectDom, type SelectDom } from './dom';
 import { bindSelectInteractions, type SelectInteractionCallbacks } from './interactions';
+import { emitSelectChange } from './events';
+import { SelectFormRuntime } from './select-form-runtime';
+import { syncSelectIndicatorIcon } from './select-indicator-icon';
 import { SelectModel } from './model';
 import type { OptionView } from './option-view';
-import { showSelectOverlay } from './overlay';
+import { SelectOverlayRuntime } from './select-overlay-runtime';
+import { bindSelectOutline } from './select-outline';
 import { createSelectionInteractions } from './selection-interactions';
-import { ALT_SELECT_OPEN_CHANGE_EVENT, type AltSelectOpenChangeDetail } from './types';
+import { SelectTriggerRuntime } from './select-trigger-runtime';
 import { renderSelect } from './view';
 
 export class SelectRuntime {
 	readonly interactions: SelectInteractionCallbacks;
 	readonly model: SelectModel;
 	#dom: SelectDom | undefined;
-	#open = false;
-	#overlayCleanup: (() => void) | undefined;
-	#resetCleanup: (() => void) | undefined;
-	#signal: AbortSignal | undefined;
+	#form: SelectFormRuntime;
+	#openState: OpenStateController;
+	#overlay = new SelectOverlayRuntime();
+	#trigger: SelectTriggerRuntime;
 	#views = new Map<string, OptionView>();
 
 	public constructor(private readonly host: HTMLElement) {
 		this.model = new SelectModel(host);
+		this.#form = new SelectFormRuntime(host, this.model, this.render);
+		this.#openState = new OpenStateController(host, {
+			isDisabled: () => host.hasAttribute('disabled'),
+			onCommit: this.#commitOpen,
+		});
 		this.interactions = createSelectionInteractions(host, this.model, this, this.render);
+		this.#trigger = new SelectTriggerRuntime(host, this.interactions, this.#handleTriggerChange);
 	}
 
 	public connect(signal: AbortSignal): void {
-		this.#signal = signal;
 		this.#dom ??= createSelectDom(this.host);
+		this.#trigger.connect(this.#dom, signal);
+		this.#overlay.connect(this.#dom, signal, (reason, event) => this.setOpen(false, reason, event));
 		this.model.initialize();
 		bindSelectInteractions(this.host, this.#dom, this.interactions, signal);
-		this.#dom.carrier.addEventListener('invalid', this.#handleInvalid, { signal });
+		this.#form.connect(this.#dom, signal);
 		signal.addEventListener('abort', this.disconnect, { once: true });
 		this.render();
+		bindSelectOutline(this.host, this.#dom, signal);
 
-		if (this.#open) {
-			this.#showOverlay();
+		if (this.#openState.open) {
+			this.#overlay.setOpen(true);
 		}
 	}
 
 	public readonly disconnect = (): void => {
-		this.#overlayCleanup?.();
-		this.#resetCleanup?.();
-		this.#overlayCleanup = undefined;
-		this.#resetCleanup = undefined;
-		this.#signal = undefined;
+		this.#overlay.disconnect();
+		this.#form.disconnect();
+		this.#trigger.disconnect();
 	};
 
 	public readonly render = (): void => {
@@ -53,68 +62,54 @@ export class SelectRuntime {
 		}
 
 		this.model.setMultiple(this.host.hasAttribute('multiple'));
-		renderSelect(this.host, this.#dom, this.model, this.#views, this.#open);
-		this.#resetCleanup?.();
-		this.#resetCleanup = bindFormReset(this.#dom.carrier, this.#handleReset, this.#signal);
+		renderSelect(this.host, this.#dom, this.model, this.#views, this.#openState.open);
+		syncSelectIndicatorIcon(this.host, this.#dom);
+		this.#form.sync(this.#dom);
 	};
 
-	public setOpen(open: boolean): void {
-		const nextOpen = open && !this.host.hasAttribute('disabled');
+	public setOpen(open: boolean, reason: OpenChangeReason = 'programmatic', sourceEvent?: Event): void {
+		this.#openState.request(open, reason, sourceEvent);
+	}
 
-		if (nextOpen === this.#open) {
-			return;
-		}
+	public readonly open = (event?: Event): void => this.setOpen(true, event ? 'trigger' : 'programmatic', event);
+	public readonly close = (event?: Event): void => {
+		const isEscape = (event as KeyboardEvent | undefined)?.key === 'Escape';
+		this.setOpen(false, isEscape ? 'escape' : event ? 'selection' : 'programmatic', event);
+	};
+	public readonly toggle = (event?: Event): void => {
+		this.setOpen(!this.#openState.open, event ? 'trigger' : 'programmatic', event);
+	};
+	public readonly isOpen = (): boolean => this.#openState.open;
+	public readonly syncOpenAttribute = (open: boolean): void => this.#openState.syncAttribute(open);
 
-		if (!nextOpen) {
-			this.#hideOverlay();
-		}
-
-		this.#open = nextOpen;
-		this.host.toggleAttribute('open', nextOpen);
+	public clear(): void {
+		if (!this.model.setValues([])) return;
 		this.render();
-
-		if (nextOpen) {
-			this.#showOverlay();
-		}
-
-		if (this.host.isConnected) {
-			const detail: AltSelectOpenChangeDetail = { open: nextOpen };
-			this.host.dispatchEvent(createTypedEvent(ALT_SELECT_OPEN_CHANGE_EVENT, detail));
-		}
+		emitSelectChange(this.host, this.model, 'clear');
 	}
 
-	public readonly open = (): void => this.setOpen(true);
-	public readonly close = (): void => this.setOpen(false);
-	public readonly toggle = (): void => this.setOpen(!this.#open);
-	public readonly isOpen = (): boolean => this.#open;
-
-	readonly #handleReset = (): void => {
-		this.model.reset();
+	public select(value: string): boolean {
+		const wasSelected = this.model.values.includes(value);
+		if (!this.model.select(value)) return false;
 		this.render();
-	};
-
-	readonly #handleInvalid = (event: Event): void => {
-		event.preventDefault();
-
-		if (this.host.getAttribute('aria-invalid') !== 'true') {
-			this.host.dataset.validationInvalid = 'true';
-			this.host.setAttribute('aria-invalid', 'true');
-		}
-
-		this.#dom?.trigger.setAttribute('aria-invalid', 'true');
-		this.#dom?.trigger.focus();
-	};
-	#showOverlay(): void {
-		if (!this.#dom || !this.#signal || this.#signal.aborted) {
-			return;
-		}
-
-		this.#overlayCleanup?.();
-		this.#overlayCleanup = showSelectOverlay(this.#dom, this.close, this.#signal);
+		emitSelectChange(this.host, this.model, wasSelected ? 'remove' : 'select');
+		return true;
 	}
 
-	#hideOverlay(): void {
-		this.#overlayCleanup?.();
-		this.#overlayCleanup = undefined;
+	public get triggerElement(): HTMLElement | null {
+		return this.#trigger.element;
 	}
+
+	public setTriggerElement(trigger: HTMLElement): void {
+		this.#trigger.set(trigger);
+	}
+	readonly #handleTriggerChange = (): void => {
+		this.render();
+		if (this.#openState.open) this.#overlay.setOpen(true);
+	};
+	readonly #commitOpen = (detail: { open: boolean }): void => {
+		if (!detail.open) this.#overlay.setOpen(false);
+		this.render();
+		if (detail.open) this.#overlay.setOpen(true);
+	};
 }

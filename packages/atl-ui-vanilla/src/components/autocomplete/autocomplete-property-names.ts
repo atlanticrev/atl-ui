@@ -1,0 +1,15 @@
+export const AUTOCOMPLETE_PRE_UPGRADE_PROPERTIES = [
+	'clearIcon',
+	'filter',
+	'freeSolo',
+	'indicatorIcon',
+	'inputPattern',
+	'inputValue',
+	'multiple',
+	'noResultsIcon',
+	'open',
+	'options',
+	'readOnly',
+	'value',
+	'values',
+];

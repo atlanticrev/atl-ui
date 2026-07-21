@@ -1,8 +1,11 @@
 import type { AltSelectOption } from './types';
 
 const normalizeOption = (option: AltSelectOption): AltSelectOption => ({
+	checkIcon: option.checkIcon,
 	description: option.description,
 	disabled: option.disabled ?? false,
+	element: option.element,
+	icon: option.icon,
 	label: option.label,
 	selected: option.selected ?? false,
 	value: option.value,
@@ -25,12 +28,18 @@ export const normalizeOptions = (options: readonly AltSelectOption[]): AltSelect
 };
 
 export const readDeclarativeOptions = (host: Element): AltSelectOption[] => {
-	const options = Array.from(host.children)
-		.filter((child) => child.localName === 'alt-option')
+	const options = Array.from(host.querySelectorAll<HTMLElement>('alt-option'))
+		.filter((child) => {
+			const owner = child.closest('alt-select, alt-dropdown, alt-autocomplete');
+			return owner === null || owner === host;
+		})
 		.map((child) => ({
+			checkIcon: Reflect.get(child, 'checkIcon') as Node | null | undefined,
 			description: child.getAttribute('description') ?? undefined,
 			disabled: child.hasAttribute('disabled'),
+			element: child,
 			label: child.getAttribute('label') ?? child.textContent?.trim() ?? '',
+			icon: Reflect.get(child, 'icon') as Node | null | undefined,
 			selected: child.hasAttribute('selected'),
 			value: child.getAttribute('value') ?? child.textContent?.trim() ?? '',
 		}));

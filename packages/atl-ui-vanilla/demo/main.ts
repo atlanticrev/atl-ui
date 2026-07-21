@@ -1,7 +1,7 @@
 import type { AltSelectElementApi, AltToastElementApi } from '../src';
 import { defineAllAltElements } from '../src';
-import '../src/styles/default.scss';
-import './demo.scss';
+
+import { hydrateDemoIcons } from './icon-hydration';
 
 type DemoState = {
 	errors: string[];
@@ -19,6 +19,7 @@ const getElement = <ElementType extends HTMLElement>(id: string): ElementType =>
 };
 
 defineAllAltElements();
+hydrateDemoIcons(document);
 
 const demoState: DemoState = {
 	errors: [],

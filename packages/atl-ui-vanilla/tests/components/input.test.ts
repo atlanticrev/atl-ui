@@ -69,6 +69,19 @@ describe('alt-input', () => {
 		});
 	});
 
+	it('floats the label when an empty field has a placeholder', async () => {
+		const host = document.createElement('alt-input') as AltInputElementApi;
+		host.setAttribute('label', 'Title');
+		host.setAttribute('placeholder', 'Enter a title');
+		document.body.append(host);
+		await updateComplete();
+
+		expect(host.value).toBe('');
+		expect(host.dataset.filled).toBe('false');
+		expect(host.dataset.labelFloat).toBe('true');
+		expect(host.inputElement?.placeholder).toBe('Enter a title');
+	});
+
 	it('restores the default value when its form resets', async () => {
 		const form = document.createElement('form');
 		form.innerHTML = '<alt-input name="query" value="Default"></alt-input>';

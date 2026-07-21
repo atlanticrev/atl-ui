@@ -77,11 +77,26 @@ export class SelectModel {
 			: this.#selection.select(this.activeValue);
 	}
 
+	public select(value: string): boolean {
+		const option = this.#options.find((candidate) => candidate.value === value && !candidate.disabled);
+		if (!option) return false;
+		this.activeValue = value;
+		return this.selectActive();
+	}
+
 	public moveActive(direction: 1 | -1, edge?: 'end' | 'start'): void {
 		const currentIndex = this.#options.findIndex((option) => option.value === this.activeValue);
 		const edgeIndex = edge === 'end' ? this.#options.length - 1 : 0;
 		const start = edge ? edgeIndex : Math.max(0, currentIndex + direction);
 		this.activeValue = findEnabledOption(this.#options, start, direction)?.value;
+	}
+
+	public moveToMatch(query: string): void {
+		const options = this.#options.filter((option) => !option.disabled);
+		const currentIndex = options.findIndex((option) => option.value === this.activeValue);
+		const ordered = [...options.slice(currentIndex + 1), ...options.slice(0, currentIndex + 1)];
+		const match = ordered.find((option) => option.label.toLocaleLowerCase().startsWith(query));
+		if (match) this.activeValue = match.value;
 	}
 
 	public reset(): void {

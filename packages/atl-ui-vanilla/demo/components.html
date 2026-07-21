@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" data-alt-theme="light">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/styles.scss" />
+		<title>ATL UI Vanilla components</title>
+	</head>
+	<body>
+		<main class="alt-demo">
+			<header class="alt-demo__header">
+				<div><p class="alt-demo__eyebrow">22 components · zero dependencies</p><h1>Component showcase</h1></div>
+				<button class="alt-button" data-variant="tonal" id="theme-button" type="button">Dark theme</button>
+			</header>
+
+			<section class="alt-card alt-demo__section">
+				<h2>Native recipes</h2>
+				<nav aria-label="Breadcrumb" class="alt-breadcrumbs">
+					<ol class="alt-breadcrumbs__list"><li class="alt-breadcrumbs__item">
+						<a class="alt-breadcrumbs__link" href="#native">Library</a>
+						<span class="alt-breadcrumbs__separator" data-alt-demo-icon="chevron-right"></span>
+					</li><li aria-current="page" class="alt-breadcrumbs__current">Components</li></ol>
+				</nav>
+				<div class="alt-demo__row" id="native">
+					<button class="alt-button" data-variant="filled" type="button">Publish</button>
+					<label class="alt-checkbox"><input checked class="alt-checkbox__control" type="checkbox" />Checkbox</label>
+					<label class="alt-radio"><input checked class="alt-radio__control" name="view" type="radio" />Radio</label>
+					<label class="alt-switcher"><input checked class="alt-switcher__control" role="switch"
+						type="checkbox" />Switcher</label>
+					<span class="alt-chip" data-variant="frozen">
+						Ready<button aria-label="Remove" class="alt-chip__remove" data-alt-demo-icon="close"></button>
+					</span>
+					<span aria-hidden="true" class="alt-skeleton" data-shape="line" style="width: 8rem">&nbsp;</span>
+				</div>
+			</section>
+
+			<section class="alt-demo__grid">
+				<aside class="alt-sidebar">
+					<strong class="alt-sidebar__header">Workspace</strong>
+					<nav class="alt-sidebar__group"><a aria-current="page" class="alt-sidebar__item" href="#forms">Forms</a>
+						<a class="alt-sidebar__item" href="#overlays">Overlays</a></nav>
+				</aside>
+				<section class="alt-card alt-demo__section" id="forms">
+					<h2>Fields and status</h2>
+					<alt-input helper-text="Native form control" label="Post title" value="Launch update"></alt-input>
+					<alt-select label="Channel" value="youtube">
+						<button class="alt-button" data-alt-select-trigger data-variant="outlined" type="button">
+							<span data-alt-select-value>Choose channel</span>
+							<span data-alt-demo-icon="chevron-down" data-alt-select-indicator></span>
+						</button>
+						<alt-option label="YouTube" value="youtube">
+							<strong>YouTube</strong><small>Public video</small>
+						</alt-option>
+						<alt-option label="TikTok" value="tiktok">
+							<strong>TikTok</strong><small>Short video</small>
+						</alt-option>
+					</alt-select>
+					<alt-autocomplete id="demo-autocomplete" label="Tool" value="figma">
+						<button class="alt-demo__field-action" data-alt-autocomplete-trigger type="button">Browse</button>
+						<button class="alt-demo__field-action alt-demo__field-action--clear" data-alt-autocomplete-clear
+							type="button">Clear</button>
+					</alt-autocomplete>
+					<alt-file-upload accept="image/*" helper-text="PNG or JPEG" label="Choose thumbnail"></alt-file-upload>
+					<alt-progress label="Upload progress" value="64"></alt-progress>
+					<div class="alt-demo__row"><alt-avatar initials="Max Tarasyuk" size="48"></alt-avatar>
+						<span>Avatar fallback</span></div>
+				</section>
+			</section>
+
+			<section class="alt-card alt-demo__section" id="overlays">
+				<h2>Behavior and overlays</h2>
+				<alt-tabs active-key="first"><div role="tablist"><button data-key="first" role="tab">First</button>
+					<button data-key="second" role="tab">Second</button></div><p data-key="first" role="tabpanel">First panel</p>
+					<p data-key="second" role="tabpanel">Second panel</p></alt-tabs>
+				<alt-dropdown id="demo-dropdown" multiple show-footer><alt-option label="Figma" value="figma"></alt-option>
+					<alt-option label="Linear" value="linear"></alt-option></alt-dropdown>
+				<div class="alt-demo__row"><alt-tooltip title="Accessible tooltip"><button class="alt-button"
+					data-variant="outlined">Hover or focus</button></alt-tooltip>
+					<button class="alt-button" data-variant="outlined" id="popup-button">Open popup</button>
+					<button class="alt-button" data-variant="outlined" id="dialog-button">Open dialog</button>
+					<button class="alt-button" data-variant="filled" id="toast-button">Show toast</button></div>
+				<alt-popup id="demo-popup"><div class="alt-demo__popup-content">Popover API with light DOM</div></alt-popup>
+			</section>
+
+			<section class="alt-card alt-demo__section"><h2>Managed table</h2><alt-table id="demo-table"></alt-table></section>
+		</main>
+		<alt-dialog id="demo-dialog">
+			<header class="alt-dialog__header"><h2 class="alt-dialog__title">Native dialog</h2></header>
+			<div class="alt-dialog__body">Focus, Escape and restore are browser-native.</div><footer class="alt-dialog__footer">
+				<button class="alt-button" data-alt-dialog-close data-variant="filled">Close</button></footer></alt-dialog>
+		<alt-toast-region default-duration="4000" id="toast-region"></alt-toast-region>
+		<script type="module" src="/components.ts"></script>
+	</body>
+</html>

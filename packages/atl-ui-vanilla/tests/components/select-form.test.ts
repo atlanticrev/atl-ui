@@ -41,10 +41,16 @@ describe('alt-select forms and properties', () => {
 	it('supports typed options and multiple values without a visible native select', async () => {
 		const form = document.createElement('form');
 		const select = document.createElement('alt-select') as AltSelectElementApi;
+		const customIndicator = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		const customLeading = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		const customCheck = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		customIndicator.dataset.testIcon = 'custom';
 		select.setAttribute('name', 'platform');
+		select.indicatorIcon = customIndicator;
+		select.leadingIcon = customLeading;
 		select.multiple = true;
 		select.options = [
-			{ label: 'YouTube', value: 'youtube' },
+			{ checkIcon: customCheck, label: 'YouTube', value: 'youtube' },
 			{ label: 'TikTok', value: 'tiktok' },
 		];
 		select.values = ['youtube', 'tiktok'];
@@ -54,7 +60,18 @@ describe('alt-select forms and properties', () => {
 
 		expect(new FormData(form).getAll('platform')).toEqual(['youtube', 'tiktok']);
 		expect(select.querySelector('.alt-select__trigger')).toBeInstanceOf(HTMLButtonElement);
+		expect(select.querySelector('[data-test-icon="custom"]')).toBe(customIndicator);
+		expect(select.querySelector('.alt-select__leading-icon')?.firstChild).toBe(customLeading);
+		expect(select.querySelector('.alt-listbox__option-check')?.firstChild).toBe(customCheck);
+		expect(select.querySelectorAll('.alt-listbox__option-check [data-alt-icon="check"]')).toHaveLength(1);
 		expect(select.querySelector<HTMLSelectElement>('.alt-select__native')?.hidden).toBe(true);
+
+		select.indicatorIcon = null;
+		await flushUpdate();
+		expect(select.querySelector('.alt-select__indicator')?.childNodes).toHaveLength(0);
+		select.indicatorIcon = undefined;
+		await flushUpdate();
+		expect(select.querySelector('[data-alt-icon="chevron-down"]')).toBeInstanceOf(SVGSVGElement);
 	});
 
 	it('floats the label when an empty select renders a placeholder', async () => {
@@ -71,13 +88,16 @@ describe('alt-select forms and properties', () => {
 	it('recovers properties assigned before the element is upgraded', async () => {
 		const tagName = 'alt-select-pre-upgrade-test';
 		const select = document.createElement(tagName) as AltSelectElementApi;
+		const customIndicator = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 		select.options = [{ label: 'Ready', value: 'ready' }];
+		select.indicatorIcon = customIndicator;
 		select.value = 'ready';
 		customElements.define(tagName, createAltSelectElementClass(HTMLElement));
 		document.body.append(select);
 		await flushUpdate();
 
 		expect(select.value).toBe('ready');
+		expect(select.querySelector('.alt-select__indicator')?.firstChild).toBe(customIndicator);
 		expect(select.querySelector('.alt-select__value')?.textContent).toBe('Ready');
 	});
 

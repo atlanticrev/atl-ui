@@ -1,0 +1,21 @@
+@layer alt.components {
+  :where(alt-tooltip, .alt-tooltip) {
+    display: inline-flex;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .alt-tooltip__panel {
+    position: fixed;
+    z-index: var(--alt-tooltip-z-index, 70);
+    max-width: min(240px, calc(100vw - 1rem));
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--alt-radius-xs);
+    background: var(--alt-color-inverse-surface);
+    color: var(--alt-color-ink-inverse);
+    box-shadow: var(--alt-shadow-md);
+    font: var(--alt-type-body-sm);
+    overflow-wrap: anywhere;
+    pointer-events: none;
+  }
+}

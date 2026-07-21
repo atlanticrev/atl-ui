@@ -3,8 +3,10 @@ import { createBaseElementClass, type ElementEnvironment, registerElement, upgra
 import { reflectBoolean, reflectString } from './attributes';
 
 export type AltOptionElementApi = HTMLElement & {
+	checkIcon: Node | null;
 	description: string;
 	disabled: boolean;
+	icon: Node | null;
 	label: string;
 	selected: boolean;
 	value: string;
@@ -15,6 +17,16 @@ export const createAltOptionElementClass = (HtmlElementConstructor: typeof HTMLE
 
 	return class AltOptionElement extends BaseElement {
 		public static observedAttributes = ['description', 'disabled', 'label', 'selected', 'value'];
+		#checkIcon: Node | null = null;
+		#icon: Node | null = null;
+
+		public get checkIcon(): Node | null {
+			return this.#checkIcon;
+		}
+
+		public set checkIcon(value: Node | null) {
+			this.#checkIcon = value;
+		}
 
 		public get description(): string {
 			return this.getAttribute('description') ?? '';
@@ -34,6 +46,14 @@ export const createAltOptionElementClass = (HtmlElementConstructor: typeof HTMLE
 
 		public get label(): string {
 			return this.getAttribute('label') ?? this.textContent?.trim() ?? '';
+		}
+
+		public get icon(): Node | null {
+			return this.#icon;
+		}
+
+		public set icon(value: Node | null) {
+			this.#icon = value;
 		}
 
 		public set label(value: string) {
@@ -57,9 +77,11 @@ export const createAltOptionElementClass = (HtmlElementConstructor: typeof HTMLE
 		}
 
 		public override onConnected(): void {
-			upgradeProperties(this, ['description', 'disabled', 'label', 'selected', 'value']);
-			this.hidden = true;
-			this.setAttribute('aria-hidden', 'true');
+			upgradeProperties(this, ['checkIcon', 'description', 'disabled', 'icon', 'label', 'selected', 'value']);
+			const rendered = Boolean(this.closest('.alt-listbox'));
+			this.hidden = !rendered;
+			if (rendered) this.removeAttribute('aria-hidden');
+			else this.setAttribute('aria-hidden', 'true');
 		}
 	};
 };

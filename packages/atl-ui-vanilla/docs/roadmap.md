@@ -11,10 +11,10 @@
 2. Выпустить core: lifecycle, converters, batching, events, registration и controllers.
 3. Проверить pilot: Button/Card/Checkbox recipes, Input, Select, Tabs и Toast region.
 4. Подключить pilot напрямую в одном native production flow `social-video-posting`.
-5. Перенести остальные native recipes, затем FileUpload, Progress и Avatar.
-6. Перенести Popup, Tooltip и Dialog; проверить stacking, focus restore и mobile viewport.
-7. Перенести Dropdown и Autocomplete.
-8. Table и Sidebar оставить author-rendered до подтверждённой потребности.
+5. Перенести остальные native recipes, затем FileUpload, Progress и Avatar. Выполнено.
+6. Перенести Popup, Tooltip и Dialog; проверить stacking, focus restore и mobile viewport. Выполнено.
+7. Перенести Dropdown и Autocomplete. Выполнено.
+8. Добавить managed Table; Sidebar оставить native author-rendered. Выполнено.
 9. Переписать `social-video-posting` route за route на native TypeScript.
 10. После parity снять Chrome traces: gzip, parsed JS, long tasks, INP/LCP/CLS и memory.
 

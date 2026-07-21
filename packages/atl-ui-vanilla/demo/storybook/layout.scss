@@ -1,0 +1,96 @@
+@layer alt.overrides {
+  html {
+    scroll-padding-top: 92px;
+  }
+
+  body {
+    min-width: 320px;
+  }
+
+  .alt-catalog-header {
+    position: sticky;
+    z-index: 80;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 72px;
+    padding: 0.75rem clamp(1rem, 3vw, 2rem);
+    border-bottom: 1px solid var(--alt-color-border);
+    background: color-mix(in srgb, var(--alt-color-surface) 92%, transparent);
+    backdrop-filter: blur(16px);
+  }
+
+  .alt-catalog-header__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--alt-color-ink);
+    text-decoration: none;
+  }
+
+  .alt-catalog-header__brand > span:last-child {
+    display: grid;
+  }
+
+  .alt-catalog-header__brand small {
+    color: var(--alt-color-ink-muted);
+  }
+
+  .alt-catalog-header__mark {
+    display: grid;
+    place-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--alt-color-accent);
+    color: var(--alt-color-accent-ink);
+    font: var(--alt-type-title-lg);
+  }
+
+  .alt-catalog-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .alt-catalog-search__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .alt-catalog-search input {
+    width: min(32vw, 320px);
+    min-height: 40px;
+    padding: 0 0.875rem;
+    border: 1px solid var(--alt-color-border);
+    border-radius: var(--alt-radius-full);
+    background: var(--alt-color-surface);
+    color: var(--alt-color-ink);
+    font: var(--alt-type-body-md);
+  }
+
+  .alt-catalog-search input:focus-visible {
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  .alt-catalog-shell {
+    display: grid;
+    grid-template-columns: 244px minmax(0, 1fr);
+    width: min(100%, 1600px);
+    min-height: calc(100dvh - 72px);
+    margin: 0 auto;
+  }
+
+  .alt-catalog-content {
+    display: grid;
+    gap: 2rem;
+    min-width: 0;
+    padding: 2rem clamp(1rem, 4vw, 4rem) 7rem;
+  }
+}

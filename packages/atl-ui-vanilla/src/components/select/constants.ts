@@ -1,6 +1,7 @@
 export const SELECT_OBSERVED_ATTRIBUTES = [
 	'description',
 	'disabled',
+	'close-on-select',
 	'form',
 	'helper-text',
 	'label',
@@ -9,6 +10,7 @@ export const SELECT_OBSERVED_ATTRIBUTES = [
 	'open',
 	'placeholder',
 	'required',
+	'readonly',
 	'size',
 	'status',
 	'value',
@@ -16,15 +18,20 @@ export const SELECT_OBSERVED_ATTRIBUTES = [
 
 export const SELECT_PRE_UPGRADE_PROPERTIES = [
 	'disabled',
+	'closeOnSelect',
 	'helperText',
+	'indicatorIcon',
+	'leadingIcon',
 	'multiple',
 	'name',
 	'open',
 	'options',
 	'placeholder',
 	'required',
+	'readOnly',
 	'size',
 	'status',
+	'triggerElement',
 	'value',
 	'values',
 ];

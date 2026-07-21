@@ -13,8 +13,8 @@
 
 ### Native HTML recipes
 
-Button, card, breadcrumbs, checkbox, radio, switcher, chip, skeleton, sidebar, and table are semantic HTML
-with exported CSS. Feature code owns content, routing, data iteration, and pagination.
+Button, card, breadcrumbs, checkbox, radio, switcher, chip, skeleton, and sidebar are semantic HTML with
+exported CSS. Feature code owns their content and routing.
 
 ### Owned native compounds
 
@@ -28,8 +28,8 @@ callbacks or arbitrary data structures that would require a rendering engine.
 
 ### Fully managed elements
 
-Select, autocomplete, and toast region own bounded dynamic DOM. Options and toast items use small keyed
-updates with documented limits.
+Select, dropdown, autocomplete, table, and toast region own bounded dynamic DOM. Options, rows, and toast
+items use small keyed updates with documented limits.
 
 ## Registration
 
@@ -48,3 +48,7 @@ carrier.
 Server output remains useful before upgrade. Native recipes render directly. Input can reuse matching
 `data-alt-owned` parts. Fully managed elements preserve declarative configuration, but exclusively own their
 documented internal descendants. Hydration never runs a virtual DOM or general reconciliation algorithm.
+
+Table keeps keyed row and cell elements, but does not reconcile arbitrary nested trees. Its intended range
+is ordinary admin tables up to a few hundred rendered rows. Virtualization, editable grids and deeply
+stateful cell trees stay in application code or a specialized grid.

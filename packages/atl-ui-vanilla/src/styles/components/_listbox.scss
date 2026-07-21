@@ -1,6 +1,7 @@
 @layer alt.components {
   :where(.alt-listbox) {
     min-width: var(--alt-listbox-min-width, 280px);
+    max-width: calc(100vw - 1rem);
     max-height: var(--alt-listbox-max-height, 320px);
     padding: 0.25rem;
     margin: 0;
@@ -62,6 +63,7 @@
   .alt-listbox__footer-text {
     color: var(--alt-color-ink-muted);
     font: var(--alt-type-body-sm);
+    overflow-wrap: anywhere;
   }
 
   .alt-listbox__option-icon,
@@ -71,9 +73,17 @@
   }
 
   .alt-listbox__empty {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
     padding: 0.625rem 0.875rem;
     color: var(--alt-color-ink-muted);
     font: var(--alt-type-body-lg);
+  }
+
+  .alt-listbox__empty-icon {
+	display: inline-flex;
+	flex: 0 0 auto;
   }
 
   .alt-listbox__footer {

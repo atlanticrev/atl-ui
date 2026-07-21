@@ -21,8 +21,8 @@ describe('toast CSS lifecycle', () => {
 	});
 
 	it('keeps close affordances visible for pointer and keyboard users', () => {
-		expect(toastCss).toContain('.alt-toast__dismiss::before');
-		expect(toastCss).toContain('translate(-50%, -50%) rotate(45deg)');
+		expect(toastCss).toContain('.alt-toast__dismiss .alt-icon');
+		expect(toastCss).not.toContain('.alt-toast__dismiss::before');
 		expect(toastCss).toContain('.alt-toast__dismiss:hover:not(:disabled)');
 		expect(toastCss).toContain('.alt-toast__dismiss:active:not(:disabled)');
 		expect(toastCss).toContain('.alt-toast__dismiss:focus-visible');

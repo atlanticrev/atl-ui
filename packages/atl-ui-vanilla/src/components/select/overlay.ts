@@ -6,12 +6,16 @@ type PopoverElement = HTMLElement & {
 	togglePopover?: (force?: boolean) => boolean;
 };
 
-export const showSelectOverlay = (dom: SelectDom, onDismiss: () => void, signal: AbortSignal): (() => void) => {
+export const showSelectOverlay = (
+	dom: SelectDom,
+	onDismiss: (reason: 'escape' | 'outside', event: Event) => void,
+	signal: AbortSignal,
+): (() => void) => {
 	const popup = dom.popup as PopoverElement;
 	popup.togglePopover?.(true);
 	const cleanupDismiss = bindOverlayDismiss({
 		ignore: [dom.trigger],
-		onDismiss,
+		onDismiss: ({ event, reason }) => onDismiss(reason === 'escape' ? 'escape' : 'outside', event),
 		overlay: popup,
 		signal,
 	});

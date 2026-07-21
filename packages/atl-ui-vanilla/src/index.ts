@@ -4,3 +4,4 @@ export * from './components';
 export * from './controllers';
 export * from './core';
 export * from './define-all';
+export * from './icons';

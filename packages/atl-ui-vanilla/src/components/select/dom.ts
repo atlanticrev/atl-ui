@@ -1,14 +1,19 @@
 import { createSelectCarrier } from '../../controllers';
+import { createAltIcon } from '../../icons';
+import { ensureFieldOutlineDom } from '../field-outline/field-outline-dom';
 
 export type SelectDom = {
 	carrier: HTMLSelectElement;
 	description: HTMLDivElement;
-	indicator: HTMLSpanElement;
-	label: HTMLSpanElement;
+	indicator: HTMLElement | null;
+	label: HTMLElement | null;
+	leadingIcon: HTMLElement | null;
 	list: HTMLUListElement;
+	outline: SVGSVGElement | null;
+	outlinePath: SVGPathElement | null;
 	popup: HTMLDivElement;
-	trigger: HTMLButtonElement;
-	value: HTMLSpanElement;
+	trigger: HTMLElement;
+	value: HTMLElement | null;
 };
 
 let selectId = 0;
@@ -28,26 +33,68 @@ const createSpan = (document: Document, className: string): HTMLSpanElement => {
 	return span;
 };
 
+const findAuthoredTrigger = (host: HTMLElement): HTMLElement | null => {
+	const candidates = host.querySelectorAll<HTMLElement>('[data-alt-select-trigger]');
+	return Array.from(candidates).find((element) => element.closest('alt-select') === host) ?? null;
+};
+
+export const configureSelectTrigger = (trigger: HTMLElement, listId: string): void => {
+	if (trigger.localName === 'button') {
+		(trigger as HTMLButtonElement).type = 'button';
+	} else if (trigger.tabIndex < 0) {
+		trigger.tabIndex = 0;
+	}
+
+	trigger.setAttribute('role', 'combobox');
+	trigger.setAttribute('aria-haspopup', 'listbox');
+	trigger.setAttribute('aria-controls', listId);
+};
+
+export const readSelectTriggerParts = (
+	trigger: HTMLElement,
+): Pick<SelectDom, 'indicator' | 'label' | 'leadingIcon' | 'value'> => ({
+	indicator: trigger.querySelector<HTMLElement>('[data-alt-select-indicator]'),
+	label: trigger.querySelector<HTMLElement>('[data-alt-select-label]'),
+	leadingIcon: trigger.querySelector<HTMLElement>('[data-alt-select-leading-icon]'),
+	value: trigger.querySelector<HTMLElement>('[data-alt-select-value]'),
+});
+
 export const createSelectDom = (host: HTMLElement): SelectDom => {
 	const document = host.ownerDocument;
 	const ids = nextIds();
-	const trigger = document.createElement('button');
-	const label = createSpan(document, 'alt-select__label');
-	const value = createSpan(document, 'alt-select__value');
-	const indicator = createSpan(document, 'alt-select__indicator');
+	const authoredTrigger = findAuthoredTrigger(host);
+	const trigger = authoredTrigger ?? document.createElement('button');
+	let label = authoredTrigger?.querySelector<HTMLElement>('[data-alt-select-label]') ?? null;
+	let value = authoredTrigger?.querySelector<HTMLElement>('[data-alt-select-value]') ?? null;
+	let indicator = authoredTrigger?.querySelector<HTMLElement>('[data-alt-select-indicator]') ?? null;
+	let leadingIcon = authoredTrigger?.querySelector<HTMLElement>('[data-alt-select-leading-icon]') ?? null;
 	const popup = document.createElement('div');
 	const list = document.createElement('ul');
 	const description = document.createElement('div');
 	const carrier = createSelectCarrier(document);
+	let outline: SVGSVGElement | null = null;
+	let outlinePath: SVGPathElement | null = null;
 
-	trigger.className = 'alt-select__trigger';
-	trigger.type = 'button';
-	trigger.setAttribute('role', 'combobox');
-	trigger.setAttribute('aria-haspopup', 'listbox');
-	trigger.setAttribute('aria-controls', ids.list);
-	label.id = ids.label;
-	indicator.textContent = '⌄';
-	indicator.setAttribute('aria-hidden', 'true');
+	if (!authoredTrigger) {
+		label = createSpan(document, 'alt-select__label');
+		leadingIcon = createSpan(document, 'alt-select__leading-icon');
+		value = createSpan(document, 'alt-select__value');
+		indicator = createSpan(document, 'alt-select__indicator');
+		trigger.className = 'alt-select__trigger';
+		trigger.dataset.altOwned = 'select-trigger';
+		label.id = ids.label;
+		indicator.append(createAltIcon(document, 'chevron-down', { size: 18 }));
+		indicator.setAttribute('aria-hidden', 'true');
+		leadingIcon.setAttribute('aria-hidden', 'true');
+		leadingIcon.hidden = true;
+		trigger.append(label, leadingIcon, value, indicator);
+		({ outline, outlinePath } = ensureFieldOutlineDom(trigger, {
+			outline: 'alt-select__outline',
+			path: 'alt-select__outline-path',
+		}));
+	}
+
+	configureSelectTrigger(trigger, ids.list);
 	popup.className = 'alt-select__popup alt-popup';
 	popup.setAttribute('popover', 'manual');
 	list.className = 'alt-listbox';
@@ -56,8 +103,15 @@ export const createSelectDom = (host: HTMLElement): SelectDom => {
 	description.className = 'alt-select__helper';
 	description.id = ids.description;
 	carrier.className = 'alt-select__native';
-	trigger.append(label, value, indicator);
 	popup.append(list);
-	host.append(trigger, popup, description, carrier);
-	return { carrier, description, indicator, label, list, popup, trigger, value };
+
+	if (!authoredTrigger) {
+		host.prepend(trigger);
+	}
+
+	host.append(popup, description, carrier);
+	return {
+		carrier, description, indicator, label, leadingIcon, list,
+		outline, outlinePath, popup, trigger, value,
+	};
 };

@@ -16,18 +16,27 @@ const selectedText = (model: SelectModel): string => {
 const syncAccessibleName = (host: HTMLElement, dom: SelectDom): void => {
 	const label = host.getAttribute('label') ?? '';
 	const description = host.getAttribute('helper-text') ?? host.getAttribute('description') ?? '';
-	dom.label.textContent = label;
-	dom.label.hidden = !label;
+	const managedName = dom.trigger.dataset.altManagedAccessibleName === 'true';
+
+	if (dom.label) {
+		dom.label.id ||= `${dom.list.id}-label`;
+		dom.label.textContent = label;
+		dom.label.hidden = !label;
+	}
+
 	dom.description.textContent = description;
 	dom.description.hidden = !description;
-	dom.trigger.removeAttribute('aria-label');
-	dom.trigger.removeAttribute('aria-labelledby');
 	dom.trigger.removeAttribute('aria-describedby');
 
-	if (label) {
+	if (label && dom.label) {
 		dom.trigger.setAttribute('aria-labelledby', dom.label.id);
-	} else {
-		dom.trigger.setAttribute('aria-label', host.getAttribute('aria-label') ?? 'Select');
+		dom.trigger.removeAttribute('aria-label');
+	} else if (
+		managedName ||
+		(!dom.trigger.hasAttribute('aria-label') && !dom.trigger.hasAttribute('aria-labelledby'))
+	) {
+		dom.trigger.dataset.altManagedAccessibleName = 'true';
+		dom.trigger.setAttribute('aria-label', (host.getAttribute('aria-label') ?? label) || 'Select');
 	}
 
 	if (description) {
@@ -65,12 +74,22 @@ export const renderSelect = (
 
 	dom.popup.dataset.open = String(open);
 	dom.popup.hidden = !open;
-	dom.trigger.disabled = disabled;
+	dom.trigger.toggleAttribute('data-popup-open', open);
+	dom.trigger.toggleAttribute('data-disabled', disabled);
+	dom.trigger.toggleAttribute('data-filled', model.values.length > 0);
+	dom.trigger.toggleAttribute('data-readonly', host.hasAttribute('readonly'));
+	if (dom.trigger.localName === 'button') {
+		(dom.trigger as HTMLButtonElement).disabled = disabled;
+	}
+
+	dom.trigger.setAttribute('aria-disabled', String(disabled));
 	dom.trigger.setAttribute('aria-expanded', String(open));
 	dom.trigger.setAttribute('aria-required', String(host.hasAttribute('required')));
 	dom.list.setAttribute('aria-multiselectable', String(host.hasAttribute('multiple')));
-	dom.value.textContent = text || placeholder;
-	dom.value.classList.toggle('alt-select__placeholder', !text);
+	if (dom.value) {
+		dom.value.textContent = text || placeholder;
+		dom.value.classList.toggle('alt-select__placeholder', !text);
+	}
 	syncAccessibleName(host, dom);
 	syncOptionViews(dom.list, views, model.options, model.activeValue, model.values);
 	const activeView = model.activeValue ? views.get(model.activeValue) : undefined;

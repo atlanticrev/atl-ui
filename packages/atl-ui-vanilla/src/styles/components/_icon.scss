@@ -1,0 +1,9 @@
+@layer alt.components {
+  :where(.alt-icon) {
+    display: block;
+    flex: 0 0 auto;
+    overflow: visible;
+    color: inherit;
+    pointer-events: none;
+  }
+}

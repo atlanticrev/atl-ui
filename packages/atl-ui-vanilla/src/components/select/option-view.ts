@@ -1,28 +1,56 @@
+import { createAltIcon, syncAltIconContent } from '../../icons';
+
 import type { AltSelectOption } from './types';
 
+type OptionParts = {
+	check: HTMLElement;
+	description: HTMLElement;
+	icon: HTMLElement;
+	label: HTMLElement;
+};
+
 export type OptionView = {
-	description: HTMLSpanElement;
-	element: HTMLLIElement;
-	label: HTMLSpanElement;
+	element: HTMLElement;
+	parts?: OptionParts;
 };
 
 let optionId = 0;
 
-const createOptionView = (document: Document): OptionView => {
-	optionId += 1;
-	const element = document.createElement('li');
-	const text = document.createElement('span');
-	const label = document.createElement('span');
-	const description = document.createElement('span');
-	element.className = 'alt-listbox__option';
-	element.id = `alt-select-option-${optionId}`;
-	element.setAttribute('role', 'option');
-	text.className = 'alt-listbox__option-text';
-	label.className = 'alt-listbox__option-label';
-	description.className = 'alt-listbox__option-description';
+const createPart = (document: Document, className: string): HTMLSpanElement => {
+	const part = document.createElement('span');
+	part.className = className;
+	return part;
+};
+
+const createParts = (element: HTMLElement): OptionParts => {
+	const document = element.ownerDocument;
+	const icon = createPart(document, 'alt-listbox__option-icon');
+	const text = createPart(document, 'alt-listbox__option-text');
+	const label = createPart(document, 'alt-listbox__option-label');
+	const description = createPart(document, 'alt-listbox__option-description');
+	const check = createPart(document, 'alt-listbox__option-check');
+	icon.setAttribute('aria-hidden', 'true');
+	check.setAttribute('aria-hidden', 'true');
+	check.append(createAltIcon(document, 'check', { size: 18 }));
 	text.append(label, description);
-	element.append(text);
-	return { description, element, label };
+	element.append(icon, text, check);
+	return { check, description, icon, label };
+};
+
+const createOptionView = (document: Document, option: AltSelectOption): OptionView => {
+	optionId += 1;
+	const element = option.element ?? document.createElement('li');
+	const authoredContent = Boolean(option.element?.textContent?.trim() || option.element?.children.length);
+	element.classList.add('alt-listbox__option');
+	element.hidden = false;
+	element.id ||= `alt-select-option-${optionId}`;
+	element.tabIndex = -1;
+	element.removeAttribute('aria-hidden');
+	element.setAttribute('role', 'option');
+	return {
+		element,
+		parts: authoredContent ? undefined : createParts(element),
+	};
 };
 
 const updateOptionView = (
@@ -31,13 +59,30 @@ const updateOptionView = (
 	activeValue: string | undefined,
 	selectedValues: readonly string[],
 ): void => {
+	const selected = selectedValues.includes(option.value);
 	view.element.dataset.active = String(option.value === activeValue);
+	view.element.dataset.selected = String(selected);
 	view.element.dataset.value = option.value;
 	view.element.setAttribute('aria-disabled', String(option.disabled ?? false));
-	view.element.setAttribute('aria-selected', String(selectedValues.includes(option.value)));
-	view.label.textContent = option.label;
-	view.description.hidden = !option.description;
-	view.description.textContent = option.description ?? '';
+	view.element.setAttribute('aria-selected', String(selected));
+
+	if (!view.parts) return;
+	view.parts.icon.hidden = !option.icon;
+	if (option.icon && view.parts.icon.firstChild !== option.icon) view.parts.icon.replaceChildren(option.icon);
+	view.parts.label.textContent = option.label;
+	view.parts.description.hidden = !option.description;
+	view.parts.description.textContent = option.description ?? '';
+	syncAltIconContent(view.parts.check, option.checkIcon, 'check', { size: 18 });
+	view.parts.check.hidden = !selected || option.checkIcon === null;
+};
+
+const placeOption = (list: HTMLElement, view: OptionView, index: number): void => {
+	const options = Array.from(list.children).filter((element) => element.classList.contains('alt-listbox__option'));
+	const current = options[index];
+
+	if (current !== view.element) {
+		list.insertBefore(view.element, current ?? null);
+	}
 };
 
 export const syncOptionViews = (
@@ -56,10 +101,10 @@ export const syncOptionViews = (
 		}
 	}
 
-	for (const option of options) {
-		const view = views.get(option.value) ?? createOptionView(list.ownerDocument);
+	options.forEach((option, index) => {
+		const view = views.get(option.value) ?? createOptionView(list.ownerDocument, option);
 		views.set(option.value, view);
 		updateOptionView(view, option, activeValue, selectedValues);
-		list.append(view.element);
-	}
+		placeOption(list, view, index);
+	});
 };

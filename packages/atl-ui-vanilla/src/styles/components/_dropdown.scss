@@ -1,0 +1,27 @@
+@layer alt.components {
+  :where(alt-dropdown, .alt-dropdown) {
+    display: block;
+    min-width: var(--alt-dropdown-min-width, 280px);
+    background: var(--alt-color-surface);
+    color: var(--alt-color-ink);
+  }
+
+  .alt-listbox__select-all {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--alt-color-accent);
+    font: var(--alt-type-label-md);
+    cursor: pointer;
+  }
+
+  .alt-listbox__select-all:is(:hover, :active) {
+    color: color-mix(in srgb, var(--alt-color-accent) 82%, black);
+  }
+
+  .alt-listbox__select-all:focus-visible {
+    border-radius: var(--alt-radius-xs);
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+}

@@ -3,6 +3,8 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    max-width: 100%;
+    min-width: 0;
     min-height: 28px;
     padding: 0 0.875rem;
     border: 1px solid var(--alt-chip-border, var(--alt-color-border));
@@ -10,6 +12,13 @@
     background: var(--alt-chip-bg, var(--alt-color-surface-muted));
     color: var(--alt-chip-color, var(--alt-color-ink-muted));
     font: var(--alt-type-label-lg);
+  }
+
+  :where(.alt-chip__label) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   :where(.alt-chip)[data-size='s'],
@@ -38,6 +47,7 @@
 
   :where(.alt-chip__remove) {
     display: inline-grid;
+    flex: 0 0 auto;
     place-content: center;
     padding: 0;
     border: 0;

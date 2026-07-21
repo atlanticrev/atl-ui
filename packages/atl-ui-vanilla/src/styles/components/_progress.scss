@@ -46,31 +46,15 @@
   }
 
   .alt-progress__control {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: var(--alt-progress-height);
-    overflow: hidden;
-    border: 1px solid var(--alt-color-border);
-    border-radius: var(--alt-radius-full);
-    appearance: none;
-    background: var(--alt-color-surface-strong);
-  }
-
-  .alt-progress__control::-webkit-progress-bar {
-    background: var(--alt-color-surface-strong);
-  }
-
-  .alt-progress__control::-webkit-progress-value {
-    border-radius: var(--alt-radius-full);
-    background: var(--alt-progress-fill);
-    transition: width 220ms ease;
-  }
-
-  .alt-progress__control::-moz-progress-bar {
-    border-radius: var(--alt-radius-full);
-    background: var(--alt-progress-fill);
+    height: 100%;
+    opacity: 0;
   }
 
   .alt-progress__track {
+    position: relative;
     height: var(--alt-progress-height);
     overflow: hidden;
     border: 1px solid var(--alt-color-border);
@@ -95,5 +79,10 @@
   @keyframes alt-progress-slide {
     from { transform: translateX(-110%); }
     to { transform: translateX(260%); }
+  }
+
+  @media (forced-colors: active) {
+    .alt-progress__control { opacity: 1; }
+    .alt-progress__fill { display: none; }
   }
 }

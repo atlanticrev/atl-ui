@@ -1,14 +1,16 @@
+import { createAltIcon, syncAltIconContent, type AltIconName } from '../../icons';
+
 import type { ToastRecord } from './toast-model';
 
 export type ToastDom = {
 	stack: HTMLUListElement;
 };
 
-const statusIcons: Record<ToastRecord['status'], string> = {
-	error: '!',
-	info: 'i',
-	success: '✓',
-	warning: '!',
+const statusIcons: Record<ToastRecord['status'], AltIconName> = {
+	error: 'error',
+	info: 'info',
+	success: 'check',
+	warning: 'warning',
 };
 
 export const createToastDom = (host: HTMLElement): ToastDom => {
@@ -39,6 +41,7 @@ const createToastItem = (document: Document): HTMLLIElement => {
 	dismiss.className = 'alt-toast__dismiss';
 	dismiss.type = 'button';
 	dismiss.setAttribute('aria-label', 'Dismiss notification');
+	dismiss.append(createAltIcon(document, 'close', { size: 16 }));
 
 	toast.append(icon, message, dismiss);
 	spacing.append(toast);
@@ -62,9 +65,10 @@ const updateToastItem = (item: HTMLLIElement, record: ToastRecord): void => {
 		toast.setAttribute('aria-atomic', 'true');
 		toast.setAttribute('role', record.status === 'error' ? 'alert' : 'status');
 	}
-	if (icon) icon.textContent = statusIcons[record.status];
+	if (icon) syncAltIconContent(icon, record.icon, statusIcons[record.status], { size: 16 });
 	if (message) message.textContent = record.message;
 	if (dismiss) {
+		syncAltIconContent(dismiss, record.dismissIcon, 'close', { size: 16 });
 		dismiss.disabled = Boolean(record.closeReason);
 		dismiss.hidden = !record.dismissible;
 	}

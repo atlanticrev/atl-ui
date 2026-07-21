@@ -5,6 +5,9 @@
     --alt-input-font: var(--alt-type-body-lg);
     --alt-input-label-font: var(--alt-type-body-lg);
     --alt-input-label-float-font: var(--alt-type-body-sm);
+    --alt-input-label-floating-padding-inline: 0.25rem;
+    --alt-input-border-width: 1px;
+    --alt-input-outline-width: 1px;
     --alt-input-border-color: var(--alt-color-border);
 
     display: block;
@@ -28,7 +31,7 @@
     width: 100%;
     min-height: 48px;
     padding: var(--alt-input-padding-block) var(--alt-input-padding-inline);
-    border: 1px solid var(--alt-input-border-color);
+    border: var(--alt-input-border-width) solid var(--alt-input-border-color);
     border-radius: var(--alt-input-radius, var(--alt-radius-xs));
     background: var(--alt-input-bg, var(--alt-color-surface));
     box-shadow: var(--alt-shadow-sm);
@@ -43,7 +46,8 @@
 
   :where(alt-input, .alt-input):focus-within .alt-input__root {
     --alt-input-border-color: var(--alt-color-accent);
-    box-shadow: var(--alt-shadow-sm), var(--alt-focus-ring);
+    --alt-input-outline-width: 2px;
+    box-shadow: var(--alt-shadow-sm);
   }
 
   :where(alt-input, .alt-input):is([data-status='error'], [aria-invalid='true']) {
@@ -54,6 +58,12 @@
   :where(alt-input, .alt-input)[data-status='success'] {
     --alt-input-border-color: var(--alt-color-success);
     --alt-input-state-color: var(--alt-color-success);
+  }
+
+  @media (forced-colors: active) {
+    :where(alt-input, .alt-input):focus-within .alt-input__root {
+      --alt-input-border-color: Highlight;
+    }
   }
 
   :where(alt-input, .alt-input):is([disabled], [readonly], [data-readonly-styled='true']) .alt-input__root {
@@ -77,15 +87,14 @@
     transition: color var(--alt-motion-fast), font-size var(--alt-motion-fast), top var(--alt-motion-fast);
   }
 
-  :where(alt-input, .alt-input):is(:focus-within, [data-filled='true']) .alt-input__label {
+  :where(alt-input, .alt-input):is(:focus-within, [data-label-float='true']) .alt-input__label {
     top: 0;
     max-width: calc(100% - 2rem);
-    padding-inline: 0.25rem;
-    background: linear-gradient(var(--alt-color-surface), var(--alt-color-surface));
+    padding-inline: var(--alt-input-label-floating-padding-inline);
     font: var(--alt-input-label-float-font);
   }
 
-  :where(alt-input, .alt-input)[data-has-leading-icon='true']:not(:focus-within, [data-filled='true'])
+  :where(alt-input, .alt-input)[data-has-leading-icon='true']:not(:focus-within, [data-label-float='true'])
     .alt-input__label:not([data-floated='true']) {
     left: calc(var(--alt-input-padding-inline) + 2rem);
   }

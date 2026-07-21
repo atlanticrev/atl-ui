@@ -1,0 +1,89 @@
+@layer alt.components {
+  :where(alt-autocomplete, .alt-autocomplete) {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  :where(alt-autocomplete, .alt-autocomplete) > .alt-autocomplete__input .alt-input__root {
+    padding-inline-end: 5rem;
+  }
+
+  :where(input.alt-autocomplete__input) {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.75rem 5rem 0.75rem 0.875rem;
+    border: 1px solid var(--alt-color-border);
+    border-radius: var(--alt-radius-xs);
+    background: var(--alt-color-surface);
+    color: var(--alt-color-ink);
+    font: var(--alt-type-body-lg);
+  }
+
+  :where(input.alt-autocomplete__input):focus-visible {
+    border-color: var(--alt-color-accent);
+    outline: 0;
+  }
+
+  .alt-autocomplete__trigger,
+  .alt-autocomplete__clear {
+    position: absolute;
+    z-index: 3;
+    top: 8px;
+    display: inline-grid;
+    place-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--alt-radius-xs);
+    background: transparent;
+    color: var(--alt-color-ink-muted);
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--alt-motion-fast), color var(--alt-motion-fast),
+      transform var(--alt-motion-fast);
+  }
+
+  .alt-autocomplete__trigger {
+    inset-inline-end: 8px;
+    font-size: 1.25rem;
+  }
+
+  .alt-autocomplete__clear {
+    inset-inline-end: 40px;
+    font-size: 1.125rem;
+  }
+
+  .alt-autocomplete__trigger:hover,
+  .alt-autocomplete__clear:hover {
+    background: var(--alt-color-surface-muted);
+    color: var(--alt-color-ink);
+  }
+
+  .alt-autocomplete__trigger:active,
+  .alt-autocomplete__clear:active {
+    background: var(--alt-color-border);
+  }
+
+  .alt-autocomplete__trigger:focus-visible,
+  .alt-autocomplete__clear:focus-visible {
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  .alt-autocomplete__trigger[data-popup-open] {
+    transform: rotate(180deg);
+  }
+
+  .alt-autocomplete__trigger:disabled,
+  .alt-autocomplete__clear:disabled {
+    opacity: 0.48;
+    cursor: not-allowed;
+  }
+
+  .alt-autocomplete__popup {
+    --alt-popup-max-width: calc(100vw - 1rem);
+  }
+}

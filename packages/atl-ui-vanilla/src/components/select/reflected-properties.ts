@@ -3,13 +3,17 @@ import { reflectBoolean, reflectString } from './attributes';
 type PropertyTarget = typeof HTMLElement.prototype;
 
 const defineBooleanProperty = (target: PropertyTarget, name: string): void => {
-	Object.defineProperty(target, name, {
+	defineMappedBooleanProperty(target, name, name);
+};
+
+const defineMappedBooleanProperty = (target: PropertyTarget, property: string, attribute: string): void => {
+	Object.defineProperty(target, property, {
 		configurable: true,
 		get(this: HTMLElement): boolean {
-			return this.hasAttribute(name);
+			return this.hasAttribute(attribute);
 		},
 		set(this: HTMLElement, value: boolean): void {
-			reflectBoolean(this, name, value);
+			reflectBoolean(this, attribute, value);
 		},
 	});
 };
@@ -34,6 +38,7 @@ export const defineSelectReflectedProperties = (target: PropertyTarget): void =>
 	defineBooleanProperty(target, 'disabled');
 	defineBooleanProperty(target, 'multiple');
 	defineBooleanProperty(target, 'required');
+	defineMappedBooleanProperty(target, 'readOnly', 'readonly');
 	defineStringProperty(target, 'description');
 	defineMappedStringProperty(target, 'helperText', 'helper-text');
 	defineStringProperty(target, 'label');

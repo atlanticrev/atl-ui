@@ -3,14 +3,27 @@
 	"version": "0.1.0",
 	"private": false,
 	"type": "module",
-	"sideEffects": ["**/*.css"],
-	"files": ["dist", "docs"],
+	"sideEffects": [
+		"**/*.css"
+	],
+	"files": [
+		"dist",
+		"docs"
+	],
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
+		},
+		"./autocomplete": {
+			"types": "./dist/autocomplete.d.ts",
+			"import": "./dist/autocomplete.js"
+		},
+		"./avatar": {
+			"types": "./dist/avatar.d.ts",
+			"import": "./dist/avatar.js"
 		},
 		"./controllers": {
 			"types": "./dist/controllers.d.ts",
@@ -24,13 +37,41 @@
 			"types": "./dist/define-all.d.ts",
 			"import": "./dist/define-all.js"
 		},
+		"./dialog": {
+			"types": "./dist/dialog.d.ts",
+			"import": "./dist/dialog.js"
+		},
+		"./dropdown": {
+			"types": "./dist/dropdown.d.ts",
+			"import": "./dist/dropdown.js"
+		},
+		"./file-upload": {
+			"types": "./dist/file-upload.d.ts",
+			"import": "./dist/file-upload.js"
+		},
 		"./input": {
 			"types": "./dist/input.d.ts",
 			"import": "./dist/input.js"
 		},
+		"./icons": {
+			"types": "./dist/icons.d.ts",
+			"import": "./dist/icons.js"
+		},
+		"./popup": {
+			"types": "./dist/popup.d.ts",
+			"import": "./dist/popup.js"
+		},
+		"./progress": {
+			"types": "./dist/progress.d.ts",
+			"import": "./dist/progress.js"
+		},
 		"./select": {
 			"types": "./dist/select.d.ts",
 			"import": "./dist/select.js"
+		},
+		"./table": {
+			"types": "./dist/table.d.ts",
+			"import": "./dist/table.js"
 		},
 		"./tabs": {
 			"types": "./dist/tabs.d.ts",
@@ -39,6 +80,10 @@
 		"./toast": {
 			"types": "./dist/toast.d.ts",
 			"import": "./dist/toast.js"
+		},
+		"./tooltip": {
+			"types": "./dist/tooltip.d.ts",
+			"import": "./dist/tooltip.js"
 		},
 		"./core.css": "./dist/core.css",
 		"./theme.css": "./dist/theme.css",
@@ -52,10 +97,15 @@
 		"build:css:core": "sass --no-source-map --style=compressed src/styles/core.scss dist/core.css",
 		"build:css:default": "sass --no-source-map --style=compressed src/styles/default.scss dist/default.css",
 		"build:css:theme": "sass --no-source-map --style=compressed src/styles/theme.scss dist/theme.css",
-		"demo": "vite demo --host 127.0.0.1",
-		"demo:build": "vite build demo --outDir ../demo-dist --emptyOutDir",
-		"demo:preview": "vite preview demo --host 127.0.0.1 --outDir ../demo-dist",
+		"demo": "vite demo --config demo/vite.config.ts --host 127.0.0.1",
+		"demo:build": "vite build demo --config demo/vite.config.ts --outDir ../demo-dist --emptyOutDir",
+		"demo:preview": "vite preview demo --config demo/vite.config.ts --host 127.0.0.1 --outDir ../demo-dist",
+		"storybook": "vite demo --config demo/vite.config.ts --host 127.0.0.1 --open /storybook.html",
+		"storybook:build": "npm run demo:build",
+		"storybook:test": "vite demo --config demo/vite.config.ts --host 127.0.0.1 --port 4175 --strictPort",
 		"test": "vitest run --config vitest.config.ts tests",
+		"test:browser": "playwright test --config playwright.config.ts",
+		"test:browser:update": "npm run test:browser -- --update-snapshots",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
 		"verify": "npm run typecheck && npm run test && npm run build"
 	},
@@ -64,5 +114,8 @@
 	},
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.61.1"
 	}
 }
