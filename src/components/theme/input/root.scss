@@ -43,7 +43,7 @@
     box-shadow: var(--atl-shadow-sm);
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
 
-    &:hover:not(.atl-input__root--disabled):not(.atl-input__root--readonly) {
+    &:hover:not(:focus-within):not(.atl-input__root--disabled):not(.atl-input__root--readonly) {
       --atl-input-border-color: var(--atl-input-hover-border-color);
     }
 
