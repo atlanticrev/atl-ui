@@ -1,6 +1,7 @@
 import { expect, type Page, test } from '@playwright/test';
 
 const STORY_IDS = [
+	'alert',
 	'button',
 	'card',
 	'breadcrumbs',
@@ -45,7 +46,7 @@ test('all stories stay inside the mobile viewport', async ({ page }) => {
 test('mobile catalog search remains usable', async ({ page }) => {
 	await page.setViewportSize({ height: 800, width: 320 });
 	await openStory(page, 'table');
-	const search = page.locator('.alt-catalog-search input');
+	const search = page.locator('.alt-catalog-search .alt-input__field');
 	await expect(search).toBeVisible();
 	const box = await search.boundingBox();
 	expect(box?.width).toBeGreaterThan(120);

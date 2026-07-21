@@ -1,3 +1,5 @@
+import { type AltInputElementApi, createAltIcon } from '../../src';
+
 import { findElement, findElements } from './dom';
 import { setActiveNavigation } from './navigation';
 
@@ -24,9 +26,10 @@ const updateVisibleStories = (query: string): void => {
 };
 
 export const bindCatalogControls = (): void => {
-	const search = findElement<HTMLInputElement>(document, '#catalog-search');
+	const search = findElement<AltInputElementApi>(document, '#catalog-search');
 	const themeButton = findElement<HTMLButtonElement>(document, '#catalog-theme');
-	search.addEventListener('input', () => updateVisibleStories(search.value));
+	search.leadingIcon = createAltIcon(document, 'search', { size: 16 });
+	search.addEventListener('alt-input', () => updateVisibleStories(search.value));
 	themeButton.addEventListener('click', () => {
 		const dark = document.documentElement.dataset.altTheme !== 'dark';
 		document.documentElement.dataset.altTheme = dark ? 'dark' : 'light';

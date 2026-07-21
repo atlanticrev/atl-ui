@@ -1,5 +1,8 @@
 @layer alt.components {
   :where(.alt-radio) {
+    --alt-radio-size: 20px;
+    --alt-radio-dot-size: 10px;
+
     display: inline-flex;
     align-items: flex-start;
     gap: 0.75rem;
@@ -14,9 +17,9 @@
   :where(.alt-radio__control) {
     display: inline-grid;
     flex: 0 0 auto;
-    place-content: center;
-    width: var(--alt-radio-size, 20px);
-    height: var(--alt-radio-size, 20px);
+    place-items: center;
+    width: var(--alt-radio-size);
+    height: var(--alt-radio-size);
     margin: 0.0625rem 0 0;
     border: 2px solid var(--alt-color-border-strong);
     border-radius: 50%;
@@ -28,8 +31,9 @@
 
   :where(.alt-radio__control)::before {
     content: '';
-    width: 50%;
-    height: 50%;
+    display: block;
+    width: var(--alt-radio-dot-size);
+    height: var(--alt-radio-dot-size);
     border-radius: 50%;
     background: var(--alt-color-accent);
     transform: scale(0);
@@ -58,6 +62,13 @@
     cursor: not-allowed;
   }
 
-  :where(.alt-radio)[data-size='s'] { --alt-radio-size: 16px; }
-  :where(.alt-radio)[data-size='l'] { --alt-radio-size: 24px; }
+  :where(.alt-radio)[data-size='s'] {
+    --alt-radio-size: 16px;
+    --alt-radio-dot-size: 8px;
+  }
+
+  :where(.alt-radio)[data-size='l'] {
+    --alt-radio-size: 24px;
+    --alt-radio-dot-size: 12px;
+  }
 }

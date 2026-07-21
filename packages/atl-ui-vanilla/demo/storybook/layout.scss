@@ -55,28 +55,14 @@
     gap: 0.75rem;
   }
 
-  .alt-catalog-search__label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-  }
-
-  .alt-catalog-search input {
+  .alt-catalog-search {
     width: min(32vw, 320px);
-    min-height: 40px;
-    padding: 0 0.875rem;
-    border: 1px solid var(--alt-color-border);
-    border-radius: var(--alt-radius-full);
-    background: var(--alt-color-surface);
-    color: var(--alt-color-ink);
-    font: var(--alt-type-body-md);
+    --alt-input-radius: var(--alt-radius-full);
   }
 
-  .alt-catalog-search input:focus-visible {
-    outline: 0;
-    box-shadow: var(--alt-focus-ring);
+  .alt-catalog-search .alt-input__root {
+    min-height: 40px;
+    box-shadow: none;
   }
 
   .alt-catalog-shell {

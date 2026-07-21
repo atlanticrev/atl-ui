@@ -4,6 +4,7 @@ import { bindCatalogControls } from '../../demo/storybook/catalog-controls';
 import { renderNavigation } from '../../demo/storybook/navigation';
 import { renderStory } from '../../demo/storybook/render-story';
 import { stories } from '../../demo/storybook/stories';
+import type { AltInputElementApi } from '../../src';
 
 const getElement = <ElementType extends HTMLElement>(selector: string): ElementType => {
 	const element = document.querySelector<ElementType>(selector);
@@ -14,7 +15,7 @@ const getElement = <ElementType extends HTMLElement>(selector: string): ElementT
 beforeEach(() => {
 	document.documentElement.dataset.altTheme = 'light';
 	document.body.innerHTML = `
-		<input aria-label="Search components" id="catalog-search" type="search" />
+		<alt-input aria-label="Search components" id="catalog-search"></alt-input>
 		<button id="catalog-theme">Dark theme</button>
 		<p id="catalog-count"></p>
 		<nav id="catalog-navigation"></nav>
@@ -57,9 +58,9 @@ describe('component storybook catalog', () => {
 
 	it('filters sections and hides empty navigation groups', () => {
 		bindCatalogControls();
-		const search = getElement<HTMLInputElement>('#catalog-search');
+		const search = getElement<AltInputElementApi>('#catalog-search');
 		search.value = 'toast';
-		search.dispatchEvent(new Event('input'));
+		search.dispatchEvent(new Event('alt-input'));
 
 		const visibleStories = Array.from(document.querySelectorAll<HTMLElement>('.alt-story')).filter(
 			(story) => !story.hidden,

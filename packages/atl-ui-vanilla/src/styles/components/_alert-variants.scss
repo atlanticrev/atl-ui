@@ -19,8 +19,8 @@
 
   :where(alt-alert, .alt-alert)[data-variant='filled'] {
     --alt-alert-state-action: var(--alt-alert-filled-ink);
-    --alt-alert-state-bg: var(--alt-alert-main);
-    --alt-alert-state-border: var(--alt-alert-main);
+    --alt-alert-state-bg: var(--alt-alert-filled-bg);
+    --alt-alert-state-border: var(--alt-alert-filled-bg);
     --alt-alert-state-icon: var(--alt-alert-filled-ink);
     --alt-alert-state-ink: var(--alt-alert-filled-ink);
     --alt-alert-state-title: var(--alt-alert-filled-ink);

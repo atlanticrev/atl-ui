@@ -13,10 +13,16 @@
 				<span><strong>ATL UI Vanilla</strong><small>Component Storybook</small></span>
 			</a>
 			<div class="alt-catalog-header__actions">
-				<label class="alt-catalog-search">
-					<span class="alt-catalog-search__label">Search components</span>
-					<input id="catalog-search" type="search" placeholder="Search components…" />
-				</label>
+				<alt-input
+					aria-label="Search components"
+					autocomplete="off"
+					class="alt-catalog-search"
+					id="catalog-search"
+					inputmode="search"
+					placeholder="Search components…"
+					size="s"
+					type="text"
+				></alt-input>
 				<button class="alt-button" data-variant="outlined" id="catalog-theme" type="button">
 					Dark theme
 				</button>

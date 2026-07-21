@@ -47,6 +47,7 @@
   :where(alt-input, .alt-input):focus-within .alt-input__root {
     --alt-input-border-color: var(--alt-color-accent);
     --alt-input-outline-width: 2px;
+    --alt-input-state-color: var(--alt-color-accent);
     box-shadow: var(--alt-shadow-sm);
   }
 

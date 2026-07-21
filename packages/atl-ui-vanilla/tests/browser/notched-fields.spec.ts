@@ -28,15 +28,18 @@ const readOutline = async (root: Locator, pathSelector: string): Promise<Outline
 };
 
 const expectAlignedLabel = async (label: Locator, text: Locator): Promise<void> => {
-	const positions = await label.evaluate((element, textElement) => {
-		if (!(textElement instanceof HTMLElement)) throw new Error('Missing field text element');
-		const labelRect = element.getBoundingClientRect();
-		const textRect = textElement.getBoundingClientRect();
-		return {
-			labelText: labelRect.left + Number.parseFloat(getComputedStyle(element).paddingLeft),
-			text: textRect.left,
-		};
-	}, await text.elementHandle());
+	const positions = await label.evaluate(
+		(element, textElement) => {
+			if (!(textElement instanceof HTMLElement)) throw new Error('Missing field text element');
+			const labelRect = element.getBoundingClientRect();
+			const textRect = textElement.getBoundingClientRect();
+			return {
+				labelText: labelRect.left + Number.parseFloat(getComputedStyle(element).paddingLeft),
+				text: textRect.left,
+			};
+		},
+		await text.elementHandle(),
+	);
 	expect(Math.abs(positions.labelText - positions.text)).toBeLessThanOrEqual(1);
 };
 
@@ -76,6 +79,17 @@ test('autocomplete inherits the input SVG while authored input stays consumer-ow
 	const focused = await readOutline(root, '.alt-input__outline-path');
 	expect(focused.path.match(/M /g)?.length).toBeGreaterThanOrEqual(2);
 	expect(focused.strokeWidth).toBe('2px');
+	await expect
+		.poll(async () => {
+			const labelColor = await standard
+				.locator('.alt-input__label')
+				.evaluate((element) => getComputedStyle(element).color);
+			const strokeColor = await standard
+				.locator('.alt-input__outline-path')
+				.evaluate((element) => getComputedStyle(element).stroke);
+			return labelColor === strokeColor;
+		})
+		.toBe(true);
 	const authored = page.locator('#autocomplete [data-story-example="Custom composition"] alt-autocomplete').first();
 	await expect(authored.locator('.alt-input__outline')).toHaveCount(0);
 });

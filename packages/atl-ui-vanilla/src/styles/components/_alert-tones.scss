@@ -4,6 +4,7 @@
     --alt-alert-muted: var(--alt-color-success-muted);
     --alt-alert-border: var(--alt-color-success-muted-active);
     --alt-alert-tone-ink: var(--alt-color-success-active);
+    --alt-alert-filled-bg: var(--alt-alert-main);
     --alt-alert-filled-ink: var(--alt-color-success-ink);
   }
 
@@ -20,7 +21,8 @@
     --alt-alert-muted: var(--alt-alert-warning-muted, #fffaeb);
     --alt-alert-border: var(--alt-alert-warning-border, #fedf89);
     --alt-alert-tone-ink: var(--alt-alert-warning-ink, #93370d);
-    --alt-alert-filled-ink: var(--alt-alert-warning-filled-ink, #181d27);
+    --alt-alert-filled-bg: var(--alt-alert-warning-filled-bg, #b54708);
+    --alt-alert-filled-ink: var(--alt-alert-warning-filled-ink, #ffffff);
   }
 
   :where(alt-alert, .alt-alert)[data-color='error'] {
@@ -50,7 +52,8 @@
     --alt-alert-warning-muted: #3d2f11;
     --alt-alert-warning-border: #684b14;
     --alt-alert-warning-ink: #fec84b;
-    --alt-alert-warning-filled-ink: #3d2f11;
+    --alt-alert-warning-filled-bg: #b54708;
+    --alt-alert-warning-filled-ink: #ffffff;
   }
 
   :where([data-alt-theme='dark'], [data-theme='dark']) :where(alt-alert, .alt-alert)[data-color='error'] {

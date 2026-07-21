@@ -16,6 +16,16 @@
     --alt-sidebar-width: 88px;
   }
 
+  :where(.alt-sidebar)[data-collapsed='true'] .alt-sidebar__item,
+  :where(.alt-sidebar--collapsed) .alt-sidebar__item {
+    align-self: center;
+    justify-content: center;
+    gap: 0;
+    width: 40px;
+    min-height: 40px;
+    padding: 0;
+  }
+
   :where(.alt-sidebar__header) {
     padding: 0 0.25rem 1rem;
     overflow-wrap: anywhere;
