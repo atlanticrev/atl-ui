@@ -11,6 +11,7 @@
   swipe-dismiss механизм без runtime dependencies.
 - `0.2.0` опубликован в GitHub Packages и отмечен как latest.
 - Release tag: `atl-ui-vanilla-v0.2.0`.
+- Кандидат `0.3.0` добавляет публичный Drawer/Sheet и готовится к публикации.
 - Пакет приватный; приложению-потребителю потребуется доступ к GitHub Packages.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React- и vanilla-пакеты остаются независимо подключаемыми.

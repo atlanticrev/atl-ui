@@ -17,18 +17,15 @@
 - Menu, Dropdown, Pagination, Table, Search, Alert и Toast;
 - native recipes, иконки, demo-каталог, accessibility и browser regression coverage.
 
-## Ближайшая цель: релиз 0.2.0
+## Ближайшая цель: релиз 0.3.0
 
-1. ✅ Ежедневный ночной CI добавлен: quality/build и browser gates запускаются в `01:30 UTC`, также доступен ручной запуск.
-2. ✅ Собранный tarball устанавливается и собирается в чистом consumer project.
-3. ✅ Корневой и точечные JS/CSS imports, SSR safety и tree shaking boundaries входят в release-gate.
-4. ✅ Root/package README и release notes для `0.2.0` обновлены.
-5. ✅ Версия `0.2.0` и безопасная ручная публикация в GitHub Packages подготовлены.
-6. ✅ `feat/atl-ui-vanilla` влита в `main`, release gate повторно прошёл на merge commit.
-7. ✅ Пакет `0.2.0` опубликован и проверен; `atl-ui-vanilla-v0.2.0` создан на release commit.
+Кандидат добавляет публичный `<alt-drawer>` с вариантами Drawer и Sheet, общим native-modal lifecycle и
+touch-dismiss механизмом. Breaking changes в существующих контрактах отсутствуют.
 
-Это minor release: после `0.1.0` появились новые публичные компоненты, календари и инфраструктурные
-возможности. Breaking changes в существующих контрактах не планируются.
+- ✅ Версия, публичные exports, документация, demo и release notes подготовлены.
+- ✅ Unit-, browser-, accessibility- и clean-consumer coverage покрывают новый контракт.
+- ⬜ Опубликовать `@atlanticrev/atl-ui-vanilla@0.3.0` в GitHub Packages.
+- ⬜ Проверить опубликованный пакет и создать тег `atl-ui-vanilla-v0.3.0`.
 
 ## Следующий продуктовый этап
 

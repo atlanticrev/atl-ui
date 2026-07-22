@@ -36,11 +36,11 @@ defineAltSelect();
 </alt-select>
 ```
 
-Пакет предоставляет 20 managed/behavioral компонентов, 12 native CSS recipes, все варианты календаря и
-range picker, а также общий top-layer overlay-механизм. Imports безопасны при SSR и не регистрируют custom
-elements автоматически. Полная инструкция находится в
-[`packages/atl-ui-vanilla/README.md`](packages/atl-ui-vanilla/README.md); изменения кандидата `0.2.0` — в
-[`release notes`](packages/atl-ui-vanilla/docs/releases/0.2.0.md).
+Пакет предоставляет 21 категорию managed/behavioral компонентов, 12 native CSS recipes, все варианты
+календаря и range picker, Drawer/Sheet, а также общий top-layer overlay-механизм. Imports безопасны при SSR
+и не регистрируют custom elements автоматически. Полная инструкция находится в
+[`packages/atl-ui-vanilla/README.md`](packages/atl-ui-vanilla/README.md); изменения кандидата `0.3.0` — в
+[`release notes`](packages/atl-ui-vanilla/docs/releases/0.3.0.md).
 
 ## React CSS entrypoints
 
