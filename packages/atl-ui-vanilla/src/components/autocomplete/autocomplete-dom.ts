@@ -4,7 +4,7 @@ import type { AltDropdownElementApi } from '../dropdown';
 import type { AltInputElementApi } from '../input';
 import type { AltPopupElementApi } from '../popup';
 
-import { getNativeInput, type AutocompleteInput } from './autocomplete-input';
+import { type AutocompleteInput, getNativeInput } from './autocomplete-input';
 
 export type AutocompleteDom = {
 	carrier: HTMLSelectElement;
@@ -22,11 +22,19 @@ let autocompleteId = 0;
 const createAction = (document: Document, action: 'clear' | 'trigger'): HTMLButtonElement => {
 	const button = document.createElement('button');
 
-	button.className = `alt-autocomplete__${action}`;
+	button.className = `alt-button alt-autocomplete__${action}`;
 
 	button.dataset[`altAutocomplete${action === 'clear' ? 'Clear' : 'Trigger'}`] = '';
 
 	button.dataset.altOwned = `autocomplete-${action}`;
+
+	button.dataset.elevation = 'none';
+
+	button.dataset.iconOnly = '';
+
+	button.dataset.size = '32';
+
+	button.dataset.variant = 'text';
 
 	button.type = 'button';
 

@@ -45,7 +45,13 @@ export const createDropdownDom = (host: HTMLElement): DropdownDom => {
 
 	footerText.className = 'alt-listbox__footer-text';
 
-	selectAll.className = 'alt-listbox__select-all';
+	selectAll.className = 'alt-button alt-listbox__select-all';
+
+	selectAll.dataset.elevation = 'none';
+
+	selectAll.dataset.size = '24';
+
+	selectAll.dataset.variant = 'text';
 
 	selectAll.type = 'button';
 

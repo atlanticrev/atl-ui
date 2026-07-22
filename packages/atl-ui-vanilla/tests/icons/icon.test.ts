@@ -51,6 +51,18 @@ describe('SVG icons', () => {
 		expect(markup).not.toContain('×');
 	});
 
+	it('covers state and overflow symbols with shared SVG definitions', () => {
+		for (const name of ['minus', 'more-horizontal'] as const) {
+			const icon = createAltIcon(document, name);
+
+			expect(icon.dataset.altIcon).toBe(name);
+
+			expect(icon.querySelectorAll('path').length).toBeGreaterThan(0);
+
+			expect(icon.textContent).toBe('');
+		}
+	});
+
 	it('supports fallback, replacement and explicit hiding', () => {
 		const container = document.createElement('span');
 

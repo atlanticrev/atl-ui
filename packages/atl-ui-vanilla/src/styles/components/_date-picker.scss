@@ -44,18 +44,17 @@
   }
 
   .alt-date-picker__clear {
+    --alt-button-bg-hover: var(--alt-color-surface-strong);
+    --alt-button-bg-active: var(--alt-color-border);
+    --alt-button-color: var(--alt-color-ink-muted);
+    --alt-button-color-hover: var(--alt-color-ink);
+    --alt-button-color-active: var(--alt-color-ink);
+    --alt-button-radius: var(--alt-radius-full);
+
     position: absolute;
     top: 50%;
     right: 0.5rem;
-    width: 28px;
-    height: 28px;
-    border: 0;
-    border-radius: var(--alt-radius-full);
-    background: transparent;
-    color: var(--alt-color-ink-muted);
-    font-size: 1.25rem;
     transform: translateY(-50%);
-    cursor: pointer;
   }
 
   .alt-date-picker__panel {

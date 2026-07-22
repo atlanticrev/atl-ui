@@ -52,7 +52,7 @@ test('mobile catalog search remains usable', async ({ page }) => {
 
 	await openStory(page, 'table');
 
-	const search = page.locator('.alt-catalog-search .alt-input__field');
+	const search = page.locator('.alt-catalog-search .alt-search__field');
 
 	await expect(search).toBeVisible();
 

@@ -31,11 +31,20 @@
     opacity: 0.38;
   }
 
-  &__remove {
+  &__remove:not(.atl-button) {
     border: 0;
     padding: 0;
     background: transparent;
     color: inherit;
     cursor: pointer;
+  }
+
+  &__remove.atl-button {
+    width: 24px;
+    min-height: 24px;
+    border-color: transparent;
+    padding: 0;
+    background: transparent;
+    color: inherit;
   }
 }

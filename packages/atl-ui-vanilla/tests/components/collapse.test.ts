@@ -24,6 +24,10 @@ describe('alt-collapse', () => {
 
 		const changed = vi.fn();
 
+		expect(details[0].querySelector('[data-alt-icon="minus"]')).toBeInstanceOf(SVGSVGElement);
+
+		expect(details[1].querySelector('[data-alt-icon="plus"]')).toBeInstanceOf(SVGSVGElement);
+
 		collapse.addEventListener('alt-change', changed);
 
 		details[1].open = true;
@@ -31,6 +35,10 @@ describe('alt-collapse', () => {
 		details[1].dispatchEvent(new Event('toggle'));
 
 		expect(details[0].open).toBe(false);
+
+		expect(details[0].querySelector('[data-alt-icon="plus"]')).toBeInstanceOf(SVGSVGElement);
+
+		expect(details[1].querySelector('[data-alt-icon="minus"]')).toBeInstanceOf(SVGSVGElement);
 
 		expect(collapse.openKeys).toEqual(['two']);
 

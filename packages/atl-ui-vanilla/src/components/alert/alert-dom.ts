@@ -28,11 +28,19 @@ const createPart = (host: HTMLElement, className: string): HTMLDivElement => {
 const createCloseButton = (host: HTMLElement): HTMLButtonElement => {
 	const button = host.ownerDocument.createElement('button');
 
-	button.className = 'alt-alert__close';
+	button.className = 'alt-button alt-alert__close';
 
 	button.dataset.altAlertClose = '';
 
 	button.dataset.altOwned = '';
+
+	button.dataset.elevation = 'none';
+
+	button.dataset.iconOnly = '';
+
+	button.dataset.size = '32';
+
+	button.dataset.variant = 'text';
 
 	button.type = 'button';
 

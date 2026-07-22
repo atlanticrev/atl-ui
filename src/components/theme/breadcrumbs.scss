@@ -12,13 +12,12 @@
     gap: 0.5rem;
   }
 
-  &__trigger {
-    border: 0;
+  &__trigger.atl-button {
+    min-width: 0;
+    min-height: 0;
     padding: 0;
-    background: transparent;
     color: inherit;
     font: inherit;
-    cursor: pointer;
   }
 
   &__current {

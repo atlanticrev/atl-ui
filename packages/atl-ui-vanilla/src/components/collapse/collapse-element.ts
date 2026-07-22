@@ -1,4 +1,5 @@
 import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
+import { setAltIcon } from '../../icons';
 
 import type { AltCollapseChangeDetail } from './types';
 
@@ -7,6 +8,34 @@ const items = (host: HTMLElement): HTMLDetailsElement[] => {
 };
 
 const itemKey = (item: HTMLDetailsElement, index: number): string => item.dataset.key || String(index);
+
+const syncCollapseItem = (item: HTMLDetailsElement, index: number): void => {
+	item.classList.add('alt-collapse__item');
+
+	item.dataset.key ||= String(index);
+
+	const summary = item.querySelector<HTMLElement>(':scope > summary');
+
+	if (!summary) return;
+
+	summary.classList.add('alt-collapse__summary');
+
+	let indicator = summary.querySelector<HTMLElement>(':scope > [data-alt-owned="collapse-indicator"]');
+
+	if (!indicator) {
+		indicator = item.ownerDocument.createElement('span');
+
+		indicator.className = 'alt-collapse__indicator';
+
+		indicator.dataset.altOwned = 'collapse-indicator';
+
+		indicator.setAttribute('aria-hidden', 'true');
+
+		summary.append(indicator);
+	}
+
+	setAltIcon(indicator, item.open ? 'minus' : 'plus', { size: 20 });
+};
 
 export const createAltCollapseElementClass = (HtmlElementConstructor: typeof HTMLElement): CustomElementConstructor => {
 	const BaseElement = createBaseElementClass(HtmlElementConstructor);
@@ -52,13 +81,7 @@ export const createAltCollapseElementClass = (HtmlElementConstructor: typeof HTM
 		}
 
 		update(): void {
-			items(this).forEach((item, index) => {
-				item.classList.add('alt-collapse__item');
-
-				item.dataset.key ||= String(index);
-
-				item.querySelector(':scope > summary')?.classList.add('alt-collapse__summary');
-			});
+			items(this).forEach(syncCollapseItem);
 		}
 
 		#handleToggle = (event: Event): void => {
@@ -67,8 +90,16 @@ export const createAltCollapseElementClass = (HtmlElementConstructor: typeof HTM
 			if (!items(this).includes(changed)) return;
 
 			if (this.single && changed.open) {
-				for (const item of items(this)) if (item !== changed) item.open = false;
+				for (const [index, item] of items(this).entries()) {
+					if (item === changed) continue;
+
+					item.open = false;
+
+					syncCollapseItem(item, index);
+				}
 			}
+
+			syncCollapseItem(changed, items(this).indexOf(changed));
 
 			this.dispatchEvent(createTypedEvent<AltCollapseChangeDetail>('alt-change', { openKeys: this.openKeys }));
 		};

@@ -46,7 +46,7 @@
     overflow-wrap: anywhere;
   }
 
-  :where(.alt-dialog__close) {
+  :where(.alt-dialog__close):not(.alt-button) {
     display: inline-grid;
     place-content: center;
     padding: 0.25rem;
@@ -57,9 +57,16 @@
     cursor: pointer;
   }
 
-  :where(.alt-dialog__close):focus-visible {
+  :where(.alt-dialog__close):not(.alt-button):focus-visible {
     outline: 0;
     box-shadow: var(--alt-focus-ring);
+  }
+
+  :where(.alt-dialog__close.alt-button) {
+    --alt-button-color: var(--alt-color-ink-muted);
+    --alt-button-color-hover: var(--alt-color-ink);
+    --alt-button-color-active: var(--alt-color-ink);
+    --alt-button-radius: var(--alt-radius-full);
   }
 
   :where(.alt-dialog__body) {

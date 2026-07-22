@@ -11,7 +11,7 @@
 | `AtlCheckbox` | `label.alt-checkbox > input[type=checkbox].alt-checkbox__control` | Native control state |
 | `AtlRadioButton` | `label.alt-radio > input[type=radio].alt-radio__control` | Native grouping/state |
 | `AtlSwitcher` | `label.alt-switcher > input[type=checkbox].alt-switcher__control` | `role="switch"` |
-| `AtlChip` | `span.alt-chip` и optional `button.alt-chip__remove` | `data-size`, `data-variant` |
+| `AtlChip` | `span.alt-chip`, actionable `button.alt-chip` и optional `button.alt-button.alt-chip__remove` | `data-size`, `data-variant` |
 | `AtlSkeleton` | `span.alt-skeleton` | `data-shape="line|rect|circle|overlay"` |
 | `AtlSidebar` | `aside.alt-sidebar` с native links/buttons | `data-collapsed`, `aria-current` |
 
@@ -38,5 +38,7 @@ Breadcrumbs и sidebar не принимают массив данных: при
 router integration и не требует внутреннего renderer. Skeleton overlay кладётся рядом с реальным контентом
 в `.alt-skeleton-wrapper`; placeholder получает `aria-hidden="true"`.
 
-Chip remove — настоящий button с доступным именем. Disabled chip должен поставить `aria-disabled="true"`
-на контейнер и `disabled` на remove button. Card сохраняет выбранный semantic tag приложения.
+Actionable chip — настоящий `button.alt-chip` с visible focus и native keyboard semantics. Chip remove —
+icon-only `button.alt-button.alt-chip__remove` с доступным именем; Button recipe отвечает за общие hover,
+focus и disabled states. Disabled chip должен поставить `aria-disabled="true"` на контейнер и `disabled` на
+remove button. Card сохраняет выбранный semantic tag приложения.

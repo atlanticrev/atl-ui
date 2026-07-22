@@ -1,4 +1,5 @@
 import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
+import { createAltIcon } from '../../icons';
 
 import { pageCount, paginationRange } from './pagination-range';
 import type { AltPaginationChangeDetail } from './types';
@@ -71,9 +72,9 @@ export const createAltPaginationElementClass = (
 
 			const list = document.createElement('div');
 
-			const previous = this.#button('‹', current - 1, current === 1, 'Previous page');
+			const previous = this.#button(current - 1, current === 1, 'Previous page', 'chevron-left');
 
-			const next = this.#button('›', current + 1, current === count, 'Next page');
+			const next = this.#button(current + 1, current === count, 'Next page', 'chevron-right');
 
 			nav.setAttribute('aria-label', this.getAttribute('aria-label') || 'Pagination');
 
@@ -87,13 +88,13 @@ export const createAltPaginationElementClass = (
 
 					ellipsis.className = 'alt-pagination__ellipsis';
 
-					ellipsis.textContent = '…';
+					ellipsis.append(createAltIcon(document, 'more-horizontal', { size: 18 }));
 
 					ellipsis.setAttribute('aria-hidden', 'true');
 
 					list.append(ellipsis);
 				} else {
-					const page = this.#button(String(item), item, false, `Page ${item}`);
+					const page = this.#button(item, false, `Page ${item}`, String(item));
 
 					if (item === current) page.setAttribute('aria-current', 'page');
 
@@ -110,20 +111,37 @@ export const createAltPaginationElementClass = (
 			this.replaceChildren(nav);
 		}
 
-		#button(text: string, page: number, disabled: boolean, label: string): HTMLButtonElement {
+		#button(
+			page: number,
+			disabled: boolean,
+			label: string,
+			content: 'chevron-left' | 'chevron-right' | string,
+		): HTMLButtonElement {
 			const button = this.ownerDocument.createElement('button');
 
 			button.type = 'button';
 
-			button.className = 'alt-pagination__button';
+			button.className = 'alt-button alt-pagination__button';
+
+			button.dataset.elevation = 'none';
 
 			button.dataset.page = String(page);
+
+			button.dataset.size = '32';
+
+			button.dataset.variant = 'text';
 
 			button.disabled = disabled;
 
 			button.setAttribute('aria-label', label);
 
-			button.textContent = text;
+			if (content === 'chevron-left' || content === 'chevron-right') {
+				button.dataset.iconOnly = '';
+
+				button.append(createAltIcon(this.ownerDocument, content, { size: 18 }));
+			} else {
+				button.textContent = content;
+			}
 
 			return button;
 		}

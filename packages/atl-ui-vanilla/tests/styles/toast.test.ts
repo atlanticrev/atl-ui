@@ -7,7 +7,14 @@ const packageRoot = process.cwd().endsWith('atl-ui-vanilla')
 	? process.cwd()
 	: join(process.cwd(), 'packages/atl-ui-vanilla');
 const componentRoot = join(packageRoot, 'src/styles/components');
-const toastCss = ['_toast.scss', '_toast-actions.scss', '_toast-motion.scss']
+const toastCss = [
+	'_button.scss',
+	'_button-variants.scss',
+	'_button-support.scss',
+	'_toast.scss',
+	'_toast-actions.scss',
+	'_toast-motion.scss',
+]
 	.map((fileName) => compile(join(componentRoot, fileName)).css)
 	.join('\n');
 
@@ -29,11 +36,11 @@ describe('toast CSS lifecycle', () => {
 
 		expect(toastCss).not.toContain('.alt-toast__dismiss::before');
 
-		expect(toastCss).toContain('.alt-toast__dismiss:hover:not(:disabled)');
+		expect(toastCss).toContain(':where(.alt-button):hover:not(:disabled');
 
-		expect(toastCss).toContain('.alt-toast__dismiss:active:not(:disabled)');
+		expect(toastCss).toContain(':where(.alt-button):active:not(:disabled');
 
-		expect(toastCss).toContain('.alt-toast__dismiss:focus-visible');
+		expect(toastCss).toContain(':where(.alt-button):focus-visible');
 	});
 
 	it('does not render a translucent tail below the final toast', () => {

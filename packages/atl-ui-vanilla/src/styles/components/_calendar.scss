@@ -14,15 +14,13 @@
 
   .alt-calendar__header {
     display: grid;
-    grid-template-columns: 36px 1fr 36px;
+    grid-template-columns: 32px 1fr 32px;
     align-items: center;
     gap: 0.25rem;
   }
 
-  .alt-calendar__nav,
   .alt-calendar__heading,
-  .alt-calendar__choice,
-  .alt-calendar__preset {
+  .alt-calendar__choice {
     border: 0;
     background: transparent;
     color: inherit;
@@ -30,11 +28,19 @@
     cursor: pointer;
   }
 
-  .alt-calendar__nav,
   .alt-calendar__choice {
     min-width: 36px;
     min-height: 36px;
     border-radius: var(--alt-radius-xs);
+  }
+
+  .alt-calendar__nav {
+    --alt-button-bg-hover: var(--alt-color-accent-muted);
+    --alt-button-bg-active: var(--alt-color-accent-muted-hover);
+    --alt-button-color: inherit;
+    --alt-button-color-hover: inherit;
+    --alt-button-color-active: inherit;
+    --alt-button-radius: var(--alt-radius-xs);
   }
 
   .alt-calendar__heading {
@@ -43,12 +49,12 @@
     text-transform: capitalize;
   }
 
-  :where(.alt-calendar__nav, .alt-calendar__heading, .alt-calendar__choice, .alt-calendar__preset):focus-visible {
+  :where(.alt-calendar__heading, .alt-calendar__choice):focus-visible {
     outline: 0;
     box-shadow: var(--alt-focus-ring);
   }
 
-  :where(.alt-calendar__nav, .alt-calendar__heading, .alt-calendar__choice):hover:not(:disabled) {
+  :where(.alt-calendar__heading, .alt-calendar__choice):hover:not(:disabled) {
     background: var(--alt-color-accent-muted);
   }
 
@@ -103,12 +109,8 @@
     border-bottom: 1px solid var(--alt-color-border);
   }
 
-  .alt-calendar__preset {
+  .alt-calendar__presets > .alt-chip {
     flex: 0 0 auto;
-    min-height: 32px;
-    padding-inline: 0.625rem;
-    border-radius: var(--alt-radius-full);
-    background: var(--alt-color-surface-strong);
   }
 
   .alt-calendar__footer {

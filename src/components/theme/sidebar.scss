@@ -18,6 +18,11 @@
     --atl-sidebar-width: 88px;
   }
 
+  &--collapsed &__item {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
   &__group {
     display: flex;
     flex-direction: column;
@@ -31,18 +36,19 @@
   &__item {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.75rem;
     width: 100%;
     min-height: 40px;
-    border: 0;
     border-radius: var(--atl-radius-sm);
     padding: 0 0.75rem;
-    background: transparent;
     color: var(--atl-color-ink-muted);
     font: var(--atl-type-body-lg);
     font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
+
+    .atl-button__content {
+      gap: 0.75rem;
+    }
 
     &:hover {
       background: var(--atl-color-surface-muted);

@@ -1,7 +1,7 @@
-import { altIconMarkup, type AltDialogElementApi } from '../../../src';
+import { type AltDialogElementApi, altIconMarkup } from '../../../src';
 import { customIconMarkup } from '../custom-icon';
 import { findElement, findElements } from '../dom';
-import { example, defineStory } from '../story-factory';
+import { defineStory, example } from '../story-factory';
 
 const dialog = (size: number): string => `
 <button class="alt-button" data-dialog-target="dialog-${size}" data-variant="outlined" type="button">
@@ -10,7 +10,7 @@ const dialog = (size: number): string => `
 <alt-dialog id="dialog-${size}" size="${size}">
 	<header class="alt-dialog__header">
 		<h2 class="alt-dialog__title">${size} px dialog</h2>
-		<button class="alt-dialog__close" data-alt-dialog-close aria-label="Close">
+		<button class="alt-button alt-dialog__close" data-alt-dialog-close data-elevation="none" data-icon-only data-size="32" data-variant="text" aria-label="Close">
 			${size === 520 ? customIconMarkup : altIconMarkup('close', 18)}
 		</button>
 	</header>
@@ -44,7 +44,7 @@ const overflow = `
 <alt-dialog id="dialog-overflow" size="520">
 	<header class="alt-dialog__header">
 		<h2 class="alt-dialog__title">Very-long-unbroken-dialog-decision-title-for-a-narrow-viewport</h2>
-		<button class="alt-dialog__close" data-alt-dialog-close aria-label="Close">
+		<button class="alt-button alt-dialog__close" data-alt-dialog-close data-elevation="none" data-icon-only data-size="32" data-variant="text" aria-label="Close">
 			${altIconMarkup('close', 18)}
 		</button>
 	</header>
@@ -65,7 +65,7 @@ const nestedOverlay = `
 	<dialog aria-labelledby="dialog-overlay-title">
 		<header class="alt-dialog__header">
 			<h2 class="alt-dialog__title" id="dialog-overlay-title">Overlay inside dialog</h2>
-			<button class="alt-dialog__close" data-alt-dialog-close aria-label="Close">
+			<button class="alt-button alt-dialog__close" data-alt-dialog-close data-elevation="none" data-icon-only data-size="32" data-variant="text" aria-label="Close">
 				${altIconMarkup('close', 18)}
 			</button>
 		</header>

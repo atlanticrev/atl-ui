@@ -9,19 +9,10 @@
   }
 
   .alt-file-upload__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    --alt-button-radius: var(--alt-radius-full);
+
     gap: 0.5rem;
-    min-height: 40px;
     padding: 0 1.5rem;
-    border: 1px solid var(--alt-color-border-strong);
-    border-radius: var(--alt-radius-full);
-    background: transparent;
-    color: var(--alt-color-accent);
-    font: var(--alt-type-label-lg);
-    cursor: pointer;
-    transition: background-color var(--alt-motion-normal), border-color var(--alt-motion-normal);
   }
 
   .alt-file-upload__icon {
@@ -29,11 +20,6 @@
     flex: 0 0 auto;
   }
 
-  .alt-file-upload__button:hover {
-    background: var(--alt-color-accent-muted);
-  }
-
-  .alt-file-upload__button:focus-visible,
   :where(alt-file-upload, .alt-file-upload):has(.alt-file-upload__input:focus-visible)
     .alt-file-upload__button {
     outline: 0;
@@ -56,6 +42,7 @@
   :where(alt-file-upload, .alt-file-upload):is([disabled], [aria-disabled='true'])
     .alt-file-upload__button {
     cursor: not-allowed;
+    pointer-events: none;
   }
 
   :where(alt-file-upload, .alt-file-upload)[data-status='error'] .alt-file-upload__button {

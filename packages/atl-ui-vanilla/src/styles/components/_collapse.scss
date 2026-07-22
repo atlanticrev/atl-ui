@@ -22,13 +22,12 @@
     cursor: pointer;
   }
 
-  .alt-collapse__summary::after {
-    content: '+';
+  .alt-collapse__indicator {
+    display: inline-flex;
+    flex: 0 0 auto;
+    margin-inline-start: auto;
     color: var(--alt-color-ink-muted);
-    font-size: 1.25rem;
   }
-
-  .alt-collapse__item[open] > .alt-collapse__summary::after { content: '−'; }
 
   .alt-collapse__summary:focus-visible {
     outline: 0;

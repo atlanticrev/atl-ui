@@ -57,11 +57,11 @@
 
   .alt-catalog-search {
     width: min(32vw, 320px);
-    --alt-input-radius: var(--alt-radius-full);
   }
 
-  .alt-catalog-search .alt-input__root {
+  .alt-catalog-search .alt-search__root {
     min-height: 40px;
+    border-radius: var(--alt-radius-full);
     box-shadow: none;
   }
 

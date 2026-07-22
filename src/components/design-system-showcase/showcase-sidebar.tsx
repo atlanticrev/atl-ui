@@ -1,5 +1,6 @@
 import { AtlSidebar } from '@/components/sidebar';
 import { ChevronRightIcon } from '@/icons/chevron-right-icon';
+import { DotsVerticalIcon } from '@/icons/dots-vertical-icon';
 import { FolderLineIcon } from '@/icons/folder-line-icon';
 
 import { showcaseFolders, showcaseNavigationItems } from './data';
@@ -24,7 +25,7 @@ export const DesignSystemShowcaseSidebar = (): JSX.Element => {
 			<div className={footerStyles.footerHeader}>
 				<span className={footerStyles.footerLabel}>File browser</span>
 
-				<span className={footerStyles.footerDots}>⋮</span>
+				<DotsVerticalIcon className={footerStyles.footerDots} />
 			</div>
 
 			<div className={footerStyles.folderList}>

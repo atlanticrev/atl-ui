@@ -1,6 +1,6 @@
+import type { CalendarDom } from './calendar-dom';
 import { dateLabel, monthLabel, monthNames, weekdayNames } from './calendar-labels';
 import { addDays, formatDateValue, startOfMonthGrid } from './date-value';
-import type { CalendarDom } from './calendar-dom';
 import type { AltCalendarPreset, AltCalendarView } from './types';
 
 export type CalendarRenderState = {
@@ -156,11 +156,19 @@ export const renderCalendar = (dom: CalendarDom, state: CalendarRenderState, exp
 		...state.presets.map((preset, index) => {
 			const choice = createChoice(dom.grid.ownerDocument, preset.label, String(index));
 
-			choice.className = 'alt-calendar__preset';
+			const label = dom.grid.ownerDocument.createElement('span');
+
+			label.className = 'alt-chip__label';
+
+			label.textContent = preset.label;
+
+			choice.className = 'alt-chip';
 
 			choice.dataset.preset = String(index);
 
 			delete choice.dataset.value;
+
+			choice.replaceChildren(label);
 
 			return choice;
 		}),

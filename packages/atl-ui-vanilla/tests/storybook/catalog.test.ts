@@ -1,10 +1,10 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { bindCatalogControls } from '../../demo/storybook/catalog-controls';
 import { renderNavigation } from '../../demo/storybook/navigation';
 import { renderStory } from '../../demo/storybook/render-story';
 import { stories } from '../../demo/storybook/stories';
-import type { AltInputElementApi } from '../../src';
+import { type AltSearchElementApi, defineAltSearch } from '../../src';
 
 const getElement = <ElementType extends HTMLElement>(selector: string): ElementType => {
 	const element = document.querySelector<ElementType>(selector);
@@ -14,11 +14,15 @@ const getElement = <ElementType extends HTMLElement>(selector: string): ElementT
 	return element;
 };
 
+beforeAll(() => {
+	if (!customElements.get('alt-search')) defineAltSearch();
+});
+
 beforeEach(() => {
 	document.documentElement.dataset.altTheme = 'light';
 
 	document.body.innerHTML = `
-		<alt-input aria-label="Search components" id="catalog-search"></alt-input>
+		<alt-search aria-label="Search components" id="catalog-search"></alt-search>
 		<button id="catalog-theme">Dark theme</button>
 		<p id="catalog-count"></p>
 		<nav id="catalog-navigation"></nav>
@@ -83,11 +87,13 @@ describe('component storybook catalog', () => {
 	it('filters sections and hides empty navigation groups', () => {
 		bindCatalogControls();
 
-		const search = getElement<AltInputElementApi>('#catalog-search');
+		const search = getElement<AltSearchElementApi>('#catalog-search');
 
-		search.value = 'toast';
+		const field = getElement<HTMLInputElement>('#catalog-search .alt-search__field');
 
-		search.dispatchEvent(new Event('alt-input'));
+		field.value = 'toast';
+
+		field.dispatchEvent(new Event('input', { bubbles: true }));
 
 		const visibleStories = Array.from(document.querySelectorAll<HTMLElement>('.alt-story')).filter(
 			(story) => !story.hidden,
@@ -102,6 +108,14 @@ describe('component storybook catalog', () => {
 		expect(visibleGroups).toHaveLength(1);
 
 		expect(getElement('#catalog-count').textContent).toBe('1 component');
+
+		getElement<HTMLButtonElement>('#catalog-search .alt-search__clear').click();
+
+		expect(search.value).toBe('');
+
+		expect(document.querySelectorAll('.alt-story:not([hidden])')).toHaveLength(stories.length);
+
+		expect(getElement('#catalog-count').textContent).toBe(`${stories.length} components`);
 	});
 
 	it('switches the catalog theme', () => {

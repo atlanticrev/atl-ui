@@ -41,6 +41,10 @@ describe('alt-search', () => {
 
 		expect(clear?.querySelector('[data-alt-icon="close"]')).not.toBeNull();
 
+		expect(clear?.classList.contains('alt-button')).toBe(true);
+
+		expect(clear?.dataset.iconOnly).toBe('');
+
 		expect(clear?.getAttribute('aria-label')).toBe('Clear search');
 
 		clear?.click();

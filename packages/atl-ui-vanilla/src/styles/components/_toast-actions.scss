@@ -1,16 +1,11 @@
 @layer alt.components {
   .alt-toast__dismiss {
-    position: relative;
-    display: inline-grid;
-    place-content: center;
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
-    color: var(--alt-color-inverse-accent);
-    cursor: pointer;
+    --alt-button-bg-hover: color-mix(in srgb, currentColor 12%, transparent);
+    --alt-button-bg-active: color-mix(in srgb, currentColor 20%, transparent);
+    --alt-button-color: var(--alt-color-inverse-accent);
+    --alt-button-color-hover: var(--alt-color-inverse-accent);
+    --alt-button-color-active: var(--alt-color-inverse-accent);
+    --alt-button-radius: 50%;
   }
 
 	.alt-toast__dismiss .alt-icon {
@@ -18,23 +13,7 @@
 		height: 1rem;
 	}
 
-  @media (hover: hover) {
-    .alt-toast__dismiss:hover:not(:disabled) {
-      background: color-mix(in srgb, currentColor 12%, transparent);
-    }
-  }
-
-  .alt-toast__dismiss:active:not(:disabled) {
-    background: color-mix(in srgb, currentColor 20%, transparent);
-  }
-
-  .alt-toast__dismiss:focus-visible {
-    outline: 0;
-    box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 32%, transparent);
-  }
-
   .alt-toast__dismiss:disabled {
     cursor: default;
-    opacity: 0.5;
   }
 }

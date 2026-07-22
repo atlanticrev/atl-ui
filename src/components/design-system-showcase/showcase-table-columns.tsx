@@ -1,17 +1,17 @@
 import { AtlAvatar } from '@/components/avatar';
 import { AtlButton } from '@/components/button';
+import { AtlCheckbox } from '@/components/checkbox';
 import type { SimpleTableColumn } from '@/components/table/types';
 import { DotsVerticalIcon } from '@/icons/dots-vertical-icon';
 
-import type { ShowcaseFile } from './showcase-types';
 import styles from './showcase-table-cells.module.scss';
+import type { ShowcaseFile } from './showcase-types';
 
 const renderFileTitle = (record: ShowcaseFile): JSX.Element => (
 	<div className={styles.fileCell}>
-		<input
-			aria-label={`Select ${record.title}`}
+		<AtlCheckbox
+			ariaLabel={`Select ${record.title}`}
 			className={styles.checkbox}
-			type="checkbox"
 		/>
 
 		<div className={styles.fileIcon}>
@@ -57,10 +57,9 @@ export const showcaseTableColumns: Array<SimpleTableColumn<ShowcaseFile>> = [
 		key: 'file',
 		title: (
 			<span className={styles.headerCell}>
-				<input
-					aria-label="Select all files"
+				<AtlCheckbox
+					ariaLabel="Select all files"
 					className={styles.checkbox}
-					type="checkbox"
 				/>
 
 				<span className={styles.columnTitle}>File name</span>

@@ -60,4 +60,12 @@ describe('native component recipes', () => {
 
 		expect(baseCss).toContain('display: none !important');
 	});
+
+	it('supports native buttons as accessible action chips', () => {
+		expect(css).toContain('button.alt-chip');
+
+		expect(css).toContain('cursor: pointer');
+
+		expect(css).toContain('box-shadow: var(--alt-focus-ring)');
+	});
 });

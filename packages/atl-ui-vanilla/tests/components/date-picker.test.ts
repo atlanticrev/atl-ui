@@ -27,6 +27,14 @@ describe('date pickers', () => {
 
 		const panel = picker.querySelector<HTMLElement>('.alt-date-picker__panel') as HTMLElement;
 
+		const clear = picker.querySelector<HTMLButtonElement>('.alt-date-picker__clear');
+
+		expect(clear?.querySelector('[data-alt-icon="close"]')).toBeInstanceOf(SVGSVGElement);
+
+		expect(clear?.classList.contains('alt-button')).toBe(true);
+
+		expect(clear?.textContent).toBe('');
+
 		picker.addEventListener('alt-change', change);
 
 		picker.querySelector<HTMLButtonElement>('.alt-date-picker__trigger')?.click();

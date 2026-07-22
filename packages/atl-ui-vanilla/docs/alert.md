@@ -38,7 +38,8 @@ Declarative custom parts остаются в light DOM:
 <alt-alert severity="success">
   <svg aria-hidden="true" data-alt-alert-icon><!-- ... --></svg>
   Settings saved.
-  <button class="alt-alert__action-button" data-alt-alert-action type="button">Undo</button>
+  <button class="alt-button alt-alert__action-button" data-alt-alert-action data-size="32"
+    data-variant="text" type="button">Undo</button>
 </alt-alert>
 ```
 
@@ -62,6 +63,9 @@ Alert не закрывается по таймеру и не перемещае
 настоящей кнопкой или ссылкой. Цвет всегда дублируется SVG-иконкой и текстом сообщения.
 
 ## CSS overrides
+
+По умолчанию Alert использует `width: fit-content` и занимает ширину содержимого, но ограничен
+`max-width: 100%`. Для полноширинного сообщения приложение может явно задать `width: 100%`.
 
 Все части namespaced: `.alt-alert__icon`, `.alt-alert__message`, `.alt-alert__title`,
 `.alt-alert__action`, `.alt-alert__close`. Для тонкой настройки доступны `--alt-alert-radius`,

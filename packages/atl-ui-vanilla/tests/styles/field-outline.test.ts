@@ -56,11 +56,17 @@ describe('field focus styles', () => {
 	});
 
 	it('centers the shared SVG clear icon without font metrics', () => {
-		const css = compileComponent('search');
+		const css = [compileComponent('button'), compileComponent('button-support'), compileComponent('search')].join(
+			'\n',
+		);
 
-		expect(css).toContain('display: inline-grid');
+		expect(css).toContain('display: inline-flex');
 
-		expect(css).toContain('place-items: center');
+		expect(css).toContain('align-items: center');
+
+		expect(css).toContain('justify-content: center');
+
+		expect(css).toContain('.alt-search__clear');
 
 		expect(css).not.toContain('.alt-search__clear::before');
 	});

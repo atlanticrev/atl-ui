@@ -80,6 +80,15 @@ Icon-only кнопке всегда требуется доступное имя
 <button class="alt-button" data-elevation="none" data-variant="filled" type="button">Save</button>
 ```
 
+## Композиция внутри компонентов
+
+Обычные внутренние actions переиспользуют этот же recipe вместе со своим part-классом: например,
+`button.alt-button.alt-dialog__close` и `button.alt-button.alt-chip__remove`. Part-класс отвечает только за
+локальный размер, цвет или позицию, а Button — за reset, hover, active, focus и disabled states.
+
+Специализированные controls не обязаны быть Button: calendar cells, tabs, listbox options, select/date
+triggers и switcher имеют собственную семантику и state-модель.
+
 ## Button group
 
 ```html

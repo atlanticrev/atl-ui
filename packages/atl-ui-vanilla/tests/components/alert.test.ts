@@ -42,6 +42,8 @@ describe('alt-alert', () => {
 		expect(alert.messageElement?.textContent).toContain('Success Saved.');
 
 		expect(alert.querySelector('.alt-alert__icon [data-alt-icon="check"]')).not.toBeNull();
+
+		expect(alert.querySelector('.alt-alert__close')?.classList.contains('alt-button')).toBe(true);
 	});
 
 	it('supports severity, independent color and filled or outlined variants', async () => {

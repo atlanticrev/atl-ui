@@ -37,6 +37,22 @@ describe('alt-calendar', () => {
 			'locale="en-GB" first-day="1" min="2026-07-06" max="2026-07-31" value="2026-07-22"',
 		);
 
+		const previous = calendar.querySelector<HTMLButtonElement>('[data-action="previous"]');
+
+		const next = calendar.querySelector<HTMLButtonElement>('[data-action="next"]');
+
+		expect(previous?.querySelector('[data-alt-icon="chevron-left"]')).toBeInstanceOf(SVGSVGElement);
+
+		expect(next?.querySelector('[data-alt-icon="chevron-right"]')).toBeInstanceOf(SVGSVGElement);
+
+		expect(previous?.classList.contains('alt-button')).toBe(true);
+
+		expect(next?.classList.contains('alt-button')).toBe(true);
+
+		expect(previous?.textContent).toBe('');
+
+		expect(next?.textContent).toBe('');
+
 		expect(calendar.querySelectorAll('[data-value]').length).toBe(42);
 
 		expect(calendar.querySelector('.alt-calendar__weekdays')?.textContent).toContain('Mon');
@@ -44,6 +60,10 @@ describe('alt-calendar', () => {
 		expect(calendar.querySelector<HTMLButtonElement>('[data-value="2026-07-05"]')?.disabled).toBe(true);
 
 		expect(calendar.querySelector('[data-value="2026-07-22"]')?.getAttribute('aria-pressed')).toBe('true');
+
+		expect(calendar.querySelector('[data-action="reset"]')?.getAttribute('data-variant')).toBe('text');
+
+		expect(calendar.querySelector('[data-action="apply"]')?.getAttribute('data-variant')).toBe('filled');
 	});
 
 	it('selects an ordered range and waits for Apply in explicit mode', async () => {
@@ -115,9 +135,19 @@ describe('alt-calendar', () => {
 
 		await Promise.resolve();
 
+		const preset = calendar.querySelector<HTMLButtonElement>('[data-preset="0"]');
+
+		expect(preset).toBeInstanceOf(HTMLButtonElement);
+
+		expect(preset?.classList.contains('alt-chip')).toBe(true);
+
+		expect(preset?.querySelector('.alt-chip__label')?.textContent).toBe('This week');
+
+		expect(preset?.classList.contains('alt-calendar__preset')).toBe(false);
+
 		expect(calendar.querySelector<HTMLButtonElement>('[data-value="2026-07-23"]')?.disabled).toBe(true);
 
-		calendar.querySelector<HTMLButtonElement>('[data-preset="0"]')?.click();
+		preset?.click();
 
 		expect(calendar.getAttribute('start')).toBe('2026-07-20');
 

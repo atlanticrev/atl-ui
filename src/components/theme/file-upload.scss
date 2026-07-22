@@ -8,21 +8,13 @@
   }
 
   &__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
     padding: 0 1.5rem;
-    border: 1px solid var(--atl-color-border-strong);
     border-radius: var(--atl-radius-full);
-    background: transparent;
-    color: var(--atl-color-accent);
-    font: var(--atl-type-label-lg);
-    cursor: pointer;
   }
 
   &--disabled &__button {
     cursor: not-allowed;
+    pointer-events: none;
   }
 
   &--error &__button {

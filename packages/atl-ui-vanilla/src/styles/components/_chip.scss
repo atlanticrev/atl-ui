@@ -21,6 +21,27 @@
     white-space: nowrap;
   }
 
+  :where(button.alt-chip) {
+    appearance: none;
+    cursor: pointer;
+  }
+
+  :where(button.alt-chip):hover:not(:disabled) {
+    --alt-chip-border: var(--alt-color-border-strong);
+    --alt-chip-bg: var(--alt-color-surface-strong);
+    --alt-chip-color: var(--alt-color-ink);
+  }
+
+  :where(button.alt-chip):focus-visible {
+    outline: 0;
+    box-shadow: var(--alt-focus-ring);
+  }
+
+  :where(button.alt-chip):disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+
   :where(.alt-chip)[data-size='s'],
   :where(.alt-chip--small) {
     min-height: 24px;
@@ -45,7 +66,7 @@
     opacity: 0.38;
   }
 
-  :where(.alt-chip__remove) {
+  :where(.alt-chip__remove):not(.alt-button) {
     display: inline-grid;
     flex: 0 0 auto;
     place-content: center;
@@ -56,9 +77,18 @@
     cursor: pointer;
   }
 
-  :where(.alt-chip__remove):focus-visible {
+  :where(.alt-chip__remove):not(.alt-button):focus-visible {
     border-radius: 50%;
     outline: 0;
     box-shadow: var(--alt-focus-ring);
+  }
+
+  .alt-chip__remove.alt-button {
+    --alt-button-control-size: 24px;
+    --alt-button-color: inherit;
+    --alt-button-color-hover: inherit;
+    --alt-button-color-active: inherit;
+    --alt-button-radius: var(--alt-radius-full);
+
   }
 }

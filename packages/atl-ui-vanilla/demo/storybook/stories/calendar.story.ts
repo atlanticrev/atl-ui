@@ -1,6 +1,6 @@
 import type { AltCalendarElementApi } from '../../../src';
 import { findElements } from '../dom';
-import { example, defineStory } from '../story-factory';
+import { defineStory, example } from '../story-factory';
 
 export const calendarStory = defineStory({
 	id: 'calendar',
@@ -22,10 +22,8 @@ export const calendarStory = defineStory({
 		),
 		example(
 			'Month and year selection',
-			`<div class="alt-catalog-grid">
-	<alt-calendar view="months" value="2026-07-22"></alt-calendar>
-	<alt-calendar view="years" value="2026-07-22"></alt-calendar>
-</div>`,
+			`<alt-calendar view="months" value="2026-07-22"></alt-calendar>
+<alt-calendar view="years" value="2026-07-22"></alt-calendar>`,
 			'Every selector view available in the original library.',
 			true,
 		),

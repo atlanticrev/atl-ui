@@ -48,6 +48,8 @@ describe('alt-file-upload', () => {
 
 		expect(input?.name).toBe('media');
 
+		expect(upload.querySelector('.alt-file-upload__button')?.classList.contains('alt-button')).toBe(true);
+
 		expect(upload.querySelector('.alt-file-upload__value')?.textContent).toBe('post.mp4');
 
 		expect(onChange.mock.calls[0][0].detail.files).toEqual([file]);

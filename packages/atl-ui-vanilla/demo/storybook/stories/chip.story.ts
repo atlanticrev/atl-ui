@@ -1,7 +1,6 @@
 import { altIconMarkup } from '../../../src';
-
 import { customIconMarkup } from '../custom-icon';
-import { example, defineStory } from '../story-factory';
+import { defineStory, example } from '../story-factory';
 
 export const chipStory = defineStory({
 	id: 'chip',
@@ -24,15 +23,16 @@ export const chipStory = defineStory({
 			`
 <div class="alt-catalog-story-row">
 	<span class="alt-chip" data-size="s">Small</span>
+	<button class="alt-chip" type="button"><span class="alt-chip__label">Action chip</span></button>
 	<span class="alt-chip" data-variant="frozen">
 		<span class="alt-chip__label">YouTube</span>
-		<button class="alt-chip__remove" type="button" aria-label="Remove YouTube">
+		<button class="alt-button alt-chip__remove" data-elevation="none" data-icon-only data-size="24" data-variant="text" type="button" aria-label="Remove YouTube">
 			${altIconMarkup('close', 14)}
 		</button>
 	</span>
 	<span class="alt-chip" data-variant="danger">
 		<span class="alt-chip__label">TikTok</span>
-		<button class="alt-chip__remove" type="button" aria-label="Remove TikTok">
+		<button class="alt-button alt-chip__remove" data-elevation="none" data-icon-only data-size="24" data-variant="text" type="button" aria-label="Remove TikTok">
 			${customIconMarkup}
 		</button>
 	</span>
@@ -43,7 +43,7 @@ export const chipStory = defineStory({
 			`<div class="alt-catalog-stress-frame" data-width="narrow">
 	<span class="alt-chip">
 		<span class="alt-chip__label">A-very-long-channel-name-that-must-not-overflow</span>
-		<button class="alt-chip__remove" type="button" aria-label="Remove channel">
+		<button class="alt-button alt-chip__remove" data-elevation="none" data-icon-only data-size="24" data-variant="text" type="button" aria-label="Remove channel">
 			${altIconMarkup('close', 14)}
 		</button>
 	</span>

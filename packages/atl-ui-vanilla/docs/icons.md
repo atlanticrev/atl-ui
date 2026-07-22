@@ -28,8 +28,8 @@ SVG или используйте небольшую фабрику `createMyIco
 | Progress | любой Node через `labelContent` |
 | Tooltip | любой Node через `content` и внутри authored trigger |
 | Breadcrumbs | любой SVG внутри `.alt-breadcrumbs__separator` |
-| Chip | любой SVG внутри `.alt-chip__remove` или рядом с label |
-| Dialog | любой SVG внутри authored `[data-alt-dialog-close]` |
+| Chip | любой SVG внутри `.alt-button.alt-chip__remove` или рядом с label |
+| Dialog | любой SVG внутри authored `.alt-button[data-alt-dialog-close]` |
 | Sidebar | любой SVG внутри authored `.alt-sidebar__item` |
 | Tabs | любой SVG внутри authored `[role="tab"]` |
 

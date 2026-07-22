@@ -1,4 +1,4 @@
-import { createAltIcon, syncAltIconContent, type AltIconName } from '../../icons';
+import { type AltIconName, createAltIcon, syncAltIconContent } from '../../icons';
 
 import type { ToastRecord } from './toast-model';
 
@@ -54,7 +54,15 @@ const createToastItem = (document: Document): HTMLLIElement => {
 
 	message.className = 'alt-toast__message';
 
-	dismiss.className = 'alt-toast__dismiss';
+	dismiss.className = 'alt-button alt-toast__dismiss';
+
+	dismiss.dataset.elevation = 'none';
+
+	dismiss.dataset.iconOnly = '';
+
+	dismiss.dataset.size = '32';
+
+	dismiss.dataset.variant = 'text';
 
 	dismiss.type = 'button';
 

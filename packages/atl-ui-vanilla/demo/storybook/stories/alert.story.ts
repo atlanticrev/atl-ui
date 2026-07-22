@@ -31,7 +31,7 @@ const actionExamples = `
 	<button class="alt-button" data-alert-show type="button" data-variant="outlined">Show alert again</button>
 	<alt-alert severity="success">
 		Publication settings were saved.
-		<button class="alt-alert__action-button" data-alt-alert-action type="button">Undo</button>
+		<button class="alt-button alt-alert__action-button" data-alt-alert-action data-elevation="none" data-size="32" data-variant="text" type="button">Undo</button>
 	</alt-alert>
 </div>`;
 

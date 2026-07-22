@@ -27,7 +27,15 @@ export const createSearchDom = (host: HTMLElement): SearchDom => {
 
 	clear.type = 'button';
 
-	clear.className = 'alt-search__clear';
+	clear.className = 'alt-button alt-search__clear';
+
+	clear.dataset.elevation = 'none';
+
+	clear.dataset.iconOnly = '';
+
+	clear.dataset.size = '24';
+
+	clear.dataset.variant = 'text';
 
 	clear.append(createAltIcon(document, 'close', { size: 16 }));
 

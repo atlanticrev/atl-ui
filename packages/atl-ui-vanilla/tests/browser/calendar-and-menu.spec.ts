@@ -10,6 +10,8 @@ test('date picker commits a day and restores trigger focus', async ({ page }) =>
 
 	const trigger = picker.locator('.alt-date-picker__trigger');
 
+	await expect(picker.locator('.alt-date-picker__clear [data-alt-icon="close"]')).toBeVisible();
+
 	await trigger.click();
 
 	await expect(picker.locator('.alt-date-picker__panel')).toBeVisible();
@@ -68,6 +70,29 @@ test('calendar keyboard navigation crosses a month boundary', async ({ page }) =
 
 	const calendar = page.locator('#calendar [data-story-example="Single date"] alt-calendar');
 
+	const previous = calendar.locator('[data-action="previous"]');
+
+	const next = calendar.locator('[data-action="next"]');
+
+	await expect(previous.locator('[data-alt-icon="chevron-left"]')).toBeVisible();
+
+	await expect(next.locator('[data-alt-icon="chevron-right"]')).toBeVisible();
+
+	const navigationGeometry = await previous.evaluate((element) => {
+		const button = element.getBoundingClientRect();
+
+		const icon = element.querySelector('svg')?.getBoundingClientRect();
+
+		return {
+			x: icon ? icon.left + icon.width / 2 - (button.left + button.width / 2) : 1,
+			y: icon ? icon.top + icon.height / 2 - (button.top + button.height / 2) : 1,
+		};
+	});
+
+	expect(Math.abs(navigationGeometry.x)).toBeLessThanOrEqual(0.5);
+
+	expect(Math.abs(navigationGeometry.y)).toBeLessThanOrEqual(0.5);
+
 	const selected = calendar.locator('[data-value="2026-07-22"]');
 
 	await selected.focus();
@@ -79,6 +104,40 @@ test('calendar keyboard navigation crosses a month boundary', async ({ page }) =
 	await page.keyboard.press('PageDown');
 
 	await expect(calendar.locator('[data-value="2026-08-26"]')).toBeFocused();
+});
+
+test('day, month and year calendar views use the same width', async ({ page }) => {
+	await page.goto('/storybook.html#calendar');
+
+	const single = page.locator('#calendar [data-story-example="Single date"] alt-calendar');
+
+	const months = page.locator(
+		'#calendar [data-story-example="Month and year selection"] alt-calendar[view="months"]',
+	);
+
+	const years = page.locator('#calendar [data-story-example="Month and year selection"] alt-calendar[view="years"]');
+
+	const widths = await Promise.all(
+		[single, months, years].map(async (calendar) => (await calendar.boundingBox())?.width),
+	);
+
+	expect(widths).toEqual([328, 328, 328]);
+});
+
+test('calendar presets reuse actionable chip recipes', async ({ page }) => {
+	await page.goto('/storybook.html#calendar');
+
+	const calendar = page.locator('#calendar [data-story-example="Date range and presets"] alt-calendar');
+
+	const preset = calendar.locator('button.alt-chip[data-preset="0"]');
+
+	await expect(preset.locator('.alt-chip__label')).toHaveText('Last 7 days');
+
+	await preset.click();
+
+	await expect(calendar).toHaveAttribute('start', '2026-07-16');
+
+	await expect(calendar).toHaveAttribute('end', '2026-07-22');
 });
 
 test('menu is fully operable from the keyboard', async ({ page }) => {

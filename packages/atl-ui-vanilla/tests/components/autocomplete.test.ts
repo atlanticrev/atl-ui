@@ -54,6 +54,14 @@ describe('alt-autocomplete', () => {
 
 		expect(autocomplete.querySelector('[data-alt-icon="close"]')).toBeInstanceOf(SVGSVGElement);
 
+		expect(autocomplete.querySelector('[data-alt-autocomplete-trigger]')?.classList.contains('alt-button')).toBe(
+			true,
+		);
+
+		expect(autocomplete.querySelector('[data-alt-autocomplete-clear]')?.classList.contains('alt-button')).toBe(
+			true,
+		);
+
 		const input = autocomplete.inputElement as HTMLInputElement;
 
 		input.value = 'lin';

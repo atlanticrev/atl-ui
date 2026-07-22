@@ -1,3 +1,4 @@
+import { AtlBreadcrumbs } from '@/components/breadcrumbs';
 import { AtlButton } from '@/components/button';
 import { AtlCard } from '@/components/card';
 import { DotsVerticalIcon } from '@/icons/dots-vertical-icon';
@@ -9,13 +10,13 @@ import styles from './showcase-actions.module.scss';
 export const DesignSystemShowcaseActions = (): JSX.Element => {
 	return (
 		<div className={styles.root}>
-			<div className={styles.breadcrumbs}>
-				<span>Untitled UI</span>
-
-				<span className={styles.separator}>/</span>
-
-				<strong>All files</strong>
-			</div>
+			<AtlBreadcrumbs
+				className={styles.breadcrumbs}
+				items={[
+					{ label: 'Untitled UI', testId: 'showcase-root' },
+					{ label: 'All files', testId: 'showcase-current' },
+				]}
+			/>
 
 			<section className={styles.section}>
 				<div className={styles.quickActions}>

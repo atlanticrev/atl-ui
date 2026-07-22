@@ -17,7 +17,17 @@ const getSelectedLabel = (files: File[]): string => {
 	return `${files.length} files selected`;
 };
 
-export const AtlFileUpload = ({ accept, className, disabled = false, helperText, label, multiple = false, onChange, status = 'default', testId }: AtlFileUploadProps): JSX.Element => {
+export const AtlFileUpload = ({
+	accept,
+	className,
+	disabled = false,
+	helperText,
+	label,
+	multiple = false,
+	onChange,
+	status = 'default',
+	testId,
+}: AtlFileUploadProps): JSX.Element => {
 	const inputId = useId();
 	const [selectedLabel, setSelectedLabel] = useState('');
 
@@ -28,12 +38,31 @@ export const AtlFileUpload = ({ accept, className, disabled = false, helperText,
 	};
 
 	return (
-		<div className={clsx('atl-file-upload', `atl-file-upload--${status}`, disabled && 'atl-file-upload--disabled', className)} data-testid={testId}>
-			<label className="atl-file-upload__button" htmlFor={inputId}>
+		<div
+			className={clsx(
+				'atl-file-upload',
+				`atl-file-upload--${status}`,
+				disabled && 'atl-file-upload--disabled',
+				className,
+			)}
+			data-testid={testId}
+		>
+			<label
+				className="atl-button atl-button--outlined atl-button--size-40 atl-file-upload__button"
+				htmlFor={inputId}
+			>
 				{label}
 			</label>
 
-			<input accept={accept} className="atl-file-upload__input" disabled={disabled} id={inputId} multiple={multiple} type="file" onChange={handleChange} />
+			<input
+				accept={accept}
+				className="atl-file-upload__input"
+				disabled={disabled}
+				id={inputId}
+				multiple={multiple}
+				type="file"
+				onChange={handleChange}
+			/>
 
 			{selectedLabel && <span className="atl-file-upload__value">{selectedLabel}</span>}
 

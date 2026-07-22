@@ -28,7 +28,8 @@
 					<label class="alt-switcher"><input checked class="alt-switcher__control" role="switch"
 						type="checkbox" />Switcher</label>
 					<span class="alt-chip" data-variant="frozen">
-						Ready<button aria-label="Remove" class="alt-chip__remove" data-alt-demo-icon="close"></button>
+						Ready<button aria-label="Remove" class="alt-button alt-chip__remove" data-alt-demo-icon="close"
+							data-elevation="none" data-icon-only data-size="24" data-variant="text"></button>
 					</span>
 					<span aria-hidden="true" class="alt-skeleton" data-shape="line" style="width: 8rem">&nbsp;</span>
 				</div>
@@ -56,9 +57,10 @@
 						</alt-option>
 					</alt-select>
 					<alt-autocomplete id="demo-autocomplete" label="Tool" value="figma">
-						<button class="alt-demo__field-action" data-alt-autocomplete-trigger type="button">Browse</button>
-						<button class="alt-demo__field-action alt-demo__field-action--clear" data-alt-autocomplete-clear
-							type="button">Clear</button>
+						<button class="alt-button alt-demo__field-action" data-alt-autocomplete-trigger data-size="32"
+							data-variant="outlined" type="button">Browse</button>
+						<button class="alt-button alt-demo__field-action alt-demo__field-action--clear"
+							data-alt-autocomplete-clear data-size="32" data-variant="text" type="button">Clear</button>
 					</alt-autocomplete>
 					<alt-file-upload accept="image/*" helper-text="PNG or JPEG" label="Choose thumbnail"></alt-file-upload>
 					<alt-progress label="Upload progress" value="64"></alt-progress>

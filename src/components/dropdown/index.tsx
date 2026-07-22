@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
+import { AtlButton } from '@/components/button';
 import { CheckIcon } from '@/icons/check-icon';
 import { clsx } from '@/lib/clsx';
 
@@ -41,15 +42,30 @@ export const AtlDropdown = <T,>({
 	const handleSelectAll = useCallback(() => onSelectAll?.(), [onSelectAll]);
 
 	return (
-		<div className={clsx('atl-dropdown-list', className)} data-testid={testId}>
+		<div
+			className={clsx('atl-dropdown-list', className)}
+			data-testid={testId}
+		>
 			{headerSlot}
-			<div className="atl-dropdown-list__main" id={id} role="listbox">
+			<div
+				className="atl-dropdown-list__main"
+				id={id}
+				role="listbox"
+			>
 				{showEmptyState ? (
-					<div className="atl-dropdown-list__empty" role="option" tabIndex={-1}>
+					<div
+						className="atl-dropdown-list__empty"
+						role="option"
+						tabIndex={-1}
+					>
 						{emptyState}
 					</div>
 				) : (
-					<div className="atl-dropdown-list__items" ref={listRef} style={{ maxHeight }}>
+					<div
+						className="atl-dropdown-list__items"
+						ref={listRef}
+						style={{ maxHeight }}
+					>
 						{items.map((item, index) => {
 							const isSelected = selectedSet.has(item.value);
 							const isHighlighted = index === highlightedIndex;
@@ -81,7 +97,9 @@ export const AtlDropdown = <T,>({
 										<span className="atl-dropdown-list__item-label">{item.label}</span>
 
 										{item.description && (
-											<span className="atl-dropdown-list__item-description">{item.description}</span>
+											<span className="atl-dropdown-list__item-description">
+												{item.description}
+											</span>
 										)}
 									</span>
 
@@ -102,9 +120,14 @@ export const AtlDropdown = <T,>({
 					{footerText && <span className="atl-dropdown-list__footer-text">{footerText}</span>}
 
 					{multiSelect && onSelectAll && (
-						<button className="atl-dropdown-list__select-all" type="button" onClick={handleSelectAll}>
+						<AtlButton
+							className="atl-dropdown-list__select-all"
+							size={24}
+							variant="text"
+							onClick={handleSelectAll}
+						>
 							{selectAllText}
-						</button>
+						</AtlButton>
 					)}
 				</div>
 			)}

@@ -34,23 +34,17 @@
 
   .alt-autocomplete__trigger,
   .alt-autocomplete__clear {
+    --alt-button-bg-hover: var(--alt-color-surface-muted);
+    --alt-button-bg-active: var(--alt-color-border);
+    --alt-button-color: var(--alt-color-ink-muted);
+    --alt-button-color-hover: var(--alt-color-ink);
+    --alt-button-color-active: var(--alt-color-ink);
+    --alt-button-radius: var(--alt-radius-xs);
+
     position: absolute;
     z-index: 3;
     top: 8px;
-    display: inline-grid;
-    place-content: center;
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border: 0;
-    border-radius: var(--alt-radius-xs);
-    background: transparent;
-    color: var(--alt-color-ink-muted);
-    font: inherit;
-    line-height: 1;
-    cursor: pointer;
-    transition: background-color var(--alt-motion-fast), color var(--alt-motion-fast),
-      transform var(--alt-motion-fast);
+    transition: background-color var(--alt-motion-fast), color var(--alt-motion-fast), transform var(--alt-motion-fast);
   }
 
   .alt-autocomplete__trigger {
@@ -63,23 +57,6 @@
     font-size: 1.125rem;
   }
 
-  .alt-autocomplete__trigger:hover,
-  .alt-autocomplete__clear:hover {
-    background: var(--alt-color-surface-muted);
-    color: var(--alt-color-ink);
-  }
-
-  .alt-autocomplete__trigger:active,
-  .alt-autocomplete__clear:active {
-    background: var(--alt-color-border);
-  }
-
-  .alt-autocomplete__trigger:focus-visible,
-  .alt-autocomplete__clear:focus-visible {
-    outline: 0;
-    box-shadow: var(--alt-focus-ring);
-  }
-
   .alt-autocomplete__trigger[data-popup-open] {
     transform: rotate(180deg);
   }
@@ -87,7 +64,6 @@
   .alt-autocomplete__trigger:disabled,
   .alt-autocomplete__clear:disabled {
     opacity: 0.48;
-    cursor: not-allowed;
   }
 
   .alt-autocomplete__popup {

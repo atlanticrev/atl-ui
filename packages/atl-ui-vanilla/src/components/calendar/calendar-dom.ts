@@ -1,3 +1,5 @@
+import { createAltIcon } from '../../icons';
+
 export type CalendarDom = {
 	apply: HTMLButtonElement;
 	grid: HTMLDivElement;
@@ -26,11 +28,11 @@ export const createCalendarDom = (host: HTMLElement): CalendarDom => {
 
 	const header = document.createElement('header');
 
-	const previous = button(document, 'alt-calendar__nav', '‹');
+	const previous = button(document, 'alt-button alt-calendar__nav', '');
 
 	const heading = button(document, 'alt-calendar__heading', '');
 
-	const next = button(document, 'alt-calendar__nav', '›');
+	const next = button(document, 'alt-button alt-calendar__nav', '');
 
 	const weekdays = document.createElement('div');
 
@@ -46,13 +48,33 @@ export const createCalendarDom = (host: HTMLElement): CalendarDom => {
 
 	previous.dataset.action = 'previous';
 
+	previous.dataset.elevation = 'none';
+
+	previous.dataset.iconOnly = '';
+
+	previous.dataset.size = '32';
+
+	previous.dataset.variant = 'text';
+
 	previous.setAttribute('aria-label', 'Previous period');
+
+	previous.append(createAltIcon(document, 'chevron-left', { size: 20 }));
 
 	heading.dataset.action = 'change-view';
 
 	next.dataset.action = 'next';
 
+	next.dataset.elevation = 'none';
+
+	next.dataset.iconOnly = '';
+
+	next.dataset.size = '32';
+
+	next.dataset.variant = 'text';
+
 	next.setAttribute('aria-label', 'Next period');
+
+	next.append(createAltIcon(document, 'chevron-right', { size: 20 }));
 
 	weekdays.className = 'alt-calendar__weekdays';
 
@@ -66,9 +88,17 @@ export const createCalendarDom = (host: HTMLElement): CalendarDom => {
 
 	reset.dataset.action = 'reset';
 
+	reset.dataset.elevation = 'none';
+
+	reset.dataset.size = '32';
+
+	reset.dataset.variant = 'text';
+
 	apply.dataset.action = 'apply';
 
-	apply.dataset.variant = 'primary';
+	apply.dataset.size = '32';
+
+	apply.dataset.variant = 'filled';
 
 	header.className = 'alt-calendar__header';
 

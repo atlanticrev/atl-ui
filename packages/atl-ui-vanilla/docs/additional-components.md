@@ -3,12 +3,15 @@
 ## Behavioral elements
 
 - `alt-collapse` расширяет authored `<details>`; атрибут `single` включает accordion mode, `openKeys`
-  управляет открытыми секциями, `alt-change` возвращает актуальные keys.
+  управляет открытыми секциями, `alt-change` возвращает актуальные keys. Состояние показывает SVG
+  `plus`/`minus` из общего icon set.
 - `alt-menu` расширяет authored trigger `[data-alt-menu-trigger]` и соседний `[role="menu"]`. Поддерживаются
   ArrowUp/ArrowDown, Home/End, Escape, outside dismiss и `alt-select` с `{ item, value }`. Открытое menu
   использует общий top layer и не обрезается контейнерами.
 - `alt-pagination` принимает `page`, `page-size`, `total` и property `pageSizeOptions`. `alt-change` возвращает
   `{ page, pageSize }`; компонент можно связать с существующими Table и Select без их взаимной регистрации.
+  Навигация переиспользует Button recipe и SVG `chevron-left`/`chevron-right`; пропуски страниц используют
+  SVG `more-horizontal`.
 - `alt-search` держит настоящий `<input type="search">`, поэтому поддерживает FormData/reset. События
   `alt-input`/`alt-change` возвращают `{ value }`; clear action имеет собственное accessible name.
 

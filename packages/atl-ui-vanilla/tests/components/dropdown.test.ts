@@ -62,6 +62,8 @@ describe('alt-dropdown', () => {
 		expect(dropdown.selectAll()).toBe(true);
 
 		expect(dropdown.values).toEqual([]);
+
+		expect(dropdown.querySelector('.alt-listbox__select-all')?.classList.contains('alt-button')).toBe(true);
 	});
 
 	it('keeps declarative options after reconnecting', async () => {

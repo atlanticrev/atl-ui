@@ -56,6 +56,8 @@ describe('alt-toast-region DOM', () => {
 
 		expect(dismiss?.getAttribute('aria-label')).toBe('Dismiss notification');
 
+		expect(dismiss?.classList.contains('alt-button')).toBe(true);
+
 		expect(item?.querySelector('[data-alt-icon="check"]')).toBeInstanceOf(SVGSVGElement);
 
 		expect(dismiss?.querySelector('[data-alt-icon="close"]')).toBeInstanceOf(SVGSVGElement);

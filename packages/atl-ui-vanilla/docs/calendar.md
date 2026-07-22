@@ -38,11 +38,13 @@ defineAltDateRangePicker();
 - `commit-mode="explicit"` показывает Apply; иначе завершённый выбор сразу отправляет `alt-change`.
 - `disabledDate(value)` принимает date-only value и возвращает `boolean`.
 - `presets` принимает `{ label, start, end? }[]`.
+- Presets рендерятся как native `button.alt-chip` и переиспользуют общий actionable Chip recipe.
 - `alt-input` сообщает preview, `alt-change` — committed state. Detail содержит `value`, `range`, `mode` и
   `complete`.
 
 Day grid поддерживает стрелки, Home/End и PageUp/PageDown. Month/year selectors и ограничения `min`/`max`
-доступны с клавиатуры как native buttons.
+доступны с клавиатуры как native buttons. Кнопки перехода между периодами используют декоративные SVG
+chevrons из общего набора и сохраняют доступные названия `Previous period` и `Next period`.
 
 ## DatePicker and DateRangePicker
 
@@ -60,6 +62,8 @@ explicit Apply по умолчанию; single picker закрывается п�
 
 События `alt-input` и `alt-change` содержат `{ value, range }`. `Escape`, клик снаружи и успешный commit
 закрывают popup; фокус возвращается на trigger.
+
+Кнопка очистки использует декоративную SVG-иконку `close` и сохраняет доступное название `Clear date`.
 
 Открытая панель рендерится через browser top layer и поэтому не обрезается `overflow`, `contain` или
 stacking context родительских контейнеров. В браузерах без Popover API панель временно переносится в

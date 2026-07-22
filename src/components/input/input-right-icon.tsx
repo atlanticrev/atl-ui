@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 
+import { AtlButton } from '@/components/button';
 import { AtlTooltip } from '@/components/tooltip';
 import { clsx } from '@/lib/clsx';
 
@@ -28,9 +29,14 @@ export const AtlInputRightIcon = ({
 	);
 
 	const iconElement = onClick ? (
-		<button className={className} tabIndex={-1} type="button" onClick={onClick}>
-			{icon}
-		</button>
+		<AtlButton
+			className={className}
+			iconLeft={icon}
+			size={24}
+			tabIndex={-1}
+			variant="text"
+			onClick={onClick}
+		/>
 	) : (
 		<span className={className}>{icon}</span>
 	);
@@ -40,7 +46,12 @@ export const AtlInputRightIcon = ({
 	}
 
 	return (
-		<AtlTooltip open={tooltipOpen} placement="top" testId={`${testId}-icon-tooltip`} title={tooltip}>
+		<AtlTooltip
+			open={tooltipOpen}
+			placement="top"
+			testId={`${testId}-icon-tooltip`}
+			title={tooltip}
+		>
 			{iconElement}
 		</AtlTooltip>
 	);

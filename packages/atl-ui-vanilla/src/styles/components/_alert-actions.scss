@@ -1,5 +1,5 @@
 @layer alt.components {
-  :where(.alt-alert__close, .alt-alert__action-button) {
+  :where(.alt-alert__close, .alt-alert__action-button):not(.alt-button) {
     display: inline-grid;
     place-items: center;
     min-width: 2rem;
@@ -14,10 +14,17 @@
     cursor: pointer;
   }
 
+  :where(.alt-alert__close, .alt-alert__action-button).alt-button {
+    --alt-button-bg-hover: color-mix(in srgb, currentColor 12%, transparent);
+    --alt-button-bg-active: color-mix(in srgb, currentColor 20%, transparent);
+    --alt-button-color: inherit;
+    --alt-button-color-hover: inherit;
+    --alt-button-color-active: inherit;
+    --alt-button-radius: var(--alt-radius-xs);
+  }
+
   .alt-alert__close {
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
+    flex: 0 0 auto;
   }
 
   .alt-alert__close > :where(svg, .alt-icon) {
@@ -27,16 +34,16 @@
   }
 
   @media (hover: hover) {
-    :where(.alt-alert__close, .alt-alert__action-button):hover {
+    :where(.alt-alert__close, .alt-alert__action-button):not(.alt-button):hover {
       background: color-mix(in srgb, currentColor 12%, transparent);
     }
   }
 
-  :where(.alt-alert__close, .alt-alert__action-button):active {
+  :where(.alt-alert__close, .alt-alert__action-button):not(.alt-button):active {
     background: color-mix(in srgb, currentColor 20%, transparent);
   }
 
-  :where(.alt-alert__close, .alt-alert__action-button):focus-visible {
+  :where(.alt-alert__close, .alt-alert__action-button):not(.alt-button):focus-visible {
     outline: 0;
     box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 28%, transparent);
   }

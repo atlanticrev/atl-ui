@@ -3,6 +3,7 @@ import type { MouseEvent } from 'react';
 export type ControlSize = 's' | 'm' | 'l';
 
 export type AtlCheckboxProps = {
+	ariaLabel?: string;
 	checked?: boolean;
 	className?: string;
 	disabled?: boolean;

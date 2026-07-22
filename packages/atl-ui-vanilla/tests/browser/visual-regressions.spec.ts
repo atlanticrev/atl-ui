@@ -30,6 +30,26 @@ test('filled warning alert uses white content on a darker orange', async ({ page
 	expect(colors.text).toBe('rgb(255, 255, 255)');
 });
 
+test('alerts fit short content and stay within narrow containers', async ({ page }) => {
+	await openStory(page, 'alert');
+
+	const shortAlert = page.locator('#alert [data-story-example="Severities"] alt-alert[severity="success"]');
+
+	const shortContainer = page.locator('#alert [data-story-example="Severities"] .alt-catalog-story-stack');
+
+	const narrowFrame = page.locator('#alert [data-story-example="Long content"] .alt-catalog-stress-frame');
+
+	const longAlert = narrowFrame.locator('alt-alert');
+
+	const [shortAlertBox, shortContainerBox, narrowFrameBox, longAlertBox] = await Promise.all(
+		[shortAlert, shortContainer, narrowFrame, longAlert].map(async (element) => element.boundingBox()),
+	);
+
+	expect(shortAlertBox?.width ?? 0).toBeLessThan(shortContainerBox?.width ?? 0);
+
+	expect(longAlertBox?.width ?? 0).toBeLessThanOrEqual(narrowFrameBox?.width ?? 0);
+});
+
 test('checked radio has a visible inner dot', async ({ page }) => {
 	await openStory(page, 'radio');
 
@@ -81,14 +101,26 @@ test('tab icon and label stay on one line', async ({ page }) => {
 	expect(styles).toEqual({ display: 'flex', height: 36, whiteSpace: 'nowrap' });
 });
 
-test('catalog search uses atl input without a native search cancel button', async ({ page }) => {
+test('catalog search uses alt-search with shared SVG icons', async ({ page }) => {
 	await page.goto('/storybook.html');
 
-	const search = page.locator('alt-input#catalog-search');
+	const search = page.locator('alt-search#catalog-search');
 
 	await expect(search).toBeVisible();
 
-	await expect(search.locator('.alt-input__field')).toHaveAttribute('type', 'text');
+	await expect(search.locator('.alt-search__field')).toHaveAttribute('type', 'search');
 
 	await expect(search.locator('[data-alt-icon="search"]')).toBeVisible();
+
+	await search.locator('.alt-search__field').fill('toast');
+
+	await expect(page.locator('#catalog-count')).toHaveText('1 component');
+
+	const clear = search.locator('.alt-search__clear');
+
+	await expect(clear.locator('[data-alt-icon="close"]')).toBeVisible();
+
+	await clear.click();
+
+	await expect(page.locator('#catalog-count')).toHaveText('32 components');
 });

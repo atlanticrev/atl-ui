@@ -28,6 +28,24 @@ describe('pagination', () => {
 
 		const changed = vi.fn();
 
+		const previous = pagination.querySelector<HTMLButtonElement>('[aria-label="Previous page"]');
+
+		const next = pagination.querySelector<HTMLButtonElement>('[aria-label="Next page"]');
+
+		expect(previous?.classList.contains('alt-button')).toBe(true);
+
+		expect(next?.classList.contains('alt-button')).toBe(true);
+
+		expect(previous?.querySelector('[data-alt-icon="chevron-left"]')).toBeInstanceOf(SVGSVGElement);
+
+		expect(next?.querySelector('[data-alt-icon="chevron-right"]')).toBeInstanceOf(SVGSVGElement);
+
+		expect(pagination.querySelector('[data-alt-icon="more-horizontal"]')).toBeInstanceOf(SVGSVGElement);
+
+		expect(previous?.textContent).toBe('');
+
+		expect(next?.textContent).toBe('');
+
 		pagination.addEventListener('alt-change', changed);
 
 		pagination.querySelector<HTMLButtonElement>('[data-page="3"]')?.click();

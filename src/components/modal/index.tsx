@@ -3,14 +3,33 @@ import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { AtlButton } from '@/components/button';
-import { CloseCircleIcon } from '@/icons/close-circle-icon';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
 import { useOverlayDismiss } from '@/hooks/use-overlay-dismiss';
+import { CloseCircleIcon } from '@/icons/close-circle-icon';
 import { clsx } from '@/lib/clsx';
 
 import type { AtlModalProps } from './types';
 
-export const AtlModal = ({ cancelText = 'Cancel', children, className, confirmText = 'Confirm', confirmVariant = 'filled', footer, header, isCloseHidden = false, isDisabled = false, isLoading = false, isOpen, onCancel, onClose, onConfirm, size = 520, testId, title, ...props }: AtlModalProps): JSX.Element | null => {
+export const AtlModal = ({
+	cancelText = 'Cancel',
+	children,
+	className,
+	confirmText = 'Confirm',
+	confirmVariant = 'filled',
+	footer,
+	header,
+	isCloseHidden = false,
+	isDisabled = false,
+	isLoading = false,
+	isOpen,
+	onCancel,
+	onClose,
+	onConfirm,
+	size = 520,
+	testId,
+	title,
+	...props
+}: AtlModalProps): JSX.Element | null => {
 	const contentRef = useRef<HTMLDivElement>(null);
 	const handleCancel = onCancel ?? onClose;
 	const handleConfirm = onConfirm ?? onClose;
@@ -34,22 +53,54 @@ export const AtlModal = ({ cancelText = 'Cancel', children, className, confirmTe
 	}
 
 	return createPortal(
-		<div className="atl-modal__backdrop" data-testid={`${testId}-backdrop`}>
-			<div {...props} aria-modal="true" className={clsx('atl-modal', className)} data-testid={testId} ref={contentRef} role="dialog" style={{ '--atl-modal-width': `${size}px` } as CSSProperties}>
+		<div
+			className="atl-modal__backdrop"
+			data-testid={`${testId}-backdrop`}
+		>
+			<div
+				{...props}
+				aria-modal="true"
+				className={clsx('atl-modal', className)}
+				data-testid={testId}
+				ref={contentRef}
+				role="dialog"
+				style={{ '--atl-modal-width': `${size}px` } as CSSProperties}
+			>
 				{header ?? (
 					<div className="atl-modal__header">
 						{title && <p className="atl-modal__title">{title}</p>}
 
-						{!isCloseHidden && <button className="atl-modal__close" type="button" onClick={onClose}><CloseCircleIcon size={24} /></button>}
+						{!isCloseHidden && (
+							<AtlButton
+								aria-label="Close"
+								className="atl-modal__close"
+								iconLeft={<CloseCircleIcon size={24} />}
+								size={32}
+								variant="text"
+								onClick={onClose}
+							/>
+						)}
 					</div>
 				)}
 				<div className="atl-modal__body">{children}</div>
 
 				{footer ?? (
 					<div className="atl-modal__footer">
-						<AtlButton variant="text" onClick={handleCancel}>{cancelText}</AtlButton>
+						<AtlButton
+							variant="text"
+							onClick={handleCancel}
+						>
+							{cancelText}
+						</AtlButton>
 
-						<AtlButton disabled={isDisabled || isLoading} loading={isLoading} variant={confirmVariant} onClick={handleConfirm}>{confirmText}</AtlButton>
+						<AtlButton
+							disabled={isDisabled || isLoading}
+							loading={isLoading}
+							variant={confirmVariant}
+							onClick={handleConfirm}
+						>
+							{confirmText}
+						</AtlButton>
 					</div>
 				)}
 			</div>

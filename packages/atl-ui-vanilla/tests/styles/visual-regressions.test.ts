@@ -61,13 +61,13 @@ describe('visual regression contracts', () => {
 		expect(css).toContain('--alt-input-state-color: var(--alt-color-accent)');
 	});
 
-	it('uses alt-input instead of a native search field in the catalog', () => {
+	it('uses alt-search for the catalog component filter', () => {
 		const html = readFileSync(join(packageRoot, 'demo/storybook.html'), 'utf8');
 
-		expect(html).toContain('<alt-input');
+		expect(html).toContain('<alt-search');
 
 		expect(html).toContain('id="catalog-search"');
 
-		expect(html).not.toContain('type="search"');
+		expect(html).not.toContain('<alt-input');
 	});
 });

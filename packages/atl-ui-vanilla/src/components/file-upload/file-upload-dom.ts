@@ -24,7 +24,13 @@ export const createFileUploadDom = (host: HTMLElement): FileUploadDom => {
 
 	const inputId = `alt-file-upload-${++nextFileUploadId}`;
 
-	button.className = 'alt-file-upload__button';
+	button.className = 'alt-button alt-file-upload__button';
+
+	button.dataset.elevation = 'none';
+
+	button.dataset.size = '40';
+
+	button.dataset.variant = 'outlined';
 
 	button.htmlFor = inputId;
 

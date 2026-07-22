@@ -7,21 +7,13 @@
   }
 
   .alt-listbox__select-all {
+    --alt-button-color: var(--alt-color-accent);
+    --alt-button-color-hover: color-mix(in srgb, var(--alt-color-accent) 82%, black);
+    --alt-button-color-active: color-mix(in srgb, var(--alt-color-accent) 82%, black);
+
+    min-width: 0;
+    min-height: 0;
     padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--alt-color-accent);
     font: var(--alt-type-label-md);
-    cursor: pointer;
-  }
-
-  .alt-listbox__select-all:is(:hover, :active) {
-    color: color-mix(in srgb, var(--alt-color-accent) 82%, black);
-  }
-
-  .alt-listbox__select-all:focus-visible {
-    border-radius: var(--alt-radius-xs);
-    outline: 0;
-    box-shadow: var(--alt-focus-ring);
   }
 }

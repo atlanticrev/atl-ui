@@ -11,8 +11,8 @@
   font: var(--atl-type-title-md);
 }
 
-.separator {
-  color: var(--atl-color-ink-soft);
+.breadcrumbs :global(.atl-breadcrumbs__current) {
+  font-weight: 700;
 }
 
 .section {

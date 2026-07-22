@@ -1,4 +1,5 @@
 import { createSelectCarrier } from '../../controllers';
+import { createAltIcon } from '../../icons';
 
 export type DatePickerDom = {
 	calendar: HTMLElement;
@@ -47,11 +48,19 @@ export const createDatePickerDom = (host: HTMLElement): DatePickerDom => {
 
 	clear.type = 'button';
 
-	clear.className = 'alt-date-picker__clear';
+	clear.className = 'alt-button alt-date-picker__clear';
+
+	clear.dataset.elevation = 'none';
+
+	clear.dataset.iconOnly = '';
+
+	clear.dataset.size = '24';
+
+	clear.dataset.variant = 'text';
 
 	clear.setAttribute('aria-label', 'Clear date');
 
-	clear.textContent = '×';
+	clear.append(createAltIcon(document, 'close', { size: 16 }));
 
 	panel.className = 'alt-date-picker__panel';
 

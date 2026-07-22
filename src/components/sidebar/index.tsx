@@ -1,3 +1,4 @@
+import { AtlButton } from '@/components/button';
 import { clsx } from '@/lib/clsx';
 
 import type { AtlSidebarProps, SidebarItem } from './types';
@@ -11,15 +12,15 @@ type SidebarButtonProps = {
 
 const SidebarButton = ({ collapsed, item, onClick, selected }: SidebarButtonProps): JSX.Element => {
 	return (
-		<button
+		<AtlButton
 			className={clsx('atl-sidebar__item', selected && 'atl-sidebar__item--selected')}
-			type="button"
+			iconLeft={item.icon}
+			size={40}
+			variant="text"
 			onClick={() => onClick?.(item.key)}
 		>
-			{item.icon}
-
-			{!collapsed && <span>{item.label}</span>}
-		</button>
+			{!collapsed && item.label}
+		</AtlButton>
 	);
 };
 

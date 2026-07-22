@@ -37,11 +37,15 @@
     font: var(--atl-type-title-lg);
   }
 
-  &__close {
+  &__close:not(.atl-button) {
     border: 0;
     background: transparent;
     color: var(--atl-color-ink-muted);
     cursor: pointer;
+  }
+
+  &__close.atl-button {
+    color: var(--atl-color-ink-muted);
   }
 
   &__body {
