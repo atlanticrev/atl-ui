@@ -13,19 +13,9 @@
 - form carrier, selection, dismissal, focus, positioning, open-state и typeahead controllers;
 - Input, Select, Autocomplete и native form integration;
 - Calendar, Date Picker и Date Range Picker со всеми календарными view и presets;
-- Popup, Tooltip, Dialog и общий top-layer overlay contract;
+- Popup, Tooltip, Dialog, Drawer/Sheet и общий top-layer overlay contract;
 - Menu, Dropdown, Pagination, Table, Search, Alert и Toast;
 - native recipes, иконки, demo-каталог, accessibility и browser regression coverage.
-
-## Ближайшая цель: релиз 0.3.0
-
-Кандидат добавляет публичный `<alt-drawer>` с вариантами Drawer и Sheet, общим native-modal lifecycle и
-touch-dismiss механизмом. Breaking changes в существующих контрактах отсутствуют.
-
-- ✅ Версия, публичные exports, документация, demo и release notes подготовлены.
-- ✅ Unit-, browser-, accessibility- и clean-consumer coverage покрывают новый контракт.
-- ⬜ Опубликовать `@atlanticrev/atl-ui-vanilla@0.3.0` в GitHub Packages.
-- ⬜ Проверить опубликованный пакет и создать тег `atl-ui-vanilla-v0.3.0`.
 
 ## Следующий продуктовый этап
 
