@@ -8,7 +8,7 @@
 ## Состояние на 22 июля 2026 года
 
 - В vanilla-каталоге поддерживаются 32 компонента и CSS-рецепта.
-- Публичная версия пакета в репозитории пока `0.1.0`; следующий релиз планируется как `0.2.0`.
+- Версия пакета в репозитории подготовлена как `0.2.0`; публикация в GitHub Packages ещё не выполнена.
 - Ветка `feat/atl-ui-vanilla` на 24 коммита впереди `origin/main`.
 - Тег `atl-ui-vanilla-v0.1.0` на 16 коммитов позади текущего `HEAD`.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
@@ -31,8 +31,9 @@
 
 ## 2. Подготовить релиз 0.2.0
 
-- ✅ Добавить CI на каждый push и pull request. Gate проверяет root и vanilla lint/typecheck/unit/build,
-  vanilla format, 111 browser tests и production demo build. Подтверждение:
+- ✅ Добавить ежедневный ночной CI с ручным запуском. Gate проверяет root и vanilla lint/typecheck/unit/build,
+  vanilla format, 111 browser tests и production demo build; автоматически запускается в `01:30 UTC`.
+  Подтверждение:
   [`.github/workflows/ci.yml`](.github/workflows/ci.yml) и успешный локальный прогон эквивалентных команд.
 - ✅ Собрать tarball и установить его в чистый временный consumer project.
 - ✅ Проверить корневой импорт, все точечные JS entry points и три CSS entry points.
@@ -42,9 +43,12 @@
 - ✅ Обновить root README, package README и release notes для `0.2.0`. Подтверждение:
   [`README.md`](README.md), [`package README`](packages/atl-ui-vanilla/README.md) и
   [`release notes`](packages/atl-ui-vanilla/docs/releases/0.2.0.md).
-- ⬜ Проверить publish workflow и публикацию в GitHub Packages. Локальная registry-проверка требует
-  валидный токен; секрет нельзя сохранять в репозитории или логах.
-- ⬜ Поднять версию пакета до `0.2.0` только после прохождения release gate.
+- ✅ Убрать автоматическую публикацию по тегу и подготовить безопасную ручную команду с preflight,
+  release gate и проверкой registry. Подтверждение: `npm run publish:vanilla` и
+  [`releasing.md`](packages/atl-ui-vanilla/docs/releasing.md).
+- ✅ Поднять package metadata, публичную version constant и regression test до `0.2.0`.
+- ⬜ Выполнить публикацию в GitHub Packages с personal access token владельца; секрет нельзя сохранять в
+  репозитории или логах.
 
 Почему minor: после `0.1.0` появились Calendar, Date Picker, Date Range Picker, Search, Pagination, Menu,
 общий overlay controller и другие публичные возможности.
@@ -54,8 +58,9 @@
 - ⬜ Убедиться, что `feat/atl-ui-vanilla` синхронизирована с актуальным `main`.
 - ⬜ Влить ветку в `main` через обычный review/merge flow репозитория.
 - ⬜ Повторить release gate на merge commit.
-- ⬜ Создать и запушить тег `atl-ui-vanilla-v0.2.0`.
-- ⬜ Подтвердить успешную публикацию пакета и проверить устанавливаемый artifact.
+- ⬜ Вручную опубликовать пакет командой `npm run publish:vanilla`.
+- ⬜ Подтвердить успешную публикацию и проверить устанавливаемый artifact.
+- ⬜ После успешной публикации создать и запушить тег `atl-ui-vanilla-v0.2.0`.
 
 ## 4. Подключить библиотеку в social-video-posting
 
@@ -87,8 +92,10 @@
 |---|---|---|
 | 2026-07-22 | Закрытие текущей итерации | Search опубликован; roadmap, migration matrix и public API приведены к фактическому состоянию |
 | 2026-07-22 | Стабилизация demo | Устранён render-loop Select; корневая страница добавлена в browser smoke-gate |
-| 2026-07-22 | Подготовка 0.2.0 | Добавлен обязательный CI для каждого push и pull request |
+| 2026-07-22 | Подготовка 0.2.0 | Добавлен полный quality/build/browser CI и release gate |
 | 2026-07-22 | Consumer release-gate | Tarball проверен в чистом проекте; JS/CSS imports, SSR и tree shaking автоматизированы |
 | 2026-07-22 | Стабилизация CI | Визуальные эталоны разделены по ОС; WebKit focus-check ожидает применение стиля вместо чтения переходного состояния |
 | 2026-07-22 | Документация 0.2.0 | Root/package README актуализированы; release notes описывают новый API, upgrade и release gate |
 | 2026-07-22 | Стабилизация accessibility CI | Dialog, Tooltip и Toast axe-аудиты разделены на независимые тесты с отдельными timeout budgets |
+| 2026-07-22 | Расписание CI | Тяжёлый полный gate перенесён с каждого push/PR на ежедневный запуск в 01:30 UTC; ручной запуск сохранён |
+| 2026-07-22 | Подготовка публикации 0.2.0 | Версия поднята; автопубликация по тегу заменена безопасной локальной командой с preflight и release gate |

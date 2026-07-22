@@ -272,6 +272,8 @@ installing dependencies or running scripts; npm will reject unsupported developm
 - `npm run storybook`
 - `npm run build-storybook`
 - `npm run release:patch`
+- `npm run release:vanilla:check`
+- `npm run publish:vanilla` — ручная публикация vanilla-пакета после проверки release gate
 
 The same `format:fix` pipeline runs automatically for staged code and style files before every commit.
 
@@ -290,3 +292,7 @@ It runs:
 3. `build`
 4. `npm version patch`
 5. `npm publish`
+
+Vanilla-пакет выпускается отдельно. Подробная безопасная инструкция находится в
+[`packages/atl-ui-vanilla/docs/releasing.md`](packages/atl-ui-vanilla/docs/releasing.md); автоматической
+публикации по тегу нет.

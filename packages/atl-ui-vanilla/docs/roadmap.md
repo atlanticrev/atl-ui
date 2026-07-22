@@ -19,12 +19,12 @@
 
 ## Ближайшая цель: релиз 0.2.0
 
-1. ✅ CI для каждого push и pull request добавлен: quality/build и browser gates.
+1. ✅ Ежедневный ночной CI добавлен: quality/build и browser gates запускаются в `01:30 UTC`, также доступен ручной запуск.
 2. ✅ Собранный tarball устанавливается и собирается в чистом consumer project.
 3. ✅ Корневой и точечные JS/CSS imports, SSR safety и tree shaking boundaries входят в release-gate.
 4. ✅ Root/package README и release notes для `0.2.0` обновлены.
-5. Проверить GitHub Packages publish workflow.
-6. Влить `feat/atl-ui-vanilla` в `main` и выпустить `atl-ui-vanilla-v0.2.0`.
+5. ✅ Версия `0.2.0` и безопасная ручная публикация в GitHub Packages подготовлены.
+6. Влить `feat/atl-ui-vanilla` в `main`, вручную опубликовать пакет и создать `atl-ui-vanilla-v0.2.0`.
 
 Это minor release: после `0.1.0` появились новые публичные компоненты, календари и инфраструктурные
 возможности. Breaking changes в существующих контрактах не планируются.

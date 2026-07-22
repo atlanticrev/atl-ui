@@ -225,6 +225,10 @@ staged-файлов перед коммитом.
 GitHub PAT classic с `read:packages` и доступом к `atlanticrev/atl-formatter`; fine-grained PAT для
 GitHub Packages npm registry не поддерживается.
 
+Публикация выполняется вручную командой `npm run publish:vanilla` из корня репозитория. Команда требует
+classic PAT с `read:packages` и `write:packages`, проверяет release state и не сохраняет токен. Полная
+инструкция: [`docs/releasing.md`](docs/releasing.md).
+
 Полный browser- и accessibility-набор запускается в Chromium, Firefox и WebKit:
 
 ```bash

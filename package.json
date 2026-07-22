@@ -54,6 +54,8 @@
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
 		"release:patch": "npm run verify && npm version patch && npm publish",
+		"release:vanilla:check": "npm run verify:vanilla && npm run verify:vanilla:consumer",
+		"publish:vanilla": "node scripts/publish-vanilla.mjs",
 		"verify": "npm run lint && npm run typecheck && npm run build",
 		"verify:pilot": "npm run verify:vanilla",
 		"verify:vanilla": "npm run lint && npm run verify --workspace @atlanticrev/atl-ui-vanilla",
