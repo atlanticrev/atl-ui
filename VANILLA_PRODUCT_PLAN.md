@@ -9,8 +9,8 @@
 
 - В vanilla-каталоге поддерживаются 32 компонента и CSS-рецепта.
 - Публичная версия пакета в репозитории пока `0.1.0`; следующий релиз планируется как `0.2.0`.
-- Ветка `feat/atl-ui-vanilla` на 20 коммитов впереди `origin/main`.
-- Тег `atl-ui-vanilla-v0.1.0` на 12 коммитов позади текущего `HEAD`.
+- Ветка `feat/atl-ui-vanilla` на 21 коммит впереди `origin/main`.
+- Тег `atl-ui-vanilla-v0.1.0` на 13 коммитов позади текущего `HEAD`.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React-пакет сохраняется без breaking changes; автоматическая полная parity с vanilla не является целью.
 
