@@ -1,0 +1,21 @@
+@mixin notched($border-color-property, $outline-width-property, $state-color-property: null) {
+  #{$border-color-property}: var(--alt-color-accent);
+  #{$outline-width-property}: 2px;
+
+  @if $state-color-property {
+    #{$state-color-property}: var(--alt-color-accent);
+  }
+
+  outline: 0;
+  box-shadow: var(--alt-shadow-sm);
+}
+
+@mixin bordered($border-color-property) {
+  #{$border-color-property}: var(--alt-color-accent);
+  outline: 0;
+  box-shadow: inset 0 0 0 1px var(--alt-color-accent), var(--alt-shadow-sm);
+}
+
+@mixin forced-colors($border-color-property) {
+  #{$border-color-property}: Highlight;
+}

@@ -2,9 +2,7 @@
 	"name": "@atlanticrev/atl-ui",
 	"version": "1.0.12",
 	"private": false,
-	"workspaces": [
-		"packages/*"
-	],
+	"workspaces": ["packages/*"],
 	"type": "module",
 	"sideEffects": false,
 	"main": "dist/index.js",
@@ -22,14 +20,19 @@
 		"./theme.css": "./dist/theme.css",
 		"./default.css": "./dist/default.css"
 	},
-	"files": [
-		"dist"
-	],
+	"files": ["dist"],
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com"
 	},
 	"engines": {
 		"node": ">=18.18.0"
+	},
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": ">=24.18.0 <25",
+			"onFail": "error"
+		}
 	},
 	"scripts": {
 		"build": "npm run build:js && npm run build:css",
@@ -39,8 +42,12 @@
 		"typecheck:vanilla": "npm run typecheck --workspace @atlanticrev/atl-ui-vanilla",
 		"lint": "biome lint .",
 		"format": "biome format --write .",
+		"format:fix": "node scripts/format-fix.mjs",
 		"check": "biome check --write --unsafe .",
+		"hooks:install": "simple-git-hooks",
 		"lint:ci": "biome lint .",
+		"precommit": "lint-staged",
+		"prepare": "npm run hooks:install",
 		"test": "vitest run",
 		"test:vanilla": "vitest run packages/atl-ui-vanilla",
 		"test:watch": "vitest",
@@ -69,17 +76,25 @@
 		"@testing-library/jest-dom": "^6.4.2",
 		"@testing-library/react": "^14.2.2",
 		"@testing-library/user-event": "^14.5.2",
-		"@types/node": "^25.2.0",
+		"@types/node": "^24.13.3",
 		"@types/react": "^18.2.55",
 		"@types/react-dom": "^18.2.19",
 		"jsdom": "^24.0.0",
+		"lint-staged": "15.5.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"sass": "^1.77.8",
+		"simple-git-hooks": "2.13.1",
 		"tsup": "^8.0.1",
 		"typescript": "^5.4.5",
 		"vite": "^5.2.8",
 		"vitest": "^1.4.0"
+	},
+	"lint-staged": {
+		"*.{css,js,jsx,json,jsonc,scss,ts,tsx}": "npm run format:fix --"
+	},
+	"simple-git-hooks": {
+		"pre-commit": "npm run precommit"
 	},
 	"style": "dist/default.css"
 }

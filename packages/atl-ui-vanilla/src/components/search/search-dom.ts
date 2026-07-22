@@ -1,3 +1,5 @@
+import { createAltIcon } from '../../icons';
+
 export type SearchDom = {
 	clear: HTMLButtonElement;
 	field: HTMLInputElement;
@@ -11,7 +13,7 @@ export const createSearchDom = (host: HTMLElement): SearchDom => {
 
 	const label = document.createElement('label');
 
-	const icon = document.createElement('span');
+	const icon = createAltIcon(document, 'search', { className: 'alt-search__icon', size: 16 });
 
 	const field = document.createElement('input');
 
@@ -23,15 +25,11 @@ export const createSearchDom = (host: HTMLElement): SearchDom => {
 
 	field.className = 'alt-search__field';
 
-	icon.className = 'alt-search__icon';
-
-	icon.setAttribute('aria-hidden', 'true');
-
 	clear.type = 'button';
 
 	clear.className = 'alt-search__clear';
 
-	clear.textContent = '×';
+	clear.append(createAltIcon(document, 'close', { size: 16 }));
 
 	clear.setAttribute('aria-label', 'Clear search');
 

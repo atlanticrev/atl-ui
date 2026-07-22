@@ -182,8 +182,10 @@ production build:
 npm run verify:vanilla
 ```
 
-`npm run format --workspace @atlanticrev/atl-ui-vanilla` сначала нормализует blank lines через
-`atl-formatter`, затем применяет Biome ко всему пакету.
+`npm run format:fix` из корня применяет безопасные исправления и форматирование Biome ко всему репозиторию,
+а затем запускает `atl-formatter` для vanilla-пакета. Та же последовательность работает локально только для
+vanilla через `npm run format --workspace @atlanticrev/atl-ui-vanilla` и автоматически запускается для
+staged-файлов перед коммитом.
 
 Для установки dev dependencies задайте `GITHUB_TOKEN` в том же shell, где запускается npm. Нужен
 GitHub PAT classic с `read:packages` и доступом к `atlanticrev/atl-formatter`; fine-grained PAT для

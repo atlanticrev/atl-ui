@@ -1,3 +1,5 @@
+@use '../foundation/field-focus';
+
 @layer alt.components {
   :where(alt-select, .alt-select):not([data-open='true'], :focus-within)
     .alt-select__trigger:hover:not(:disabled) {
@@ -6,11 +8,7 @@
 
   :where(alt-select, .alt-select):focus-within .alt-select__trigger,
   :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
-    --alt-select-border-color: var(--alt-color-accent);
-    --alt-select-outline-width: 2px;
-    --alt-select-state-color: var(--alt-color-accent);
-    outline: 0;
-    box-shadow: var(--alt-shadow-sm);
+    @include field-focus.notched(--alt-select-border-color, --alt-select-outline-width, --alt-select-state-color);
   }
 
   :where(alt-select, .alt-select):is([data-status='error'], [aria-invalid='true']) {
@@ -33,7 +31,7 @@
   @media (forced-colors: active) {
     :where(alt-select, .alt-select):focus-within .alt-select__trigger,
     :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
-      --alt-select-border-color: Highlight;
+      @include field-focus.forced-colors(--alt-select-border-color);
     }
   }
 }

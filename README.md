@@ -222,12 +222,18 @@ Supported button variants:
 
 ## Scripts
 
+Development uses Node `24.18.0`. Run `nvm install` once and `nvm use` when entering the repository before
+installing dependencies or running scripts; npm will reject unsupported development runtimes.
+
 - `npm run build`
 - `npm run lint`
+- `npm run format:fix` — safe Biome fixes/formatting, then `atl-formatter` for the vanilla package
 - `npm run typecheck`
 - `npm run storybook`
 - `npm run build-storybook`
 - `npm run release:patch`
+
+The same `format:fix` pipeline runs automatically for staged code and style files before every commit.
 
 ## Release
 

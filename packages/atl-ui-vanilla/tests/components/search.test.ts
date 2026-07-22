@@ -33,9 +33,17 @@ describe('alt-search', () => {
 
 		const input = vi.fn();
 
+		const clear = search.querySelector<HTMLButtonElement>('.alt-search__clear');
+
 		search.addEventListener('alt-input', input);
 
-		search.querySelector<HTMLButtonElement>('.alt-search__clear')?.click();
+		expect(search.querySelector('.alt-search__icon')?.getAttribute('data-alt-icon')).toBe('search');
+
+		expect(clear?.querySelector('[data-alt-icon="close"]')).not.toBeNull();
+
+		expect(clear?.getAttribute('aria-label')).toBe('Clear search');
+
+		clear?.click();
 
 		expect(search.value).toBe('');
 

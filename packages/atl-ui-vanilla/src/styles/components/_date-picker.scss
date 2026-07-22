@@ -1,3 +1,5 @@
+@use '../foundation/field-focus';
+
 @layer alt.components {
   :where(alt-date-picker, alt-date-range-picker, .alt-date-picker) {
     position: relative;
@@ -28,9 +30,13 @@
   }
 
   .alt-date-picker__trigger:focus-visible {
-    outline: 0;
-    border-color: var(--alt-color-accent);
-    box-shadow: var(--alt-focus-ring);
+    @include field-focus.bordered(border-color);
+  }
+
+  @media (forced-colors: active) {
+    .alt-date-picker__trigger:focus-visible {
+      @include field-focus.forced-colors(border-color);
+    }
   }
 
   .alt-date-picker__value[data-placeholder='true'] {

@@ -1,3 +1,5 @@
+@use '../foundation/field-focus';
+
 @layer alt.components {
   :where(alt-autocomplete, .alt-autocomplete) {
     position: relative;
@@ -21,8 +23,13 @@
   }
 
   :where(input.alt-autocomplete__input):focus-visible {
-    border-color: var(--alt-color-accent);
-    outline: 0;
+    @include field-focus.bordered(border-color);
+  }
+
+  @media (forced-colors: active) {
+    :where(input.alt-autocomplete__input):focus-visible {
+      @include field-focus.forced-colors(border-color);
+    }
   }
 
   .alt-autocomplete__trigger,

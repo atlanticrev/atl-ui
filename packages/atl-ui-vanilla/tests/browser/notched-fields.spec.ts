@@ -7,6 +7,16 @@ type OutlineState = {
 	strokeWidth: string;
 };
 
+type BorderState = {
+	borderColor: string;
+	borderWidth: string;
+	height: number;
+	shadow: string;
+	sharedBorderColor: string;
+	sharedShadow: string;
+	width: number;
+};
+
 const openStory = async (page: Page, storyId: string): Promise<void> => {
 	await page.goto(`/storybook.html#${storyId}`);
 
@@ -34,6 +44,54 @@ const readOutline = async (root: Locator, pathSelector: string): Promise<Outline
 
 const readCustomProperty = async (element: Locator, property: string): Promise<string> => {
 	return element.evaluate((node, name) => getComputedStyle(node).getPropertyValue(name).trim(), property);
+};
+
+const readBorder = async (element: Locator): Promise<BorderState> => {
+	return element.evaluate((node) => {
+		const probe = document.createElement('span');
+
+		probe.style.borderColor = 'var(--alt-color-accent)';
+
+		probe.style.boxShadow = 'inset 0 0 0 1px var(--alt-color-accent), var(--alt-shadow-sm)';
+
+		probe.style.position = 'absolute';
+
+		probe.style.visibility = 'hidden';
+
+		node.append(probe);
+
+		const bounds = node.getBoundingClientRect();
+
+		const styles = getComputedStyle(node);
+
+		const probeStyles = getComputedStyle(probe);
+
+		const state = {
+			borderColor: styles.borderTopColor,
+			borderWidth: styles.borderTopWidth,
+			height: bounds.height,
+			shadow: styles.boxShadow,
+			sharedBorderColor: probeStyles.borderTopColor,
+			sharedShadow: probeStyles.boxShadow,
+			width: bounds.width,
+		};
+
+		probe.remove();
+
+		return state;
+	});
+};
+
+const readSearchContentPositions = async (root: Locator): Promise<number[]> => {
+	return root.evaluate((node) => {
+		return ['.alt-search__icon', '.alt-search__field', '.alt-search__clear'].map((selector) => {
+			const element = node.querySelector(selector);
+
+			if (!(element instanceof Element)) throw new Error(`Missing search part: ${selector}`);
+
+			return element.getBoundingClientRect().left;
+		});
+	});
 };
 
 const expectFocusedLabelStyle = async (label: Locator, outline: Locator): Promise<void> => {
@@ -174,4 +232,85 @@ test('autocomplete inherits the input SVG while authored input stays consumer-ow
 	const authored = page.locator('#autocomplete [data-story-example="Custom composition"] alt-autocomplete').first();
 
 	await expect(authored.locator('.alt-input__outline')).toHaveCount(0);
+});
+
+test('search uses the shared field focus treatment without changing its size', async ({ page }) => {
+	await openStory(page, 'search');
+
+	const search = page.locator('#search [data-story-example="Default"] alt-search');
+
+	const root = search.locator('.alt-search__root');
+
+	const before = await readBorder(root);
+
+	const contentBefore = await readSearchContentPositions(root);
+
+	await search.locator('.alt-search__field').focus();
+
+	const focused = await readBorder(root);
+
+	const contentFocused = await readSearchContentPositions(root);
+
+	expect(focused.borderColor).toBe(focused.sharedBorderColor);
+
+	expect(focused.borderColor).not.toBe(before.borderColor);
+
+	expect(focused.borderWidth).toBe(before.borderWidth);
+
+	expect(focused.shadow).toBe(focused.sharedShadow);
+
+	expect({ height: focused.height, width: focused.width }).toEqual({ height: before.height, width: before.width });
+
+	expect(contentFocused).toEqual(contentBefore);
+});
+
+test('search clear icon is geometrically centered inside its button', async ({ page }) => {
+	await openStory(page, 'search');
+
+	const clear = page.locator('#search [data-story-example="With value"] .alt-search__clear');
+
+	const geometry = await clear.evaluate((button) => {
+		const icon = button.querySelector('[data-alt-icon="close"]');
+
+		if (!(icon instanceof SVGSVGElement)) throw new Error('Missing SVG close icon');
+
+		const buttonBounds = button.getBoundingClientRect();
+
+		const iconBounds = icon.getBoundingClientRect();
+
+		return {
+			buttonCenter: {
+				x: buttonBounds.left + buttonBounds.width / 2,
+				y: buttonBounds.top + buttonBounds.height / 2,
+			},
+			iconCenter: { x: iconBounds.left + iconBounds.width / 2, y: iconBounds.top + iconBounds.height / 2 },
+			iconSize: { height: iconBounds.height, width: iconBounds.width },
+		};
+	});
+
+	expect(geometry.iconCenter).toEqual(geometry.buttonCenter);
+
+	expect(geometry.iconSize).toEqual({ height: 16, width: 16 });
+});
+
+test('date picker trigger uses the shared field focus treatment', async ({ page }) => {
+	await openStory(page, 'date-picker');
+
+	const trigger = page.locator('#date-picker [data-story-example="Single date"] .alt-date-picker__trigger');
+
+	const before = await readBorder(trigger);
+
+	await trigger.focus();
+
+	const focused = await readBorder(trigger);
+
+	expect(focused.borderColor).toBe(focused.sharedBorderColor);
+
+	expect(focused.borderColor).not.toBe(before.borderColor);
+
+	expect(focused.borderWidth).toBe(before.borderWidth);
+
+	expect(focused.shadow).toBe(focused.sharedShadow);
+
+	expect({ height: focused.height, width: focused.width }).toEqual({ height: before.height, width: before.width });
 });
