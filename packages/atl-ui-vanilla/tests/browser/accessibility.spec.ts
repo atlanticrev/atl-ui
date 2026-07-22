@@ -53,7 +53,7 @@ test('open select and autocomplete states remain accessible', async ({ page }) =
 	await audit(page, '#autocomplete');
 });
 
-test('dialog, tooltip and toast transient states remain accessible', async ({ page }) => {
+test('open dialog remains accessible', async ({ page }) => {
 	await openStory(page, 'dialog');
 
 	await page.locator('#dialog').getByRole('button', { name: '520 px' }).click();
@@ -63,8 +63,10 @@ test('dialog, tooltip and toast transient states remain accessible', async ({ pa
 	await expect(dialog).toBeVisible();
 
 	await audit(page, 'dialog[open]');
+});
 
-	await page.keyboard.press('Escape');
+test('visible tooltip remains accessible', async ({ page }) => {
+	await openStory(page, 'tooltip');
 
 	const tooltipExample = page.locator('#tooltip [data-story-example="Placements"]');
 
@@ -73,6 +75,10 @@ test('dialog, tooltip and toast transient states remain accessible', async ({ pa
 	await expect(tooltipExample.getByRole('tooltip')).toBeVisible();
 
 	await audit(page, '#tooltip');
+});
+
+test('visible toast remains accessible', async ({ page }) => {
+	await openStory(page, 'toast');
 
 	await page.locator('#toast').getByRole('button', { name: 'Info' }).click();
 

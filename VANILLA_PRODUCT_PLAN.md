@@ -9,8 +9,8 @@
 
 - В vanilla-каталоге поддерживаются 32 компонента и CSS-рецепта.
 - Публичная версия пакета в репозитории пока `0.1.0`; следующий релиз планируется как `0.2.0`.
-- Ветка `feat/atl-ui-vanilla` на 23 коммита впереди `origin/main`.
-- Тег `atl-ui-vanilla-v0.1.0` на 15 коммитов позади текущего `HEAD`.
+- Ветка `feat/atl-ui-vanilla` на 24 коммита впереди `origin/main`.
+- Тег `atl-ui-vanilla-v0.1.0` на 16 коммитов позади текущего `HEAD`.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React-пакет сохраняется без breaking changes; автоматическая полная parity с vanilla не является целью.
 
@@ -24,7 +24,7 @@
 - ✅ Зафиксировать поддерживаемые компоненты, custom elements, entry points, CSS и инфраструктурный API.
   Подтверждение: [`public-api.md`](packages/atl-ui-vanilla/docs/public-api.md).
 - ✅ Устранить блокировку корневого demo при upgrade декларативного Select и добавить постоянный smoke-gate.
-  Подтверждение: `npm run verify:vanilla` — 183 unit-теста, 105 browser-тестов и package build прошли.
+  Подтверждение: `npm run verify:vanilla` — 183 unit-теста, 111 browser-тестов и package build прошли.
 
 Результат этапа: массовый перенос компонентов завершён; дальнейшая работа идёт от релизных и реальных
 продуктовых сценариев.
@@ -32,7 +32,7 @@
 ## 2. Подготовить релиз 0.2.0
 
 - ✅ Добавить CI на каждый push и pull request. Gate проверяет root и vanilla lint/typecheck/unit/build,
-  vanilla format, 105 browser tests и production demo build. Подтверждение:
+  vanilla format, 111 browser tests и production demo build. Подтверждение:
   [`.github/workflows/ci.yml`](.github/workflows/ci.yml) и успешный локальный прогон эквивалентных команд.
 - ✅ Собрать tarball и установить его в чистый временный consumer project.
 - ✅ Проверить корневой импорт, все точечные JS entry points и три CSS entry points.
@@ -91,3 +91,4 @@
 | 2026-07-22 | Consumer release-gate | Tarball проверен в чистом проекте; JS/CSS imports, SSR и tree shaking автоматизированы |
 | 2026-07-22 | Стабилизация CI | Визуальные эталоны разделены по ОС; WebKit focus-check ожидает применение стиля вместо чтения переходного состояния |
 | 2026-07-22 | Документация 0.2.0 | Root/package README актуализированы; release notes описывают новый API, upgrade и release gate |
+| 2026-07-22 | Стабилизация accessibility CI | Dialog, Tooltip и Toast axe-аудиты разделены на независимые тесты с отдельными timeout budgets |
