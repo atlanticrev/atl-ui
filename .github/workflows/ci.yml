@@ -41,8 +41,8 @@ jobs:
       - name: Verify vanilla package
         run: npm run verify:base --workspace @atlanticrev/atl-ui-vanilla
 
-      - name: Build vanilla package
-        run: npm run build --workspace @atlanticrev/atl-ui-vanilla
+      - name: Verify packed vanilla package
+        run: npm run verify:vanilla:consumer
 
       - name: Build vanilla demo
         run: npm run demo:build --workspace @atlanticrev/atl-ui-vanilla

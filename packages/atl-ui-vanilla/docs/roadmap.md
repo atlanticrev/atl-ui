@@ -20,8 +20,8 @@
 ## Ближайшая цель: релиз 0.2.0
 
 1. ✅ CI для каждого push и pull request добавлен: quality/build и browser gates.
-2. Установить собранный tarball в чистый consumer project.
-3. Проверить корневой и точечные JS/CSS imports, SSR safety и tree shaking boundaries.
+2. ✅ Собранный tarball устанавливается и собирается в чистом consumer project.
+3. ✅ Корневой и точечные JS/CSS imports, SSR safety и tree shaking boundaries входят в release-gate.
 4. Обновить README и release notes.
 5. Проверить GitHub Packages publish workflow.
 6. Влить `feat/atl-ui-vanilla` в `main` и выпустить `atl-ui-vanilla-v0.2.0`.

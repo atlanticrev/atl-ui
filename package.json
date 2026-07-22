@@ -57,6 +57,7 @@
 		"verify": "npm run lint && npm run typecheck && npm run build",
 		"verify:pilot": "npm run verify:vanilla",
 		"verify:vanilla": "npm run lint && npm run verify --workspace @atlanticrev/atl-ui-vanilla",
+		"verify:vanilla:consumer": "npm run build --workspace @atlanticrev/atl-ui-vanilla && node scripts/verify-vanilla-consumer.mjs",
 		"build:js": "tsup",
 		"build:css": "npm run build:css:core && npm run build:css:theme && npm run build:css:default",
 		"build:css:core": "sass --no-source-map src/components/core.scss dist/core.css",
