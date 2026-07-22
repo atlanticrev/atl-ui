@@ -8,9 +8,9 @@
 ## Состояние на 22 июля 2026 года
 
 - В vanilla-каталоге поддерживаются 32 компонента и CSS-рецепта.
-- Версия пакета в репозитории подготовлена как `0.2.0`; публикация в GitHub Packages ещё не выполнена.
-- Ветка `feat/atl-ui-vanilla` влита в `origin/main`; release candidate `0.2.0` находится в `main`.
-- `atl-ui-vanilla-v0.1.0` остаётся предыдущим release tag; тег `0.2.0` ещё не создан.
+- `@atlanticrev/atl-ui-vanilla@0.2.0` опубликован в GitHub Packages и отмечен как latest.
+- Ветка `feat/atl-ui-vanilla` влита в `origin/main`; код релиза `0.2.0` находится в `main`.
+- Release tag `atl-ui-vanilla-v0.2.0` создан на проверенном commit `a0e07f8` и запушен в origin.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React-пакет сохраняется без breaking changes; автоматическая полная parity с vanilla не является целью.
 
@@ -47,8 +47,8 @@
   release gate и проверкой registry. Подтверждение: `npm run publish:vanilla` и
   [`releasing.md`](packages/atl-ui-vanilla/docs/releasing.md).
 - ✅ Поднять package metadata, публичную version constant и regression test до `0.2.0`.
-- ⬜ Выполнить публикацию в GitHub Packages с personal access token владельца; секрет нельзя сохранять в
-  репозитории или логах.
+- ✅ Выполнить публикацию в GitHub Packages с personal access token владельца. Пакет доступен на
+  [странице GitHub Packages](https://github.com/atlanticrev/atl-ui/pkgs/npm/atl-ui-vanilla).
 
 Почему minor: после `0.1.0` появились Calendar, Date Picker, Date Range Picker, Search, Pagination, Menu,
 общий overlay controller и другие публичные возможности.
@@ -59,9 +59,9 @@
 - ✅ Влить ветку fast-forward в `main`. Подтверждение: release commit `01addab` запушен в `origin/main`.
 - ✅ Повторить release gate на merge commit: 183 unit-теста, 111 browser-тестов, package build и clean
   consumer installation прошли.
-- ⬜ Вручную опубликовать пакет командой `npm run publish:vanilla`.
-- ⬜ Подтвердить успешную публикацию и проверить устанавливаемый artifact.
-- ⬜ После успешной публикации создать и запушить тег `atl-ui-vanilla-v0.2.0`.
+- ✅ Вручную опубликовать пакет командой `npm run publish:vanilla`.
+- ✅ Подтвердить в GitHub Packages версию `0.2.0` со статусом latest.
+- ✅ Создать и запушить тег `atl-ui-vanilla-v0.2.0` на release commit `a0e07f8`.
 
 ## 4. Подключить библиотеку в social-video-posting
 
@@ -101,3 +101,4 @@
 | 2026-07-22 | Расписание CI | Тяжёлый полный gate перенесён с каждого push/PR на ежедневный запуск в 01:30 UTC; ручной запуск сохранён |
 | 2026-07-22 | Подготовка публикации 0.2.0 | Версия поднята; автопубликация по тегу заменена безопасной локальной командой с preflight и release gate |
 | 2026-07-22 | Merge release candidate | Feature-ветка fast-forward влита в main; полный release gate повторно прошёл на commit 01addab |
+| 2026-07-22 | Релиз 0.2.0 | Пакет опубликован и отмечен latest; release tag создан на commit a0e07f8 |
