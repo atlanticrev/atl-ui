@@ -1,12 +1,48 @@
-# @atlanticrev/atl-ui
+# ATL UI
 
-Monochrome React UI library for Atlantic Rev.
+Репозиторий содержит две независимо подключаемые UI-библиотеки Atlantic Rev:
 
-Vanilla Web Components package развивается независимо в `packages/atl-ui-vanilla`. Его актуальный
-продуктовый план находится в [`VANILLA_PRODUCT_PLAN.md`](VANILLA_PRODUCT_PLAN.md), а поддерживаемый API — в
+| Пакет | Назначение | Runtime-контракт |
+|---|---|---|
+| `@atlanticrev/atl-ui` | React-компоненты и headless forms | React 18 или 19 как peer dependency |
+| `@atlanticrev/atl-ui-vanilla` | Light DOM Web Components и native CSS recipes | Ноль runtime dependencies |
+
+Vanilla-пакет не зависит от React и не является скрытой частью React-сборки. Его актуальный продуктовый
+план находится в [`VANILLA_PRODUCT_PLAN.md`](VANILLA_PRODUCT_PLAN.md), а поддерживаемый API — в
 [`packages/atl-ui-vanilla/docs/public-api.md`](packages/atl-ui-vanilla/docs/public-api.md).
 
-## CSS entrypoints
+## Vanilla Web Components
+
+```bash
+npm install @atlanticrev/atl-ui-vanilla
+```
+
+Для production-приложения подключайте только нужные entry points:
+
+```ts
+import '@atlanticrev/atl-ui-vanilla/default.css';
+import { defineAltInput } from '@atlanticrev/atl-ui-vanilla/input';
+import { defineAltSelect } from '@atlanticrev/atl-ui-vanilla/select';
+
+defineAltInput();
+defineAltSelect();
+```
+
+```html
+<alt-input label="Title" name="title" required></alt-input>
+<alt-select label="Channel" name="channel" required>
+  <alt-option label="YouTube" value="youtube"></alt-option>
+  <alt-option label="TikTok" value="tiktok"></alt-option>
+</alt-select>
+```
+
+Пакет предоставляет 20 managed/behavioral компонентов, 12 native CSS recipes, все варианты календаря и
+range picker, а также общий top-layer overlay-механизм. Imports безопасны при SSR и не регистрируют custom
+elements автоматически. Полная инструкция находится в
+[`packages/atl-ui-vanilla/README.md`](packages/atl-ui-vanilla/README.md); изменения кандидата `0.2.0` — в
+[`release notes`](packages/atl-ui-vanilla/docs/releases/0.2.0.md).
+
+## React CSS entrypoints
 
 The package ships with three CSS files:
 
@@ -24,7 +60,7 @@ Public package surface:
 @atlanticrev/atl-ui/default.css
 ```
 
-## Install
+## Install React package
 
 ```bash
 npm install @atlanticrev/atl-ui
@@ -239,7 +275,7 @@ installing dependencies or running scripts; npm will reject unsupported developm
 
 The same `format:fix` pipeline runs automatically for staged code and style files before every commit.
 
-## Release
+## React release
 
 Safe release flow:
 

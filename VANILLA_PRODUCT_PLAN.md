@@ -9,8 +9,8 @@
 
 - В vanilla-каталоге поддерживаются 32 компонента и CSS-рецепта.
 - Публичная версия пакета в репозитории пока `0.1.0`; следующий релиз планируется как `0.2.0`.
-- Ветка `feat/atl-ui-vanilla` на 22 коммита впереди `origin/main`.
-- Тег `atl-ui-vanilla-v0.1.0` на 14 коммитов позади текущего `HEAD`.
+- Ветка `feat/atl-ui-vanilla` на 23 коммита впереди `origin/main`.
+- Тег `atl-ui-vanilla-v0.1.0` на 15 коммитов позади текущего `HEAD`.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React-пакет сохраняется без breaking changes; автоматическая полная parity с vanilla не является целью.
 
@@ -39,7 +39,9 @@
 - ✅ Проверить SSR-safe import, отсутствие auto-registration, отсутствие runtime dependencies и границу
   tree shaking на Input-only production build. Подтверждение: `npm run verify:vanilla:consumer`; gate подключён
   к CI и publish workflow.
-- ⬜ Обновить root README, package README и release notes для `0.2.0`.
+- ✅ Обновить root README, package README и release notes для `0.2.0`. Подтверждение:
+  [`README.md`](README.md), [`package README`](packages/atl-ui-vanilla/README.md) и
+  [`release notes`](packages/atl-ui-vanilla/docs/releases/0.2.0.md).
 - ⬜ Проверить publish workflow и публикацию в GitHub Packages. Локальная registry-проверка требует
   валидный токен; секрет нельзя сохранять в репозитории или логах.
 - ⬜ Поднять версию пакета до `0.2.0` только после прохождения release gate.
@@ -88,3 +90,4 @@
 | 2026-07-22 | Подготовка 0.2.0 | Добавлен обязательный CI для каждого push и pull request |
 | 2026-07-22 | Consumer release-gate | Tarball проверен в чистом проекте; JS/CSS imports, SSR и tree shaking автоматизированы |
 | 2026-07-22 | Стабилизация CI | Визуальные эталоны разделены по ОС; WebKit focus-check ожидает применение стиля вместо чтения переходного состояния |
+| 2026-07-22 | Документация 0.2.0 | Root/package README актуализированы; release notes описывают новый API, upgrade и release gate |

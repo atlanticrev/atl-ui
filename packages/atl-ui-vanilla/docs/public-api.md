@@ -95,5 +95,5 @@ Dropdown и поэтому не имеет отдельного ключа в р
 - ReactNode, arbitrary render callbacks, virtualization, routing и application state не входят в vanilla
   API.
 
-До публикации `0.2.0` release gate должен отдельно подтвердить установку tarball в чистый проект и все
-точечные импорты из export map.
+Release gate `npm run verify:vanilla:consumer` подтверждает установку tarball в чистый проект, все точечные
+imports из export map, SSR safety, отсутствие runtime dependencies и tree-shaking boundary.

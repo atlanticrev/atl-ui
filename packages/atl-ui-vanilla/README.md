@@ -3,18 +3,45 @@
 Framework-independent Atlantic Review UI на light DOM и browser APIs. У пакета нет runtime dependencies,
 auto-registration, Shadow DOM, renderer или Virtual DOM.
 
-## Подключение
+## Установка
+
+```bash
+npm install @atlanticrev/atl-ui-vanilla
+```
+
+Пакет публикуется в GitHub Packages. Для установки настройте registry для scope `@atlanticrev` и передайте
+токен через окружение, не сохраняя его значение в репозитории:
+
+```ini
+@atlanticrev:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+## Рекомендуемое подключение
+
+В production подключайте общий CSS один раз и регистрируйте только используемые компоненты:
 
 ```ts
 import '@atlanticrev/atl-ui-vanilla/default.css';
-import { defineAllAltElements } from '@atlanticrev/atl-ui-vanilla/define-all';
+import { defineAltDatePicker, defineAltDateRangePicker } from '@atlanticrev/atl-ui-vanilla/date-picker';
+import { defineAltInput } from '@atlanticrev/atl-ui-vanilla/input';
+import { defineAltSelect } from '@atlanticrev/atl-ui-vanilla/select';
 
-defineAllAltElements();
+defineAltDatePicker();
+defineAltDateRangePicker();
+defineAltInput();
+defineAltSelect();
 ```
 
-Можно импортировать только нужный entry point, например `@atlanticrev/atl-ui-vanilla/alert`. Вызовы
-`define*` идемпотентны. Импорт и вызов регистрации на сервере безопасны; без browser environment define
-вернёт `undefined`.
+Каждый `defineAlt*` идемпотентен. Импорт и вызов регистрации на сервере безопасны; без browser environment
+define вернёт `undefined`. Отдельный entry point `@atlanticrev/atl-ui-vanilla/define-all` регистрирует полный
+набор и удобен для прототипов или каталога, но production-приложению обычно не нужен.
+
+Три CSS entry points можно использовать независимо:
+
+- `core.css` — default light/dark `--alt-*` tokens;
+- `theme.css` — базовые стили и component recipes без default tokens;
+- `default.css` — оба слоя одним импортом.
 
 ## SVG icons
 
@@ -92,10 +119,10 @@ Input держит настоящий `<input>` внутри light DOM. Select �
 `alt-open-change`, `alt-input` и `alt-change` содержат причину и исходное browser event. Полный контракт
 Select и Autocomplete описан в [`docs/select-autocomplete.md`](docs/select-autocomplete.md).
 
-Отдельные tree-shakeable entry points также доступны для `alert`, `avatar`, `calendar`, `date-picker`,
-`collapse`, `menu`, `pagination`, `search`, `file-upload`, `progress`, `popup`, `tooltip`, `dialog`, `dropdown`,
-`autocomplete` и `table`. Ни один entry point не регистрируется сам. Контракты календарей и новых компонентов
-описаны в [`docs/calendar.md`](docs/calendar.md) и
+В export map доступны 25 независимо импортируемых JavaScript entry points и три CSS entry points. Ни один
+component entry point не регистрируется сам. Полный список поддерживаемых компонентов, recipes и imports
+находится в [`docs/public-api.md`](docs/public-api.md). Контракты календарей и новых компонентов описаны в
+[`docs/calendar.md`](docs/calendar.md) и
 [`docs/additional-components.md`](docs/additional-components.md). Общий top-layer, positioning и fallback
 контракт всплывающих компонентов описан в [`docs/overlays.md`](docs/overlays.md).
 
@@ -182,6 +209,13 @@ production build:
 npm run verify:vanilla
 ```
 
+Отдельный release gate собирает tarball, устанавливает его как единственную библиотеку в чистый временный
+проект и проверяет все JS/CSS exports, SSR safety, zero runtime dependencies и tree shaking:
+
+```bash
+npm run verify:vanilla:consumer
+```
+
 `npm run format:fix` из корня применяет безопасные исправления и форматирование Biome ко всему репозиторию,
 а затем запускает `atl-formatter` для vanilla-пакета. Та же последовательность работает локально только для
 vanilla через `npm run format --workspace @atlanticrev/atl-ui-vanilla` и автоматически запускается для
@@ -200,4 +234,5 @@ npm run test:browser --workspace @atlanticrev/atl-ui-vanilla
 Архитектура, аудит и порядок миграции описаны в `docs/`.
 Поддерживаемые компоненты, custom elements, entry points, CSS и инфраструктурные exports перечислены в
 [`docs/public-api.md`](docs/public-api.md). Актуальный межпакетный план ведётся в корневом
-[`VANILLA_PRODUCT_PLAN.md`](../../VANILLA_PRODUCT_PLAN.md).
+[`VANILLA_PRODUCT_PLAN.md`](../../VANILLA_PRODUCT_PLAN.md). Изменения кандидата `0.2.0` перечислены в
+[`docs/releases/0.2.0.md`](docs/releases/0.2.0.md).
