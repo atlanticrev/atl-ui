@@ -1,10 +1,10 @@
 @layer alt.components {
-  :where(alt-select, .alt-select):not([data-open='true'])
-    .alt-select__trigger:hover:not(:disabled, :focus-visible) {
+  :where(alt-select, .alt-select):not([data-open='true'], :focus-within)
+    .alt-select__trigger:hover:not(:disabled) {
     --alt-select-border-color: var(--alt-color-border-strong);
   }
 
-  .alt-select__trigger:focus-visible,
+  :where(alt-select, .alt-select):focus-within .alt-select__trigger,
   :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
     --alt-select-border-color: var(--alt-color-accent);
     --alt-select-outline-width: 2px;
@@ -30,7 +30,7 @@
   }
 
   @media (forced-colors: active) {
-    .alt-select__trigger:focus-visible,
+    :where(alt-select, .alt-select):focus-within .alt-select__trigger,
     :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
       --alt-select-border-color: Highlight;
     }

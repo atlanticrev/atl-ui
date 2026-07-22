@@ -36,6 +36,10 @@ const readCustomProperty = async (element: Locator, property: string): Promise<s
 	return element.evaluate((node, name) => getComputedStyle(node).getPropertyValue(name).trim(), property);
 };
 
+const expectFocusedLabelWeight = async (element: Locator): Promise<void> => {
+	await expect.poll(() => element.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('500');
+};
+
 const expectAlignedLabel = async (label: Locator, text: Locator): Promise<void> => {
 	const positions = await label.evaluate(
 		(element, textElement) => {
@@ -78,6 +82,8 @@ test('input focuses the same notched SVG border without an outer ring', async ({
 	expect(focused.shadow).toBe(before.shadow);
 
 	await expectAlignedLabel(host.locator('.alt-input__label'), host.locator('.alt-input__field'));
+
+	await expectFocusedLabelWeight(host.locator('.alt-input__label'));
 });
 
 test('select uses the shared SVG notch and focus treatment', async ({ page }) => {
@@ -104,16 +110,28 @@ test('select uses the shared SVG notch and focus treatment', async ({ page }) =>
 	expect(focused.shadow).toBe(before.shadow);
 
 	await expectAlignedLabel(host.locator('.alt-select__label'), host.locator('.alt-select__value'));
+
+	await expectFocusedLabelWeight(host.locator('.alt-select__label'));
 });
 
-test('select keeps its focused border color while hovered', async ({ page }) => {
+test('select keeps its pointer-focused border color while hovered', async ({ page }) => {
 	await openStory(page, 'select');
 
-	const trigger = page.locator('#select [data-story-example="States"] .alt-select__trigger').first();
+	const host = page.locator('#select [data-story-example="States"] alt-select').first();
+
+	const trigger = host.locator('.alt-select__trigger');
 
 	const accentColor = await readCustomProperty(trigger, '--alt-color-accent');
 
-	await trigger.focus();
+	await trigger.hover();
+
+	await page.mouse.down();
+
+	await trigger.evaluate((element) => (element as HTMLElement).focus());
+
+	await page.mouse.move(0, 0);
+
+	await page.mouse.up();
 
 	await expect(trigger).toBeFocused();
 
@@ -154,6 +172,8 @@ test('autocomplete inherits the input SVG while authored input stays consumer-ow
 			return labelColor === strokeColor;
 		})
 		.toBe(true);
+
+	await expectFocusedLabelWeight(standard.locator('.alt-input__label'));
 
 	const authored = page.locator('#autocomplete [data-story-example="Custom composition"] alt-autocomplete').first();
 
