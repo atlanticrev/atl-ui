@@ -5,6 +5,7 @@ export * from './calendar';
 export * from './collapse';
 export * from './date-picker';
 export * from './dialog';
+export * from './drawer';
 export * from './dropdown';
 export * from './file-upload';
 export * from './input';

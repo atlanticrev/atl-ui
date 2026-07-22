@@ -41,7 +41,7 @@ describe('component storybook catalog', () => {
 	it('contains one uniquely addressable story for every supported component', () => {
 		const ids = stories.map((story) => story.id);
 
-		expect(stories).toHaveLength(32);
+		expect(stories).toHaveLength(33);
 
 		expect(new Set(ids).size).toBe(ids.length);
 
@@ -52,6 +52,7 @@ describe('component storybook catalog', () => {
 				'button',
 				'calendar',
 				'date-picker',
+				'drawer',
 				'menu',
 				'pagination',
 				'search',

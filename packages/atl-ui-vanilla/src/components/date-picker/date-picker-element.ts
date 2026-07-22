@@ -1,6 +1,6 @@
 import { setSelectCarrierValues } from '../../controllers';
 import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
-import { parseDateValue, type AltCalendarChangeDetail, type AltCalendarPreset } from '../calendar';
+import { type AltCalendarChangeDetail, type AltCalendarPreset, parseDateValue } from '../calendar';
 
 import { createDatePickerDom, type DatePickerDom } from './date-picker-dom';
 import { bindDatePickerOverlay } from './date-picker-overlay';
@@ -283,10 +283,10 @@ export const createAltDatePickerElementClass = (
 			this.#emit('alt-change');
 		};
 
-		#handleOverlayDismiss = ({ reason }: { reason: 'escape' | 'outside-pointer' }): void => {
+		#handleOverlayDismiss = ({ reason }: { reason: 'escape' | 'gesture' | 'outside-pointer' }): void => {
 			this.open = false;
 
-			if (reason === 'escape') this.#dom?.trigger.focus();
+			if (reason === 'escape' || reason === 'gesture') this.#dom?.trigger.focus();
 		};
 		#handleReset = (event: Event): void => {
 			if (event.target !== this.#dom?.startCarrier.form) return;

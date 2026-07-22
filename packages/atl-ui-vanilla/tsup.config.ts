@@ -12,6 +12,7 @@ export default defineConfig({
 		controllers: 'src/controllers/index.ts',
 		core: 'src/core/index.ts',
 		dialog: 'src/components/dialog/index.ts',
+		drawer: 'src/components/drawer/index.ts',
 		'date-picker': 'src/components/date-picker/index.ts',
 		'define-all': 'src/define-all.ts',
 		dropdown: 'src/components/dropdown/index.ts',

@@ -131,4 +131,26 @@
 	.alt-story-example__preview--column {
 		flex-direction: column;
 	}
+
+  .alt-drawer-demo__sidebar {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .alt-drawer-demo__copy,
+  .alt-drawer-demo__form {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+  }
+
+  .alt-drawer-demo__copy p,
+  .alt-drawer-demo__form p {
+    margin: 0;
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-body-md);
+  }
 }

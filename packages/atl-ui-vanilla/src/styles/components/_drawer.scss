@@ -1,0 +1,161 @@
+@layer alt.components {
+  :where(alt-drawer, .alt-drawer-host) {
+    display: contents;
+  }
+
+  :where(.alt-drawer) {
+    --alt-drawer-backdrop-progress: 0;
+
+    position: fixed;
+    display: none;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: var(--alt-drawer-gap, 12px);
+    box-sizing: border-box;
+    max-width: none;
+    max-height: none;
+    padding: var(--alt-drawer-padding, 14px);
+    margin: 0;
+    overflow: hidden;
+    border: 0;
+    background: var(--alt-drawer-background, var(--alt-color-surface));
+    color: var(--alt-color-ink);
+    transition: transform var(--alt-drawer-snap-duration, 250ms) var(--alt-drawer-easing, cubic-bezier(0, 0, 0.2, 1));
+  }
+
+  :where(.alt-drawer)[open] {
+    display: grid;
+  }
+
+  :where(.alt-drawer)::backdrop {
+    background: color-mix(
+      in srgb,
+      var(--alt-drawer-scrim-color, var(--alt-color-scrim)) var(--alt-drawer-scrim-opacity, 28%),
+      transparent
+    );
+    opacity: var(--alt-drawer-backdrop-progress);
+    transition: opacity var(--alt-drawer-snap-duration, 250ms) var(--alt-drawer-easing, cubic-bezier(0, 0, 0.2, 1));
+  }
+
+  :where(.alt-drawer)[data-state='open'] {
+    --alt-drawer-backdrop-progress: 1;
+
+    transform: translate3d(0, 0, 0);
+  }
+
+  :where(.alt-drawer)[data-placement='left'],
+  :where(.alt-drawer)[data-placement='right'] {
+    top: 0;
+    bottom: 0;
+    width: var(--alt-drawer-size, min(84vw, 340px));
+    height: 100dvh;
+    touch-action: pan-y;
+  }
+
+  :where(.alt-drawer)[data-placement='left'] {
+    right: auto;
+    left: 0;
+    border-right: 1px solid var(--alt-drawer-border-color, var(--alt-color-border));
+    box-shadow: var(--alt-drawer-shadow, 16px 0 32px rgb(0 0 0 / 16%));
+    transform: translate3d(-100%, 0, 0);
+  }
+
+  :where(.alt-drawer)[data-placement='right'] {
+    right: 0;
+    left: auto;
+    border-left: 1px solid var(--alt-drawer-border-color, var(--alt-color-border));
+    box-shadow: var(--alt-drawer-shadow, -16px 0 32px rgb(0 0 0 / 16%));
+    transform: translate3d(100%, 0, 0);
+  }
+
+  :where(.alt-drawer)[data-placement='top'],
+  :where(.alt-drawer)[data-placement='bottom'] {
+    right: 0;
+    left: 0;
+    width: 100vw;
+    max-height: var(--alt-drawer-sheet-max-size, min(84dvh, 720px));
+    touch-action: auto;
+  }
+
+  :where(.alt-drawer)[data-placement='top'] {
+    top: 0;
+    bottom: auto;
+    border-bottom: 1px solid var(--alt-drawer-border-color, var(--alt-color-border));
+    border-radius: 0 0 var(--alt-drawer-sheet-radius, var(--alt-radius-lg)) var(--alt-drawer-sheet-radius, var(--alt-radius-lg));
+    box-shadow: var(--alt-drawer-shadow, 0 16px 32px rgb(0 0 0 / 16%));
+    transform: translate3d(0, -100%, 0);
+  }
+
+  :where(.alt-drawer)[data-placement='bottom'] {
+    top: auto;
+    bottom: 0;
+    border-top: 1px solid var(--alt-drawer-border-color, var(--alt-color-border));
+    border-radius: var(--alt-drawer-sheet-radius, var(--alt-radius-lg)) var(--alt-drawer-sheet-radius, var(--alt-radius-lg)) 0 0;
+    box-shadow: var(--alt-drawer-shadow, 0 -16px 32px rgb(0 0 0 / 16%));
+    transform: translate3d(0, 100%, 0);
+  }
+
+  :where(.alt-drawer)[data-state='open'] {
+    transform: translate3d(0, 0, 0);
+  }
+
+  :where(.alt-drawer)[data-swiping='true'] {
+    transition: none;
+    will-change: transform;
+  }
+
+  :where(.alt-drawer)[data-swiping='true']::backdrop {
+    transition: none;
+    will-change: opacity;
+  }
+
+  :where(.alt-drawer__header, .alt-drawer__footer) {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  :where(.alt-drawer__header) {
+    justify-content: space-between;
+  }
+
+  :where(.alt-drawer__title) {
+    min-width: 0;
+    margin: 0;
+    color: var(--alt-color-ink);
+    font: var(--alt-type-title-md);
+    overflow-wrap: anywhere;
+  }
+
+  :where(.alt-drawer__body) {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  :where(.alt-drawer__footer) {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  :where(.alt-drawer__handle) {
+    display: grid;
+    min-height: 28px;
+    place-items: center;
+    touch-action: none;
+  }
+
+  :where(.alt-drawer__handle)::before {
+    width: 36px;
+    height: 4px;
+    border-radius: var(--alt-radius-full);
+    background: var(--alt-drawer-handle-color, var(--alt-color-border-strong));
+    content: '';
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(.alt-drawer),
+    :where(.alt-drawer)::backdrop {
+      --alt-drawer-snap-duration: 0ms;
+    }
+  }
+}

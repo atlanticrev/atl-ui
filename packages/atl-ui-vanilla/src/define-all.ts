@@ -7,6 +7,7 @@ import {
 	defineAltDatePicker,
 	defineAltDateRangePicker,
 	defineAltDialog,
+	defineAltDrawer,
 	defineAltDropdown,
 	defineAltFileUpload,
 	defineAltInput,
@@ -32,6 +33,7 @@ export type AltElementDefinitions = {
 	datePicker: CustomElementConstructor | undefined;
 	dateRangePicker: CustomElementConstructor | undefined;
 	dialog: CustomElementConstructor | undefined;
+	drawer: CustomElementConstructor | undefined;
 	dropdown: CustomElementConstructor | undefined;
 	fileUpload: CustomElementConstructor | undefined;
 	input: CustomElementConstructor | undefined;
@@ -57,6 +59,7 @@ export const defineAllAltElements = (environment?: ElementEnvironment): AltEleme
 		datePicker: defineAltDatePicker(environment),
 		dateRangePicker: defineAltDateRangePicker(environment),
 		dialog: defineAltDialog(environment),
+		drawer: defineAltDrawer(environment),
 		dropdown: defineAltDropdown(environment),
 		fileUpload: defineAltFileUpload(environment),
 		input: defineAltInput(environment),

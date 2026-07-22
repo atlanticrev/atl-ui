@@ -6,7 +6,9 @@
 
 ## Текущее состояние
 
-- В пакете поддерживаются 32 компонента и CSS-рецепта.
+- В пакете поддерживаются 33 компонента и CSS-рецепта, включая единый Drawer/Sheet с четырьмя направлениями.
+- Dialog и Drawer используют общий native-modal lifecycle; Drawer и мобильные календарные шторки — общий
+  swipe-dismiss механизм без runtime dependencies.
 - `0.2.0` опубликован в GitHub Packages и отмечен как latest.
 - Release tag: `atl-ui-vanilla-v0.2.0`.
 - Пакет приватный; приложению-потребителю потребуется доступ к GitHub Packages.

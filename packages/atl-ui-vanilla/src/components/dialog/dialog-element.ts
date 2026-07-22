@@ -1,4 +1,4 @@
-import { captureFocus, type FocusRestorer } from '../../controllers';
+import { bindNativeDialog, type NativeDialogController } from '../../controllers/native-dialog';
 import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
 
 import { createDialogDom } from './dialog-dom';
@@ -10,7 +10,7 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 	return class AltDialogElement extends BaseElement {
 		static observedAttributes = ['close-on-backdrop', 'open', 'size'];
 		#dialog: HTMLDialogElement | undefined;
-		#focusRestorer: FocusRestorer | undefined;
+		#modal: NativeDialogController | undefined;
 		#renderedOpen = false;
 		#syncing = false;
 
@@ -44,18 +44,21 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 
 			this.#dialog ??= createDialogDom(this);
 
-			this.#dialog.addEventListener('cancel', this.#handleCancel, { signal });
+			this.#modal = bindNativeDialog(this.#dialog, {
+				closeOnBackdrop: () => this.getAttribute('close-on-backdrop') !== 'false',
+				closeOnEscape: () => this.getAttribute('close-on-escape') !== 'false',
+				onClose: this.#handleNativeClose,
+				signal,
+			});
 
 			this.#dialog.addEventListener('click', this.#handleClick, { signal });
-
-			this.#dialog.addEventListener('close', this.#handleNativeClose, { signal });
 		}
 
 		showModal(): void {
 			this.open = true;
 		}
 		close(returnValue = ''): void {
-			if (this.#dialog?.open && typeof this.#dialog.close === 'function') this.#dialog.close(returnValue);
+			if (this.#modal && this.#dialog?.open) this.#modal.close(returnValue);
 			else {
 				if (this.#dialog) this.#dialog.returnValue = returnValue;
 
@@ -73,33 +76,21 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 			if (this.open === this.#dialog.open) return;
 
 			if (this.open) {
-				this.#focusRestorer = captureFocus(this.ownerDocument);
-
-				if (typeof this.#dialog.showModal === 'function') this.#dialog.showModal();
-				else this.#dialog.setAttribute('open', '');
-			} else if (typeof this.#dialog.close === 'function') this.#dialog.close();
-			else this.#dialog.removeAttribute('open');
+				this.#modal?.showModal();
+			} else this.#modal?.close();
 
 			this.#dispatchOpenChange(this.open);
 		}
 
-		#handleCancel = (event: Event): void => {
-			if (this.getAttribute('close-on-escape') === 'false') event.preventDefault();
-		};
 		#handleClick = (event: MouseEvent): void => {
 			const target = event.target as Element | null;
 
 			const close = target?.closest<HTMLElement>('[data-alt-dialog-close]');
 
 			if (close) this.close(close.dataset.altDialogClose ?? '');
-			else if (target === this.#dialog && this.getAttribute('close-on-backdrop') !== 'false') this.close();
 		};
 		#handleNativeClose = (): void => {
 			this.#setOpen(false);
-
-			this.#focusRestorer?.restore();
-
-			this.#focusRestorer = undefined;
 
 			this.#dispatchOpenChange(false);
 

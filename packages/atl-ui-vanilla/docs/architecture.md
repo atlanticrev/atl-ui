@@ -24,8 +24,8 @@ controls inside so forms, validation, autofill, and accessibility remain browser
 
 ### Behavioral elements
 
-Tabs, collapse, menu, tooltip, popup, listbox, and dialog controllers enhance authored light DOM. They do not
-accept render callbacks or arbitrary data structures that would require a rendering engine.
+Tabs, collapse, menu, tooltip, popup, listbox, dialog, and drawer controllers enhance authored light DOM.
+They do not accept render callbacks or arbitrary data structures that would require a rendering engine.
 
 ### Fully managed elements
 
@@ -61,5 +61,9 @@ Popup, Select, Autocomplete, Date Picker, Menu и Tooltip сохраняют с�
 positioning и dismiss lifecycle. Компоненты не обязаны вкладывать публичный `alt-popup` друг в друга и
 поэтому сохраняют независимую регистрацию и DOM ownership.
 
-Dialog остаётся отдельным native modal primitive. Dropdown остаётся content/listbox primitive без overlay
-lifecycle.
+Dialog и Drawer используют общий внутренний native-dialog controller, но сохраняют разные публичные
+контракты и DOM ownership. Drawer дополнительно использует общий swipe-dismiss controller, который также
+закрывает мобильные шторки Date Picker и Date Range Picker. Один `alt-drawer` обслуживает side Drawer и
+top/bottom Sheet через `placement`; отдельные custom elements для направлений не создаются.
+
+Dropdown остаётся content/listbox primitive без overlay lifecycle.

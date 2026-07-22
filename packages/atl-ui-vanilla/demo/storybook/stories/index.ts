@@ -3,14 +3,15 @@ import { autocompleteStory } from './autocomplete.story';
 import { avatarStory } from './avatar.story';
 import { breadcrumbsStory } from './breadcrumbs.story';
 import { buttonStory } from './button.story';
-import { cardStory } from './card.story';
 import { calendarStory } from './calendar.story';
+import { cardStory } from './card.story';
 import { checkboxStory } from './checkbox.story';
 import { chipStory } from './chip.story';
 import { collapseStory } from './collapse.story';
 import { datePickerStory } from './date-picker.story';
 import { dialogStory } from './dialog.story';
 import { dividerStory } from './divider.story';
+import { drawerStory } from './drawer.story';
 import { dropdownStory } from './dropdown.story';
 import { fileUploadStory } from './file-upload.story';
 import { inputStory } from './input.story';
@@ -19,8 +20,8 @@ import { paginationStory } from './pagination.story';
 import { popupStory } from './popup.story';
 import { progressStory } from './progress.story';
 import { radioStory } from './radio.story';
-import { selectStory } from './select.story';
 import { searchStory } from './search.story';
+import { selectStory } from './select.story';
 import { sidebarStory } from './sidebar.story';
 import { skeletonStory } from './skeleton.story';
 import { spinnerStory } from './spinner.story';
@@ -51,6 +52,7 @@ export const stories = [
 	tooltipStory,
 	popupStory,
 	dialogStory,
+	drawerStory,
 	calendarStory,
 	datePickerStory,
 	inputStory,

@@ -55,6 +55,10 @@
 			"types": "./dist/dialog.d.ts",
 			"import": "./dist/dialog.js"
 		},
+		"./drawer": {
+			"types": "./dist/drawer.d.ts",
+			"import": "./dist/drawer.js"
+		},
 		"./date-picker": {
 			"types": "./dist/date-picker.d.ts",
 			"import": "./dist/date-picker.js"

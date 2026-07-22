@@ -1,10 +1,10 @@
 # Поддерживаемый публичный API
 
-Документ описывает публичную поверхность текущей ветки — кандидата на `0.2.0`. Источники истины:
+Документ описывает публичную поверхность текущей ветки после `0.2.0`. Источники истины:
 `package.json#exports`, `src/index.ts`, component barrels и три CSS entry points. Внутренние файлы вне export
 map не считаются публичным API.
 
-## Каталог: 32 поддерживаемые позиции
+## Каталог: 33 поддерживаемые позиции
 
 ### Managed и behavioral компоненты
 
@@ -17,6 +17,7 @@ map не считаются публичным API.
 | Collapse | `<alt-collapse>` | `@atlanticrev/atl-ui-vanilla/collapse` |
 | Date Picker | `<alt-date-picker>`, `<alt-date-range-picker>` | `@atlanticrev/atl-ui-vanilla/date-picker` |
 | Dialog | `<alt-dialog>` | `@atlanticrev/atl-ui-vanilla/dialog` |
+| Drawer и Sheet | `<alt-drawer>` | `@atlanticrev/atl-ui-vanilla/drawer` |
 | Dropdown | `<alt-dropdown>` | `@atlanticrev/atl-ui-vanilla/dropdown` |
 | File upload | `<alt-file-upload>` | `@atlanticrev/atl-ui-vanilla/file-upload` |
 | Input | `<alt-input>` | `@atlanticrev/atl-ui-vanilla/input` |
@@ -68,7 +69,7 @@ Recipes не имеют отдельных JavaScript entry points: это на�
 | `@atlanticrev/atl-ui-vanilla/theme.css` | Base styles и component recipes без default tokens |
 | `@atlanticrev/atl-ui-vanilla/default.css` | `core.css` и `theme.css` одним импортом |
 
-`define-all` регистрирует все 22 custom elements. `alt-option` регистрируется как зависимость Select и
+`define-all` регистрирует все 23 custom elements. `alt-option` регистрируется как зависимость Select и
 Dropdown и поэтому не имеет отдельного ключа в результате `defineAllAltElements()`.
 
 ## Публичная инфраструктура

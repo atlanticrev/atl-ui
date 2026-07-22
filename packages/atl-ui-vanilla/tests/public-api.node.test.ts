@@ -14,6 +14,7 @@ import {
 	defineAltDatePicker,
 	defineAltDateRangePicker,
 	defineAltDialog,
+	defineAltDrawer,
 	defineAltDropdown,
 	defineAltFileUpload,
 	defineAltInput,
@@ -51,6 +52,8 @@ describe('public API without browser globals', () => {
 
 		expect(defineAltDialog()).toBeUndefined();
 
+		expect(defineAltDrawer()).toBeUndefined();
+
 		expect(defineAltDropdown()).toBeUndefined();
 
 		expect(defineAltFileUpload()).toBeUndefined();
@@ -86,6 +89,7 @@ describe('public API without browser globals', () => {
 			datePicker: undefined,
 			dateRangePicker: undefined,
 			dialog: undefined,
+			drawer: undefined,
 			dropdown: undefined,
 			fileUpload: undefined,
 			input: undefined,

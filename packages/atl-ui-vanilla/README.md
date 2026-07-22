@@ -119,12 +119,13 @@ Input держит настоящий `<input>` внутри light DOM. Select �
 `alt-open-change`, `alt-input` и `alt-change` содержат причину и исходное browser event. Полный контракт
 Select и Autocomplete описан в [`docs/select-autocomplete.md`](docs/select-autocomplete.md).
 
-В export map доступны 25 независимо импортируемых JavaScript entry points и три CSS entry points. Ни один
+В export map доступны 26 независимо импортируемых JavaScript entry points и три CSS entry points. Ни один
 component entry point не регистрируется сам. Полный список поддерживаемых компонентов, recipes и imports
 находится в [`docs/public-api.md`](docs/public-api.md). Контракты календарей и новых компонентов описаны в
 [`docs/calendar.md`](docs/calendar.md) и
 [`docs/additional-components.md`](docs/additional-components.md). Общий top-layer, positioning и fallback
-контракт всплывающих компонентов описан в [`docs/overlays.md`](docs/overlays.md).
+контракт всплывающих компонентов описан в [`docs/overlays.md`](docs/overlays.md), а единый API боковых
+Drawer и мобильных Sheet — в [`docs/drawer.md`](docs/drawer.md).
 
 ## Alert, Tabs и Toast
 
