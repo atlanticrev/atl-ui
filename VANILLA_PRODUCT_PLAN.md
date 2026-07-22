@@ -9,8 +9,8 @@
 
 - В vanilla-каталоге поддерживаются 32 компонента и CSS-рецепта.
 - Версия пакета в репозитории подготовлена как `0.2.0`; публикация в GitHub Packages ещё не выполнена.
-- Ветка `feat/atl-ui-vanilla` на 24 коммита впереди `origin/main`.
-- Тег `atl-ui-vanilla-v0.1.0` на 16 коммитов позади текущего `HEAD`.
+- Ветка `feat/atl-ui-vanilla` влита в `origin/main`; release candidate `0.2.0` находится в `main`.
+- `atl-ui-vanilla-v0.1.0` остаётся предыдущим release tag; тег `0.2.0` ещё не создан.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React-пакет сохраняется без breaking changes; автоматическая полная parity с vanilla не является целью.
 
@@ -55,9 +55,10 @@
 
 ## 3. Влить ветку в main и выпустить релиз
 
-- ⬜ Убедиться, что `feat/atl-ui-vanilla` синхронизирована с актуальным `main`.
-- ⬜ Влить ветку в `main` через обычный review/merge flow репозитория.
-- ⬜ Повторить release gate на merge commit.
+- ✅ Убедиться, что `feat/atl-ui-vanilla` синхронизирована с актуальным `main`.
+- ✅ Влить ветку fast-forward в `main`. Подтверждение: release commit `01addab` запушен в `origin/main`.
+- ✅ Повторить release gate на merge commit: 183 unit-теста, 111 browser-тестов, package build и clean
+  consumer installation прошли.
 - ⬜ Вручную опубликовать пакет командой `npm run publish:vanilla`.
 - ⬜ Подтвердить успешную публикацию и проверить устанавливаемый artifact.
 - ⬜ После успешной публикации создать и запушить тег `atl-ui-vanilla-v0.2.0`.
@@ -99,3 +100,4 @@
 | 2026-07-22 | Стабилизация accessibility CI | Dialog, Tooltip и Toast axe-аудиты разделены на независимые тесты с отдельными timeout budgets |
 | 2026-07-22 | Расписание CI | Тяжёлый полный gate перенесён с каждого push/PR на ежедневный запуск в 01:30 UTC; ручной запуск сохранён |
 | 2026-07-22 | Подготовка публикации 0.2.0 | Версия поднята; автопубликация по тегу заменена безопасной локальной командой с preflight и release gate |
+| 2026-07-22 | Merge release candidate | Feature-ветка fast-forward влита в main; полный release gate повторно прошёл на commit 01addab |

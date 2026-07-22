@@ -24,7 +24,8 @@
 3. ✅ Корневой и точечные JS/CSS imports, SSR safety и tree shaking boundaries входят в release-gate.
 4. ✅ Root/package README и release notes для `0.2.0` обновлены.
 5. ✅ Версия `0.2.0` и безопасная ручная публикация в GitHub Packages подготовлены.
-6. Влить `feat/atl-ui-vanilla` в `main`, вручную опубликовать пакет и создать `atl-ui-vanilla-v0.2.0`.
+6. ✅ `feat/atl-ui-vanilla` влита в `main`, release gate повторно прошёл на merge commit.
+7. Вручную опубликовать пакет и после проверки создать `atl-ui-vanilla-v0.2.0`.
 
 Это minor release: после `0.1.0` появились новые публичные компоненты, календари и инфраструктурные
 возможности. Breaking changes в существующих контрактах не планируются.
