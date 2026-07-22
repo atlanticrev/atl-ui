@@ -7,8 +7,9 @@
 ## Текущее состояние
 
 - В пакете поддерживаются 33 компонента и CSS-рецепта, включая единый Drawer/Sheet с четырьмя направлениями.
-- Dialog и Drawer используют общий native-modal lifecycle; Drawer и мобильные календарные шторки — общий
-  swipe-dismiss механизм без runtime dependencies.
+- Dialog и Drawer используют общий native-modal lifecycle, блокировку фонового scroll и динамический viewport;
+  Drawer и мобильные календарные шторки — общий swipe-dismiss механизм без runtime dependencies. Dialog
+  открывается и закрывается плавно, а touch-жесты Sheet не прокручивают страницу под overlay.
 - `0.3.0` опубликован в GitHub Packages и отмечен как latest.
 - Release tag: `atl-ui-vanilla-v0.3.0`.
 - Пакет приватный; приложению-потребителю потребуется доступ к GitHub Packages.

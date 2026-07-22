@@ -13,6 +13,20 @@ beforeAll(() => {
 
 beforeEach(() => {
 	document.body.replaceChildren();
+
+	vi.stubGlobal(
+		'matchMedia',
+		vi.fn(() => ({ matches: true })),
+	);
+
+	vi.stubGlobal(
+		'requestAnimationFrame',
+		vi.fn((callback: FrameRequestCallback) => {
+			queueMicrotask(() => callback(0));
+
+			return 1;
+		}),
+	);
 });
 
 const stubNativeDialog = (dialog: HTMLDialogElement): void => {
@@ -27,6 +41,14 @@ const stubNativeDialog = (dialog: HTMLDialogElement): void => {
 
 		dialog.dispatchEvent(new Event('close'));
 	};
+};
+
+const flushMotion = async (): Promise<void> => {
+	await Promise.resolve();
+
+	await Promise.resolve();
+
+	await Promise.resolve();
 };
 
 describe('alt-dialog', () => {
@@ -55,13 +77,21 @@ describe('alt-dialog', () => {
 
 		host.showModal();
 
-		await Promise.resolve();
+		await flushMotion();
 
 		expect(dialog.open).toBe(true);
 
+		expect(document.documentElement.style.overflow).toBe('hidden');
+
 		closeButton.click();
 
+		await flushMotion();
+
 		expect(host.open).toBe(false);
+
+		expect(dialog.open).toBe(false);
+
+		expect(document.documentElement.style.overflow).toBe('');
 
 		expect(onClose.mock.calls[0][0].detail.returnValue).toBe('confirmed');
 	});

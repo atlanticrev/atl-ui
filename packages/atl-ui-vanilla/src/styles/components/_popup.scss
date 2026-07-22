@@ -19,6 +19,13 @@
     display: none;
   }
 
+  :where(.alt-popup__content) {
+    min-width: 0;
+    max-width: 100%;
+    padding: var(--alt-popup-padding, 1rem);
+    overflow-wrap: anywhere;
+  }
+
   .alt-select__search {
     padding: 0.75rem;
     border-bottom: 1px solid var(--alt-color-border);

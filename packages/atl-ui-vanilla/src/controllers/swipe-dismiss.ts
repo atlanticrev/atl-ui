@@ -114,16 +114,22 @@ export const bindSwipeDismiss = (options: SwipeDismissOptions): void => {
 
 			const placement = options.placement();
 
+			const vertical = placement === 'bottom' || placement === 'top';
+
+			const canDragVertically = !vertical || canStartVerticalDrag(options.surface, tracking, placement);
+
+			if (vertical && canDragVertically) {
+				const closingDistance = getClosingDistance(placement, distanceX, distanceY);
+
+				if (closingDistance > 0 && closingDistance >= Math.abs(distanceX)) event.preventDefault();
+			}
+
 			updateSwipeVelocity(tracking, touch, event.timeStamp);
 
 			if (!tracking.dragging && !isSwipeDismissGesture(placement, distanceX, distanceY)) return;
 
 			if (!tracking.dragging) {
-				if (
-					(placement === 'bottom' || placement === 'top') &&
-					!canStartVerticalDrag(options.surface, tracking, placement)
-				)
-					return;
+				if (!canDragVertically) return;
 
 				tracking.dragging = true;
 

@@ -1,9 +1,13 @@
+@use '../foundation/modal';
+
 @layer alt.components {
   :where(alt-dialog, .alt-dialog-host) {
     display: contents;
   }
 
   :where(.alt-dialog) {
+    --alt-dialog-backdrop-progress: 1;
+
     width: min(calc(100% - 2rem), var(--alt-dialog-width, 560px));
     max-height: calc(100dvh - 3rem);
     padding: 0;
@@ -13,11 +17,28 @@
     background: var(--alt-color-surface);
     color: var(--alt-color-ink);
     box-shadow: var(--alt-shadow-lg);
+    overscroll-behavior: contain;
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    transition:
+      opacity var(--alt-dialog-motion-duration, 250ms) var(--alt-dialog-easing, cubic-bezier(0, 0, 0.2, 1)),
+      transform var(--alt-dialog-motion-duration, 250ms) var(--alt-dialog-easing, cubic-bezier(0, 0, 0.2, 1));
+  }
+
+  :where(.alt-dialog)[data-state='closed'] {
+    --alt-dialog-backdrop-progress: 0;
+
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.98);
   }
 
   :where(.alt-dialog)::backdrop {
+    @include modal.dynamic-backdrop;
+
     background: color-mix(in srgb, var(--alt-color-scrim) 32%, transparent);
     backdrop-filter: blur(var(--alt-dialog-backdrop-blur, 0));
+    opacity: var(--alt-dialog-backdrop-progress);
+    transition: opacity var(--alt-dialog-motion-duration, 250ms) var(--alt-dialog-easing, cubic-bezier(0, 0, 0.2, 1));
   }
 
   :where(.alt-dialog)[data-size='520'] { --alt-dialog-width: 520px; }
@@ -87,5 +108,12 @@
 
   :where(.alt-dialog):not([open]) {
     display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(.alt-dialog),
+    :where(.alt-dialog)::backdrop {
+      --alt-dialog-motion-duration: 0ms;
+    }
   }
 }

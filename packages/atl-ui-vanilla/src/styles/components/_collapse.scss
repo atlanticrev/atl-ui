@@ -1,6 +1,8 @@
 @layer alt.components {
   :where(alt-collapse, .alt-collapse) {
     display: grid;
+    width: 100%;
+    min-width: 0;
     overflow: hidden;
     border: 1px solid var(--alt-color-border);
     border-radius: var(--alt-radius-md);
@@ -10,6 +12,10 @@
 
   .alt-collapse__item + .alt-collapse__item {
     border-top: 1px solid var(--alt-color-border);
+  }
+
+  .alt-collapse__item {
+    min-width: 0;
   }
 
   .alt-collapse__summary {
@@ -35,8 +41,10 @@
   }
 
   .alt-collapse__item > :not(summary) {
+    min-width: 0;
     margin: 0;
     padding: 0 1rem 1rem;
     color: var(--alt-color-ink-muted);
+    overflow-wrap: anywhere;
   }
 }

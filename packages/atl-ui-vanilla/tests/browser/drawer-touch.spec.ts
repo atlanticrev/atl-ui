@@ -2,8 +2,8 @@ import { expect, type Locator, test } from '@playwright/test';
 
 type TouchType = 'touchend' | 'touchmove' | 'touchstart';
 
-const dispatchTouch = async (surface: Locator, type: TouchType, x: number, y: number): Promise<void> => {
-	await surface.evaluate(
+const dispatchTouch = async (surface: Locator, type: TouchType, x: number, y: number): Promise<boolean> => {
+	return surface.evaluate(
 		(element, touchInit) => {
 			const touch = new Touch({
 				clientX: touchInit.x,
@@ -14,14 +14,16 @@ const dispatchTouch = async (surface: Locator, type: TouchType, x: number, y: nu
 				target: element,
 			});
 
-			element.dispatchEvent(
-				new TouchEvent(touchInit.type, {
-					bubbles: true,
-					cancelable: true,
-					changedTouches: [touch],
-					touches: touchInit.type === 'touchend' ? [] : [touch],
-				}),
-			);
+			const event = new TouchEvent(touchInit.type, {
+				bubbles: true,
+				cancelable: true,
+				changedTouches: [touch],
+				touches: touchInit.type === 'touchend' ? [] : [touch],
+			});
+
+			element.dispatchEvent(event);
+
+			return event.defaultPrevented;
 		},
 		{ type, x, y },
 	);
@@ -90,6 +92,8 @@ test('mobile date range sheet reuses swipe-to-dismiss behavior', async ({ page }
 
 	await expect(panel).toBeVisible();
 
+	expect(await page.evaluate(() => document.documentElement.style.overflow)).toBe('hidden');
+
 	const bounds = await panel.boundingBox();
 
 	if (!bounds) throw new Error('Missing date range sheet bounds');
@@ -108,5 +112,49 @@ test('mobile date range sheet reuses swipe-to-dismiss behavior', async ({ page }
 
 	await expect(panel).toBeHidden();
 
+	expect(await page.evaluate(() => document.documentElement.style.overflow)).toBe('');
+
 	await expect(trigger).toBeFocused();
+});
+
+test('bottom sheet captures the closing touch before Android can scroll the page underneath', async ({ page }) => {
+	await page.setViewportSize({ height: 844, width: 390 });
+
+	await page.goto('/storybook.html#drawer');
+
+	await page.getByRole('button', { name: 'Open bottom sheet' }).click();
+
+	const dialog = page.getByRole('dialog', { name: 'Schedule publication' });
+
+	const body = dialog.locator('.alt-drawer__body');
+
+	await expect(dialog).toBeVisible();
+
+	expect(await page.evaluate(() => document.documentElement.style.overflow)).toBe('hidden');
+
+	await dispatchTouch(body, 'touchstart', 195, 400);
+
+	const capturedBeforeActivation = await dispatchTouch(body, 'touchmove', 195, 404);
+
+	expect(capturedBeforeActivation).toBe(true);
+
+	await expect(dialog).not.toHaveAttribute('data-swiping', 'true');
+
+	await dispatchTouch(body, 'touchmove', 195, 430);
+
+	await expect(dialog).toHaveAttribute('data-swiping', 'true');
+
+	await dispatchTouch(body, 'touchend', 195, 430);
+
+	await expect(dialog).not.toHaveAttribute('data-swiping', 'true');
+
+	await expect.poll(async () => dialog.evaluate((element) => element.style.transform)).toBe('');
+
+	await dialog.evaluate((element) => {
+		(element.parentElement as HTMLElement & { close: () => void }).close();
+	});
+
+	await expect(dialog).toBeHidden();
+
+	expect(await page.evaluate(() => document.documentElement.style.overflow)).toBe('');
 });

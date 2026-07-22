@@ -1,5 +1,6 @@
 import type { OverlayDismissDetail } from '../../controllers';
 import { bindAnchoredOverlay } from '../../controllers/anchored-overlay';
+import { lockDocumentScroll } from '../../controllers/document-scroll-lock';
 import { bindSwipeDismiss } from '../../controllers/swipe-dismiss';
 import { animateSwipeSettle } from '../../controllers/swipe-dismiss-animation';
 
@@ -75,6 +76,14 @@ export const bindDatePickerOverlay = (
 
 	const controller = new AbortControllerConstructor();
 
+	const isMobile = (): boolean => {
+		const viewportWidth = view?.innerWidth ?? trigger.ownerDocument.documentElement.clientWidth;
+
+		return viewportWidth <= MOBILE_BREAKPOINT;
+	};
+
+	const releaseScrollLock = isMobile() ? lockDocumentScroll(trigger.ownerDocument) : undefined;
+
 	const cleanupOverlay = bindAnchoredOverlay({
 		anchor: trigger,
 		flip: true,
@@ -100,18 +109,14 @@ export const bindDatePickerOverlay = (
 		signal,
 	});
 
-	const isMobile = (): boolean => {
-		const viewportWidth = view?.innerWidth ?? trigger.ownerDocument.documentElement.clientWidth;
-
-		return viewportWidth <= MOBILE_BREAKPOINT;
-	};
-
 	bindSheetSwipe(panel, onDismiss, controller.signal, isMobile);
 
 	const cleanup = (): void => {
 		controller.abort();
 
 		cleanupOverlay();
+
+		releaseScrollLock?.();
 	};
 
 	signal.addEventListener('abort', cleanup, { once: true });

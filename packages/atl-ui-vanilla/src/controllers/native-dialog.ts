@@ -1,3 +1,4 @@
+import { lockDocumentScroll } from './document-scroll-lock';
 import { captureFocus, type FocusRestorer } from './focus';
 
 export type NativeDialogDismissReason = 'backdrop' | 'escape';
@@ -29,6 +30,14 @@ const isBackdropClick = (dialog: HTMLDialogElement, event: MouseEvent): boolean 
 export const bindNativeDialog = (dialog: HTMLDialogElement, options: NativeDialogOptions): NativeDialogController => {
 	let focusRestorer: FocusRestorer | undefined;
 
+	let releaseScrollLock: (() => void) | undefined;
+
+	const unlockScroll = (): void => {
+		releaseScrollLock?.();
+
+		releaseScrollLock = undefined;
+	};
+
 	const restoreFocus = (): void => {
 		focusRestorer?.restore();
 
@@ -36,6 +45,8 @@ export const bindNativeDialog = (dialog: HTMLDialogElement, options: NativeDialo
 	};
 
 	const handleClose = (): void => {
+		unlockScroll();
+
 		restoreFocus();
 
 		options.onClose();
@@ -90,7 +101,15 @@ export const bindNativeDialog = (dialog: HTMLDialogElement, options: NativeDialo
 
 	dialog.addEventListener('close', handleClose, { signal: options.signal });
 
-	options.signal.addEventListener('abort', restoreFocus, { once: true });
+	options.signal.addEventListener(
+		'abort',
+		() => {
+			unlockScroll();
+
+			restoreFocus();
+		},
+		{ once: true },
+	);
 
 	return {
 		close,
@@ -99,8 +118,18 @@ export const bindNativeDialog = (dialog: HTMLDialogElement, options: NativeDialo
 
 			focusRestorer = captureFocus(dialog.ownerDocument);
 
-			if (typeof dialog.showModal === 'function') dialog.showModal();
-			else dialog.setAttribute('open', '');
+			releaseScrollLock = lockDocumentScroll(dialog.ownerDocument);
+
+			try {
+				if (typeof dialog.showModal === 'function') dialog.showModal();
+				else dialog.setAttribute('open', '');
+			} catch (error) {
+				unlockScroll();
+
+				restoreFocus();
+
+				throw error;
+			}
 		},
 	};
 };

@@ -1,6 +1,6 @@
-import { bindNativeDialog, type NativeDialogController } from '../../controllers/native-dialog';
 import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
 
+import { DialogController } from './dialog-controller';
 import { createDialogDom } from './dialog-dom';
 import type { AltDialogCloseDetail, AltDialogOpenChangeDetail, AltDialogSize } from './types';
 
@@ -9,8 +9,8 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 
 	return class AltDialogElement extends BaseElement {
 		static observedAttributes = ['close-on-backdrop', 'open', 'size'];
+		#controller: DialogController | undefined;
 		#dialog: HTMLDialogElement | undefined;
-		#modal: NativeDialogController | undefined;
 		#renderedOpen = false;
 		#syncing = false;
 
@@ -44,27 +44,39 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 
 			this.#dialog ??= createDialogDom(this);
 
-			this.#modal = bindNativeDialog(this.#dialog, {
-				closeOnBackdrop: () => this.getAttribute('close-on-backdrop') !== 'false',
-				closeOnEscape: () => this.getAttribute('close-on-escape') !== 'false',
-				onClose: this.#handleNativeClose,
+			this.#controller = new DialogController(
+				this.#dialog,
+				{
+					closeOnBackdrop: () => this.getAttribute('close-on-backdrop') !== 'false',
+					closeOnEscape: () => this.getAttribute('close-on-escape') !== 'false',
+					onClose: this.#dispatchClose,
+					onOpenChange: this.#dispatchOpenChange,
+					open: () => this.open,
+					setOpen: this.#setOpen,
+				},
 				signal,
-			});
+			);
 
 			this.#dialog.addEventListener('click', this.#handleClick, { signal });
+		}
+
+		onDisconnected(): void {
+			this.#controller?.destroy();
+
+			this.#controller = undefined;
 		}
 
 		showModal(): void {
 			this.open = true;
 		}
 		close(returnValue = ''): void {
-			if (this.#modal && this.#dialog?.open) this.#modal.close(returnValue);
+			if (this.#controller && this.#dialog?.open) this.#controller.close(returnValue);
 			else {
 				if (this.#dialog) this.#dialog.returnValue = returnValue;
 
 				this.#setOpen(false);
 
-				this.#dispatchClose();
+				this.#dispatchClose(returnValue);
 			}
 		}
 
@@ -73,13 +85,7 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 
 			this.#dialog.dataset.size = String(this.size);
 
-			if (this.open === this.#dialog.open) return;
-
-			if (this.open) {
-				this.#modal?.showModal();
-			} else this.#modal?.close();
-
-			this.#dispatchOpenChange(this.open);
+			this.#controller?.sync();
 		}
 
 		#handleClick = (event: MouseEvent): void => {
@@ -89,29 +95,22 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 
 			if (close) this.close(close.dataset.altDialogClose ?? '');
 		};
-		#handleNativeClose = (): void => {
-			this.#setOpen(false);
-
-			this.#dispatchOpenChange(false);
-
-			this.#dispatchClose();
-		};
-		#dispatchOpenChange(open: boolean): void {
+		#dispatchOpenChange = (open: boolean): void => {
 			if (this.#renderedOpen === open) return;
 
 			this.#renderedOpen = open;
 
 			this.dispatchEvent(createTypedEvent<AltDialogOpenChangeDetail>('alt-open-change', { open }));
-		}
-		#setOpen(open: boolean): void {
+		};
+		#setOpen = (open: boolean): void => {
 			this.#syncing = true;
 
 			this.toggleAttribute('open', open);
 
 			this.#syncing = false;
-		}
-		#dispatchClose(): void {
-			this.dispatchEvent(createTypedEvent<AltDialogCloseDetail>('alt-close', { returnValue: this.returnValue }));
-		}
+		};
+		#dispatchClose = (returnValue = this.returnValue): void => {
+			this.dispatchEvent(createTypedEvent<AltDialogCloseDetail>('alt-close', { returnValue }));
+		};
 	};
 };

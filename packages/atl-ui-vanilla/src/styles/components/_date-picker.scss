@@ -79,6 +79,7 @@
       width: 100%;
       max-width: none;
       padding: 1rem;
+      overscroll-behavior: none;
       background: var(--alt-color-surface);
       box-shadow: var(--alt-shadow-lg);
       transition: transform var(--alt-date-picker-sheet-snap-duration, 250ms) cubic-bezier(0, 0, 0.2, 1);

@@ -1,6 +1,6 @@
 import type { AltPopupElementApi } from '../../../src';
 import { findElement, findElements } from '../dom';
-import { example, defineStory } from '../story-factory';
+import { defineStory, example } from '../story-factory';
 
 const placementPopup = (placement: string): string => `
 <span>
@@ -14,7 +14,7 @@ const placementPopup = (placement: string): string => `
 		${placement}
 	</button>
 	<alt-popup anchor-id="popup-anchor-${placement}" id="popup-${placement}" placement="${placement}">
-		<div class="alt-card">Popup at ${placement}</div>
+		<div class="alt-popup__content">Popup at ${placement}</div>
 	</alt-popup>
 </span>`;
 
@@ -41,7 +41,7 @@ const behavior = `
 			close-on-outside-click="false"
 			gap="12"
 			id="popup-persistent"
-		><div class="alt-card">Only the trigger closes this popup.</div></alt-popup>
+		><div class="alt-popup__content">Only the trigger closes this popup.</div></alt-popup>
 	</span>
 </div>`;
 
@@ -51,7 +51,7 @@ const overflow = `
 		Open long popup
 	</button>
 	<alt-popup anchor-id="popup-anchor-overflow" id="popup-overflow">
-		<div class="alt-card" style="max-width: 220px">
+		<div class="alt-popup__content" style="max-width: 220px">
 			https://example.com/a/very/long/path/without/spaces
 		</div>
 	</alt-popup>
@@ -68,7 +68,7 @@ const clipping = `
 		Open clipped popup
 	</button>
 	<alt-popup anchor-id="popup-anchor-clipped" id="popup-clipped">
-		<div class="alt-card" style="width: 320px">Top-layer popup outside the clipping frame.</div>
+		<div class="alt-popup__content" style="width: 320px">Top-layer popup outside the clipping frame.</div>
 	</alt-popup>
 </div>`;
 

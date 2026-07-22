@@ -1,16 +1,16 @@
 @layer alt.overrides {
-  .alt-story-example details {
+  .alt-story-example > details {
     border-top: 1px solid var(--alt-color-border);
   }
 
-  .alt-story-example summary {
+  .alt-story-example > details > summary {
     padding: 0.75rem 1.25rem;
     color: var(--alt-color-ink-muted);
     font: var(--alt-type-label-md);
     cursor: pointer;
   }
 
-  .alt-story-example pre {
+  .alt-story-example > details > pre {
     max-height: 260px;
     margin: 0;
     padding: 1rem 1.25rem;

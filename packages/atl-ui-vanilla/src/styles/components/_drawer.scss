@@ -1,3 +1,5 @@
+@use '../foundation/modal';
+
 @layer alt.components {
   :where(alt-drawer, .alt-drawer-host) {
     display: contents;
@@ -19,6 +21,7 @@
     border: 0;
     background: var(--alt-drawer-background, var(--alt-color-surface));
     color: var(--alt-color-ink);
+    overscroll-behavior: none;
     transition: transform var(--alt-drawer-snap-duration, 250ms) var(--alt-drawer-easing, cubic-bezier(0, 0, 0.2, 1));
   }
 
@@ -27,6 +30,8 @@
   }
 
   :where(.alt-drawer)::backdrop {
+    @include modal.dynamic-backdrop;
+
     background: color-mix(
       in srgb,
       var(--alt-drawer-scrim-color, var(--alt-color-scrim)) var(--alt-drawer-scrim-opacity, 28%),
@@ -129,7 +134,7 @@
   :where(.alt-drawer__body) {
     min-height: 0;
     overflow: auto;
-    overscroll-behavior: contain;
+    overscroll-behavior: none;
   }
 
   :where(.alt-drawer__footer) {
