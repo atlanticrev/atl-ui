@@ -139,6 +139,8 @@ test('input focuses the same notched SVG border without an outer ring', async ({
 
 	await host.locator('input').focus();
 
+	await expect.poll(async () => (await readOutline(root, '.alt-input__outline-path')).stroke).not.toBe(before.stroke);
+
 	const focused = await readOutline(root, '.alt-input__outline-path');
 
 	expect(focused.path.match(/M /g)?.length).toBeGreaterThanOrEqual(2);

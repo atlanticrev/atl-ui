@@ -17,7 +17,7 @@ export default defineConfig({
 		{ name: 'webkit', use: { ...devices['Desktop Safari'] } },
 	],
 	reporter: [['list']],
-	snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}',
+	snapshotPathTemplate: '{testDir}/__screenshots__/{platform}/{arg}{ext}',
 	testDir: 'tests/browser',
 	use: {
 		// biome-ignore lint/style/useNamingConvention: Playwright names this public option baseURL.

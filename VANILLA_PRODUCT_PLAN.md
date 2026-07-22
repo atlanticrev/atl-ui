@@ -9,8 +9,8 @@
 
 - В vanilla-каталоге поддерживаются 32 компонента и CSS-рецепта.
 - Публичная версия пакета в репозитории пока `0.1.0`; следующий релиз планируется как `0.2.0`.
-- Ветка `feat/atl-ui-vanilla` на 21 коммит впереди `origin/main`.
-- Тег `atl-ui-vanilla-v0.1.0` на 13 коммитов позади текущего `HEAD`.
+- Ветка `feat/atl-ui-vanilla` на 22 коммита впереди `origin/main`.
+- Тег `atl-ui-vanilla-v0.1.0` на 14 коммитов позади текущего `HEAD`.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React-пакет сохраняется без breaking changes; автоматическая полная parity с vanilla не является целью.
 
@@ -87,3 +87,4 @@
 | 2026-07-22 | Стабилизация demo | Устранён render-loop Select; корневая страница добавлена в browser smoke-gate |
 | 2026-07-22 | Подготовка 0.2.0 | Добавлен обязательный CI для каждого push и pull request |
 | 2026-07-22 | Consumer release-gate | Tarball проверен в чистом проекте; JS/CSS imports, SSR и tree shaking автоматизированы |
+| 2026-07-22 | Стабилизация CI | Визуальные эталоны разделены по ОС; WebKit focus-check ожидает применение стиля вместо чтения переходного состояния |
