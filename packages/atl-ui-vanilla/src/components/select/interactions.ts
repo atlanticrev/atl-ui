@@ -16,7 +16,9 @@ export type SelectInteractionCallbacks = {
 
 const optionValueFromEvent = (event: Event, list: HTMLElement): string | undefined => {
 	const target = event.target as Element | null;
+
 	const option = target?.closest<HTMLElement>('[role="option"]');
+
 	return option && list.contains(option) ? option.dataset.value : undefined;
 };
 
@@ -54,6 +56,7 @@ const handleKeyDown = (
 		callbacks.close(event);
 	} else if (event.key === 'Tab') {
 		callbacks.close(event);
+
 		return;
 	} else if (event.key.length === 1 && !event.altKey && !event.ctrlKey && !event.metaKey && !event.isComposing) {
 		callbacks.typeahead(typeahead.push(event.key));
@@ -71,6 +74,7 @@ export const bindSelectInteractions = (
 	signal: AbortSignal,
 ): void => {
 	bindSelectTriggerInteractions(host, dom.trigger, callbacks, signal);
+
 	dom.list.addEventListener(
 		'click',
 		(event) => {
@@ -82,7 +86,9 @@ export const bindSelectInteractions = (
 		},
 		{ signal },
 	);
+
 	const MutationObserverConstructor = host.ownerDocument.defaultView?.MutationObserver;
+
 	const observer = MutationObserverConstructor
 		? new MutationObserverConstructor((records) => {
 				if (records.some(isOptionMutation)) {
@@ -90,6 +96,7 @@ export const bindSelectInteractions = (
 				}
 			})
 		: undefined;
+
 	observer?.observe(host, {
 		attributeFilter: ['description', 'disabled', 'label', 'selected', 'value'],
 		attributes: true,
@@ -97,6 +104,7 @@ export const bindSelectInteractions = (
 		characterData: true,
 		subtree: true,
 	});
+
 	signal.addEventListener('abort', () => observer?.disconnect(), { once: true });
 };
 
@@ -107,8 +115,11 @@ export const bindSelectTriggerInteractions = (
 	signal: AbortSignal,
 ): void => {
 	const view = host.ownerDocument.defaultView;
+
 	if (!view) return;
+
 	const typeahead = new TypeaheadController(view, signal);
+
 	trigger.addEventListener(
 		'click',
 		(event) => {
@@ -116,5 +127,6 @@ export const bindSelectTriggerInteractions = (
 		},
 		{ signal },
 	);
+
 	trigger.addEventListener('keydown', (event) => handleKeyDown(event, callbacks, typeahead), { signal });
 };

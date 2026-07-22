@@ -16,11 +16,14 @@ export class AutocompleteStateController {
 
 	public initialize(state: AutocompleteStateSnapshot): boolean {
 		if (this.#initialized) return false;
+
 		this.#defaultState = {
 			inputValue: state.inputValue,
 			values: [...state.values],
 		};
+
 		this.#initialized = true;
+
 		return true;
 	}
 
@@ -38,8 +41,11 @@ export const readInitialAutocompleteValues = (
 	current: readonly string[],
 ): string[] => {
 	if (current.length > 0) return [...current];
+
 	const attribute = host.getAttribute('value');
+
 	if (attribute !== null) return attribute ? [attribute] : [];
+
 	return options.filter((option) => option.selected).map((option) => option.value);
 };
 
@@ -49,6 +55,8 @@ export const readAutocompleteSelectionLabel = (
 	values: readonly string[],
 ): string => {
 	const value = values[0] ?? '';
+
 	const option = findAutocompleteOption(options, value);
+
 	return option?.label ?? (host.hasAttribute('free-solo') ? value : '');
 };

@@ -32,44 +32,60 @@ export const createAltTableElementClass = (HtmlElementConstructor: typeof HTMLEl
 				'rowClassName',
 				'rowKey',
 			]);
+
 			this.classList.add('alt-simple-table');
+
 			this.tableDom ??= createTableDom(this);
+
 			this.tableDom.previous.addEventListener('click', () => this.#changePage(-1), { signal });
+
 			this.tableDom.next.addEventListener('click', () => this.#changePage(1), { signal });
+
 			this.tableDom.tbody.addEventListener('click', this.#handleRowClick, { signal });
 		}
 
 		update(): void {
 			if (!this.tableDom) return;
+
 			const page = resolveTablePage(this.dataSourceValue.length, this.paginationValue, this.internalPage);
+
 			const records = sliceTablePage(this.dataSourceValue, this.paginationValue, page);
+
 			syncTableColumns(this.tableDom.thead, this.columnsValue, this.columnViews);
+
 			this.#renderedRows = syncTableRows(this.tableDom.tbody, this.rowViews, {
 				columns: this.columnsValue,
 				getClassName: this.#getRowClassName,
 				getKey: this.#getRowKey,
 				records,
 			});
+
 			renderTableEmpty(
 				this.tableDom,
 				this.columnsValue.length,
 				this.emptyContentValue ?? this.getAttribute('empty-text') ?? 'No data',
 				records.length === 0,
 			);
+
 			renderTablePagination(this, this.tableDom, page, this.paginationValue !== false);
 		}
 
 		#changePage(direction: 1 | -1): void {
 			const page = resolveTablePage(this.dataSourceValue.length, this.paginationValue, this.internalPage);
+
 			const nextPage = Math.min(Math.max(1, page.current + direction), page.totalPages);
+
 			if (nextPage === page.current) return;
+
 			if (this.paginationValue && this.paginationValue.current === undefined) this.internalPage = nextPage;
+
 			this.dispatchEvent(
 				createTypedEvent<AltTablePageChangeDetail>('alt-page-change', {
 					page: nextPage,
 					pageSize: page.pageSize,
 				}),
 			);
+
 			this.requestUpdate();
 		}
 
@@ -87,8 +103,11 @@ export const createAltTableElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 		#handleRowClick = (event: Event): void => {
 			const row = (event.target as Element | null)?.closest<HTMLTableRowElement>('tr[data-key]');
+
 			const item = row?.dataset.key ? this.#renderedRows.get(row.dataset.key) : undefined;
+
 			if (!row?.dataset.key || !item) return;
+
 			this.dispatchEvent(
 				createTypedEvent<AltTableRowClickDetail>('alt-row-click', {
 					index: item.index,

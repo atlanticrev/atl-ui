@@ -5,6 +5,7 @@ export const reflectBoolean = (element: Element, name: string, value: boolean): 
 export const reflectString = (element: Element, name: string, value: string | null): void => {
 	if (value === null) {
 		element.removeAttribute(name);
+
 		return;
 	}
 

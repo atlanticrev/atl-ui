@@ -20,5 +20,6 @@ export const popupUpgradeProperties = [
 
 export const readPopupBoolean = (element: HTMLElement, name: string, fallback: boolean): boolean => {
 	if (!element.hasAttribute(name)) return fallback;
+
 	return element.getAttribute(name) !== 'false';
 };

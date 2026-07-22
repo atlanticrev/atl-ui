@@ -4,13 +4,8 @@
 	"description": "Zero-dependency Atlantic Review UI Web Components and native CSS recipes.",
 	"private": false,
 	"type": "module",
-	"sideEffects": [
-		"**/*.css"
-	],
-	"files": [
-		"dist",
-		"docs"
-	],
+	"sideEffects": ["**/*.css"],
+	"files": ["dist", "docs"],
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"style": "dist/default.css",
@@ -135,8 +130,13 @@
 		"demo": "vite demo --config demo/vite.config.ts --host 127.0.0.1",
 		"demo:build": "vite build demo --config demo/vite.config.ts --outDir ../demo-dist --emptyOutDir",
 		"demo:preview": "vite preview demo --config demo/vite.config.ts --host 127.0.0.1 --outDir ../demo-dist",
+		"format": "npm run format:atl && biome format --write .",
+		"format:atl": "atl-formatter --write \"{src,tests,demo}/**/*.{js,jsx,ts,tsx}\" \"*.{js,jsx,ts,tsx}\"",
+		"format:atl:check": "atl-formatter --check \"{src,tests,demo}/**/*.{js,jsx,ts,tsx}\" \"*.{js,jsx,ts,tsx}\"",
+		"format:check": "npm run format:atl:check && biome format .",
+		"lint": "biome lint .",
 		"prepack": "npm run build",
-		"prepublishOnly": "npm run verify && npm run test:browser",
+		"prepublishOnly": "npm run verify",
 		"storybook": "vite demo --config demo/vite.config.ts --host 127.0.0.1 --open /storybook.html",
 		"storybook:build": "npm run demo:build",
 		"storybook:test": "vite demo --config demo/vite.config.ts --host 127.0.0.1 --port 4175 --strictPort",
@@ -144,7 +144,8 @@
 		"test:browser": "playwright test --config playwright.config.ts",
 		"test:browser:update": "npm run test:browser -- --update-snapshots",
 		"typecheck": "tsc -p tsconfig.json --noEmit",
-		"verify": "npm run typecheck && npm run test && npm run build"
+		"verify": "npm run verify:base && npm run test:browser && npm run build",
+		"verify:base": "npm run lint && npm run format:check && npm run typecheck && npm run test"
 	},
 	"engines": {
 		"node": ">=18.18.0"
@@ -153,6 +154,7 @@
 		"registry": "https://npm.pkg.github.com"
 	},
 	"devDependencies": {
+		"@atlanticrev/atl-formatter": "0.1.1",
 		"@axe-core/playwright": "^4.12.1",
 		"@playwright/test": "^1.61.1"
 	}

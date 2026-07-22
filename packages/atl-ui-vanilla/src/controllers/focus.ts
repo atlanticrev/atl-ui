@@ -38,7 +38,9 @@ const resolveIndex = (direction: FocusDirection, currentIndex: number, lastIndex
 	}
 
 	const delta = direction === 'next' ? 1 : -1;
+
 	const fallback = direction === 'next' ? 0 : lastIndex;
+
 	const nextIndex = currentIndex < 0 ? fallback : currentIndex + delta;
 
 	if (wrap) {
@@ -61,9 +63,13 @@ export const moveFocus = (
 	}
 
 	const currentIndex = elements.indexOf(current as HTMLElement);
+
 	const index = resolveIndex(direction, currentIndex, elements.length - 1, options.wrap ?? true);
+
 	const target = elements[index];
+
 	target.focus();
+
 	return target;
 };
 
@@ -73,6 +79,7 @@ export type FocusRestorer = {
 
 export const captureFocus = (source: Document | Element): FocusRestorer => {
 	const ownerDocument = source.nodeType === 9 ? (source as Document) : source.ownerDocument;
+
 	const captured = ownerDocument?.activeElement ?? null;
 
 	return {
@@ -84,6 +91,7 @@ export const captureFocus = (source: Document | Element): FocusRestorer => {
 			}
 
 			captured.focus();
+
 			return ownerDocument.activeElement === captured;
 		},
 	};

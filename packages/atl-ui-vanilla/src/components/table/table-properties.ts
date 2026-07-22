@@ -28,6 +28,7 @@ export const createTablePropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set columns(value: readonly AltTableColumn<TableRecord>[]) {
 			this.columnsValue = value;
+
 			this.requestUpdate();
 		}
 		get dataSource(): readonly TableRecord[] {
@@ -35,6 +36,7 @@ export const createTablePropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set dataSource(value: readonly TableRecord[]) {
 			this.dataSourceValue = value;
+
 			this.requestUpdate();
 		}
 		get emptyContent(): AltTableCell {
@@ -42,6 +44,7 @@ export const createTablePropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set emptyContent(value: AltTableCell) {
 			this.emptyContentValue = value;
+
 			this.requestUpdate();
 		}
 		get nextIcon(): Node | null {
@@ -49,6 +52,7 @@ export const createTablePropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set nextIcon(value: Node | null) {
 			this.nextIconValue = value;
+
 			this.requestUpdate();
 		}
 		get pagination(): AltTablePagination | false {
@@ -56,7 +60,9 @@ export const createTablePropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set pagination(value: AltTablePagination | false) {
 			this.paginationValue = value;
+
 			this.internalPage = value ? (value.current ?? 1) : 1;
+
 			this.requestUpdate();
 		}
 		get previousIcon(): Node | null {
@@ -64,6 +70,7 @@ export const createTablePropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set previousIcon(value: Node | null) {
 			this.previousIconValue = value;
+
 			this.requestUpdate();
 		}
 		get rowClassName(): string | ((record: TableRecord, index: number) => string) {
@@ -71,6 +78,7 @@ export const createTablePropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set rowClassName(value: string | ((record: TableRecord, index: number) => string)) {
 			this.rowClassNameValue = value;
+
 			this.requestUpdate();
 		}
 		get rowKey(): string | ((record: TableRecord) => string) {
@@ -78,6 +86,7 @@ export const createTablePropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set rowKey(value: string | ((record: TableRecord) => string)) {
 			this.rowKeyValue = value;
+
 			this.requestUpdate();
 		}
 	};

@@ -34,6 +34,7 @@ export const registerElement = (
 	}
 
 	const ElementClass = createElementClass(environment.htmlElement);
+
 	environment.customElements.define(tagName, ElementClass);
 
 	return ElementClass;

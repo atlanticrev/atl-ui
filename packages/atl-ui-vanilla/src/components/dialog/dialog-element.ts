@@ -39,10 +39,15 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 
 		onConnected(signal: AbortSignal): void {
 			upgradeProperties(this, ['open', 'size']);
+
 			this.classList.add('alt-dialog-host');
+
 			this.#dialog ??= createDialogDom(this);
+
 			this.#dialog.addEventListener('cancel', this.#handleCancel, { signal });
+
 			this.#dialog.addEventListener('click', this.#handleClick, { signal });
+
 			this.#dialog.addEventListener('close', this.#handleNativeClose, { signal });
 		}
 
@@ -53,21 +58,28 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 			if (this.#dialog?.open && typeof this.#dialog.close === 'function') this.#dialog.close(returnValue);
 			else {
 				if (this.#dialog) this.#dialog.returnValue = returnValue;
+
 				this.#setOpen(false);
+
 				this.#dispatchClose();
 			}
 		}
 
 		update(): void {
 			if (!this.#dialog) return;
+
 			this.#dialog.dataset.size = String(this.size);
+
 			if (this.open === this.#dialog.open) return;
+
 			if (this.open) {
 				this.#focusRestorer = captureFocus(this.ownerDocument);
+
 				if (typeof this.#dialog.showModal === 'function') this.#dialog.showModal();
 				else this.#dialog.setAttribute('open', '');
 			} else if (typeof this.#dialog.close === 'function') this.#dialog.close();
 			else this.#dialog.removeAttribute('open');
+
 			this.#dispatchOpenChange(this.open);
 		}
 
@@ -76,25 +88,35 @@ export const createAltDialogElementClass = (HtmlElementConstructor: typeof HTMLE
 		};
 		#handleClick = (event: MouseEvent): void => {
 			const target = event.target as Element | null;
+
 			const close = target?.closest<HTMLElement>('[data-alt-dialog-close]');
+
 			if (close) this.close(close.dataset.altDialogClose ?? '');
 			else if (target === this.#dialog && this.getAttribute('close-on-backdrop') !== 'false') this.close();
 		};
 		#handleNativeClose = (): void => {
 			this.#setOpen(false);
+
 			this.#focusRestorer?.restore();
+
 			this.#focusRestorer = undefined;
+
 			this.#dispatchOpenChange(false);
+
 			this.#dispatchClose();
 		};
 		#dispatchOpenChange(open: boolean): void {
 			if (this.#renderedOpen === open) return;
+
 			this.#renderedOpen = open;
+
 			this.dispatchEvent(createTypedEvent<AltDialogOpenChangeDetail>('alt-open-change', { open }));
 		}
 		#setOpen(open: boolean): void {
 			this.#syncing = true;
+
 			this.toggleAttribute('open', open);
+
 			this.#syncing = false;
 		}
 		#dispatchClose(): void {

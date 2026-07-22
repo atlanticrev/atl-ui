@@ -10,10 +10,15 @@ export const handleSelectAttributeChange = (
 
 	if (name === 'value') {
 		runtime.model.setValues(value === null ? [] : [value]);
+
 		runtime.model.defaultValues = value === null ? [] : [value];
 	}
+
 	if (name === 'disabled' && value !== null) runtime.close();
+
 	if (name === 'open') runtime.syncOpenAttribute(value !== null);
+
 	if (name === 'multiple') runtime.model.setMultiple(value !== null);
+
 	return true;
 };

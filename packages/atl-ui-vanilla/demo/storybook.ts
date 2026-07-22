@@ -29,7 +29,9 @@ renderNavigation(navigation, stories);
 
 for (const story of stories) {
 	const section = renderStory(story);
+
 	content.append(section);
+
 	story.setup?.(section);
 }
 

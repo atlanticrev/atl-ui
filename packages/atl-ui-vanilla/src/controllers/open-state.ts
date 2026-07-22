@@ -1,13 +1,6 @@
 import { createTypedEvent } from '../core';
 
-export type OpenChangeReason =
-	| 'escape'
-	| 'focus'
-	| 'input'
-	| 'outside'
-	| 'programmatic'
-	| 'selection'
-	| 'trigger';
+export type OpenChangeReason = 'escape' | 'focus' | 'input' | 'outside' | 'programmatic' | 'selection' | 'trigger';
 
 export type OpenChangeDetail = {
 	open: boolean;
@@ -51,15 +44,19 @@ export class OpenStateController {
 			reason,
 			sourceEvent,
 		};
+
 		const before = createTypedEvent('alt-before-open-change', detail, { cancelable: true });
 
 		if (this.host.isConnected && !this.host.dispatchEvent(before)) {
 			this.#restoreAttribute();
+
 			return false;
 		}
 
 		this.#open = nextOpen;
+
 		this.#restoreAttribute();
+
 		this.options.onCommit(detail);
 
 		if (this.host.isConnected) {
@@ -77,7 +74,9 @@ export class OpenStateController {
 
 	#restoreAttribute(): void {
 		this.#reflecting = true;
+
 		this.host.toggleAttribute('open', this.#open);
+
 		this.#reflecting = false;
 	}
 }

@@ -18,6 +18,7 @@ const isInside = (event: Event, element: Element): boolean => {
 	}
 
 	const view = element.ownerDocument.defaultView;
+
 	return Boolean(view && event.target instanceof view.Node && element.contains(event.target));
 };
 
@@ -27,6 +28,7 @@ export const bindOverlayDismiss = (options: OverlayDismissOptions): (() => void)
 	}
 
 	const ownerDocument = options.overlay.ownerDocument;
+
 	const onKeyDown = (event: KeyboardEvent): void => {
 		if (event.key === 'Escape' && !event.defaultPrevented && !event.isComposing) {
 			options.onDismiss({
@@ -35,6 +37,7 @@ export const bindOverlayDismiss = (options: OverlayDismissOptions): (() => void)
 			});
 		}
 	};
+
 	const onPointerDown = (event: PointerEvent): void => {
 		const boundaries = [options.overlay, ...(options.ignore ?? [])];
 
@@ -45,22 +48,30 @@ export const bindOverlayDismiss = (options: OverlayDismissOptions): (() => void)
 			});
 		}
 	};
+
 	let active = true;
+
 	const cleanup = (): void => {
 		if (!active) {
 			return;
 		}
 
 		active = false;
+
 		ownerDocument.removeEventListener('keydown', onKeyDown);
+
 		ownerDocument.removeEventListener('pointerdown', onPointerDown, true);
+
 		options.signal?.removeEventListener('abort', cleanup);
 	};
 
 	ownerDocument.addEventListener('keydown', onKeyDown);
+
 	ownerDocument.addEventListener('pointerdown', onPointerDown, true);
+
 	options.signal?.addEventListener('abort', cleanup, {
 		once: true,
 	});
+
 	return cleanup;
 };

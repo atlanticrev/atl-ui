@@ -72,9 +72,11 @@ export const alertStory = defineStory({
 	],
 	setup: (root) => {
 		const dismissibleAlert = findElement<AltAlertElementApi>(root, '[data-dismissible-alert]');
+
 		findElement<HTMLButtonElement>(root, '[data-alert-show]').addEventListener('click', () => {
 			dismissibleAlert.show();
 		});
+
 		for (const alert of findElements<AltAlertElementApi>(root, '[data-alert-no-icon]')) alert.icon = null;
 	},
 });

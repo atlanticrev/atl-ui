@@ -71,6 +71,7 @@ export const dialogStory = defineStory({
 		for (const button of findElements<HTMLButtonElement>(root, '[data-dialog-target]')) {
 			button.addEventListener('click', () => {
 				const id = button.dataset.dialogTarget ?? '';
+
 				findElement<AltDialogElementApi>(root, `#${id}`).showModal();
 			});
 		}

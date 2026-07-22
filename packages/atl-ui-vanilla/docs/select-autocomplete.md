@@ -52,6 +52,7 @@ Autocomplete отдельно отправляет `alt-input`, поэтому q
 - Autocomplete поддерживает async `options`, custom `filter`, `loading`, `free-solo` и `multiple`.
 - Arrow keys, Home, End, Page Up/Down, Enter, Escape и Tab следуют combobox/listbox keyboard pattern.
 - IME composition не подтверждает значение преждевременно.
+- Focused и open trigger сохраняет accent border при pointer hover.
 
 Disabled option пропускается клавиатурой. `disabled` блокирует открытие, а `readonly` сохраняет focus,
 но блокирует изменение значения. Native carrier обеспечивает FormData, required validation и reset.

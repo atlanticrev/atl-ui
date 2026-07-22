@@ -7,6 +7,7 @@ import { createAltTabsElementClass, defineAltTabs } from '../../src/components/t
 describe('alt-tabs SSR imports', () => {
 	it('imports without browser globals and leaves registration explicit', () => {
 		expect(createAltTabsElementClass).toBeTypeOf('function');
+
 		expect(defineAltTabs()).toBeUndefined();
 	});
 });

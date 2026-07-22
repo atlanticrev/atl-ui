@@ -20,6 +20,7 @@ export class SelectModel {
 
 	public set options(value: readonly AltSelectOption[]) {
 		this.#optionsOverride = normalizeOptions(value);
+
 		this.refreshOptions();
 	}
 
@@ -33,16 +34,20 @@ export class SelectModel {
 
 	public initialize(): void {
 		this.refreshOptions();
+
 		this.setMultiple(this.host.hasAttribute('multiple'));
 
 		if (!this.#initialized && !this.#selectionAssigned) {
 			const attributeValue = this.host.getAttribute('value');
+
 			const selected = this.#options.filter((option) => option.selected).map((option) => option.value);
+
 			this.#selection.set(attributeValue === null ? selected : [attributeValue]);
 		}
 
 		if (!this.#initialized) {
 			this.defaultValues = [...this.#selection.values];
+
 			this.#initialized = true;
 		}
 
@@ -51,6 +56,7 @@ export class SelectModel {
 
 	public refreshOptions(): void {
 		this.#options = this.#optionsOverride ?? readDeclarativeOptions(this.host);
+
 		this.ensureActive();
 	}
 
@@ -64,6 +70,7 @@ export class SelectModel {
 
 	public setValues(values: readonly string[]): boolean {
 		this.#selectionAssigned = true;
+
 		return this.#selection.set(values);
 	}
 
@@ -79,23 +86,33 @@ export class SelectModel {
 
 	public select(value: string): boolean {
 		const option = this.#options.find((candidate) => candidate.value === value && !candidate.disabled);
+
 		if (!option) return false;
+
 		this.activeValue = value;
+
 		return this.selectActive();
 	}
 
 	public moveActive(direction: 1 | -1, edge?: 'end' | 'start'): void {
 		const currentIndex = this.#options.findIndex((option) => option.value === this.activeValue);
+
 		const edgeIndex = edge === 'end' ? this.#options.length - 1 : 0;
+
 		const start = edge ? edgeIndex : Math.max(0, currentIndex + direction);
+
 		this.activeValue = findEnabledOption(this.#options, start, direction)?.value;
 	}
 
 	public moveToMatch(query: string): void {
 		const options = this.#options.filter((option) => !option.disabled);
+
 		const currentIndex = options.findIndex((option) => option.value === this.activeValue);
+
 		const ordered = [...options.slice(currentIndex + 1), ...options.slice(0, currentIndex + 1)];
+
 		const match = ordered.find((option) => option.label.toLocaleLowerCase().startsWith(query));
+
 		if (match) this.activeValue = match.value;
 	}
 
@@ -105,7 +122,9 @@ export class SelectModel {
 
 	private ensureActive(): void {
 		const active = this.#options.find((option) => option.value === this.activeValue && !option.disabled);
+
 		const selected = this.#options.find((option) => this.#selection.has(option.value) && !option.disabled);
+
 		this.activeValue = active?.value ?? selected?.value ?? findEnabledOption(this.#options, 0, 1)?.value;
 	}
 }

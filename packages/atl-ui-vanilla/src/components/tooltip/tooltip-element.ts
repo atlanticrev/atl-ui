@@ -20,6 +20,7 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 		}
 		set content(value: Node | null) {
 			this.#content = value;
+
 			this.requestUpdate();
 		}
 		get open(): boolean {
@@ -48,12 +49,19 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 
 		onConnected(signal: AbortSignal): void {
 			upgradeProperties(this, ['content', 'open', 'placement', 'trigger']);
+
 			this.classList.add('alt-tooltip');
+
 			this.#dom ??= createTooltipDom(this);
+
 			this.addEventListener('click', this.#handleClick, { signal });
+
 			this.addEventListener('focusin', this.#handleEnter, { signal });
+
 			this.addEventListener('focusout', this.#handleLeave, { signal });
+
 			this.addEventListener('pointerenter', this.#handleEnter, { signal });
+
 			this.addEventListener('pointerleave', this.#handleLeave, { signal });
 		}
 
@@ -63,16 +71,25 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 
 		update(): void {
 			if (!this.#dom) return;
+
 			const trigger = findTooltipTrigger(this, this.#dom.panel);
+
 			this.#dom.panel.className = `alt-tooltip__panel alt-tooltip__panel--${this.placement}`;
+
 			if (this.#content) this.#dom.panel.replaceChildren(this.#content);
 			else this.#dom.panel.textContent = this.getAttribute('title') ?? '';
+
 			this.#dom.panel.hidden = !this.open;
+
 			trigger?.setAttribute('aria-describedby', this.#dom.panel.id);
+
 			this.#cleanupOverlay();
+
 			if (this.open && trigger && this.connectionSignal) this.#bindOverlay(trigger, this.connectionSignal);
+
 			if (this.#renderedOpen !== this.open) {
 				this.#renderedOpen = this.open;
+
 				this.dispatchEvent(
 					createTypedEvent<AltTooltipOpenChangeDetail>('alt-open-change', { open: this.open }),
 				);
@@ -81,6 +98,7 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 
 		#bindOverlay(trigger: HTMLElement, signal: AbortSignal): void {
 			if (!this.#dom) return;
+
 			this.#cleanup = bindTooltipOverlay({
 				onDismiss: () => {
 					this.open = false;
@@ -95,7 +113,9 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 
 		#handleClick = (event: Event): void => {
 			if (this.trigger !== 'click' || event.target === this.#dom?.panel) return;
+
 			if (!this.#canOpen()) return;
+
 			this.open = !this.open;
 		};
 		#handleEnter = (): void => {
@@ -104,6 +124,7 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 		#handleLeave = (event: FocusEvent | PointerEvent): void => {
 			if (this.trigger !== 'hover' || (event.relatedTarget instanceof Node && this.contains(event.relatedTarget)))
 				return;
+
 			this.open = false;
 		};
 		#canOpen(): boolean {
@@ -112,6 +133,7 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 		}
 		#cleanupOverlay(): void {
 			this.#cleanup?.();
+
 			this.#cleanup = undefined;
 		}
 	};

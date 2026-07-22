@@ -7,6 +7,7 @@ import { createAltToastRegionElementClass, defineAltToastRegion } from '../../sr
 describe('alt-toast-region SSR imports', () => {
 	it('imports without browser globals and leaves registration explicit', () => {
 		expect(createAltToastRegionElementClass).toBeTypeOf('function');
+
 		expect(defineAltToastRegion()).toBeUndefined();
 	});
 });

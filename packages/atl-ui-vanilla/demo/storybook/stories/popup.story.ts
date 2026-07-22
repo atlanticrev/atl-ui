@@ -71,6 +71,7 @@ export const popupStory = defineStory({
 		for (const button of findElements<HTMLButtonElement>(root, '[data-popup-target]')) {
 			button.addEventListener('click', () => {
 				const id = button.dataset.popupTarget ?? '';
+
 				findElement<AltPopupElementApi>(root, `#${id}`).toggle();
 			});
 		}

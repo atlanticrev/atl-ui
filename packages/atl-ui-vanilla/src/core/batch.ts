@@ -16,8 +16,10 @@ export const createMicrotaskBatch = (
 		}
 
 		isPending = true;
+
 		scheduler(() => {
 			isPending = false;
+
 			callback();
 		});
 	};

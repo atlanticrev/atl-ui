@@ -25,48 +25,67 @@ export class ToastStore {
 		preventDuplicate: boolean,
 	): string {
 		const explicitId = typeof options === 'string' ? undefined : options.id;
+
 		const existingIndex = explicitId ? this.#records.findIndex((record) => record.id === explicitId) : -1;
+
 		const prevent = typeof options === 'string' ? preventDuplicate : (options.preventDuplicate ?? preventDuplicate);
+
 		const duplicate = prevent
 			? this.#records.find((record) => record.message === getToastMessage(options))
 			: undefined;
+
 		if (existingIndex < 0 && duplicate) return duplicate.id;
 
 		const record = createToastRecord(options, defaultDuration, this.#handleElapsed);
+
 		for (const reason of this.#globalPauses) record.timer.pause(reason);
 
 		if (existingIndex >= 0) this.#replace(existingIndex, record);
 		else this.#records.push(record);
 
 		reconcileToastCapacity(this.#records, max, requestToastClose);
+
 		this.onChange();
+
 		return record.id;
 	}
 
 	public dismiss(id: string, reason: AltToastDismissReason, max: number): boolean {
 		const record = this.#records.find((entry) => entry.id === id);
+
 		if (!record || record.closeReason) return false;
+
 		if (record.phase === 'queued') this.#remove(record, reason, max);
 		else if (requestToastClose(record, reason)) this.onChange();
+
 		return true;
 	}
 
 	public clear(): void {
 		const queued = this.#records.filter((record) => record.phase === 'queued');
+
 		for (const record of queued) {
 			record.timer.cancel();
+
 			this.onDismiss(record, 'clear');
 		}
+
 		this.#records = this.#records.filter((record) => record.phase !== 'queued');
+
 		for (const record of this.#records) requestToastClose(record, 'clear');
+
 		this.onChange();
 	}
 
 	public complete(id: string, phase: ToastPhase, max: number): void {
 		const record = this.#records.find((entry) => entry.id === id);
+
 		if (!record) return;
+
 		const result = advanceToastPhase(record, phase);
+
 		if (result === 'stale') return;
+
 		if (result === 'remove') this.#remove(record, record.closeReason ?? 'programmatic', max);
 		else this.onChange();
 	}
@@ -81,6 +100,7 @@ export class ToastStore {
 
 	public setPaused(id: string, reason: ToastPauseReason, paused: boolean): void {
 		const timer = this.#records.find((record) => record.id === id)?.timer;
+
 		if (paused) timer?.pause(reason);
 		else timer?.resume(reason);
 	}
@@ -88,6 +108,7 @@ export class ToastStore {
 	public setAllPaused(reason: ToastPauseReason, paused: boolean): void {
 		if (paused) this.#globalPauses.add(reason);
 		else this.#globalPauses.delete(reason);
+
 		for (const record of this.#records) this.setPaused(record.id, reason, paused);
 	}
 
@@ -97,19 +118,28 @@ export class ToastStore {
 
 	#remove(record: ToastRecord, reason: AltToastDismissReason, max: number): void {
 		record.timer.cancel();
+
 		this.#records = this.#records.filter((entry) => entry !== record);
+
 		this.onDismiss(record, reason);
+
 		reconcileToastCapacity(this.#records, max, requestToastClose);
+
 		this.onChange();
 	}
 
 	#replace(index: number, replacement: ToastRecord): void {
 		const current = this.#records[index];
+
 		current.timer.cancel();
+
 		replacement.phase = current.phase;
+
 		replacement.closeReason = current.closeReason;
+
 		if (replacement.closeReason) replacement.timer.cancel();
 		else if (replacement.phase === 'open') replacement.timer.resume('lifecycle');
+
 		this.#records[index] = replacement;
 	}
 }

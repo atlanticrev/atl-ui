@@ -5,18 +5,25 @@ import { createMicrotaskBatch, createTypedEvent } from '../../src/core';
 describe('microtask batching', () => {
 	it('runs once per microtask and allows a later batch', async () => {
 		const callback = vi.fn();
+
 		const enqueue = createMicrotaskBatch(callback);
 
 		enqueue();
+
 		enqueue();
+
 		enqueue();
+
 		expect(callback).not.toHaveBeenCalled();
 
 		await Promise.resolve();
+
 		expect(callback).toHaveBeenCalledTimes(1);
 
 		enqueue();
+
 		await Promise.resolve();
+
 		expect(callback).toHaveBeenCalledTimes(2);
 	});
 });
@@ -26,8 +33,11 @@ describe('typed custom events', () => {
 		const event = createTypedEvent('alt-change', { value: 'one' });
 
 		expect(event.detail.value).toBe('one');
+
 		expect(event.bubbles).toBe(true);
+
 		expect(event.composed).toBe(true);
+
 		expect(event.cancelable).toBe(false);
 	});
 
@@ -38,6 +48,7 @@ describe('typed custom events', () => {
 		});
 
 		expect(event.bubbles).toBe(false);
+
 		expect(event.cancelable).toBe(true);
 	});
 });

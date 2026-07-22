@@ -20,6 +20,7 @@ export const createAltInputElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 				if (this.inputDom) {
 					this.inputDom.field.defaultValue = this.pendingValue;
+
 					this.inputDom.field.value = this.pendingValue;
 				}
 			}
@@ -37,17 +38,25 @@ export const createAltInputElementClass = (HtmlElementConstructor: typeof HTMLEl
 				'value',
 				'variant',
 			]);
+
 			this.inputDom ??= createInputDom(this);
+
 			this.syncOutline = bindInputOutline(this, this.inputDom, signal);
+
 			const field = this.inputDom.field;
+
 			field.value = this.pendingValue ?? this.getAttribute('value') ?? '';
+
 			field.defaultValue = this.getAttribute('value') ?? '';
+
 			field.addEventListener('input', this.handleInput, {
 				signal,
 			});
+
 			field.addEventListener('change', this.handleChange, {
 				signal,
 			});
+
 			this.ownerDocument.addEventListener('reset', this.handleFormReset, {
 				signal,
 			});
@@ -59,24 +68,34 @@ export const createAltInputElementClass = (HtmlElementConstructor: typeof HTMLEl
 			}
 
 			this.classList.add('alt-input');
+
 			this.dataset.size = this.getAttribute('size') ?? 'm';
+
 			this.dataset.status = this.getAttribute('status') ?? 'default';
+
 			this.dataset.readonlyStyled = String(this.readOnly || this.readOnlyStyled);
+
 			syncInputAttributes(this, this.inputDom);
+
 			replaceInputAccessory(this.inputDom.leading, this.pendingLeadingIcon);
+
 			replaceInputAccessory(this.inputDom.trailing, this.pendingTrailingIcon);
+
 			syncInputContent(this, this.inputDom, {
 				description: this.getAttribute('description') ?? '',
 				helperText: this.getAttribute('helper-text') ?? '',
 				label: this.getAttribute('label') ?? '',
 				showCharacterCount: this.hasAttribute('show-character-count'),
 			});
+
 			this.syncOutline?.();
 		}
 
 		private handleInput = (): void => {
 			this.pendingValue = this.inputDom?.field.value ?? '';
+
 			this.requestUpdate();
+
 			this.dispatchValueEvent('alt-input');
 		};
 
@@ -91,6 +110,7 @@ export const createAltInputElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 			queueMicrotask(() => {
 				this.pendingValue = this.inputDom?.field.value ?? '';
+
 				this.requestUpdate();
 			});
 		};

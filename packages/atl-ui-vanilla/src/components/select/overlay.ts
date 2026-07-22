@@ -12,18 +12,23 @@ export const showSelectOverlay = (
 	signal: AbortSignal,
 ): (() => void) => {
 	const popup = dom.popup as PopoverElement;
+
 	popup.togglePopover?.(true);
+
 	const cleanupDismiss = bindOverlayDismiss({
 		ignore: [dom.trigger],
 		onDismiss: ({ event, reason }) => onDismiss(reason === 'escape' ? 'escape' : 'outside', event),
 		overlay: popup,
 		signal,
 	});
+
 	const cleanupPosition = bindOverlayPosition({
 		anchor: dom.trigger,
 		onPosition: (position) => {
 			popup.style.left = `${position.left}px`;
+
 			popup.style.minWidth = `${dom.trigger.getBoundingClientRect().width}px`;
+
 			popup.style.top = `${position.top}px`;
 		},
 		overlay: popup,
@@ -32,6 +37,7 @@ export const showSelectOverlay = (
 
 	return (): void => {
 		cleanupDismiss();
+
 		cleanupPosition();
 
 		if (popup.isConnected) {

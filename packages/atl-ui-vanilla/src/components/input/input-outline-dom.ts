@@ -1,7 +1,4 @@
-import {
-	ensureFieldOutlineDom,
-	type FieldOutlineDom,
-} from '../field-outline/field-outline-dom';
+import { ensureFieldOutlineDom, type FieldOutlineDom } from '../field-outline/field-outline-dom';
 
 export type InputOutlineDom = FieldOutlineDom;
 

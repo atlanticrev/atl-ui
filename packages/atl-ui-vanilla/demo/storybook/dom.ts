@@ -1,7 +1,4 @@
-export const findElement = <ElementType extends Element>(
-	root: ParentNode,
-	selector: string,
-): ElementType => {
+export const findElement = <ElementType extends Element>(root: ParentNode, selector: string): ElementType => {
 	const element = root.querySelector<ElementType>(selector);
 
 	if (!element) {
@@ -11,7 +8,5 @@ export const findElement = <ElementType extends Element>(
 	return element;
 };
 
-export const findElements = <ElementType extends Element>(
-	root: ParentNode,
-	selector: string,
-): ElementType[] => Array.from(root.querySelectorAll<ElementType>(selector));
+export const findElements = <ElementType extends Element>(root: ParentNode, selector: string): ElementType[] =>
+	Array.from(root.querySelectorAll<ElementType>(selector));

@@ -9,6 +9,7 @@ describe('element registration without a browser', () => {
 		const factory = vi.fn();
 
 		expect(registerElement('alt-core-server-test', factory)).toBeUndefined();
+
 		expect(factory).not.toHaveBeenCalled();
 	});
 });

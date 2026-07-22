@@ -16,6 +16,7 @@ const states = new WeakMap<HTMLElement, AlertContentState>();
 
 export const getAlertContentState = (host: HTMLElement): AlertContentState => {
 	let state = states.get(host);
+
 	if (!state) {
 		state = {
 			action: undefined,
@@ -23,8 +24,10 @@ export const getAlertContentState = (host: HTMLElement): AlertContentState => {
 			icon: undefined,
 			iconMapping: null,
 		};
+
 		states.set(host, state);
 	}
+
 	return state;
 };
 
@@ -36,6 +39,7 @@ const defineContentProperty = (target: typeof HTMLElement.prototype, name: Alert
 		},
 		set(this: UpdateHost, value: AlertContentState[AlertContentProperty]): void {
 			getAlertContentState(this)[name] = value as never;
+
 			this.requestUpdate();
 		},
 	});
@@ -43,7 +47,10 @@ const defineContentProperty = (target: typeof HTMLElement.prototype, name: Alert
 
 export const defineAlertContentProperties = (target: typeof HTMLElement.prototype): void => {
 	defineContentProperty(target, 'action');
+
 	defineContentProperty(target, 'closeIcon');
+
 	defineContentProperty(target, 'icon');
+
 	defineContentProperty(target, 'iconMapping');
 };

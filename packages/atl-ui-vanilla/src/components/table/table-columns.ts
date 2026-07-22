@@ -8,21 +8,34 @@ export const syncTableColumns = (
 	views: Map<string, HTMLTableCellElement>,
 ): void => {
 	const document = thead.ownerDocument;
+
 	const row = thead.rows[0] ?? thead.insertRow();
+
 	const active = new Set<string>();
+
 	columns.forEach((column, index) => {
 		const key = resolveColumnKey(column, index);
+
 		active.add(key);
+
 		const cell = views.get(key) ?? document.createElement('th');
+
 		views.set(key, cell);
+
 		cell.dataset.key = key;
+
 		applyTableColumnStyle(cell, column, true);
+
 		replaceTableContent(cell, typeof column.title === 'function' ? column.title() : column.title);
+
 		row.append(cell);
 	});
+
 	for (const [key, cell] of views) {
 		if (active.has(key)) continue;
+
 		cell.remove();
+
 		views.delete(key);
 	}
 };

@@ -8,6 +8,7 @@ export class SelectionController {
 
 	constructor(mode: SelectionMode, initialValues: readonly string[] = []) {
 		this.mode = mode;
+
 		this.#values = this.normalize(initialValues);
 	}
 
@@ -58,6 +59,7 @@ export class SelectionController {
 		}
 
 		this.#values = values;
+
 		return true;
 	}
 }

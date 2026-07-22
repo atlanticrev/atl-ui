@@ -17,12 +17,14 @@ export const bindTooltipOverlay = (options: TooltipOverlayOptions): (() => void)
 		gap: 8,
 		onPosition: (next) => {
 			options.panel.style.left = `${next.left}px`;
+
 			options.panel.style.top = `${next.top}px`;
 		},
 		overlay: options.panel,
 		placement: options.placement,
 		signal: options.signal,
 	});
+
 	const dismiss =
 		options.trigger === 'click'
 			? bindOverlayDismiss({
@@ -32,8 +34,10 @@ export const bindTooltipOverlay = (options: TooltipOverlayOptions): (() => void)
 					signal: options.signal,
 				})
 			: undefined;
+
 	return () => {
 		position();
+
 		dismiss?.();
 	};
 };

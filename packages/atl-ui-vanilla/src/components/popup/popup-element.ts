@@ -20,6 +20,7 @@ export const createAltPopupElementClass = (HtmlElementConstructor: typeof HTMLEl
 		}
 		set anchor(value: Element | null) {
 			this.#anchor = value;
+
 			this.requestUpdate();
 		}
 		get closeOnEscape(): boolean {
@@ -65,7 +66,9 @@ export const createAltPopupElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 		onConnected(): void {
 			upgradeProperties(this, popupUpgradeProperties);
+
 			this.classList.add('alt-popup');
+
 			this.setAttribute('popover', 'manual');
 		}
 
@@ -85,13 +88,19 @@ export const createAltPopupElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 		update(): void {
 			const signal = this.connectionSignal;
+
 			const anchor = this.anchor;
+
 			this.dataset.open = String(this.open);
+
 			this.#cleanupOverlay();
+
 			if (this.open && anchor && signal) this.#showOverlay(anchor, signal);
 			else setPopupPopoverOpen(this, false);
+
 			if (this.#renderedOpen !== this.open) {
 				this.#renderedOpen = this.open;
+
 				this.dispatchEvent(createTypedEvent<AltPopupOpenChangeDetail>('alt-open-change', { open: this.open }));
 			}
 		}
@@ -111,6 +120,7 @@ export const createAltPopupElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 		#cleanupOverlay(): void {
 			this.#cleanup?.();
+
 			this.#cleanup = undefined;
 		}
 	};

@@ -15,8 +15,11 @@ class LifecycleElement extends BaseElement {
 
 	public override onConnected(signal: AbortSignal): void {
 		this.connectionCount += 1;
+
 		this.signals.push(signal);
+
 		window.addEventListener(TEST_EVENT, this.handleTestEvent, { signal });
+
 		signal.addEventListener('abort', this.handleCleanup, { once: true });
 	}
 
@@ -44,20 +47,29 @@ describe('base element lifecycle', () => {
 		const element = document.createElement(TEST_TAG) as LifecycleElement;
 
 		document.body.append(element);
+
 		window.dispatchEvent(new Event(TEST_EVENT));
+
 		element.remove();
+
 		window.dispatchEvent(new Event(TEST_EVENT));
 
 		expect(element.connectionCount).toBe(1);
+
 		expect(element.cleanupCount).toBe(1);
+
 		expect(element.eventCount).toBe(1);
+
 		expect(element.signals[0]?.aborted).toBe(true);
 
 		document.body.append(element);
+
 		window.dispatchEvent(new Event(TEST_EVENT));
 
 		expect(element.connectionCount).toBe(2);
+
 		expect(element.eventCount).toBe(2);
+
 		expect(element.signals[1]?.aborted).toBe(false);
 	});
 
@@ -65,20 +77,27 @@ describe('base element lifecycle', () => {
 		const element = document.createElement(TEST_TAG) as LifecycleElement;
 
 		document.body.append(element);
+
 		element.requestUpdate();
+
 		element.requestUpdate();
+
 		await Promise.resolve();
 
 		expect(element.updateCount).toBe(1);
 
 		element.requestUpdate();
+
 		element.requestUpdate();
+
 		await Promise.resolve();
 
 		expect(element.updateCount).toBe(2);
 
 		element.remove();
+
 		element.requestUpdate();
+
 		await Promise.resolve();
 
 		expect(element.updateCount).toBe(2);

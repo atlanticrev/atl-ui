@@ -29,6 +29,7 @@ export const createAltSelectElementClass = (HtmlElementConstructor: typeof HTMLE
 
 		public set options(value: readonly AltSelectOption[]) {
 			this.#runtime.model.options = value;
+
 			this.#runtime.render();
 		}
 
@@ -63,7 +64,9 @@ export const createAltSelectElementClass = (HtmlElementConstructor: typeof HTMLE
 
 		public set values(values: readonly string[]) {
 			this.#runtime.model.setMultiple(this.hasAttribute('multiple'));
+
 			this.#runtime.model.setValues(values);
+
 			this.#runtime.render();
 		}
 
@@ -93,6 +96,7 @@ export const createAltSelectElementClass = (HtmlElementConstructor: typeof HTMLE
 
 		public override onConnected(signal: AbortSignal): void {
 			upgradeProperties(this, SELECT_PRE_UPGRADE_PROPERTIES);
+
 			this.#runtime.connect(signal);
 		}
 
@@ -110,8 +114,12 @@ export const createAltSelectElementClass = (HtmlElementConstructor: typeof HTMLE
 	}
 
 	defineSelectReflectedProperties(AltSelectElement.prototype);
+
 	defineSelectIndicatorIconProperty(AltSelectElement.prototype);
+
 	defineSelectLeadingIconProperty(AltSelectElement.prototype);
+
 	defineSelectFormApi(AltSelectElement.prototype);
+
 	return AltSelectElement;
 };

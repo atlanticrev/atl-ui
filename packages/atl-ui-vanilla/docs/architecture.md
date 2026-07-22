@@ -13,24 +13,24 @@
 
 ### Native HTML recipes
 
-Button, card, breadcrumbs, checkbox, radio, switcher, chip, skeleton, and sidebar are semantic HTML with
-exported CSS. Feature code owns their content and routing.
+Button, card, breadcrumbs, checkbox, radio, switcher, chip, skeleton, sidebar, divider, spinner, and stepper
+are semantic HTML with exported CSS. Feature code owns their content and routing.
 
 ### Owned native compounds
 
-Alert, input, file upload, progress, and avatar own bounded decorative light DOM. Alert preserves its authored
-message and action nodes. Input, file upload, and progress keep native controls inside so forms, validation,
-autofill, and accessibility remain browser-owned.
+Alert, input, search, file upload, progress, date picker, date range picker, and avatar own bounded decorative
+light DOM. Alert preserves its authored message and action nodes. Form components and progress keep native
+controls inside so forms, validation, autofill, and accessibility remain browser-owned.
 
 ### Behavioral elements
 
-Tabs, tooltip, popup, listbox, and dialog controllers enhance authored light DOM. They do not accept render
-callbacks or arbitrary data structures that would require a rendering engine.
+Tabs, collapse, menu, tooltip, popup, listbox, and dialog controllers enhance authored light DOM. They do not
+accept render callbacks or arbitrary data structures that would require a rendering engine.
 
 ### Fully managed elements
 
-Select, dropdown, autocomplete, table, and toast region own bounded dynamic DOM. Options, rows, and toast
-items use small keyed updates with documented limits.
+Calendar, pagination, select, dropdown, autocomplete, table, and toast region own bounded dynamic DOM.
+Options, rows, dates, pages, and toast items use small bounded updates with documented limits.
 
 ## Registration
 

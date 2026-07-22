@@ -17,28 +17,26 @@ export const setInputValue = (input: AutocompleteInput, value: string): void => 
 };
 
 export const syncInputHostAttributes = (host: HTMLElement, input: AutocompleteInput): void => {
-	const attributes = [
-		'disabled',
-		'helper-text',
-		'label',
-		'placeholder',
-		'readonly',
-		'size',
-		'status',
-	] as const;
+	const attributes = ['disabled', 'helper-text', 'label', 'placeholder', 'readonly', 'size', 'status'] as const;
 
 	for (const name of attributes) {
 		const value = host.getAttribute(name);
+
 		if (value === null) input.removeAttribute(name);
 		else input.setAttribute(name, value);
 	}
 
 	if (isNativeInput(input)) {
 		input.disabled = host.hasAttribute('disabled');
+
 		input.placeholder = host.getAttribute('placeholder') ?? '';
+
 		input.readOnly = host.hasAttribute('readonly');
+
 		const ariaLabel = host.getAttribute('aria-label');
+
 		const label = host.getAttribute('label');
+
 		if (ariaLabel !== null) input.setAttribute('aria-label', ariaLabel);
 		else if (label && !input.hasAttribute('aria-labelledby')) input.setAttribute('aria-label', label);
 	}

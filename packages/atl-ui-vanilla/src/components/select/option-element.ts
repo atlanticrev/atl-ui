@@ -78,8 +78,11 @@ export const createAltOptionElementClass = (HtmlElementConstructor: typeof HTMLE
 
 		public override onConnected(): void {
 			upgradeProperties(this, ['checkIcon', 'description', 'disabled', 'icon', 'label', 'selected', 'value']);
+
 			const rendered = Boolean(this.closest('.alt-listbox'));
+
 			this.hidden = !rendered;
+
 			if (rendered) this.removeAttribute('aria-hidden');
 			else this.setAttribute('aria-hidden', 'true');
 		}

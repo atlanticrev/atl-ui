@@ -11,10 +11,13 @@ describe('element registration', () => {
 		});
 
 		const firstResult = registerElement(TEST_TAG, factory);
+
 		const secondResult = registerElement(TEST_TAG, factory);
 
 		expect(firstResult).toBe(customElements.get(TEST_TAG));
+
 		expect(secondResult).toBe(firstResult);
+
 		expect(factory).toHaveBeenCalledTimes(1);
 	});
 });

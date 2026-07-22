@@ -53,8 +53,11 @@ export const tooltipStory = defineStory({
 	],
 	setup: (root) => {
 		const tooltip = findElement<AltTooltipElementApi>(root, '[data-custom-tooltip]');
+
 		const content = document.createElement('span');
+
 		content.append(createCustomIcon(document), ' Rich content');
+
 		tooltip.content = content;
 	},
 });

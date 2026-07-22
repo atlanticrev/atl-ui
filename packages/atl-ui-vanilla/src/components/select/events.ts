@@ -10,6 +10,7 @@ export const emitSelectChange = (
 	sourceEvent?: Event,
 ): void => {
 	const option = model.options.find((candidate) => candidate.value === model.activeValue);
+
 	const detail: AltSelectChangeDetail = {
 		option,
 		reason,
@@ -17,5 +18,6 @@ export const emitSelectChange = (
 		value: model.value,
 		values: model.values,
 	};
+
 	host.dispatchEvent(createTypedEvent(ALT_SELECT_CHANGE_EVENT, detail));
 };

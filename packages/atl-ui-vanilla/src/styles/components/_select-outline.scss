@@ -1,0 +1,25 @@
+@layer alt.components {
+  .alt-select__outline {
+    position: absolute;
+    z-index: 1;
+    inset: calc(0px - var(--alt-select-border-width));
+    display: block;
+    width: calc(100% + var(--alt-select-border-width) + var(--alt-select-border-width));
+    height: calc(100% + var(--alt-select-border-width) + var(--alt-select-border-width));
+    pointer-events: none;
+  }
+
+  .alt-select__outline-path {
+    fill: none;
+    stroke: var(--alt-select-border-color);
+    stroke-linecap: butt;
+    stroke-linejoin: round;
+    stroke-width: var(--alt-select-outline-width);
+    vector-effect: non-scaling-stroke;
+    transition: stroke var(--alt-motion-normal);
+  }
+
+  .alt-select__trigger:has(> .alt-select__outline) {
+    border-color: transparent;
+  }
+}

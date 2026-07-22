@@ -23,20 +23,36 @@ export const customIconMarkup = `
 
 export const createCustomIcon = (document: Document): SVGSVGElement => {
 	const svg = document.createElementNS(SVG_NAMESPACE, 'svg');
+
 	const path = document.createElementNS(SVG_NAMESPACE, 'path');
+
 	svg.classList.add('alt-icon');
+
 	svg.dataset.storyCustomIcon = 'spark';
+
 	svg.setAttribute('aria-hidden', 'true');
+
 	svg.setAttribute('fill', 'none');
+
 	svg.setAttribute('focusable', 'false');
+
 	svg.setAttribute('height', '20');
+
 	svg.setAttribute('viewBox', '0 0 24 24');
+
 	svg.setAttribute('width', '20');
+
 	path.setAttribute('d', CUSTOM_SPARK_PATH);
+
 	path.setAttribute('stroke', 'currentColor');
+
 	path.setAttribute('stroke-linecap', 'round');
+
 	path.setAttribute('stroke-linejoin', 'round');
+
 	path.setAttribute('stroke-width', '1.5');
+
 	svg.append(path);
+
 	return svg;
 };

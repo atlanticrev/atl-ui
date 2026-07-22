@@ -27,12 +27,19 @@ const advancedColumns: readonly AltTableColumn<ChannelRow>[] = [
 		title: 'Status',
 		render: (value) => {
 			const chip = document.createElement('span');
+
 			const label = document.createElement('span');
+
 			chip.className = 'alt-chip';
+
 			chip.dataset.variant = value === 'Ready' ? 'frozen' : 'default';
+
 			label.className = 'alt-chip__label';
+
 			label.textContent = String(value);
+
 			chip.append(label);
+
 			return chip;
 		},
 	},
@@ -64,15 +71,23 @@ export const tableStory = defineStory({
 	],
 	setup: (root) => {
 		const basic = findElement<AltTableElementApi<ChannelRow>>(root, '[data-basic-table]');
+
 		basic.columns = channelColumns;
+
 		basic.dataSource = channelRows.slice(0, 3);
+
 		basic.rowKey = 'channel';
+
 		basic.addEventListener('alt-row-click', (event) => {
 			const detail = (event as CustomEvent<AltTableRowClickDetail<ChannelRow>>).detail;
+
 			findElement<HTMLOutputElement>(root, '[data-row-output]').value = `Clicked ${detail.record.channel}`;
 		});
+
 		const stress = findElement<AltTableElementApi<ChannelRow>>(root, '[data-stress-table]');
+
 		stress.columns = advancedColumns;
+
 		stress.dataSource = [
 			{
 				audience: 84200,
@@ -80,14 +95,21 @@ export const tableStory = defineStory({
 				status: 'Scheduled',
 			},
 		];
+
 		stress.rowKey = 'channel';
 
 		const rich = findElement<AltTableElementApi<ChannelRow>>(root, '[data-advanced-table]');
+
 		rich.columns = advancedColumns;
+
 		rich.dataSource = channelRows;
+
 		rich.pagination = { current: 1, pageSize: 2, total: channelRows.length };
+
 		rich.nextIcon = createCustomIcon(document);
+
 		rich.previousIcon = createCustomIcon(document);
+
 		rich.rowKey = 'channel';
 	},
 });

@@ -1,0 +1,38 @@
+@layer alt.components {
+  :where(alt-select, .alt-select):not([data-open='true'])
+    .alt-select__trigger:hover:not(:disabled, :focus-visible) {
+    --alt-select-border-color: var(--alt-color-border-strong);
+  }
+
+  .alt-select__trigger:focus-visible,
+  :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
+    --alt-select-border-color: var(--alt-color-accent);
+    --alt-select-outline-width: 2px;
+    outline: 0;
+    box-shadow: var(--alt-shadow-sm);
+  }
+
+  :where(alt-select, .alt-select):is([data-status='error'], [aria-invalid='true']) {
+    --alt-select-border-color: var(--alt-color-danger);
+    --alt-select-state-color: var(--alt-color-danger);
+  }
+
+  :where(alt-select, .alt-select)[data-status='success'] {
+    --alt-select-border-color: var(--alt-color-success);
+    --alt-select-state-color: var(--alt-color-success);
+  }
+
+  .alt-select__trigger:disabled,
+  :where(alt-select, .alt-select)[disabled] .alt-select__trigger {
+    --alt-select-bg: var(--alt-color-surface-muted);
+    opacity: 0.72;
+    cursor: not-allowed;
+  }
+
+  @media (forced-colors: active) {
+    .alt-select__trigger:focus-visible,
+    :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
+      --alt-select-border-color: Highlight;
+    }
+  }
+}

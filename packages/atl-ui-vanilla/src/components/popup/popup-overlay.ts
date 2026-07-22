@@ -21,30 +21,37 @@ export const setPopupPopoverOpen = (host: HTMLElement, open: boolean): void => {
 
 export const bindPopupOverlay = (host: HTMLElement, options: PopupOverlayOptions): (() => void) => {
 	setPopupPopoverOpen(host, true);
+
 	const dismiss = bindOverlayDismiss({
 		ignore: [options.anchor],
 		onDismiss: ({ reason }) => {
 			const enabled = reason === 'escape' ? options.closeOnEscape : options.closeOnOutsideClick;
+
 			if (enabled) options.onDismiss();
 		},
 		overlay: host,
 		signal: options.signal,
 	});
+
 	const position = bindOverlayPosition({
 		anchor: options.anchor,
 		flip: options.flip,
 		gap: options.gap,
 		onPosition: (next) => {
 			host.dataset.placement = next.placement;
+
 			host.style.left = `${next.left}px`;
+
 			host.style.top = `${next.top}px`;
 		},
 		overlay: host,
 		placement: options.placement,
 		signal: options.signal,
 	});
+
 	return () => {
 		dismiss();
+
 		position();
 	};
 };

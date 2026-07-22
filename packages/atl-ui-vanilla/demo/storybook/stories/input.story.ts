@@ -66,6 +66,7 @@ export const inputStory = defineStory({
 		for (const input of findElements<AltInputElementApi>(root, '[data-leading]')) {
 			input.leadingIcon = createCustomIcon(document);
 		}
+
 		for (const input of findElements<AltInputElementApi>(root, '[data-trailing]')) {
 			input.trailingIcon = createAltIcon(document, 'eye');
 		}

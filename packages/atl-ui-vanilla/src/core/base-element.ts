@@ -21,6 +21,7 @@ export type AltElementConstructor = new () => AltElement;
 
 const createConnectionController = (element: HTMLElement): AbortController => {
 	const documentWindow = element.ownerDocument.defaultView;
+
 	const AbortControllerConstructor = documentWindow?.AbortController ?? globalThis.AbortController;
 
 	return new AbortControllerConstructor();
@@ -36,6 +37,7 @@ export const createBaseElementClass = (HtmlElementConstructor?: typeof HTMLEleme
 	return class AltElement extends ResolvedHtmlElement {
 		public constructor() {
 			super();
+
 			elementStates.set(this, {
 				connectionController: undefined,
 				enqueueUpdate: createMicrotaskBatch(() => {
@@ -60,20 +62,25 @@ export const createBaseElementClass = (HtmlElementConstructor?: typeof HTMLEleme
 			}
 
 			const controller = createConnectionController(this);
+
 			state.connectionController = controller;
 
 			try {
 				this.onConnected(controller.signal);
+
 				this.requestUpdate();
 			} catch (error) {
 				state.connectionController = undefined;
+
 				controller.abort();
+
 				throw error;
 			}
 		}
 
 		public disconnectedCallback(): void {
 			const state = elementStates.get(this);
+
 			const controller = state?.connectionController;
 
 			if (!controller) {
@@ -81,7 +88,9 @@ export const createBaseElementClass = (HtmlElementConstructor?: typeof HTMLEleme
 			}
 
 			state.connectionController = undefined;
+
 			controller.abort();
+
 			this.onDisconnected();
 		}
 

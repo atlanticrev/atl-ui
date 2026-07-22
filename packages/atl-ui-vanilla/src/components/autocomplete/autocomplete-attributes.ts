@@ -37,24 +37,38 @@ export const syncAutocompleteAttributes = (
 	values: readonly string[],
 ): void => {
 	syncInputHostAttributes(host, dom.input);
+
 	const open = host.hasAttribute('open') && !host.hasAttribute('disabled');
+
 	const searchPlaceholder = host.getAttribute('search-placeholder');
-	const placeholder = open && searchPlaceholder !== null
-		? searchPlaceholder
-		: (host.getAttribute('placeholder') ?? '');
+
+	const placeholder =
+		open && searchPlaceholder !== null ? searchPlaceholder : (host.getAttribute('placeholder') ?? '');
+
 	dom.input.setAttribute('placeholder', placeholder);
+
 	dom.dropdown.emptyText = host.hasAttribute('loading')
 		? (host.getAttribute('loading-text') ?? 'Loading…')
 		: (host.getAttribute('no-results-text') ?? 'No results found');
+
 	dom.dropdown.setAttribute('max-height', host.getAttribute('max-dropdown-height') ?? '212');
+
 	dom.dropdown.multiple = host.hasAttribute('multiple');
+
 	dom.popup.flip = readAutocompleteBoolean(host, 'flip', true);
+
 	dom.popup.open = open;
+
 	dom.trigger.setAttribute('aria-controls', dom.dropdown.id);
+
 	dom.trigger.setAttribute('aria-expanded', String(dom.popup.open));
+
 	dom.trigger.setAttribute('aria-haspopup', 'listbox');
+
 	dom.trigger.toggleAttribute('disabled', host.hasAttribute('disabled'));
+
 	dom.trigger.toggleAttribute('data-popup-open', dom.popup.open);
+
 	configureSelectCarrier(dom.carrier, {
 		disabled: host.hasAttribute('disabled'),
 		form: host.getAttribute('form') ?? undefined,
@@ -62,5 +76,6 @@ export const syncAutocompleteAttributes = (
 		name: host.getAttribute('name') ?? undefined,
 		required: host.hasAttribute('required'),
 	});
+
 	setSelectCarrierValues(dom.carrier, values);
 };

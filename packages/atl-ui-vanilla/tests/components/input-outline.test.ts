@@ -20,6 +20,7 @@ const createRect = (left: number, width: number, height: number): DOMRect => {
 
 const updateComplete = async (): Promise<void> => {
 	await Promise.resolve();
+
 	await Promise.resolve();
 };
 
@@ -53,15 +54,17 @@ describe('alt-input SVG outline', () => {
 	});
 
 	it('accounts for the transparent layout border when positioning the label', () => {
-		expect(calculateInputNotch({
-			direction: 'ltr',
-			fieldLeft: 114,
-			fieldRight: 374,
-			floatingPadding: 4,
-			labelWidth: 68,
-			rootClientLeft: 1,
-			rootLeft: 100,
-		})).toEqual({
+		expect(
+			calculateInputNotch({
+				direction: 'ltr',
+				fieldLeft: 114,
+				fieldRight: 374,
+				floatingPadding: 4,
+				labelWidth: 68,
+				rootClientLeft: 1,
+				rootLeft: 100,
+			}),
+		).toEqual({
 			labelLeft: 9,
 			start: 10,
 			width: 68,
@@ -73,25 +76,37 @@ describe('alt-input SVG outline', () => {
 			this: HTMLElement,
 		) {
 			if (this.classList.contains('alt-input__root')) return createRect(100, 300, 48);
+
 			if (this.classList.contains('alt-input__field')) return createRect(114, 260, 24);
+
 			if (this.classList.contains('alt-input__label')) return createRect(0, 68, 20);
+
 			return createRect(0, 0, 0);
 		});
+
 		vi.spyOn(window, 'getComputedStyle').mockReturnValue({
 			borderTopLeftRadius: '8px',
 			borderTopWidth: '1px',
 			direction: 'ltr',
 			paddingLeft: '4px',
 		} as CSSStyleDeclaration);
+
 		const host = document.createElement('alt-input') as AltInputElementApi;
+
 		host.setAttribute('label', 'Search');
+
 		host.setAttribute('placeholder', 'Find posts');
+
 		document.body.append(host);
+
 		await updateComplete();
 
 		const label = host.querySelector<HTMLElement>('.alt-input__label');
+
 		const path = host.querySelector<SVGPathElement>('.alt-input__outline-path');
+
 		expect(Number.parseFloat(label?.style.left ?? '') + 4).toBe(14);
+
 		expect(path?.getAttribute('d')).toContain('M 8 0.5 H 10 M 78 0.5');
 	});
 });

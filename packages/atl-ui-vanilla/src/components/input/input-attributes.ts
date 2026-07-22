@@ -51,31 +51,43 @@ export const syncInputAttributes = (host: HTMLElement, dom: InputDom): void => {
 	}
 
 	const ariaLabel = host.getAttribute('aria-label');
+
 	const label = host.getAttribute('label');
+
 	const variant = host.getAttribute('variant') ?? 'text';
+
 	const requestedMaxLength = Number(host.getAttribute('max-length') ?? 300);
+
 	const maxLength = Number.isFinite(requestedMaxLength) ? Math.max(0, requestedMaxLength) : 300;
+
 	const describedBy = [
 		host.hasAttribute('description') ? dom.description.id : '',
 		host.hasAttribute('helper-text') ? dom.helper.id : '',
 	].filter(Boolean);
+
 	dom.field.maxLength = maxLength;
+
 	dom.field.classList.toggle('alt-input__field--number', variant === 'number');
 
 	if (variant === 'number' && !host.hasAttribute('inputmode')) {
 		dom.field.inputMode = 'decimal';
 	}
+
 	dom.field.setAttribute('aria-invalid', String(host.dataset.status === 'error'));
+
 	dom.field.setAttribute('aria-describedby', describedBy.join(' '));
 
 	if (ariaLabel !== null) {
 		dom.field.setAttribute('aria-label', ariaLabel);
+
 		dom.field.removeAttribute('aria-labelledby');
 	} else if (label) {
 		dom.field.removeAttribute('aria-label');
+
 		dom.field.setAttribute('aria-labelledby', dom.label.id);
 	} else {
 		dom.field.removeAttribute('aria-label');
+
 		dom.field.removeAttribute('aria-labelledby');
 	}
 };

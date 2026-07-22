@@ -8,5 +8,6 @@ export type { AltDropdownChangeDetail, AltDropdownElementApi, AltDropdownOption 
 
 export const defineAltDropdown = (environment?: ElementEnvironment): CustomElementConstructor | undefined => {
 	defineAltOption(environment);
+
 	return registerElement('alt-dropdown', createAltDropdownElementClass, environment);
 };

@@ -5,8 +5,11 @@ const DEFAULT_MAX = 3;
 
 const readNumber = (element: HTMLElement, name: string, fallback: number, minimum: number): number => {
 	const attribute = element.getAttribute(name);
+
 	if (attribute === null || attribute.trim() === '') return fallback;
+
 	const value = Number(attribute);
+
 	return Number.isFinite(value) && value >= minimum ? Math.floor(value) : fallback;
 };
 
@@ -24,6 +27,7 @@ export const readPreventDuplicate = (element: HTMLElement): boolean => {
 
 export const writePreventDuplicate = (element: HTMLElement, value: boolean): void => {
 	const attribute = booleanAttributeConverter.toAttribute(value);
+
 	if (attribute === null) element.removeAttribute('prevent-duplicate');
 	else element.setAttribute('prevent-duplicate', attribute);
 };

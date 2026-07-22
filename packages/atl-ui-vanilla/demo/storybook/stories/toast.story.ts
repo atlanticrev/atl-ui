@@ -42,9 +42,11 @@ export const toastStory = defineStory({
 		for (const button of findElements<HTMLButtonElement>(root, '[data-toast-status]')) {
 			button.addEventListener('click', () => {
 				const status = button.dataset.toastStatus as AltToastStatus;
+
 				getRegion().push({ message: `${button.textContent} notification`, status });
 			});
 		}
+
 		for (const button of findElements<HTMLButtonElement>(root, '[data-toast-action]')) {
 			button.addEventListener('click', () => handleToastAction(button.dataset.toastAction ?? ''));
 		}
@@ -53,15 +55,21 @@ export const toastStory = defineStory({
 
 const handleToastAction = (action: string): void => {
 	const region = getRegion();
+
 	if (action === 'clear') {
 		region.clear();
+
 		return;
 	}
+
 	if (action === 'persistent') region.push({ message: 'Persistent toast', persist: true });
+
 	if (action === 'locked') region.push({ dismissible: false, message: 'Wait for timeout' });
+
 	if (action === 'duplicate') {
 		region.push({ id: 'deduplicated', message: 'Only one copy', preventDuplicate: true });
 	}
+
 	if (action === 'custom') {
 		region.push({
 			dismissIcon: createCustomIcon(document),
@@ -69,6 +77,7 @@ const handleToastAction = (action: string): void => {
 			message: 'Consumer-provided SVG',
 		});
 	}
+
 	if (action === 'long') {
 		region.push({
 			message: 'Publication failed: https://example.com/a/very/long/path/without/spaces',
@@ -76,6 +85,7 @@ const handleToastAction = (action: string): void => {
 			status: 'error',
 		});
 	}
+
 	if (action === 'burst') {
 		for (let index = 1; index <= 5; index += 1) region.push(`Queued notification ${index}`);
 	}

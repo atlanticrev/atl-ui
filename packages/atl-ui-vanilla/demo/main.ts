@@ -34,6 +34,7 @@ Reflect.set(window, 'altDemo', demoState);
 
 const recordEvent = (event: Event): void => {
 	const detail = 'detail' in event ? JSON.stringify(event.detail) : '';
+
 	demoState.events.push(`${event.type}:${detail}`);
 };
 
@@ -47,12 +48,15 @@ const handleRejection = (event: PromiseRejectionEvent): void => {
 
 const handleSubmit = (event: SubmitEvent): void => {
 	event.preventDefault();
+
 	const values: Record<string, FormDataEntryValue | FormDataEntryValue[]> = {};
 
 	new FormData(form).forEach((value, key) => {
 		const current = values[key];
+
 		values[key] = current === undefined ? value : ([] as FormDataEntryValue[]).concat(current, value);
 	});
+
 	formOutput.value = JSON.stringify(values, null, 2);
 };
 
@@ -64,8 +68,11 @@ const handleReset = (): void => {
 
 const handleTheme = (): void => {
 	const root = document.documentElement;
+
 	const nextTheme = root.dataset.altTheme === 'dark' ? 'light' : 'dark';
+
 	root.dataset.altTheme = nextTheme;
+
 	themeButton.textContent = nextTheme === 'dark' ? 'Light theme' : 'Dark theme';
 };
 

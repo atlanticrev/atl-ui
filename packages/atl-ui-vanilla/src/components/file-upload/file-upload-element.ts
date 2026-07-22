@@ -7,6 +7,7 @@ import type { AltFileUploadChangeDetail, AltFileUploadStatus } from './types';
 
 const reflectedBoolean = (element: HTMLElement, name: string, value: boolean): void => {
 	const attribute = booleanAttributeConverter.toAttribute(value);
+
 	if (attribute === null) element.removeAttribute(name);
 	else element.setAttribute(name, attribute);
 };
@@ -76,37 +77,57 @@ export const createAltFileUploadElementClass = (
 
 		onConnected(signal: AbortSignal): void {
 			upgradeProperties(this, FILE_UPLOAD_PRE_UPGRADE_PROPERTIES);
+
 			this.classList.add('alt-file-upload');
+
 			this.#dom ??= createFileUploadDom(this);
+
 			this.#dom.input.addEventListener('change', this.#handleChange, { signal });
+
 			this.ownerDocument.addEventListener('reset', this.#handleReset, { capture: true, signal });
 		}
 
 		clear(): void {
 			if (!this.#dom) return;
+
 			this.#dom.input.value = '';
+
 			this.requestUpdate();
 		}
 
 		update(): void {
 			if (!this.#dom) return;
+
 			this.dataset.status = this.status;
+
 			this.setAttribute('aria-disabled', String(this.disabled));
+
 			this.#dom.buttonLabel.textContent = this.label;
+
 			syncFileUploadIcon(this, this.#dom);
+
 			this.#dom.input.accept = this.accept;
+
 			this.#dom.input.disabled = this.disabled;
+
 			this.#dom.input.multiple = this.multiple;
+
 			this.#dom.input.name = this.name;
+
 			this.#dom.value.textContent = formatSelectedFiles(this.files);
+
 			this.#dom.value.hidden = !this.#dom.value.textContent;
+
 			this.#dom.helper.textContent = this.helperText;
+
 			this.#dom.helper.hidden = !this.helperText;
 		}
 
 		#handleChange = (): void => {
 			const files = Array.from(this.files ?? []);
+
 			this.requestUpdate();
+
 			this.dispatchEvent(createTypedEvent<AltFileUploadChangeDetail>('alt-change', { files }));
 		};
 		#handleReset = (event: Event): void => {
@@ -115,5 +136,6 @@ export const createAltFileUploadElementClass = (
 	}
 
 	defineFileUploadIconProperty(AltFileUploadElement.prototype);
+
 	return AltFileUploadElement;
 };

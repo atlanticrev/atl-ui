@@ -12,15 +12,19 @@ export const bindAutocompleteForm = (
 		'invalid',
 		(event) => {
 			event.preventDefault();
+
 			dom.inputElement.focus();
 		},
 		{ signal },
 	);
+
 	host.ownerDocument.addEventListener(
 		'reset',
 		(event) => {
 			if (event.target !== dom.carrier.form) return;
+
 			const defaults = getDefaults();
+
 			queueMicrotask(() => commit(defaults.values, defaults.inputValue, true));
 		},
 		{ signal },

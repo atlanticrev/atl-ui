@@ -14,7 +14,9 @@ type DemoState = { errors: string[]; ready: boolean };
 
 const getElement = <ElementType extends HTMLElement>(id: string): ElementType => {
 	const element = document.getElementById(id);
+
 	if (!element) throw new Error(`Missing demo element: ${id}`);
+
 	return element as ElementType;
 };
 
@@ -59,7 +61,9 @@ getElement('toast-button').addEventListener('click', () => {
 const themeButton = getElement<HTMLButtonElement>('theme-button');
 themeButton.addEventListener('click', () => {
 	const dark = document.documentElement.dataset.altTheme !== 'dark';
+
 	document.documentElement.dataset.altTheme = dark ? 'dark' : 'light';
+
 	themeButton.textContent = dark ? 'Light theme' : 'Dark theme';
 });
 

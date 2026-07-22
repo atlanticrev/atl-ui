@@ -6,12 +6,7 @@ type StoryOptions = Omit<StoryDefinition, 'examples'> & {
 
 export const defineStory = (options: StoryOptions): StoryDefinition => options;
 
-export const example = (
-	title: string,
-	markup: string,
-	description?: string,
-	wide = false,
-): StoryExample => ({
+export const example = (title: string, markup: string, description?: string, wide = false): StoryExample => ({
 	description,
 	markup,
 	title,

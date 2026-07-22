@@ -33,6 +33,7 @@ export const createAltAutocompleteElementClass = (
 
 		constructor() {
 			super();
+
 			this.#actions = createAutocompleteActions(this, {
 				commit: this.#commit,
 				isOpen: () => this.#openState.open,
@@ -43,27 +44,39 @@ export const createAltAutocompleteElementClass = (
 
 		attributeChangedCallback(name: string, previous: string | null, value: string | null): void {
 			if (previous === value) return;
+
 			if (name === 'open') this.#openState.syncAttribute(value !== null);
+
 			if (name === 'disabled' && value !== null) this.#requestOpen(false, 'programmatic');
+
 			if (name === 'value' && !this.multiple) this.valuesState = value ? [value] : [];
+
 			this.#syncInputFromSelection();
+
 			this.requestUpdate();
 		}
 
 		onConnected(signal: AbortSignal): void {
 			upgradeProperties(this, AUTOCOMPLETE_PRE_UPGRADE_PROPERTIES);
+
 			if (!this.optionsAssigned) {
 				this.optionsValue = readAutocompleteOptions(this, this.autocompleteDom?.dropdown);
 			}
+
 			this.autocompleteDom ??= createAutocompleteDom(this);
+
 			this.#initializeState();
+
 			this.classList.add('alt-autocomplete');
+
 			bindAutocompleteInteractions(this, this.autocompleteDom, this.#actions, signal);
+
 			bindAutocompleteForm(this, this.autocompleteDom, () => this.#state.defaultState, this.#commit, signal);
 		}
 
 		update(): void {
 			if (!this.autocompleteDom) return;
+
 			renderAutocomplete(this, this.autocompleteDom, {
 				filter: this.filterValue,
 				inputPristine: this.inputPristineState,
@@ -71,6 +84,7 @@ export const createAltAutocompleteElementClass = (
 				options: this.optionsValue,
 				values: this.valuesState,
 			});
+
 			queueMicrotask(() => {
 				if (this.autocompleteDom) syncAutocompleteActiveDescendant(this.autocompleteDom);
 			});
@@ -82,23 +96,32 @@ export const createAltAutocompleteElementClass = (
 
 		#commit = (values: readonly string[], inputValue: string, pristine: boolean): void => {
 			this.valuesState = this.multiple ? [...new Set(values)] : values.slice(0, 1);
+
 			this.inputValueState = inputValue;
+
 			this.inputPristineState = pristine;
+
 			const value = this.valuesState[0];
+
 			if (value) this.setAttribute('value', value);
 			else this.removeAttribute('value');
+
 			this.requestUpdate();
 		};
 
 		#initializeState(): void {
 			if (this.#state.initialized) return;
+
 			this.valuesState = readInitialAutocompleteValues(this, this.optionsValue, this.valuesState);
+
 			this.#syncInputFromSelection();
+
 			this.#state.initialize({ inputValue: this.inputValueState, values: this.valuesState });
 		}
 
 		#syncInputFromSelection(): void {
 			if (!this.inputPristineState || this.multiple) return;
+
 			this.inputValueState = readAutocompleteSelectionLabel(this, this.optionsValue, this.valuesState);
 		}
 
@@ -106,7 +129,9 @@ export const createAltAutocompleteElementClass = (
 			if (!this.optionsAssigned) {
 				this.optionsValue = readAutocompleteOptions(this, this.autocompleteDom?.dropdown);
 			}
+
 			this.#syncInputFromSelection();
+
 			this.requestUpdate();
 		};
 

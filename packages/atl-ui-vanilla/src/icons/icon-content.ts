@@ -11,6 +11,7 @@ export const syncAltIconContent = (
 ): void => {
 	if (content === null) {
 		if (container.childNodes.length > 0) container.replaceChildren();
+
 		return;
 	}
 
@@ -18,6 +19,7 @@ export const syncAltIconContent = (
 		if (container.firstChild !== content || container.childNodes.length !== 1) {
 			container.replaceChildren(content);
 		}
+
 		return;
 	}
 

@@ -30,6 +30,7 @@ const createAvatarSource = (): string => {
 		'<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">' +
 		'<rect width="64" height="64" fill="#d8e5ff"/><circle cx="32" cy="25" r="13" fill="#315ea8"/>' +
 		'<path d="M10 64c3-17 13-25 22-25s19 8 22 25" fill="#315ea8"/></svg>';
+
 	return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 };
 
@@ -50,6 +51,7 @@ export const avatarStory = defineStory({
 	],
 	setup: (root) => {
 		findElement<AltAvatarElementApi>(root, '[data-avatar-image]').src = createAvatarSource();
+
 		findElement<AltAvatarElementApi>(root, '[data-avatar-icon]').icon = createCustomIcon(document);
 	},
 });

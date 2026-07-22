@@ -11,28 +11,50 @@ export const renderDropdown = (
 	emptyIcon: Node | null,
 ): void => {
 	const labelledBy = host.getAttribute('aria-labelledby');
+
 	const label = host.getAttribute('aria-label')?.trim() || 'Options';
+
 	host.dataset.multiple = String(host.hasAttribute('multiple'));
+
 	dom.list.toggleAttribute('aria-labelledby', Boolean(labelledBy));
+
 	if (labelledBy) dom.list.setAttribute('aria-labelledby', labelledBy);
+
 	dom.list.toggleAttribute('aria-label', !labelledBy);
+
 	if (!labelledBy) dom.list.setAttribute('aria-label', label);
+
 	dom.list.setAttribute('aria-multiselectable', String(host.hasAttribute('multiple')));
+
 	dom.list.style.setProperty('--alt-listbox-max-height', `${Number(host.getAttribute('max-height')) || 320}px`);
+
 	dom.emptyText.textContent = host.getAttribute('empty-text') ?? 'No options';
+
 	dom.emptyIcon.hidden = !emptyIcon;
+
 	if (emptyIcon && dom.emptyIcon.firstChild !== emptyIcon) dom.emptyIcon.replaceChildren(emptyIcon);
+
 	if (!emptyIcon && dom.emptyIcon.childNodes.length > 0) dom.emptyIcon.replaceChildren();
+
 	dom.empty.hidden = model.options.length > 0;
+
 	dom.footer.hidden = !host.hasAttribute('show-footer');
+
 	dom.footerText.textContent = host.getAttribute('footer-text') ?? '';
+
 	dom.footerText.hidden = !dom.footerText.textContent;
+
 	dom.selectAll.textContent = host.getAttribute('select-all-text') ?? 'Select all';
+
 	dom.selectAll.hidden = !host.hasAttribute('multiple');
+
 	syncOptionViews(dom.list, views, model.options, model.activeValue, model.values);
+
 	const active = model.activeValue ? views.get(model.activeValue) : undefined;
+
 	if (active) {
 		dom.list.setAttribute('aria-activedescendant', active.element.id);
+
 		active.element.scrollIntoView?.({ block: 'nearest' });
 	} else dom.list.removeAttribute('aria-activedescendant');
 };

@@ -59,12 +59,19 @@ export const createAltAlertElementClass = (HtmlElementConstructor: typeof HTMLEl
 				'severity',
 				'variant',
 			]);
+
 			this.classList.add('alt-alert');
+
 			if (!this.hasAttribute('role')) this.setAttribute('role', 'alert');
+
 			this.#dom ??= createAlertDom(this);
+
 			const content = getAlertContentState(this);
+
 			if (content.action === undefined && this.#dom.authoredAction) content.action = this.#dom.authoredAction;
+
 			if (content.icon === undefined && this.#dom.authoredIcon) content.icon = this.#dom.authoredIcon;
+
 			this.#dom.closeButton.addEventListener('click', this.#handleClose, { signal });
 		}
 
@@ -74,8 +81,11 @@ export const createAltAlertElementClass = (HtmlElementConstructor: typeof HTMLEl
 				{ reason, sourceEvent },
 				{ cancelable: true },
 			);
+
 			if (!this.dispatchEvent(event)) return false;
+
 			this.hidden = true;
+
 			return true;
 		}
 
@@ -85,16 +95,27 @@ export const createAltAlertElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 		update(): void {
 			if (!this.#dom) return;
+
 			this.dataset.color = this.color;
+
 			this.dataset.severity = this.severity;
+
 			this.dataset.variant = this.variant;
+
 			const content = getAlertContentState(this);
+
 			const mappedIcon = content.iconMapping?.[this.severity];
+
 			const icon = mappedIcon === undefined ? content.icon : mappedIcon;
+
 			syncAltIconContent(this.#dom.icon, icon, getAlertDefaultIcon(this.severity), { size: 20 });
+
 			this.#dom.icon.hidden = icon === null;
+
 			syncAltIconContent(this.#dom.closeButton, content.closeIcon, 'close', { size: 16 });
+
 			this.#dom.closeButton.setAttribute('aria-label', this.getAttribute('close-label') ?? 'Close alert');
+
 			syncAlertAction(this.#dom, content.action, this.dismissible);
 		}
 
@@ -104,5 +125,6 @@ export const createAltAlertElementClass = (HtmlElementConstructor: typeof HTMLEl
 	};
 
 	defineAlertContentProperties(AltAlertElement.prototype);
+
 	return AltAlertElement;
 };

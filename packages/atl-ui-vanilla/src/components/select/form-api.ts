@@ -30,6 +30,7 @@ export const defineSelectFormApi = (target: PropertyTarget): void => {
 		setCustomValidity: {
 			value(this: HTMLElement, message: string): void {
 				customMessages.set(this, message);
+
 				getCarrier(this)?.setCustomValidity(message);
 			},
 		},

@@ -174,6 +174,20 @@ HTML каждого примера.
 Production-вариант собирается командой
 `npm run demo:build --workspace @atlanticrev/atl-ui-vanilla`.
 
+Полный quality gate пакета проверяет lint, форматирование, типы, unit/browser tests и
+production build:
+
+```bash
+npm run verify:vanilla
+```
+
+`npm run format --workspace @atlanticrev/atl-ui-vanilla` сначала нормализует blank lines через
+`atl-formatter`, затем применяет Biome ко всему пакету.
+
+Для установки dev dependencies задайте `GITHUB_TOKEN` в том же shell, где запускается npm. Нужен
+GitHub PAT classic с `read:packages` и доступом к `atlanticrev/atl-formatter`; fine-grained PAT для
+GitHub Packages npm registry не поддерживается.
+
 Полный browser- и accessibility-набор запускается в Chromium, Firefox и WebKit:
 
 ```bash

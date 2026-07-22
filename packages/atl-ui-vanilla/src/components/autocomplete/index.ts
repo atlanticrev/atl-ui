@@ -18,7 +18,10 @@ export type {
 
 export const defineAltAutocomplete = (environment?: ElementEnvironment): CustomElementConstructor | undefined => {
 	defineAltInput(environment);
+
 	defineAltPopup(environment);
+
 	defineAltDropdown(environment);
+
 	return registerElement('alt-autocomplete', createAltAutocompleteElementClass, environment);
 };

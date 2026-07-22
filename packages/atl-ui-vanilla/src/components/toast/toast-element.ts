@@ -54,10 +54,15 @@ export const createAltToastRegionElementClass = (
 
 		onConnected(signal: AbortSignal): void {
 			upgradeProperties(this, ['defaultDuration', 'max', 'preventDuplicate']);
+
 			this.classList.add('alt-toast-region');
+
 			this.#dom ??= createToastDom(this);
+
 			this.#transitions = bindToastTransitions(this, signal, this.#handleTransition);
+
 			bindToastInteractions(this, signal, this.#handleClose, this.#setToastPaused, this.#setAllPaused);
+
 			this.#setAllPaused('document-hidden', this.ownerDocument.hidden);
 		}
 
@@ -79,15 +84,24 @@ export const createAltToastRegionElementClass = (
 
 		update(): void {
 			if (!this.#dom) return;
+
 			this.#store.reconcile(this.max);
+
 			const records = this.#store.visibleRecords;
+
 			const items = syncToastDom(this.#dom, records);
+
 			const window = this.ownerDocument.defaultView;
+
 			const signal = this.connectionSignal;
+
 			if (!window || !signal) return;
+
 			this.#store.bindTimers(window, signal);
+
 			for (const record of records) {
 				const item = items.get(record.id);
+
 				if (item) this.#transitions?.sync(item, record.phase);
 			}
 		}

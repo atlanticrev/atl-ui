@@ -33,9 +33,13 @@ export const createToastRecord = (
 					message: options,
 				}
 			: options;
+
 	const id = normalized.id ?? `alt-toast-${++nextToastId}`;
+
 	const duration = normalizeDuration(normalized.duration, defaultDuration);
+
 	const timer = new ToastTimer(normalized.persist ? 0 : duration, () => onElapsed(id));
+
 	timer.pause('lifecycle');
 
 	return {

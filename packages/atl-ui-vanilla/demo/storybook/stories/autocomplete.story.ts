@@ -74,14 +74,19 @@ export const autocompleteStory = defineStory({
 		for (const autocomplete of findElements<AltAutocompleteElementApi>(root, '[data-tool-options]')) {
 			autocomplete.options = toolOptions;
 		}
+
 		for (const autocomplete of findElements<AltAutocompleteElementApi>(root, '[data-multiple]')) {
 			autocomplete.values = ['figma', 'notion'];
 		}
+
 		for (const autocomplete of findElements<AltAutocompleteElementApi>(root, '[data-custom-icons]')) {
 			autocomplete.clearIcon = createCustomIcon(document);
+
 			autocomplete.indicatorIcon = createCustomIcon(document);
+
 			autocomplete.noResultsIcon = createCustomIcon(document);
 		}
+
 		for (const autocomplete of findElements<AltAutocompleteElementApi>(root, '[data-long-option]')) {
 			autocomplete.options = [longOption];
 		}

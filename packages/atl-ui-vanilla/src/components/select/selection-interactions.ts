@@ -19,9 +19,11 @@ export const createSelectionInteractions = (
 		const configured = host.getAttribute('close-on-select');
 		return configured === null ? !host.hasAttribute('multiple') : configured !== 'false';
 	};
+
 	const selectActive = (event?: Event): void => {
 		if (!overlay.isOpen()) {
 			overlay.open(event);
+
 			return;
 		}
 
@@ -30,8 +32,10 @@ export const createSelectionInteractions = (
 		}
 
 		const wasSelected = model.activeValue ? model.values.includes(model.activeValue) : false;
+
 		if (model.selectActive()) {
 			const reason = host.hasAttribute('multiple') && wasSelected ? 'remove' : 'select';
+
 			emitSelectChange(host, model, reason, event);
 		}
 
@@ -44,6 +48,7 @@ export const createSelectionInteractions = (
 
 			if (option && !option.disabled) {
 				model.activeValue = value;
+
 				selectActive(event);
 			}
 		},
@@ -51,17 +56,20 @@ export const createSelectionInteractions = (
 		isOpen: overlay.isOpen,
 		move: (direction, edge): void => {
 			model.moveActive(direction, edge);
+
 			render();
 		},
 		open: overlay.open,
 		refreshOptions: (): void => {
 			model.refreshOptions();
+
 			render();
 		},
 		selectActive,
 		toggle: overlay.toggle,
 		typeahead: (query): void => {
 			model.moveToMatch(query);
+
 			render();
 		},
 	};

@@ -35,6 +35,7 @@ export const createInputPropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 
 		set leadingIcon(value: Node | null) {
 			this.pendingLeadingIcon = value;
+
 			this.requestUpdate();
 		}
 
@@ -60,6 +61,7 @@ export const createInputPropertiesClass = (HtmlElementConstructor: typeof HTMLEl
 
 		set trailingIcon(value: Node | null) {
 			this.pendingTrailingIcon = value;
+
 			this.requestUpdate();
 		}
 

@@ -20,6 +20,7 @@ export const createDropdownPropertiesClass = (HtmlElementConstructor: typeof HTM
 		}
 		set activeValue(value: string) {
 			this.dropdownModel.activeValue = value;
+
 			this.requestUpdate();
 		}
 		get emptyText(): string {
@@ -33,6 +34,7 @@ export const createDropdownPropertiesClass = (HtmlElementConstructor: typeof HTM
 		}
 		set emptyIcon(value: Node | null) {
 			this.emptyIconValue = value;
+
 			this.requestUpdate();
 		}
 		get footerText(): string {
@@ -52,6 +54,7 @@ export const createDropdownPropertiesClass = (HtmlElementConstructor: typeof HTM
 		}
 		set options(value: readonly AltDropdownOption[]) {
 			this.dropdownModel.options = value;
+
 			this.requestUpdate();
 		}
 		get value(): string {
@@ -65,6 +68,7 @@ export const createDropdownPropertiesClass = (HtmlElementConstructor: typeof HTM
 		}
 		set values(value: readonly string[]) {
 			this.dropdownModel.setValues(value);
+
 			this.requestUpdate();
 		}
 	};

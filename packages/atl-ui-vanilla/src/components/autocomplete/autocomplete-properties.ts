@@ -22,9 +22,12 @@ export const createAutocompletePropertiesClass = (HtmlElementConstructor: typeof
 		}
 		set filter(value: AltAutocompleteFilter | null) {
 			this.filterValue = value;
+
 			this.requestUpdate();
 		}
-		get form(): HTMLFormElement | null { return this.autocompleteDom?.carrier.form ?? null; }
+		get form(): HTMLFormElement | null {
+			return this.autocompleteDom?.carrier.form ?? null;
+		}
 		get freeSolo(): boolean {
 			return this.hasAttribute('free-solo');
 		}
@@ -45,7 +48,9 @@ export const createAutocompletePropertiesClass = (HtmlElementConstructor: typeof
 		}
 		set inputValue(value: string) {
 			this.inputValueState = String(value);
+
 			this.inputPristineState = false;
+
 			this.requestUpdate();
 		}
 		get multiple(): boolean {
@@ -65,7 +70,9 @@ export const createAutocompletePropertiesClass = (HtmlElementConstructor: typeof
 		}
 		set options(value: readonly AltAutocompleteOption[]) {
 			this.optionsAssigned = true;
+
 			this.optionsValue = value;
+
 			this.requestUpdate();
 		}
 		get readOnly(): boolean {
@@ -82,8 +89,11 @@ export const createAutocompletePropertiesClass = (HtmlElementConstructor: typeof
 		}
 		set value(value: string) {
 			const normalized = String(value);
+
 			this.valuesState = normalized ? [normalized] : [];
+
 			this.inputPristineState = true;
+
 			if (normalized) this.setAttribute('value', normalized);
 			else this.removeAttribute('value');
 		}
@@ -92,10 +102,14 @@ export const createAutocompletePropertiesClass = (HtmlElementConstructor: typeof
 		}
 		set values(value: readonly string[]) {
 			this.valuesState = this.multiple ? [...new Set(value)] : value.slice(0, 1);
+
 			this.inputPristineState = true;
+
 			const firstValue = this.valuesState[0];
+
 			if (firstValue) this.setAttribute('value', firstValue);
 			else this.removeAttribute('value');
+
 			this.requestUpdate();
 		}
 		get validationMessage(): string {
@@ -116,5 +130,6 @@ export const createAutocompletePropertiesClass = (HtmlElementConstructor: typeof
 	}
 
 	defineAutocompleteIconProperties(AutocompletePropertiesElement.prototype);
+
 	return AutocompletePropertiesElement;
 };

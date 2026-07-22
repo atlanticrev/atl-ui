@@ -56,16 +56,21 @@ export const selectStory = defineStory({
 		for (const select of findElements<AltSelectElementApi>(root, '[data-channel-options]')) {
 			select.options = channelOptions;
 		}
+
 		for (const select of findElements<AltSelectElementApi>(root, '[data-multiple]')) {
 			select.values = ['youtube', 'instagram'];
 		}
+
 		for (const select of findElements<AltSelectElementApi>(root, '[data-custom-indicator]')) {
 			select.indicatorIcon = createCustomIcon(document);
+
 			select.leadingIcon = createCustomIcon(document);
+
 			select.options = channelOptions.map((option) =>
 				option.value === 'tiktok' ? { ...option, checkIcon: createCustomIcon(document) } : option,
 			);
 		}
+
 		for (const select of findElements<AltSelectElementApi>(root, '[data-long-option]')) {
 			select.options = [longOption];
 		}

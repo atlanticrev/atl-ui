@@ -11,7 +11,9 @@ afterEach(() => {
 describe('pre-upgrade properties', () => {
 	it('replays an own property through the upgraded prototype setter', () => {
 		const element = document.createElement(TEST_TAG) as HTMLElement & { value: string };
+
 		element.value = 'before-definition';
+
 		document.body.append(element);
 
 		const BaseElement = createBaseElementClass();
@@ -22,6 +24,7 @@ describe('pre-upgrade properties', () => {
 
 			public constructor() {
 				super();
+
 				upgradeProperty(this, 'value');
 			}
 
@@ -31,20 +34,25 @@ describe('pre-upgrade properties', () => {
 
 			public set value(value: string) {
 				this.currentValue = value;
+
 				this.appliedValues.push(value);
 			}
 		}
 
 		customElements.define(TEST_TAG, PreUpgradeElement);
+
 		const upgradedElement = element as PreUpgradeElement;
 
 		expect(upgradedElement.value).toBe('before-definition');
+
 		expect(upgradedElement.appliedValues).toEqual(['before-definition']);
+
 		expect(Object.hasOwn(upgradedElement, 'value')).toBe(false);
 	});
 
 	it('reports missing properties and upgrades multiple properties', () => {
 		const values: string[] = [];
+
 		const prototype = {
 			set first(value: string) {
 				values.push(`first:${value}`);
@@ -53,12 +61,14 @@ describe('pre-upgrade properties', () => {
 				values.push(`second:${value}`);
 			},
 		};
+
 		const target = Object.assign(Object.create(prototype), {
 			first: 'one',
 			second: 'two',
 		});
 
 		expect(upgradeProperty(target, 'missing')).toBe(false);
+
 		upgradeProperties(target, ['first', 'second']);
 
 		expect(values).toEqual(['first:one', 'second:two']);

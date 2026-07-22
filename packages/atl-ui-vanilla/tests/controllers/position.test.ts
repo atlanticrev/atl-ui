@@ -63,6 +63,7 @@ describe('calculateOverlayPosition', () => {
 		);
 
 		expect(position.placement).toBe('top-start');
+
 		expect(position.top).toBe(86);
 	});
 
@@ -89,6 +90,7 @@ describe('calculateOverlayPosition', () => {
 		);
 
 		expect(position.left).toBe(142);
+
 		expect(position.top).toBe(8);
 	});
 });

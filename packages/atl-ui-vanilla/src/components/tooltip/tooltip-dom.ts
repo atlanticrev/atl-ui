@@ -6,11 +6,17 @@ export type TooltipDom = {
 
 export const createTooltipDom = (host: HTMLElement): TooltipDom => {
 	const panel = host.ownerDocument.createElement('span');
+
 	panel.className = 'alt-tooltip__panel';
+
 	panel.hidden = true;
+
 	panel.id = `alt-tooltip-${++nextTooltipId}`;
+
 	panel.role = 'tooltip';
+
 	host.append(panel);
+
 	return { panel };
 };
 

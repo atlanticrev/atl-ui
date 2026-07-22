@@ -17,6 +17,7 @@ const defineIconProperty = (target: typeof HTMLElement.prototype, name: IconName
 		},
 		set(this: UpdateHost, value: AltReplaceableIcon): void {
 			icons[name].set(this, value);
+
 			this.requestUpdate();
 		},
 	});
@@ -24,6 +25,8 @@ const defineIconProperty = (target: typeof HTMLElement.prototype, name: IconName
 
 export const defineAutocompleteIconProperties = (target: typeof HTMLElement.prototype): void => {
 	defineIconProperty(target, 'clearIcon');
+
 	defineIconProperty(target, 'indicatorIcon');
+
 	defineIconProperty(target, 'noResultsIcon');
 };

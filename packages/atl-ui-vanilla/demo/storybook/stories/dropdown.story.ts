@@ -55,15 +55,19 @@ export const dropdownStory = defineStory({
 		for (const dropdown of findElements<AltDropdownElementApi>(root, '[data-dropdown-options]')) {
 			dropdown.options = channelOptions;
 		}
+
 		for (const dropdown of findElements<AltDropdownElementApi>(root, '[data-dropdown-multiple]')) {
 			dropdown.options = channelOptions.map((option) =>
 				option.value === 'youtube' ? { ...option, checkIcon: createCustomIcon(document) } : option,
 			);
+
 			dropdown.values = ['youtube', 'instagram'];
 		}
+
 		for (const dropdown of findElements<AltDropdownElementApi>(root, '[data-custom-empty-icon]')) {
 			dropdown.emptyIcon = createCustomIcon(document);
 		}
+
 		for (const dropdown of findElements<AltDropdownElementApi>(root, '[data-long-option]')) {
 			dropdown.options = [longOption];
 		}

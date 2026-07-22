@@ -36,14 +36,24 @@ const defineMappedStringProperty = (target: PropertyTarget, property: string, at
 
 export const defineSelectReflectedProperties = (target: PropertyTarget): void => {
 	defineBooleanProperty(target, 'disabled');
+
 	defineBooleanProperty(target, 'multiple');
+
 	defineBooleanProperty(target, 'required');
+
 	defineMappedBooleanProperty(target, 'readOnly', 'readonly');
+
 	defineStringProperty(target, 'description');
+
 	defineMappedStringProperty(target, 'helperText', 'helper-text');
+
 	defineStringProperty(target, 'label');
+
 	defineStringProperty(target, 'name');
+
 	defineStringProperty(target, 'placeholder');
+
 	defineStringProperty(target, 'size');
+
 	defineStringProperty(target, 'status');
 };

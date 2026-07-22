@@ -13,6 +13,7 @@ const normalizeOption = (option: AltSelectOption): AltSelectOption => ({
 
 export const normalizeOptions = (options: readonly AltSelectOption[]): AltSelectOption[] => {
 	const values = new Set<string>();
+
 	const normalized: AltSelectOption[] = [];
 
 	for (const option of options) {
@@ -21,6 +22,7 @@ export const normalizeOptions = (options: readonly AltSelectOption[]): AltSelect
 		}
 
 		values.add(option.value);
+
 		normalized.push(normalizeOption(option));
 	}
 
@@ -54,6 +56,7 @@ export const findEnabledOption = (
 ): AltSelectOption | undefined => {
 	for (let offset = 0; offset < options.length; offset += 1) {
 		const index = (start + direction * offset + options.length) % options.length;
+
 		const option = options[index];
 
 		if (option && !option.disabled) {

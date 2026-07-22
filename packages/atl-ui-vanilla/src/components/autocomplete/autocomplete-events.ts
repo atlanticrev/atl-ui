@@ -13,11 +13,13 @@ export const emitAutocompleteInput = (
 	reason: AltAutocompleteInputDetail['reason'],
 	sourceEvent?: Event,
 ): void => {
-	host.dispatchEvent(createTypedEvent<AltAutocompleteInputDetail>('alt-input', {
-		reason,
-		sourceEvent,
-		value,
-	}));
+	host.dispatchEvent(
+		createTypedEvent<AltAutocompleteInputDetail>('alt-input', {
+			reason,
+			sourceEvent,
+			value,
+		}),
+	);
 };
 
 export const emitAutocompleteChange = (
@@ -34,5 +36,6 @@ export const emitAutocompleteChange = (
 		value: values[0] ?? '',
 		values,
 	};
+
 	host.dispatchEvent(createTypedEvent('alt-change', detail));
 };

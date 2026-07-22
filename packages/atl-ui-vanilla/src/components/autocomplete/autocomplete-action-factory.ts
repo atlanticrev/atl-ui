@@ -22,15 +22,16 @@ export type AutocompleteActionBridges = {
 export const createAutocompleteActions = (
 	host: AutocompleteActionHost,
 	bridges: AutocompleteActionBridges,
-): AutocompleteActions => new AutocompleteActions({
-	commit: bridges.commit,
-	dom: () => host.autocompleteDom,
-	host,
-	inputPattern: () => host.inputPatternValue,
-	inputValue: () => host.inputValueState,
-	isOpen: bridges.isOpen,
-	options: () => host.optionsValue,
-	refreshOptions: bridges.refreshOptions,
-	requestOpen: bridges.requestOpen,
-	values: () => host.valuesState,
-});
+): AutocompleteActions =>
+	new AutocompleteActions({
+		commit: bridges.commit,
+		dom: () => host.autocompleteDom,
+		host,
+		inputPattern: () => host.inputPatternValue,
+		inputValue: () => host.inputValueState,
+		isOpen: bridges.isOpen,
+		options: () => host.optionsValue,
+		refreshOptions: bridges.refreshOptions,
+		requestOpen: bridges.requestOpen,
+		values: () => host.valuesState,
+	});

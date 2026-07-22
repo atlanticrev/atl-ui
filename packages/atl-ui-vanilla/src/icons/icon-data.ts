@@ -13,10 +13,7 @@ const icon = (...paths: string[]): AltIconDefinition => ({
 export const ALT_ICON_DEFINITIONS: Record<AltIconName, AltIconDefinition> = {
 	'arrow-left': icon('M19 12H5', 'M11 6l-6 6 6 6'),
 	'arrow-right': icon('M5 12h14', 'M13 6l6 6-6 6'),
-	chart: icon(
-		'M12 3v9h9A9 9 0 0 0 12 3Z',
-		'M9 5.2A8.5 8.5 0 1 0 18.8 15H9V5.2Z',
-	),
+	chart: icon('M12 3v9h9A9 9 0 0 0 12 3Z', 'M9 5.2A8.5 8.5 0 1 0 18.8 15H9V5.2Z'),
 	check: icon('M5 12.5 9.5 17 19 7'),
 	'chevron-down': icon('M6 9l6 6 6-6'),
 	'chevron-right': icon('M9 6l6 6-6 6'),

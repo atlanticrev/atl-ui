@@ -7,13 +7,16 @@ export const bindSelectOutline = (host: HTMLElement, dom: SelectDom, signal: Abo
 		return;
 	}
 
-	bindFieldOutline({
-		getFloating: () => host.dataset.labelFloat === 'true' || dom.trigger.matches(':focus-visible'),
-		host,
-		label: dom.label,
-		outline: dom.outline,
-		outlinePath: dom.outlinePath,
-		root: dom.trigger,
-		text: dom.value,
-	}, signal);
+	bindFieldOutline(
+		{
+			getFloating: () => host.dataset.labelFloat === 'true' || dom.trigger.matches(':focus-visible'),
+			host,
+			label: dom.label,
+			outline: dom.outline,
+			outlinePath: dom.outlinePath,
+			root: dom.trigger,
+			text: dom.value,
+		},
+		signal,
+	);
 };
