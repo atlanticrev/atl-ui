@@ -36,6 +36,14 @@
 			"types": "./dist/avatar.d.ts",
 			"import": "./dist/avatar.js"
 		},
+		"./calendar": {
+			"types": "./dist/calendar.d.ts",
+			"import": "./dist/calendar.js"
+		},
+		"./collapse": {
+			"types": "./dist/collapse.d.ts",
+			"import": "./dist/collapse.js"
+		},
 		"./controllers": {
 			"types": "./dist/controllers.d.ts",
 			"import": "./dist/controllers.js"
@@ -52,6 +60,10 @@
 			"types": "./dist/dialog.d.ts",
 			"import": "./dist/dialog.js"
 		},
+		"./date-picker": {
+			"types": "./dist/date-picker.d.ts",
+			"import": "./dist/date-picker.js"
+		},
 		"./dropdown": {
 			"types": "./dist/dropdown.d.ts",
 			"import": "./dist/dropdown.js"
@@ -64,6 +76,14 @@
 			"types": "./dist/input.d.ts",
 			"import": "./dist/input.js"
 		},
+		"./menu": {
+			"types": "./dist/menu.d.ts",
+			"import": "./dist/menu.js"
+		},
+		"./pagination": {
+			"types": "./dist/pagination.d.ts",
+			"import": "./dist/pagination.js"
+		},
 		"./icons": {
 			"types": "./dist/icons.d.ts",
 			"import": "./dist/icons.js"
@@ -75,6 +95,10 @@
 		"./progress": {
 			"types": "./dist/progress.d.ts",
 			"import": "./dist/progress.js"
+		},
+		"./search": {
+			"types": "./dist/search.d.ts",
+			"import": "./dist/search.js"
 		},
 		"./select": {
 			"types": "./dist/select.d.ts",

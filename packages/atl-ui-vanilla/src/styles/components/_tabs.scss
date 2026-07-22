@@ -85,4 +85,40 @@
     flex-direction: column;
     overflow: visible;
   }
+
+  :where(alt-tabs, .alt-tabs)[data-variant='underline'] .alt-tabs__list {
+    gap: 1rem;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--alt-color-border);
+    border-radius: 0;
+    background: transparent;
+  }
+
+  :where(alt-tabs, .alt-tabs)[data-variant='underline'] .alt-tabs__tab {
+    height: 40px;
+    padding-inline: 0.125rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+  }
+
+  :where(alt-tabs, .alt-tabs)[data-variant='underline']
+    .alt-tabs__tab:is([aria-selected='true'], [data-active='true']) {
+    border-bottom-color: var(--alt-color-accent);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .alt-tabs__counter {
+    display: inline-grid;
+    min-width: 1.25rem;
+    min-height: 1.25rem;
+    place-items: center;
+    padding-inline: 0.25rem;
+    border-radius: var(--alt-radius-full);
+    background: var(--alt-color-surface-strong);
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-label-md);
+  }
 }

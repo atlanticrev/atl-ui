@@ -21,6 +21,13 @@ const modes = `
 	<alt-progress data-progress-node value="86"></alt-progress>
 </div>`;
 
+const circular = `
+<div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+	<alt-progress aria-label="32 percent complete" shape="circular" show-value="false" value="32"></alt-progress>
+	<alt-progress label="Processing" shape="circular" status="running" value="68"></alt-progress>
+	<alt-progress aria-label="Loading" indeterminate shape="circular" show-value="false"></alt-progress>
+</div>`;
+
 export const progressStory = defineStory({
 	id: 'progress',
 	title: 'Progress',
@@ -29,6 +36,7 @@ export const progressStory = defineStory({
 	examples: [
 		example('Statuses', statuses, 'Default, running, completed, failed and aborted.', true),
 		example('Modes and labels', modes, 'Custom max, sizes, hidden value and Node label.', true),
+		example('Circular', circular, 'Determinate, labelled and indeterminate circular progress.', true),
 		example(
 			'Long label and narrow container',
 			`<div class="alt-catalog-stress-frame" data-width="narrow">
@@ -39,8 +47,11 @@ export const progressStory = defineStory({
 	],
 	setup: (root) => {
 		const progress = findElement<AltProgressElementApi>(root, '[data-progress-node]');
+
 		const label = document.createElement('span');
+
 		label.append(createCustomIcon(document), ' Uploading media');
+
 		progress.labelContent = label;
 	},
 });

@@ -13,6 +13,7 @@ const recipeFiles = [
 	'_card.scss',
 	'_checkbox.scss',
 	'_chip.scss',
+	'_utility-components.scss',
 	'_radio.scss',
 	'_sidebar.scss',
 	'_skeleton.scss',
@@ -29,25 +30,34 @@ describe('native component recipes', () => {
 			'.alt-card',
 			'.alt-checkbox',
 			'.alt-chip',
+			'.alt-divider',
 			'.alt-radio',
 			'.alt-sidebar',
 			'.alt-skeleton',
 			'.alt-switcher',
+			'.alt-spinner',
+			'.alt-stepper',
 		])
 			expect(css).toContain(selector);
 	});
 
 	it('uses native inputs, navigation and links in the showcase', () => {
 		const document = new DOMParser().parseFromString(showcase, 'text/html');
+
 		expect(document.querySelector('.alt-checkbox input[type="checkbox"]')).not.toBeNull();
+
 		expect(document.querySelector('.alt-radio input[type="radio"]')).not.toBeNull();
+
 		expect(document.querySelector('.alt-switcher input[role="switch"]')).not.toBeNull();
+
 		expect(document.querySelector('nav.alt-breadcrumbs[aria-label]')).not.toBeNull();
+
 		expect(document.querySelector('.alt-sidebar a[aria-current="page"]')).not.toBeNull();
 	});
 
 	it('keeps the native hidden contract above component display declarations', () => {
 		expect(baseCss).toContain('[hidden]');
+
 		expect(baseCss).toContain('display: none !important');
 	});
 });

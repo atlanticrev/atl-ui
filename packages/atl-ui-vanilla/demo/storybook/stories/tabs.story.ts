@@ -21,6 +21,19 @@ export const tabsStory = defineStory({
 	examples: [
 		example('Horizontal', tabs(), 'Arrow keys, Home and End.', true),
 		example('Compact', tabs('data-size="32"'), '32 px tab controls.', true),
+		example(
+			'Underline with counters',
+			`<alt-tabs active-key="published" data-variant="underline">
+	<div role="tablist" aria-label="Publication states">
+		<button data-key="published" role="tab">Published <span class="alt-tabs__counter">12</span></button>
+		<button data-key="drafts" role="tab">Drafts <span class="alt-tabs__counter">3</span></button>
+	</div>
+	<section data-key="published" role="tabpanel">Published posts</section>
+	<section data-key="drafts" role="tabpanel">Draft posts</section>
+</alt-tabs>`,
+			'The underline variant preserves the existing tabs keyboard model.',
+			true,
+		),
 		example('Vertical', tabs('data-orientation="vertical"'), 'Vertical authored composition.', true),
 		example(
 			'Disabled tab',

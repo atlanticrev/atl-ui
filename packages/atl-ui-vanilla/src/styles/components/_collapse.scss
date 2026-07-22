@@ -1,0 +1,43 @@
+@layer alt.components {
+  :where(alt-collapse, .alt-collapse) {
+    display: grid;
+    overflow: hidden;
+    border: 1px solid var(--alt-color-border);
+    border-radius: var(--alt-radius-md);
+    background: var(--alt-color-surface);
+    color: var(--alt-color-ink);
+  }
+
+  .alt-collapse__item + .alt-collapse__item {
+    border-top: 1px solid var(--alt-color-border);
+  }
+
+  .alt-collapse__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    font: var(--alt-type-label-lg);
+    cursor: pointer;
+  }
+
+  .alt-collapse__summary::after {
+    content: '+';
+    color: var(--alt-color-ink-muted);
+    font-size: 1.25rem;
+  }
+
+  .alt-collapse__item[open] > .alt-collapse__summary::after { content: '−'; }
+
+  .alt-collapse__summary:focus-visible {
+    outline: 0;
+    box-shadow: inset var(--alt-focus-ring);
+  }
+
+  .alt-collapse__item > :not(summary) {
+    margin: 0;
+    padding: 0 1rem 1rem;
+    color: var(--alt-color-ink-muted);
+  }
+}

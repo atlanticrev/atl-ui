@@ -92,8 +92,11 @@ Input держит настоящий `<input>` внутри light DOM. Select �
 `alt-open-change`, `alt-input` и `alt-change` содержат причину и исходное browser event. Полный контракт
 Select и Autocomplete описан в [`docs/select-autocomplete.md`](docs/select-autocomplete.md).
 
-Отдельные tree-shakeable entry points также доступны для `alert`, `avatar`, `file-upload`, `progress`, `popup`,
-`tooltip`, `dialog`, `dropdown`, `autocomplete` и `table`. Ни один entry point не регистрируется сам.
+Отдельные tree-shakeable entry points также доступны для `alert`, `avatar`, `calendar`, `date-picker`,
+`collapse`, `menu`, `pagination`, `search`, `file-upload`, `progress`, `popup`, `tooltip`, `dialog`, `dropdown`,
+`autocomplete` и `table`. Ни один entry point не регистрируется сам. Контракты календарей и новых компонентов
+описаны в [`docs/calendar.md`](docs/calendar.md) и
+[`docs/additional-components.md`](docs/additional-components.md).
 
 ## Alert, Tabs и Toast
 
