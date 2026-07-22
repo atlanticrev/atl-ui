@@ -1,6 +1,7 @@
 import { TypeaheadController } from '../../controllers';
 
 import type { SelectDom } from './dom';
+import { isOptionSourceMutation } from './option-mutations';
 
 export type SelectInteractionCallbacks = {
 	choose: (value: string, event?: Event) => void;
@@ -20,19 +21,6 @@ const optionValueFromEvent = (event: Event, list: HTMLElement): string | undefin
 	const option = target?.closest<HTMLElement>('[role="option"]');
 
 	return option && list.contains(option) ? option.dataset.value : undefined;
-};
-
-const isOptionMutation = (record: MutationRecord): boolean => {
-	const target = record.target.nodeType === 1 ? (record.target as Element) : record.target.parentElement;
-
-	if (target?.closest('alt-option')) {
-		return true;
-	}
-
-	return (
-		Array.from(record.addedNodes).some((node) => (node as Element).localName === 'alt-option') ||
-		Array.from(record.removedNodes).some((node) => (node as Element).localName === 'alt-option')
-	);
 };
 
 const handleKeyDown = (
@@ -91,7 +79,7 @@ export const bindSelectInteractions = (
 
 	const observer = MutationObserverConstructor
 		? new MutationObserverConstructor((records) => {
-				if (records.some(isOptionMutation)) {
+				if (records.some(isOptionSourceMutation)) {
 					callbacks.refreshOptions();
 				}
 			})

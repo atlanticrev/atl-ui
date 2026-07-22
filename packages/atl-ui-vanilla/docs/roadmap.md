@@ -1,38 +1,54 @@
-# Пошаговая реализация
+# Roadmap ATL UI Vanilla
 
-## Пакеты
+## Текущее состояние
 
-- `@atlanticrev/atl-ui` — текущая React-библиотека без breaking changes.
-- `@atlanticrev/atl-ui-vanilla` — zero-dependency browser package.
+Массовый перенос компонентов завершён. Каталог содержит 32 поддерживаемые позиции: 20 категорий managed
+или behavioral компонентов и 12 native CSS recipes. Полный список и публичные entry points зафиксированы в
+[`public-api.md`](public-api.md), соответствие React и vanilla — в
+[`migration-matrix.md`](migration-matrix.md).
 
-## Этапы
+Завершены:
 
-1. Зафиксировать visual/API baseline и публиковать пакеты независимыми версиями.
-2. Выпустить core: lifecycle, converters, batching, events, registration и controllers.
-3. Проверить pilot: Button/Card/Checkbox recipes, Input, Select, Tabs и Toast region.
-4. Подключить pilot напрямую в одном native production flow `social-video-posting`.
-5. Перенести остальные native recipes, затем FileUpload, Progress и Avatar. Выполнено.
-6. Перенести Popup, Tooltip и Dialog; проверить stacking, focus restore и mobile viewport. Выполнено.
-7. Перенести Dropdown и Autocomplete. Выполнено.
-8. Добавить managed Table; Sidebar оставить native author-rendered. Выполнено.
-9. Переписать `social-video-posting` route за route на native TypeScript.
-10. После parity снять Chrome traces: gzip, parsed JS, long tasks, INP/LCP/CLS и memory.
+- core lifecycle, converters, batching, typed events и idempotent registration;
+- form carrier, selection, dismissal, focus, positioning, open-state и typeahead controllers;
+- Input, Select, Autocomplete и native form integration;
+- Calendar, Date Picker и Date Range Picker со всеми календарными view и presets;
+- Popup, Tooltip, Dialog и общий top-layer overlay contract;
+- Menu, Dropdown, Pagination, Table, Search, Alert и Toast;
+- native recipes, иконки, demo-каталог, accessibility и browser regression coverage.
 
-## Pilot gate
+## Ближайшая цель: релиз 0.2.0
 
-Массовая миграция начинается только если pilot подтверждает:
+1. Добавить CI для каждого push и pull request.
+2. Установить собранный tarball в чистый consumer project.
+3. Проверить корневой и точечные JS/CSS imports, SSR safety и tree shaking boundaries.
+4. Обновить README и release notes.
+5. Проверить GitHub Packages publish workflow.
+6. Влить `feat/atl-ui-vanilla` в `main` и выпустить `atl-ui-vanilla-v0.2.0`.
 
-- SSR-safe imports и отсутствие auto-registration;
-- form submit, reset и validation без React;
-- pre-upgrade properties и reconnect cleanup;
-- keyboard, focus и a11y в Chromium, Firefox и WebKit;
-- light/dark palette и overrides без Shadow DOM;
-- component entry points действительно tree-shakeются;
-- прямое DOM-подключение не дублирует listeners при reconnect;
-- controlled и uncontrolled semantics предсказуемы.
+Это minor release: после `0.1.0` появились новые публичные компоненты, календари и инфраструктурные
+возможности. Breaking changes в существующих контрактах не планируются.
 
-## Граница vanilla DOM
+## Следующий продуктовый этап
 
-DOM создаётся один раз, затем меняются text, attributes и state classes. Select и Toast используют
-маленький keyed алгоритм для десятков элементов. Тысячи строк, virtualization, arbitrary render callbacks,
-editable trees и cross-row reconciliation остаются ответственностью приложения.
+Подключить пакет в одном реальном экране `social-video-posting`:
+
+- импортировать только нужные component entry points, не `define-all`;
+- начать с формы, использующей Input, Select, Autocomplete и календарь;
+- проверить submit, reset, validation, mobile layout и overlays;
+- зафиксировать реальные пробелы API до миграции следующих экранов.
+
+После интеграции нужно измерить production JS/CSS, tree shaking, parse/evaluate, long tasks, memory и Web
+Vitals, а затем сравнить эквивалентные React- и vanilla-сценарии.
+
+## Принципы дальнейшей работы
+
+- Новые компоненты добавляются только под подтверждённую потребность приложения.
+- React-пакет сохраняется без breaking changes.
+- Полная автоматическая parity React и vanilla не требуется.
+- ReactNode/render callback API не переносится в string attributes.
+- Editable и virtualized data grids остаются ответственностью приложения.
+- Vanilla-пакет сохраняет zero-runtime-dependency, light DOM и независимые SSR-safe entry points.
+
+Полный межпакетный план со статусами ведётся в корневом
+[`VANILLA_PRODUCT_PLAN.md`](../../../VANILLA_PRODUCT_PLAN.md).

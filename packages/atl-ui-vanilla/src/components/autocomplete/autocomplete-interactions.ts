@@ -1,3 +1,5 @@
+import { isOptionSourceMutation } from '../select/option-mutations';
+
 import type { AutocompleteDom } from './autocomplete-dom';
 
 export type AutocompleteCallbacks = {
@@ -30,16 +32,6 @@ const bindAction = (element: HTMLElement, callback: (event: Event) => void, sign
 			callback(event);
 		},
 		{ signal },
-	);
-};
-
-const isOptionMutation = (record: MutationRecord): boolean => {
-	const target = record.target.nodeType === 1 ? (record.target as Element) : record.target.parentElement;
-
-	return Boolean(
-		target?.closest('alt-option') ||
-			Array.from(record.addedNodes).some((node) => (node as Element).localName === 'alt-option') ||
-			Array.from(record.removedNodes).some((node) => (node as Element).localName === 'alt-option'),
 	);
 };
 
@@ -87,7 +79,7 @@ export const bindAutocompleteInteractions = (
 
 	const observer = Observer
 		? new Observer((records) => {
-				if (records.some(isOptionMutation)) callbacks.onRefreshOptions();
+				if (records.some(isOptionSourceMutation)) callbacks.onRefreshOptions();
 			})
 		: undefined;
 

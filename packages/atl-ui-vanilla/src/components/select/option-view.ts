@@ -21,6 +21,8 @@ const createPart = (document: Document, className: string): HTMLSpanElement => {
 
 	part.className = className;
 
+	part.dataset.altOwned = 'option-view';
+
 	return part;
 };
 

@@ -77,7 +77,7 @@ Input держит настоящий `<input>` внутри light DOM. Select �
 <alt-select label="Channel">
   <button class="alt-button" data-alt-select-trigger type="button">
     <span data-alt-select-value>Choose channel</span>
-    <span aria-hidden="true" data-alt-select-indicator>⌄</span>
+    <span aria-hidden="true" data-alt-select-indicator><!-- SVG icon --></span>
   </button>
   <alt-option value="youtube"><strong>YouTube</strong><small>Public video</small></alt-option>
 </alt-select>
@@ -198,3 +198,6 @@ npm run test:browser --workspace @atlanticrev/atl-ui-vanilla
 ```
 
 Архитектура, аудит и порядок миграции описаны в `docs/`.
+Поддерживаемые компоненты, custom elements, entry points, CSS и инфраструктурные exports перечислены в
+[`docs/public-api.md`](docs/public-api.md). Актуальный межпакетный план ведётся в корневом
+[`VANILLA_PRODUCT_PLAN.md`](../../VANILLA_PRODUCT_PLAN.md).

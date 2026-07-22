@@ -2,6 +2,10 @@
 
 Monochrome React UI library for Atlantic Rev.
 
+Vanilla Web Components package развивается независимо в `packages/atl-ui-vanilla`. Его актуальный
+продуктовый план находится в [`VANILLA_PRODUCT_PLAN.md`](VANILLA_PRODUCT_PLAN.md), а поддерживаемый API — в
+[`packages/atl-ui-vanilla/docs/public-api.md`](packages/atl-ui-vanilla/docs/public-api.md).
+
 ## CSS entrypoints
 
 The package ships with three CSS files:
