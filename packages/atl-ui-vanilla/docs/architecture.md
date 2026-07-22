@@ -53,3 +53,13 @@ documented internal descendants. Hydration never runs a virtual DOM or general r
 Table keeps keyed row and cell elements, but does not reconcile arbitrary nested trees. Its intended range
 is ordinary admin tables up to a few hundred rendered rows. Virtualization, editable grids and deeply
 stateful cell trees stay in application code or a specialized grid.
+
+## Overlay lifecycle
+
+Popup, Select, Autocomplete, Date Picker, Menu и Tooltip сохраняют собственные state, ARIA и keyboard
+модели, но используют один внутренний anchored-overlay controller для top layer, fallback portal,
+positioning и dismiss lifecycle. Компоненты не обязаны вкладывать публичный `alt-popup` друг в друга и
+поэтому сохраняют независимую регистрацию и DOM ownership.
+
+Dialog остаётся отдельным native modal primitive. Dropdown остаётся content/listbox primitive без overlay
+lifecycle.

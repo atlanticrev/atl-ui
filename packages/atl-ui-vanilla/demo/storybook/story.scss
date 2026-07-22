@@ -109,6 +109,12 @@
     --alt-catalog-stress-width: 180px;
   }
 
+  .alt-catalog-stress-frame[data-overlay-clip] {
+    max-height: 88px;
+    contain: paint;
+    transform: translateZ(0);
+  }
+
   .alt-catalog-stress-copy {
     min-width: 0;
     overflow-wrap: anywhere;

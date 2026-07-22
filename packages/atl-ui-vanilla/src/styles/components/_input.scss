@@ -85,8 +85,7 @@
     white-space: nowrap;
     pointer-events: none;
     transform: translateY(-50%);
-    transition: color var(--alt-motion-fast), font-size var(--alt-motion-fast),
-      font-weight var(--alt-motion-fast), top var(--alt-motion-fast);
+    transition: color var(--alt-motion-fast), font-size var(--alt-motion-fast), top var(--alt-motion-fast);
   }
 
   :where(alt-input, .alt-input):is(:focus-within, [data-label-float='true']) .alt-input__label {
@@ -94,10 +93,6 @@
     max-width: calc(100% - 2rem);
     padding-inline: var(--alt-input-label-floating-padding-inline);
     font: var(--alt-input-label-float-font);
-  }
-
-  :where(alt-input, .alt-input):focus-within .alt-input__label {
-    font-weight: var(--alt-field-floating-label-focus-weight, 500);
   }
 
   :where(alt-input, .alt-input)[data-has-leading-icon='true']:not(:focus-within, [data-label-float='true'])

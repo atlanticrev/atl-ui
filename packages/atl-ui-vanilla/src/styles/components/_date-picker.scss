@@ -53,9 +53,9 @@
   }
 
   .alt-date-picker__panel {
-    position: absolute;
-    z-index: 30;
-    inset: calc(100% + 0.5rem) auto auto 0;
+    position: fixed;
+    z-index: var(--alt-date-picker-z-index, 60);
+    inset: auto;
     width: max-content;
     max-width: calc(100vw - 2rem);
     margin: 0;

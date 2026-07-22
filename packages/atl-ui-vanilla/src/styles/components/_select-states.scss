@@ -8,6 +8,7 @@
   :where(alt-select, .alt-select)[data-open='true'] .alt-select__trigger {
     --alt-select-border-color: var(--alt-color-accent);
     --alt-select-outline-width: 2px;
+    --alt-select-state-color: var(--alt-color-accent);
     outline: 0;
     box-shadow: var(--alt-shadow-sm);
   }

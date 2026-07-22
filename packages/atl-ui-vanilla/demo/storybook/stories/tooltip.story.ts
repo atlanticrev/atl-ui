@@ -33,7 +33,7 @@ const triggers = `
 </div>`;
 
 const overflow = `
-<div class="alt-catalog-stress-frame" data-width="narrow">
+<div class="alt-catalog-stress-frame" data-overlay-clip data-width="narrow">
 	<alt-tooltip show-on-overflow title="Full value: all selected channels and derived publications">
 		<span class="alt-catalog-truncated-text" data-alt-overflow-target tabindex="0">
 			All selected channels and derived publications

@@ -57,6 +57,21 @@ const overflow = `
 	</alt-popup>
 </span>`;
 
+const clipping = `
+<div class="alt-catalog-stress-frame" data-overlay-clip>
+	<button
+		class="alt-button"
+		data-popup-target="popup-clipped"
+		id="popup-anchor-clipped"
+		type="button"
+	>
+		Open clipped popup
+	</button>
+	<alt-popup anchor-id="popup-anchor-clipped" id="popup-clipped">
+		<div class="alt-card" style="width: 320px">Top-layer popup outside the clipping frame.</div>
+	</alt-popup>
+</div>`;
+
 export const popupStory = defineStory({
 	id: 'popup',
 	title: 'Popup',
@@ -65,6 +80,7 @@ export const popupStory = defineStory({
 	examples: [
 		example('Placements', placements, 'Start/end alignment above and below the anchor.', true),
 		example('Dismiss behavior', behavior, 'Custom gap and persistent mode.'),
+		example('Clipping container', clipping, 'Popover top layer escapes overflow, contain and transforms.'),
 		example('Long content', overflow, 'Popup content stays within the viewport.'),
 	],
 	setup: (root) => {

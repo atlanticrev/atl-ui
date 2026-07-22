@@ -139,11 +139,13 @@ describe('alt-autocomplete composition', () => {
 
 		await flushUpdates();
 
+		const popup = autocomplete.querySelector<HTMLElement>('[data-alt-autocomplete-popup]') as HTMLElement;
+
 		autocomplete.triggerElement?.click();
 
 		await flushUpdates();
 
-		autocomplete.querySelector<HTMLElement>('[data-value="figma"]')?.click();
+		popup.querySelector<HTMLElement>('[data-value="figma"]')?.click();
 
 		await flushUpdates();
 

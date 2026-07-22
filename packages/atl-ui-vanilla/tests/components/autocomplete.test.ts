@@ -48,6 +48,8 @@ describe('alt-autocomplete', () => {
 
 		await flushUpdates();
 
+		const popup = autocomplete.querySelector<HTMLElement>('[data-alt-autocomplete-popup]') as HTMLElement;
+
 		expect(autocomplete.querySelector('[data-alt-icon="chevron-down"]')).toBeInstanceOf(SVGSVGElement);
 
 		expect(autocomplete.querySelector('[data-alt-icon="close"]')).toBeInstanceOf(SVGSVGElement);
@@ -62,7 +64,7 @@ describe('alt-autocomplete', () => {
 
 		expect(autocomplete.open).toBe(true);
 
-		expect(autocomplete.querySelectorAll('.alt-listbox__option')).toHaveLength(1);
+		expect(popup.querySelectorAll('.alt-listbox__option')).toHaveLength(1);
 
 		input.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'Enter' }));
 
@@ -87,6 +89,8 @@ describe('alt-autocomplete', () => {
 
 		await flushUpdates();
 
+		const popup = autocomplete.querySelector<HTMLElement>('[data-alt-autocomplete-popup]') as HTMLElement;
+
 		autocomplete.inputElement?.focus();
 
 		await flushUpdates();
@@ -97,7 +101,7 @@ describe('alt-autocomplete', () => {
 
 		await flushUpdates();
 
-		expect(autocomplete.querySelectorAll('.alt-listbox__option')).toHaveLength(1);
+		expect(popup.querySelectorAll('.alt-listbox__option')).toHaveLength(1);
 	});
 
 	it('floats the nested input label when a placeholder is present', async () => {

@@ -36,8 +36,18 @@ const readCustomProperty = async (element: Locator, property: string): Promise<s
 	return element.evaluate((node, name) => getComputedStyle(node).getPropertyValue(name).trim(), property);
 };
 
-const expectFocusedLabelWeight = async (element: Locator): Promise<void> => {
-	await expect.poll(() => element.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('500');
+const expectFocusedLabelStyle = async (label: Locator, outline: Locator): Promise<void> => {
+	await expect
+		.poll(async () => {
+			const color = await label.evaluate((element) => getComputedStyle(element).color);
+
+			const fontWeight = await label.evaluate((element) => getComputedStyle(element).fontWeight);
+
+			const stroke = await outline.evaluate((element) => getComputedStyle(element).stroke);
+
+			return { colorMatchesOutline: color === stroke, fontWeight };
+		})
+		.toEqual({ colorMatchesOutline: true, fontWeight: '400' });
 };
 
 const expectAlignedLabel = async (label: Locator, text: Locator): Promise<void> => {
@@ -83,7 +93,7 @@ test('input focuses the same notched SVG border without an outer ring', async ({
 
 	await expectAlignedLabel(host.locator('.alt-input__label'), host.locator('.alt-input__field'));
 
-	await expectFocusedLabelWeight(host.locator('.alt-input__label'));
+	await expectFocusedLabelStyle(host.locator('.alt-input__label'), host.locator('.alt-input__outline-path'));
 });
 
 test('select uses the shared SVG notch and focus treatment', async ({ page }) => {
@@ -111,7 +121,7 @@ test('select uses the shared SVG notch and focus treatment', async ({ page }) =>
 
 	await expectAlignedLabel(host.locator('.alt-select__label'), host.locator('.alt-select__value'));
 
-	await expectFocusedLabelWeight(host.locator('.alt-select__label'));
+	await expectFocusedLabelStyle(host.locator('.alt-select__label'), host.locator('.alt-select__outline-path'));
 });
 
 test('select keeps its pointer-focused border color while hovered', async ({ page }) => {
@@ -159,21 +169,7 @@ test('autocomplete inherits the input SVG while authored input stays consumer-ow
 
 	expect(focused.strokeWidth).toBe('2px');
 
-	await expect
-		.poll(async () => {
-			const labelColor = await standard
-				.locator('.alt-input__label')
-				.evaluate((element) => getComputedStyle(element).color);
-
-			const strokeColor = await standard
-				.locator('.alt-input__outline-path')
-				.evaluate((element) => getComputedStyle(element).stroke);
-
-			return labelColor === strokeColor;
-		})
-		.toBe(true);
-
-	await expectFocusedLabelWeight(standard.locator('.alt-input__label'));
+	await expectFocusedLabelStyle(standard.locator('.alt-input__label'), standard.locator('.alt-input__outline-path'));
 
 	const authored = page.locator('#autocomplete [data-story-example="Custom composition"] alt-autocomplete').first();
 

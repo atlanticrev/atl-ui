@@ -46,18 +46,13 @@
     white-space: nowrap;
     pointer-events: none;
     transform: translateY(-50%);
-    transition: font-size var(--alt-motion-fast), font-weight var(--alt-motion-fast),
-      top var(--alt-motion-fast);
+    transition: color var(--alt-motion-fast), font-size var(--alt-motion-fast), top var(--alt-motion-fast);
   }
 
   :where(alt-select, .alt-select):is(:focus-within, [data-label-float='true']) .alt-select__label {
     top: 0;
     padding-inline: 0.25rem;
     font: var(--alt-type-body-sm);
-  }
-
-  :where(alt-select, .alt-select):focus-within .alt-select__label {
-    font-weight: var(--alt-field-floating-label-focus-weight, 500);
   }
 
   .alt-select__value {

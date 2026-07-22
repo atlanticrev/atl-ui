@@ -60,3 +60,7 @@ explicit Apply по умолчанию; single picker закрывается п�
 
 События `alt-input` и `alt-change` содержат `{ value, range }`. `Escape`, клик снаружи и успешный commit
 закрывают popup; фокус возвращается на trigger.
+
+Открытая панель рендерится через browser top layer и поэтому не обрезается `overflow`, `contain` или
+stacking context родительских контейнеров. В браузерах без Popover API панель временно переносится в
+`document.body` и возвращается в picker при закрытии или disconnect.

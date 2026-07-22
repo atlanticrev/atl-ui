@@ -61,6 +61,8 @@ export const createDatePickerDom = (host: HTMLElement): DatePickerDom => {
 
 	panel.setAttribute('aria-label', 'Choose date');
 
+	panel.setAttribute('popover', 'manual');
+
 	panel.hidden = true;
 
 	panel.append(calendar);

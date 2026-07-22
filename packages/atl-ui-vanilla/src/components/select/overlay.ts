@@ -1,47 +1,17 @@
-import { bindOverlayDismiss, bindOverlayPosition } from '../../controllers';
+import { bindAnchoredOverlay } from '../../controllers/anchored-overlay';
 
 import type { SelectDom } from './dom';
-
-type PopoverElement = HTMLElement & {
-	togglePopover?: (force?: boolean) => boolean;
-};
 
 export const showSelectOverlay = (
 	dom: SelectDom,
 	onDismiss: (reason: 'escape' | 'outside', event: Event) => void,
 	signal: AbortSignal,
 ): (() => void) => {
-	const popup = dom.popup as PopoverElement;
-
-	popup.togglePopover?.(true);
-
-	const cleanupDismiss = bindOverlayDismiss({
-		ignore: [dom.trigger],
-		onDismiss: ({ event, reason }) => onDismiss(reason === 'escape' ? 'escape' : 'outside', event),
-		overlay: popup,
-		signal,
-	});
-
-	const cleanupPosition = bindOverlayPosition({
+	return bindAnchoredOverlay({
 		anchor: dom.trigger,
-		onPosition: (position) => {
-			popup.style.left = `${position.left}px`;
-
-			popup.style.minWidth = `${dom.trigger.getBoundingClientRect().width}px`;
-
-			popup.style.top = `${position.top}px`;
-		},
-		overlay: popup,
+		matchAnchorWidth: true,
+		onDismiss: ({ event, reason }) => onDismiss(reason === 'escape' ? 'escape' : 'outside', event),
+		overlay: dom.popup,
 		signal,
 	});
-
-	return (): void => {
-		cleanupDismiss();
-
-		cleanupPosition();
-
-		if (popup.isConnected) {
-			popup.togglePopover?.(false);
-		}
-	};
 };

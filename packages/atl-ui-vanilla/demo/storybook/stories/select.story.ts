@@ -37,7 +37,7 @@ const composition = `
 </div>`;
 
 const overflow = `
-<div class="alt-catalog-stress-frame" data-width="narrow">
+<div class="alt-catalog-stress-frame" data-overlay-clip data-width="narrow">
 	<alt-select data-long-option label="Long selected value" value="long-option"></alt-select>
 </div>`;
 

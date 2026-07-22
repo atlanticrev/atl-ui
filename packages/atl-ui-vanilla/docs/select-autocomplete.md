@@ -54,5 +54,9 @@ Autocomplete отдельно отправляет `alt-input`, поэтому q
 - IME composition не подтверждает значение преждевременно.
 - Focused и open trigger сохраняет accent border при pointer hover.
 
+Popup обоих компонентов использует общий anchored-overlay lifecycle: browser top layer, positioning при
+scroll/resize, viewport flip/clamp и fallback portal в `document.body`. Select подключает controller
+напрямую, а Autocomplete композирует публичные `alt-popup` и `alt-dropdown`.
+
 Disabled option пропускается клавиатурой. `disabled` блокирует открытие, а `readonly` сохраняет focus,
 но блокирует изменение значения. Native carrier обеспечивает FormData, required validation и reset.

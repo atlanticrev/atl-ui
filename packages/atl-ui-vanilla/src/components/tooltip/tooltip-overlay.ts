@@ -1,4 +1,4 @@
-import { bindOverlayDismiss, bindOverlayPosition } from '../../controllers';
+import { bindAnchoredOverlay } from '../../controllers/anchored-overlay';
 
 import type { AltTooltipPlacement, AltTooltipTrigger } from './types';
 
@@ -12,32 +12,12 @@ export type TooltipOverlayOptions = {
 };
 
 export const bindTooltipOverlay = (options: TooltipOverlayOptions): (() => void) => {
-	const position = bindOverlayPosition({
+	return bindAnchoredOverlay({
 		anchor: options.triggerElement,
 		gap: 8,
-		onPosition: (next) => {
-			options.panel.style.left = `${next.left}px`;
-
-			options.panel.style.top = `${next.top}px`;
-		},
+		onDismiss: options.trigger === 'click' ? options.onDismiss : undefined,
 		overlay: options.panel,
 		placement: options.placement,
 		signal: options.signal,
 	});
-
-	const dismiss =
-		options.trigger === 'click'
-			? bindOverlayDismiss({
-					ignore: [options.triggerElement],
-					onDismiss: options.onDismiss,
-					overlay: options.panel,
-					signal: options.signal,
-				})
-			: undefined;
-
-	return () => {
-		position();
-
-		dismiss?.();
-	};
 };

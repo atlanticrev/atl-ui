@@ -3,6 +3,7 @@ import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../
 import { parseDateValue, type AltCalendarChangeDetail, type AltCalendarPreset } from '../calendar';
 
 import { createDatePickerDom, type DatePickerDom } from './date-picker-dom';
+import { bindDatePickerOverlay } from './date-picker-overlay';
 import type { AltDatePickerChangeDetail } from './types';
 
 type PickerMode = 'range' | 'single';
@@ -49,6 +50,7 @@ export const createAltDatePickerElementClass = (
 		#disabledDate: ((value: string) => boolean) | null = null;
 		#dom: DatePickerDom | undefined;
 		#lastOpen = false;
+		#overlayCleanup: (() => void) | undefined;
 		#presets: readonly AltCalendarPreset[] = [];
 
 		get disabledDate(): ((value: string) => boolean) | null {
@@ -124,10 +126,12 @@ export const createAltDatePickerElementClass = (
 			this.#dom.calendar.addEventListener('alt-change', this.#handleCalendarChange as EventListener, { signal });
 
 			this.ownerDocument.addEventListener('reset', this.#handleReset, { signal });
+		}
 
-			this.ownerDocument.addEventListener('keydown', this.#handleKeydown, { signal });
+		onDisconnected(): void {
+			this.#cleanupOverlay();
 
-			this.ownerDocument.addEventListener('pointerdown', this.#handleOutsidePointer, { capture: true, signal });
+			this.#lastOpen = false;
 		}
 
 		update(): void {
@@ -204,10 +208,16 @@ export const createAltDatePickerElementClass = (
 
 			clear.hidden = !display || disabled;
 
-			panel.hidden = !this.open;
-
 			if (this.open && !this.#lastOpen) {
+				const signal = this.connectionSignal;
+
+				if (signal) {
+					this.#overlayCleanup = bindDatePickerOverlay(panel, trigger, this.#handleOverlayDismiss, signal);
+				}
+
 				const focusCalendar = (): void => {
+					if (!this.open || !this.isConnected) return;
+
 					const selected = calendar.querySelector<HTMLElement>('[data-selected="true"]');
 
 					(selected ?? calendar.querySelector<HTMLElement>('[data-value]:not(:disabled)'))?.focus();
@@ -217,7 +227,7 @@ export const createAltDatePickerElementClass = (
 
 				if (view) view.requestAnimationFrame(focusCalendar);
 				else queueMicrotask(() => queueMicrotask(focusCalendar));
-			}
+			} else if (!this.open && this.#lastOpen) this.#cleanupOverlay();
 
 			this.#lastOpen = this.open;
 		}
@@ -273,16 +283,10 @@ export const createAltDatePickerElementClass = (
 			this.#emit('alt-change');
 		};
 
-		#handleKeydown = (event: KeyboardEvent): void => {
-			if (event.key === 'Escape' && this.open) {
-				this.open = false;
+		#handleOverlayDismiss = ({ reason }: { reason: 'escape' | 'outside-pointer' }): void => {
+			this.open = false;
 
-				this.#dom?.trigger.focus();
-			}
-		};
-
-		#handleOutsidePointer = (event: Event): void => {
-			if (this.open && !this.contains(event.target as Node)) this.open = false;
+			if (reason === 'escape') this.#dom?.trigger.focus();
 		};
 		#handleReset = (event: Event): void => {
 			if (event.target !== this.#dom?.startCarrier.form) return;
@@ -295,6 +299,11 @@ export const createAltDatePickerElementClass = (
 				this.end = this.#defaults.end;
 			});
 		};
+		#cleanupOverlay(): void {
+			this.#overlayCleanup?.();
+
+			this.#overlayCleanup = undefined;
+		}
 	};
 };
 

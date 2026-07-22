@@ -1,22 +1,8 @@
 import { createBaseElementClass, createTypedEvent, upgradeProperty } from '../../core';
 
+import { configureMenuParts, getMenuNavigationIndex, getMenuParts } from './menu-dom';
+import { bindMenuOverlay } from './menu-overlay';
 import type { AltMenuSelectDetail } from './types';
-
-const getParts = (
-	host: HTMLElement,
-): { items: HTMLElement[]; menu: HTMLElement | null; trigger: HTMLElement | null } => {
-	const menu = host.querySelector<HTMLElement>(':scope > [role="menu"]');
-
-	const trigger = host.querySelector<HTMLElement>(':scope > [data-alt-menu-trigger]');
-
-	const items = menu
-		? Array.from(menu.querySelectorAll<HTMLElement>('[role^="menuitem"]')).filter(
-				(item) => !item.hasAttribute('disabled') && item.getAttribute('aria-disabled') !== 'true',
-			)
-		: [];
-
-	return { items, menu, trigger };
-};
 
 let menuId = 0;
 
@@ -25,6 +11,9 @@ export const createAltMenuElementClass = (HtmlElementConstructor: typeof HTMLEle
 
 	return class AltMenuElement extends BaseElement {
 		static observedAttributes = ['open'];
+		#menu: HTMLElement | undefined;
+		#overlayCleanup: (() => void) | undefined;
+		#trigger: HTMLElement | undefined;
 
 		get open(): boolean {
 			return this.hasAttribute('open');
@@ -42,43 +31,61 @@ export const createAltMenuElementClass = (HtmlElementConstructor: typeof HTMLEle
 
 			this.classList.add('alt-menu');
 
-			this.addEventListener('click', this.#handleClick, { signal });
-
-			this.addEventListener('keydown', this.#handleKeydown, { signal });
-
-			this.ownerDocument.addEventListener('pointerdown', this.#handleOutsidePointer, { capture: true, signal });
-
 			const Observer = this.ownerDocument.defaultView?.MutationObserver;
 
 			const observer = Observer ? new Observer(() => this.requestUpdate()) : undefined;
 
 			observer?.observe(this, { childList: true, subtree: true });
 
-			signal.addEventListener('abort', () => observer?.disconnect(), { once: true });
-		}
-
-		update(): void {
-			const { items, menu, trigger } = getParts(this);
-
-			if (!menu || !trigger) return;
-
-			menu.id ||= `${this.id || `alt-menu-${++menuId}`}-popup`;
-
-			menu.hidden = !this.open;
-
-			trigger.setAttribute('aria-controls', menu.id);
-
-			trigger.setAttribute('aria-expanded', String(this.open));
-
-			trigger.setAttribute('aria-haspopup', 'menu');
-
-			items.forEach((item) => {
-				item.tabIndex = -1;
+			signal.addEventListener('abort', () => observer?.disconnect(), {
+				once: true,
 			});
 		}
 
+		onDisconnected(): void {
+			this.#cleanupOverlay();
+		}
+
+		update(): void {
+			const { items, menu, trigger } = getMenuParts(this, this.#menu);
+
+			if (!menu || !trigger) return;
+
+			if ((this.#menu && this.#menu !== menu) || (this.#trigger && this.#trigger !== trigger)) {
+				this.#cleanupOverlay();
+			}
+
+			this.#menu = menu;
+
+			this.#trigger = trigger;
+
+			configureMenuParts(menu, trigger, items, this.open, menu.id || this.id || `alt-menu-${++menuId}`);
+
+			const signal = this.connectionSignal;
+
+			if (signal) {
+				trigger.addEventListener('click', this.#handleClick, {
+					signal,
+				});
+
+				trigger.addEventListener('keydown', this.#handleKeydown, {
+					signal,
+				});
+
+				menu.addEventListener('click', this.#handleClick, { signal });
+
+				menu.addEventListener('keydown', this.#handleKeydown, {
+					signal,
+				});
+			}
+
+			if (this.open && !this.#overlayCleanup && signal) {
+				this.#overlayCleanup = bindMenuOverlay(trigger, menu, this.#handleOverlayDismiss, signal);
+			} else if (!this.open) this.#cleanupOverlay();
+		}
+
 		#focus(edge: 'end' | 'start' = 'start'): void {
-			const { items } = getParts(this);
+			const { items } = getMenuParts(this, this.#menu);
 
 			items[edge === 'start' ? 0 : items.length - 1]?.focus();
 		}
@@ -86,7 +93,7 @@ export const createAltMenuElementClass = (HtmlElementConstructor: typeof HTMLEle
 		#handleClick = (event: Event): void => {
 			const target = event.target as Element | null;
 
-			const { items, trigger } = getParts(this);
+			const { items, trigger } = getMenuParts(this, this.#menu);
 
 			if (trigger && (target === trigger || trigger.contains(target))) {
 				this.open = !this.open;
@@ -113,7 +120,7 @@ export const createAltMenuElementClass = (HtmlElementConstructor: typeof HTMLEle
 		};
 
 		#handleKeydown = (event: KeyboardEvent): void => {
-			const { items, menu, trigger } = getParts(this);
+			const { items, menu, trigger } = getMenuParts(this, this.#menu);
 
 			if (!menu || !trigger) return;
 
@@ -141,11 +148,7 @@ export const createAltMenuElementClass = (HtmlElementConstructor: typeof HTMLEle
 
 			const current = items.indexOf(event.target as HTMLElement);
 
-			let index = event.key === 'Home' ? 0 : event.key === 'End' ? items.length - 1 : current;
-
-			if (event.key === 'ArrowDown') index = (current + 1) % items.length;
-
-			if (event.key === 'ArrowUp') index = (current - 1 + items.length) % items.length;
+			const index = getMenuNavigationIndex(event.key, current, items.length);
 
 			if (index !== current) {
 				event.preventDefault();
@@ -154,8 +157,15 @@ export const createAltMenuElementClass = (HtmlElementConstructor: typeof HTMLEle
 			}
 		};
 
-		#handleOutsidePointer = (event: Event): void => {
-			if (this.open && !this.contains(event.target as Node)) this.open = false;
+		#handleOverlayDismiss = ({ reason }: { reason: 'escape' | 'outside-pointer' }): void => {
+			this.open = false;
+
+			if (reason === 'escape') this.#trigger?.focus();
 		};
+		#cleanupOverlay(): void {
+			this.#overlayCleanup?.();
+
+			this.#overlayCleanup = undefined;
+		}
 	};
 };

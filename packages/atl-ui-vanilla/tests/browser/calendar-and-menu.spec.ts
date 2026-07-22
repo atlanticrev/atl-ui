@@ -25,6 +25,44 @@ test('date picker commits a day and restores trigger focus', async ({ page }) =>
 	await expect(trigger).toBeFocused();
 });
 
+test('date picker panel escapes clipping containers through the top layer', async ({ page }) => {
+	await page.goto('/storybook.html#date-picker');
+
+	const example = page.locator('#date-picker [data-story-example="Clipping container"]');
+
+	const picker = example.locator('alt-date-picker');
+
+	await picker.locator('.alt-date-picker__trigger').click();
+
+	const panel = picker.locator('.alt-date-picker__panel');
+
+	await expect(panel).toBeVisible();
+
+	expect(await panel.evaluate((element) => element.matches(':popover-open'))).toBe(true);
+
+	const panelBox = await panel.boundingBox();
+
+	const exampleBox = await example.boundingBox();
+
+	const escapesExampleBounds =
+		(panelBox?.x ?? 0) < (exampleBox?.x ?? 0) ||
+		(panelBox?.y ?? 0) < (exampleBox?.y ?? 0) ||
+		(panelBox?.x ?? 0) + (panelBox?.width ?? 0) > (exampleBox?.x ?? 0) + (exampleBox?.width ?? 0) ||
+		(panelBox?.y ?? 0) + (panelBox?.height ?? 0) > (exampleBox?.y ?? 0) + (exampleBox?.height ?? 0);
+
+	expect(escapesExampleBounds).toBe(true);
+
+	const lowerDayReceivesPointer = await picker.locator('[data-value="2026-07-29"]').evaluate((element) => {
+		const bounds = element.getBoundingClientRect();
+
+		const hit = document.elementFromPoint(bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
+
+		return hit === element || element.contains(hit);
+	});
+
+	expect(lowerDayReceivesPointer).toBe(true);
+});
+
 test('calendar keyboard navigation crosses a month boundary', async ({ page }) => {
 	await page.goto('/storybook.html#calendar');
 
@@ -46,7 +84,7 @@ test('calendar keyboard navigation crosses a month boundary', async ({ page }) =
 test('menu is fully operable from the keyboard', async ({ page }) => {
 	await page.goto('/storybook.html#menu');
 
-	const menu = page.locator('#menu alt-menu');
+	const menu = page.locator('#menu [data-story-example="Actions"] alt-menu');
 
 	const trigger = menu.locator('[data-alt-menu-trigger]');
 
@@ -80,7 +118,7 @@ test('open calendar and menu pass an accessibility audit', async ({ page }) => {
 
 	await page.goto('/storybook.html#menu');
 
-	await page.locator('#menu [data-alt-menu-trigger]').click();
+	await page.locator('#menu [data-story-example="Actions"] [data-alt-menu-trigger]').click();
 
 	const menuResult = await new AxeBuilder({ page }).include('#menu').analyze();
 

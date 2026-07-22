@@ -31,23 +31,27 @@ describe('alt-tooltip', () => {
 
 		await Promise.resolve();
 
+		const panel = tooltip.querySelector<HTMLElement>('[role="tooltip"]') as HTMLElement;
+
 		tooltip.dispatchEvent(new Event('pointerenter'));
 
 		await Promise.resolve();
 
-		const panel = tooltip.querySelector<HTMLElement>('[role="tooltip"]');
+		expect(panel.parentElement).toBe(document.body);
 
-		expect(panel?.hidden).toBe(false);
+		expect(panel.hidden).toBe(false);
 
-		expect(panel?.textContent).toBe('More information');
+		expect(panel.textContent).toBe('More information');
 
-		expect(trigger.getAttribute('aria-describedby')).toBe(panel?.id);
+		expect(trigger.getAttribute('aria-describedby')).toBe(panel.id);
 
 		tooltip.dispatchEvent(new Event('pointerleave'));
 
 		await Promise.resolve();
 
 		expect(tooltip.open).toBe(false);
+
+		expect(panel.parentElement).toBe(tooltip);
 	});
 
 	it('toggles in click mode', async () => {

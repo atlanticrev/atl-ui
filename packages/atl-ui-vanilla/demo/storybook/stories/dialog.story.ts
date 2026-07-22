@@ -57,6 +57,27 @@ const overflow = `
 	</footer>
 </alt-dialog>`;
 
+const nestedOverlay = `
+<button class="alt-button" data-dialog-target="dialog-overlay" data-variant="outlined">
+	Open overlay dialog
+</button>
+<alt-dialog id="dialog-overlay" size="520">
+	<dialog aria-labelledby="dialog-overlay-title">
+		<header class="alt-dialog__header">
+			<h2 class="alt-dialog__title" id="dialog-overlay-title">Overlay inside dialog</h2>
+			<button class="alt-dialog__close" data-alt-dialog-close aria-label="Close">
+				${altIconMarkup('close', 18)}
+			</button>
+		</header>
+		<div class="alt-dialog__body">
+			<alt-select label="Channel">
+				<alt-option value="youtube">YouTube</alt-option>
+				<alt-option value="tiktok">TikTok</alt-option>
+			</alt-select>
+		</div>
+	</dialog>
+</alt-dialog>`;
+
 export const dialogStory = defineStory({
 	id: 'dialog',
 	title: 'Dialog',
@@ -65,6 +86,7 @@ export const dialogStory = defineStory({
 	examples: [
 		example('Sizes', sizes, '520, 620, 760 and 848 px.', true),
 		example('Strict dismiss', strict, 'Requires an explicit action.'),
+		example('Nested overlay', nestedOverlay, 'Anchored overlays remain above their modal dialog.'),
 		example('Long content', overflow, 'Title, body and actions reflow on narrow viewports.', true),
 	],
 	setup: (root) => {

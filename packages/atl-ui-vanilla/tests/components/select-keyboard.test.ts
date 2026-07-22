@@ -43,6 +43,8 @@ describe('alt-select keyboard and accessibility', () => {
 
 		const list = select.querySelector<HTMLElement>('.alt-listbox');
 
+		const popup = select.querySelector<HTMLElement>('.alt-select__popup') as HTMLElement;
+
 		expect(trigger?.getAttribute('role')).toBe('combobox');
 
 		expect(trigger?.getAttribute('aria-controls')).toBe(list?.id);
@@ -55,7 +57,7 @@ describe('alt-select keyboard and accessibility', () => {
 
 		expect(select.hasAttribute('open')).toBe(true);
 
-		expect(select.querySelector<HTMLElement>('.alt-select__popup')?.hidden).toBe(false);
+		expect(popup.hidden).toBe(false);
 
 		expect(trigger?.getAttribute('aria-expanded')).toBe('true');
 
@@ -73,7 +75,7 @@ describe('alt-select keyboard and accessibility', () => {
 
 		expect(select.hasAttribute('open')).toBe(false);
 
-		expect(select.querySelector<HTMLElement>('.alt-select__popup')?.hidden).toBe(true);
+		expect(popup.hidden).toBe(true);
 	});
 
 	it('supports Home, End, Space, Escape and emits typed state events', () => {
@@ -121,25 +123,27 @@ describe('alt-select keyboard and accessibility', () => {
 
 		const onChange = vi.fn();
 
+		const popup = select.querySelector<HTMLElement>('.alt-select__popup') as HTMLElement;
+
 		select.multiple = true;
 
 		select.addEventListener('alt-change', onChange);
 
 		select.show();
 
-		const disabled = select.querySelector<HTMLElement>('[data-value="two"]') as HTMLElement;
+		const disabled = popup.querySelector<HTMLElement>('[data-value="two"]') as HTMLElement;
 
 		disabled.click();
 
 		expect(select.values).toEqual([]);
 
-		select.querySelector<HTMLElement>('[data-value="one"]')?.click();
+		popup.querySelector<HTMLElement>('[data-value="one"]')?.click();
 
 		expect(select.values).toEqual(['one']);
 
 		expect(select.open).toBe(true);
 
-		select.querySelector<HTMLElement>('[data-value="one"]')?.click();
+		popup.querySelector<HTMLElement>('[data-value="one"]')?.click();
 
 		expect(select.values).toEqual([]);
 

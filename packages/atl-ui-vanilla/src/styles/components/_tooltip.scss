@@ -8,8 +8,11 @@
   .alt-tooltip__panel {
     position: fixed;
     z-index: var(--alt-tooltip-z-index, 70);
+    inset: auto;
     max-width: min(240px, calc(100vw - 1rem));
     padding: 0.5rem 0.75rem;
+    margin: 0;
+    border: 0;
     border-radius: var(--alt-radius-xs);
     background: var(--alt-color-inverse-surface);
     color: var(--alt-color-ink-inverse);
@@ -17,5 +20,34 @@
     font: var(--alt-type-body-sm);
     overflow-wrap: anywhere;
     pointer-events: none;
+  }
+
+  .alt-tooltip__panel::before {
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: inherit;
+    content: '';
+    transform: rotate(45deg);
+  }
+
+  .alt-tooltip__panel[data-placement='top']::before {
+    top: calc(100% - 0.25rem);
+    left: calc(50% - 0.25rem);
+  }
+
+  .alt-tooltip__panel[data-placement='bottom']::before {
+    bottom: calc(100% - 0.25rem);
+    left: calc(50% - 0.25rem);
+  }
+
+  .alt-tooltip__panel[data-placement='left']::before {
+    top: calc(50% - 0.25rem);
+    left: calc(100% - 0.25rem);
+  }
+
+  .alt-tooltip__panel[data-placement='right']::before {
+    top: calc(50% - 0.25rem);
+    right: calc(100% - 0.25rem);
   }
 }

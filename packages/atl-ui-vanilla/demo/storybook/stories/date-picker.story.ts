@@ -25,6 +25,13 @@ export const datePickerStory = defineStory({
 			'An initial year view and bounds cover the DOB flow.',
 		),
 		example(
+			'Clipping container',
+			`<div class="alt-catalog-stress-frame" data-overlay-clip>
+	<alt-date-picker placeholder="Open above container overflow" value="2026-07-22"></alt-date-picker>
+</div>`,
+			'The calendar renders in the browser top layer instead of being clipped by parent overflow.',
+		),
+		example(
 			'States',
 			`<div class="alt-catalog-story-stack">
 	<alt-date-picker disabled value="2026-07-22"></alt-date-picker>

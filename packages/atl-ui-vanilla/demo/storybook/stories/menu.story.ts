@@ -18,5 +18,19 @@ export const menuStory = defineStory({
 </alt-menu>`,
 			'Arrow keys, Home, End, Escape and outside-click dismissal.',
 		),
+		example(
+			'Clipping container',
+			`<div class="alt-catalog-stress-frame" data-overlay-clip>
+	<alt-menu>
+		<button class="alt-button" data-alt-menu-trigger type="button">Clipped menu</button>
+		<div role="menu" aria-label="Clipped actions">
+			<button data-value="edit" role="menuitem" type="button">Edit campaign</button>
+			<button data-value="duplicate" role="menuitem" type="button">Duplicate campaign</button>
+			<button data-value="delete" role="menuitem" type="button">Delete campaign</button>
+		</div>
+	</alt-menu>
+</div>`,
+			'Menu uses the shared top layer instead of the local stacking context.',
+		),
 	],
 });

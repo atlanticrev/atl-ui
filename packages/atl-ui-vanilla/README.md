@@ -96,7 +96,8 @@ Select и Autocomplete описан в [`docs/select-autocomplete.md`](docs/sele
 `collapse`, `menu`, `pagination`, `search`, `file-upload`, `progress`, `popup`, `tooltip`, `dialog`, `dropdown`,
 `autocomplete` и `table`. Ни один entry point не регистрируется сам. Контракты календарей и новых компонентов
 описаны в [`docs/calendar.md`](docs/calendar.md) и
-[`docs/additional-components.md`](docs/additional-components.md).
+[`docs/additional-components.md`](docs/additional-components.md). Общий top-layer, positioning и fallback
+контракт всплывающих компонентов описан в [`docs/overlays.md`](docs/overlays.md).
 
 ## Alert, Tabs и Toast
 

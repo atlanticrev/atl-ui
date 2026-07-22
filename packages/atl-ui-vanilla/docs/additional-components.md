@@ -5,7 +5,8 @@
 - `alt-collapse` расширяет authored `<details>`; атрибут `single` включает accordion mode, `openKeys`
   управляет открытыми секциями, `alt-change` возвращает актуальные keys.
 - `alt-menu` расширяет authored trigger `[data-alt-menu-trigger]` и соседний `[role="menu"]`. Поддерживаются
-  ArrowUp/ArrowDown, Home/End, Escape, outside dismiss и `alt-select` с `{ item, value }`.
+  ArrowUp/ArrowDown, Home/End, Escape, outside dismiss и `alt-select` с `{ item, value }`. Открытое menu
+  использует общий top layer и не обрезается контейнерами.
 - `alt-pagination` принимает `page`, `page-size`, `total` и property `pageSizeOptions`. `alt-change` возвращает
   `{ page, pageSize }`; компонент можно связать с существующими Table и Select без их взаимной регистрации.
 - `alt-search` держит настоящий `<input type="search">`, поэтому поддерживает FormData/reset. События

@@ -25,13 +25,15 @@ describe('date pickers', () => {
 
 		const change = vi.fn();
 
+		const panel = picker.querySelector<HTMLElement>('.alt-date-picker__panel') as HTMLElement;
+
 		picker.addEventListener('alt-change', change);
 
 		picker.querySelector<HTMLButtonElement>('.alt-date-picker__trigger')?.click();
 
 		await Promise.resolve();
 
-		picker.querySelector<HTMLButtonElement>('[data-value="2026-07-23"]')?.click();
+		panel.querySelector<HTMLButtonElement>('[data-value="2026-07-23"]')?.click();
 
 		await Promise.resolve();
 
@@ -54,19 +56,21 @@ describe('date pickers', () => {
 
 		const changed = vi.fn();
 
+		const panel = picker.querySelector<HTMLElement>('.alt-date-picker__panel') as HTMLElement;
+
 		picker.addEventListener('alt-change', changed);
 
 		picker.open = true;
 
 		await Promise.resolve();
 
-		picker.querySelector<HTMLButtonElement>('[data-value="2026-07-14"]')?.click();
+		panel.querySelector<HTMLButtonElement>('[data-value="2026-07-14"]')?.click();
 
 		await Promise.resolve();
 
 		expect(changed).not.toHaveBeenCalled();
 
-		picker.querySelector<HTMLButtonElement>('[data-action="apply"]')?.click();
+		panel.querySelector<HTMLButtonElement>('[data-action="apply"]')?.click();
 
 		await Promise.resolve();
 
@@ -93,5 +97,51 @@ describe('date pickers', () => {
 		await Promise.resolve();
 
 		expect(picker.value).toBe('2026-07-22');
+	});
+
+	it('portals the panel as a fallback and restores it on close or disconnect', async () => {
+		document.body.innerHTML = '<alt-date-range-picker start="2026-07-10"></alt-date-range-picker>';
+
+		await Promise.resolve();
+
+		const picker = document.querySelector('alt-date-range-picker') as AltDateRangePickerElementApi;
+
+		const panel = picker.querySelector<HTMLDivElement>('.alt-date-picker__panel') as HTMLDivElement & {
+			togglePopover?: (force?: boolean) => boolean;
+		};
+
+		Object.defineProperty(panel, 'togglePopover', { configurable: true, value: undefined });
+
+		picker.open = true;
+
+		await Promise.resolve();
+
+		expect(panel.parentElement).toBe(document.body);
+
+		panel.querySelector<HTMLButtonElement>('[data-value="2026-07-14"]')?.click();
+
+		await Promise.resolve();
+
+		expect(picker.open).toBe(true);
+
+		picker.open = false;
+
+		await Promise.resolve();
+
+		expect(panel.parentElement).toBe(picker);
+
+		expect(panel.hidden).toBe(true);
+
+		picker.open = true;
+
+		await Promise.resolve();
+
+		expect(panel.parentElement).toBe(document.body);
+
+		picker.remove();
+
+		expect(panel.parentElement).toBe(picker);
+
+		expect(panel.hidden).toBe(true);
 	});
 });

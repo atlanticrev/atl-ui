@@ -17,6 +17,8 @@ beforeEach(() => {
 
 describe('alt-popup', () => {
 	it('positions against an anchor and closes on Escape', async () => {
+		const container = document.createElement('div');
+
 		const anchor = document.createElement('button');
 
 		const popup = document.createElement(TAG_NAME) as AltPopupElementApi;
@@ -31,13 +33,17 @@ describe('alt-popup', () => {
 
 		popup.addEventListener('alt-open-change', onOpenChange);
 
-		document.body.append(anchor, popup);
+		container.append(anchor, popup);
+
+		document.body.append(container);
 
 		popup.show();
 
 		await Promise.resolve();
 
 		expect(popup.dataset.open).toBe('true');
+
+		expect(popup.parentElement).toBe(document.body);
 
 		expect(popup.style.left).toBe('20px');
 
@@ -46,6 +52,8 @@ describe('alt-popup', () => {
 		await Promise.resolve();
 
 		expect(popup.open).toBe(false);
+
+		expect(popup.parentElement).toBe(container);
 
 		expect(onOpenChange).toHaveBeenCalledTimes(2);
 	});

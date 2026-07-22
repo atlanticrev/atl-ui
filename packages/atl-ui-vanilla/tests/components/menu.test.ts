@@ -24,11 +24,15 @@ describe('alt-menu', () => {
 
 		const trigger = menu.querySelector('[data-alt-menu-trigger]') as HTMLButtonElement;
 
+		const popup = menu.querySelector('[role="menu"]') as HTMLElement;
+
 		trigger.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }));
 
 		await Promise.resolve();
 
 		expect(menu.hasAttribute('open')).toBe(true);
+
+		expect(popup.parentElement).toBe(document.body);
 
 		expect(document.activeElement?.textContent).toBe('Edit');
 
@@ -42,13 +46,15 @@ describe('alt-menu', () => {
 
 		const selected = vi.fn();
 
+		const item = menu.querySelector('[data-value="edit"]') as HTMLButtonElement;
+
 		menu.addEventListener('alt-select', selected);
 
 		(menu.querySelector('[data-alt-menu-trigger]') as HTMLButtonElement).click();
 
 		await Promise.resolve();
 
-		(menu.querySelector('[data-value="edit"]') as HTMLButtonElement).click();
+		item.click();
 
 		expect(selected.mock.calls[0][0].detail.value).toBe('edit');
 
@@ -60,6 +66,8 @@ describe('alt-menu', () => {
 	it('closes on Escape', async () => {
 		const menu = await render();
 
+		const popup = menu.querySelector('[role="menu"]') as HTMLElement;
+
 		(menu.querySelector('[data-alt-menu-trigger]') as HTMLButtonElement).click();
 
 		await Promise.resolve();
@@ -68,6 +76,10 @@ describe('alt-menu', () => {
 			new KeyboardEvent('keydown', { bubbles: true, key: 'Escape' }),
 		);
 
+		await Promise.resolve();
+
 		expect(menu.hasAttribute('open')).toBe(false);
+
+		expect(popup.parentElement).toBe(menu);
 	});
 });

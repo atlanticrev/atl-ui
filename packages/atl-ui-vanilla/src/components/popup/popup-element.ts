@@ -1,7 +1,7 @@
 import type { OverlayPlacement } from '../../controllers';
 import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
 
-import { bindPopupOverlay, setPopupPopoverOpen } from './popup-overlay';
+import { bindPopupOverlay } from './popup-overlay';
 import { popupObservedAttributes, popupUpgradeProperties, readPopupBoolean } from './popup-properties';
 import type { AltPopupOpenChangeDetail } from './types';
 
@@ -93,10 +93,11 @@ export const createAltPopupElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 			this.dataset.open = String(this.open);
 
+			this.hidden = !this.open;
+
 			this.#cleanupOverlay();
 
 			if (this.open && anchor && signal) this.#showOverlay(anchor, signal);
-			else setPopupPopoverOpen(this, false);
 
 			if (this.#renderedOpen !== this.open) {
 				this.#renderedOpen = this.open;
