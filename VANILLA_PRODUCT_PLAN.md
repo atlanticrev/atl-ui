@@ -9,8 +9,8 @@
 
 - В vanilla-каталоге поддерживаются 32 компонента и CSS-рецепта.
 - Публичная версия пакета в репозитории пока `0.1.0`; следующий релиз планируется как `0.2.0`.
-- Ветка `feat/atl-ui-vanilla` на 17 коммитов впереди `origin/main`.
-- Тег `atl-ui-vanilla-v0.1.0` на 9 коммитов позади текущего `HEAD`.
+- Ветка `feat/atl-ui-vanilla` на 18 коммитов впереди `origin/main`.
+- Тег `atl-ui-vanilla-v0.1.0` на 10 коммитов позади текущего `HEAD`.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React-пакет сохраняется без breaking changes; автоматическая полная parity с vanilla не является целью.
 
@@ -31,8 +31,9 @@
 
 ## 2. Подготовить релиз 0.2.0
 
-- ⬜ Добавить CI на каждый push и pull request. Минимальный gate: lint, format check, typecheck, unit tests,
-  browser tests, package build и demo build.
+- ✅ Добавить CI на каждый push и pull request. Gate проверяет root и vanilla lint/typecheck/unit/build,
+  vanilla format, 105 browser tests и production demo build. Подтверждение:
+  [`.github/workflows/ci.yml`](.github/workflows/ci.yml) и успешный локальный прогон эквивалентных команд.
 - ⬜ Собрать tarball и установить его в чистый временный consumer project.
 - ⬜ Проверить корневой импорт, все точечные JS entry points и три CSS entry points.
 - ⬜ Проверить SSR-safe import, отсутствие auto-registration и отсутствие runtime dependencies.
@@ -82,3 +83,4 @@
 |---|---|---|
 | 2026-07-22 | Закрытие текущей итерации | Search опубликован; roadmap, migration matrix и public API приведены к фактическому состоянию |
 | 2026-07-22 | Стабилизация demo | Устранён render-loop Select; корневая страница добавлена в browser smoke-gate |
+| 2026-07-22 | Подготовка 0.2.0 | Добавлен обязательный CI для каждого push и pull request |

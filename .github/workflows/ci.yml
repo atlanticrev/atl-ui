@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  quality:
+    name: Quality and builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out commit
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lint workspace
+        run: npm run lint
+
+      - name: Verify React package
+        run: npm run typecheck && npx vitest run src && npm run build
+
+      - name: Verify vanilla package
+        run: npm run verify:base --workspace @atlanticrev/atl-ui-vanilla
+
+      - name: Build vanilla package
+        run: npm run build --workspace @atlanticrev/atl-ui-vanilla
+
+      - name: Build vanilla demo
+        run: npm run demo:build --workspace @atlanticrev/atl-ui-vanilla
+
+  browser:
+    name: Browser tests
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out commit
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          cache: npm
+          node-version-file: '.nvmrc'
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install browser engines
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Run browser tests
+        run: npm run test:browser --workspace @atlanticrev/atl-ui-vanilla
+
+      - name: Upload browser diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          if-no-files-found: ignore
+          name: playwright-diagnostics
+          path: packages/atl-ui-vanilla/test-results/browser
+          retention-days: 7
