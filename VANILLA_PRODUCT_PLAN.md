@@ -1,8 +1,8 @@
 # План развития ATL UI Vanilla
 
-Этот файл содержит только актуальные задачи после релиза `@atlanticrev/atl-ui-vanilla@0.3.0`.
+Этот файл содержит только актуальные задачи после релиза `@atlanticrev/atl-ui-vanilla@0.3.1`.
 Выполненные этапы удаляются отсюда: история изменений хранится в Git и
-[`release notes`](packages/atl-ui-vanilla/docs/releases/0.3.0.md).
+[`release notes`](packages/atl-ui-vanilla/docs/releases/0.3.1.md).
 
 ## Текущее состояние
 
@@ -10,8 +10,8 @@
 - Dialog и Drawer используют общий native-modal lifecycle, блокировку фонового scroll и динамический viewport;
   Drawer и мобильные календарные шторки — общий swipe-dismiss механизм без runtime dependencies. Dialog
   открывается и закрывается плавно, а touch-жесты Sheet не прокручивают страницу под overlay.
-- `0.3.0` опубликован в GitHub Packages и отмечен как latest.
-- Release tag: `atl-ui-vanilla-v0.3.0`.
+- `0.3.1` опубликован в GitHub Packages и отмечен как latest.
+- Release tag: `atl-ui-vanilla-v0.3.1`.
 - Пакет приватный; приложению-потребителю потребуется доступ к GitHub Packages.
 - Production-каталог: <https://atl-ui.vercel.app/storybook.html>.
 - React- и vanilla-пакеты остаются независимо подключаемыми.
