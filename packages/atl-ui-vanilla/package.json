@@ -1,6 +1,6 @@
 {
 	"name": "@atlanticrev/atl-ui-vanilla",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Zero-dependency Atlantic Review UI Web Components and native CSS recipes.",
 	"private": false,
 	"type": "module",
