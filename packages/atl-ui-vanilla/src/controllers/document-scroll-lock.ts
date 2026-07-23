@@ -9,21 +9,22 @@ type ScrollLockState = {
 	restore: () => void;
 };
 
-const LOCKED_PROPERTIES = [
-	['overflow', 'hidden'],
-	['overscroll-behavior', 'none'],
-] as const;
+type LockedProperty = readonly [name: string, value: string];
+
+const SCROLLING_ELEMENT_PROPERTIES: readonly LockedProperty[] = [['overflow', 'hidden']];
+
+const OVERSCROLL_PROPERTIES: readonly LockedProperty[] = [['overscroll-behavior', 'none']];
 
 const locks = new WeakMap<Document, ScrollLockState>();
 
-const lockElement = (element: HTMLElement): (() => void) => {
-	const snapshots: StylePropertySnapshot[] = LOCKED_PROPERTIES.map(([name]) => ({
+const lockElement = (element: HTMLElement, properties: readonly LockedProperty[]): (() => void) => {
+	const snapshots: StylePropertySnapshot[] = properties.map(([name]) => ({
 		name,
 		priority: element.style.getPropertyPriority(name),
 		value: element.style.getPropertyValue(name),
 	}));
 
-	for (const [name, value] of LOCKED_PROPERTIES) element.style.setProperty(name, value, 'important');
+	for (const [name, value] of properties) element.style.setProperty(name, value, 'important');
 
 	return (): void => {
 		for (const { name, priority, value } of snapshots) {
@@ -37,16 +38,31 @@ export const lockDocumentScroll = (document: Document): (() => void) => {
 	let state = locks.get(document);
 
 	if (!state) {
-		const restoreRoot = lockElement(document.documentElement);
+		const root = document.documentElement;
 
-		const restoreBody = document.body ? lockElement(document.body) : (): void => undefined;
+		const body = document.body;
+
+		const HtmlElementConstructor = document.defaultView?.HTMLElement;
+
+		const scrollingElement =
+			HtmlElementConstructor && document.scrollingElement instanceof HtmlElementConstructor
+				? document.scrollingElement
+				: root;
+
+		const restoreScrollingElement = lockElement(scrollingElement, SCROLLING_ELEMENT_PROPERTIES);
+
+		const restoreRootOverscroll = lockElement(root, OVERSCROLL_PROPERTIES);
+
+		const restoreBodyOverscroll = body ? lockElement(body, OVERSCROLL_PROPERTIES) : (): void => undefined;
 
 		state = {
 			count: 0,
 			restore: () => {
-				restoreBody();
+				restoreBodyOverscroll();
 
-				restoreRoot();
+				restoreRootOverscroll();
+
+				restoreScrollingElement();
 			},
 		};
 

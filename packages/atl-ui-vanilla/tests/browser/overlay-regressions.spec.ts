@@ -54,7 +54,7 @@ test('dialog uses smooth motion, dynamic backdrop height and document scroll loc
 
 	expect(initialViewportState).toEqual({
 		backdropHeight: '700px',
-		bodyOverflow: 'hidden',
+		bodyOverflow: 'visible',
 		rootOverflow: 'hidden',
 	});
 
@@ -91,6 +91,43 @@ test('dialog uses smooth motion, dynamic backdrop height and document scroll loc
 			rootOverflow: document.documentElement.style.overflow,
 		})),
 	).toEqual({ bodyOverflow: '', rootOverflow: '' });
+});
+
+test('modal scroll lock preserves the sticky catalog header and sidebar', async ({ page }) => {
+	await page.setViewportSize({ height: 800, width: 1280 });
+
+	await page.goto('/storybook.html#dialog');
+
+	const header = page.locator('.alt-catalog-header');
+
+	const sidebar = page.locator('.alt-catalog-sidebar');
+
+	const readTop = async (selector: string): Promise<number> => {
+		return page.locator(selector).evaluate((element) => element.getBoundingClientRect().top);
+	};
+
+	await expect.poll(() => readTop('.alt-catalog-header')).toBe(0);
+
+	await expect.poll(() => readTop('.alt-catalog-sidebar')).toBeCloseTo(72, 1);
+
+	await page.getByRole('button', { name: '520 px' }).click();
+
+	await expect(page.locator('#dialog-520 .alt-dialog')).toBeVisible();
+
+	await expect.poll(() => readTop('.alt-catalog-header')).toBe(0);
+
+	await expect.poll(() => readTop('.alt-catalog-sidebar')).toBeCloseTo(72, 1);
+
+	await expect(header).toHaveCSS('position', 'sticky');
+
+	await expect(sidebar).toHaveCSS('position', 'sticky');
+
+	expect(
+		await page.evaluate(() => ({
+			bodyOverflow: getComputedStyle(document.body).overflow,
+			rootOverflow: getComputedStyle(document.documentElement).overflow,
+		})),
+	).toEqual({ bodyOverflow: 'visible', rootOverflow: 'hidden' });
 });
 
 test('collapse, tooltip and popup keep stable single-surface geometry', async ({ page }) => {

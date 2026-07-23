@@ -12,6 +12,8 @@ describe('document scroll lock', () => {
 	it('locks nested modal lifecycles and restores authored inline styles exactly', () => {
 		document.documentElement.style.overflow = 'scroll';
 
+		document.body.style.overflow = 'auto';
+
 		document.body.style.overscrollBehavior = 'contain';
 
 		const releaseFirst = lockDocumentScroll(document);
@@ -21,6 +23,8 @@ describe('document scroll lock', () => {
 		expect(document.documentElement.style.getPropertyValue('overflow')).toBe('hidden');
 
 		expect(document.documentElement.style.getPropertyPriority('overflow')).toBe('important');
+
+		expect(document.body.style.overflow).toBe('auto');
 
 		expect(document.body.style.getPropertyValue('overscroll-behavior')).toBe('none');
 
@@ -34,7 +38,7 @@ describe('document scroll lock', () => {
 
 		expect(document.documentElement.style.overscrollBehavior).toBe('');
 
-		expect(document.body.style.overflow).toBe('');
+		expect(document.body.style.overflow).toBe('auto');
 
 		expect(document.body.style.overscrollBehavior).toBe('contain');
 
