@@ -19,6 +19,7 @@ import {
 	defineAltSelect,
 	defineAltTable,
 	defineAltTabs,
+	defineAltTextarea,
 	defineAltToastRegion,
 	defineAltTooltip,
 } from './components';
@@ -45,6 +46,7 @@ export type AltElementDefinitions = {
 	select: CustomElementConstructor | undefined;
 	table: CustomElementConstructor | undefined;
 	tabs: CustomElementConstructor | undefined;
+	textarea: CustomElementConstructor | undefined;
 	toastRegion: CustomElementConstructor | undefined;
 	tooltip: CustomElementConstructor | undefined;
 };
@@ -71,6 +73,7 @@ export const defineAllAltElements = (environment?: ElementEnvironment): AltEleme
 		select: defineAltSelect(environment),
 		table: defineAltTable(environment),
 		tabs: defineAltTabs(environment),
+		textarea: defineAltTextarea(environment),
 		toastRegion: defineAltToastRegion(environment),
 		tooltip: defineAltTooltip(environment),
 	};

@@ -1,0 +1,29 @@
+@layer alt.components {
+  .alt-textarea__description,
+  .alt-textarea__helper,
+  .alt-textarea__counter {
+    color: var(--alt-color-ink-muted);
+    font: var(--alt-type-body-sm);
+  }
+
+  .alt-textarea__description {
+    margin-top: 0.25rem;
+  }
+
+  .alt-textarea__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 1.25rem;
+    padding: 0.25rem 1rem 0;
+  }
+
+  :where(alt-textarea, .alt-textarea)[data-status='error'] .alt-textarea__helper,
+  :where(alt-textarea, .alt-textarea)[aria-invalid='true'] .alt-textarea__helper {
+    color: var(--alt-color-danger);
+  }
+
+  :where(alt-textarea, .alt-textarea)[data-status='success'] .alt-textarea__helper {
+    color: var(--alt-color-success-text);
+  }
+}

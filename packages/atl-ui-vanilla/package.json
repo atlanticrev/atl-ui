@@ -111,6 +111,10 @@
 			"types": "./dist/tabs.d.ts",
 			"import": "./dist/tabs.js"
 		},
+		"./textarea": {
+			"types": "./dist/textarea.d.ts",
+			"import": "./dist/textarea.js"
+		},
 		"./toast": {
 			"types": "./dist/toast.d.ts",
 			"import": "./dist/toast.js"

@@ -28,6 +28,7 @@ export default defineConfig({
 		select: 'src/components/select/index.ts',
 		table: 'src/components/table/index.ts',
 		tabs: 'src/components/tabs/index.ts',
+		textarea: 'src/components/textarea/index.ts',
 		toast: 'src/components/toast/index.ts',
 		tooltip: 'src/components/tooltip/index.ts',
 	},

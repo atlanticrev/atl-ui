@@ -156,6 +156,72 @@ test('input focuses the same notched SVG border without an outer ring', async ({
 	await expectFocusedLabelStyle(host.locator('.alt-input__label'), host.locator('.alt-input__outline-path'));
 });
 
+test('textarea keeps its label statically notched while focus changes only the shared border', async ({ page }) => {
+	await openStory(page, 'textarea');
+
+	const host = page.locator('#textarea [data-story-example="Basic"] alt-textarea');
+
+	const root = host.locator('.alt-textarea__root');
+
+	const before = await readOutline(root, '.alt-textarea__outline-path');
+
+	const beforeBounds = await root.boundingBox();
+
+	expect(before.path.match(/M /g)?.length).toBeGreaterThanOrEqual(2);
+
+	await expectAlignedLabel(host.locator('.alt-textarea__label'), host.locator('.alt-textarea__field'));
+
+	await host.locator('textarea').focus();
+
+	await expect
+		.poll(async () => (await readOutline(root, '.alt-textarea__outline-path')).stroke)
+		.not.toBe(before.stroke);
+
+	const focused = await readOutline(root, '.alt-textarea__outline-path');
+
+	const focusedBounds = await root.boundingBox();
+
+	expect(focused.path.match(/M /g)?.length).toBeGreaterThanOrEqual(2);
+
+	expect(focused.strokeWidth).toBe('2px');
+
+	expect(focused.shadow).toBe(before.shadow);
+
+	expect(focusedBounds).toEqual(beforeBounds);
+
+	await expectAlignedLabel(host.locator('.alt-textarea__label'), host.locator('.alt-textarea__field'));
+
+	await expectFocusedLabelStyle(host.locator('.alt-textarea__label'), host.locator('.alt-textarea__outline-path'));
+});
+
+test('textarea recomputes its notched outline after the native field grows', async ({ page }) => {
+	await openStory(page, 'textarea');
+
+	const host = page.locator('#textarea [data-story-example="Basic"] alt-textarea');
+
+	const root = host.locator('.alt-textarea__root');
+
+	const initialHeight = await root.evaluate((element) => element.getBoundingClientRect().height);
+
+	await host.locator('textarea').evaluate((element) => {
+		element.style.height = '220px';
+	});
+
+	await expect
+		.poll(() => root.evaluate((element) => element.getBoundingClientRect().height))
+		.toBeGreaterThan(initialHeight);
+
+	await expect
+		.poll(() => {
+			return root.locator('.alt-textarea__outline').evaluate((element) => {
+				const viewBox = element.getAttribute('viewBox')?.split(' ').map(Number);
+
+				return viewBox?.[3] ?? 0;
+			});
+		})
+		.toBeCloseTo(await root.evaluate((element) => element.getBoundingClientRect().height), 0);
+});
+
 test('select uses the shared SVG notch and focus treatment', async ({ page }) => {
 	await openStory(page, 'select');
 

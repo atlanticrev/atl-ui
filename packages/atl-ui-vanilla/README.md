@@ -26,11 +26,13 @@ import '@atlanticrev/atl-ui-vanilla/default.css';
 import { defineAltDatePicker, defineAltDateRangePicker } from '@atlanticrev/atl-ui-vanilla/date-picker';
 import { defineAltInput } from '@atlanticrev/atl-ui-vanilla/input';
 import { defineAltSelect } from '@atlanticrev/atl-ui-vanilla/select';
+import { defineAltTextarea } from '@atlanticrev/atl-ui-vanilla/textarea';
 
 defineAltDatePicker();
 defineAltDateRangePicker();
 defineAltInput();
 defineAltSelect();
+defineAltTextarea();
 ```
 
 Каждый `defineAlt*` идемпотентен. Импорт и вызов регистрации на сервере безопасны; без browser environment
@@ -80,6 +82,7 @@ Toast/dismiss, File upload и пагинацию Table. Полная матри�
 ```html
 <form id="post-form">
   <alt-input helper-text="Required" label="Title" name="title" required></alt-input>
+  <alt-textarea helper-text="Optional" label="Caption" name="caption" rows="5"></alt-textarea>
   <alt-select label="Channel" name="channel" required>
     <alt-option label="YouTube" value="youtube"></alt-option>
     <alt-option label="TikTok" value="tiktok"></alt-option>
@@ -92,13 +95,18 @@ const input = document.querySelector('alt-input');
 input.value = 'Launch';
 input.addEventListener('alt-input', (event) => console.log(event.detail.value));
 
+const textarea = document.querySelector('alt-textarea');
+textarea.value = 'Launch caption';
+textarea.addEventListener('alt-input', (event) => console.log(event.detail.value));
+
 const select = document.querySelector('alt-select');
 select.options = [{ label: 'Instagram', value: 'instagram' }];
 select.addEventListener('alt-change', (event) => console.log(event.detail.values));
 ```
 
-Input держит настоящий `<input>` внутри light DOM. Select принимает авторский trigger и rich option content,
-но использует скрытый native `<select>` как carrier для FormData, reset и validation:
+Input и Textarea держат настоящие `<input>` и `<textarea>` внутри light DOM. У Textarea label всегда
+остаётся в SVG notch. Select принимает авторский trigger и rich option content, но использует скрытый native
+`<select>` как carrier для FormData, reset и validation:
 
 ```html
 <alt-select label="Channel">
@@ -119,11 +127,12 @@ Input держит настоящий `<input>` внутри light DOM. Select �
 `alt-open-change`, `alt-input` и `alt-change` содержат причину и исходное browser event. Полный контракт
 Select и Autocomplete описан в [`docs/select-autocomplete.md`](docs/select-autocomplete.md).
 
-В export map доступны 26 независимо импортируемых JavaScript entry points и три CSS entry points. Ни один
+В export map доступны 27 независимо импортируемых JavaScript entry points и три CSS entry points. Ни один
 component entry point не регистрируется сам. Полный список поддерживаемых компонентов, recipes и imports
 находится в [`docs/public-api.md`](docs/public-api.md). Контракты календарей и новых компонентов описаны в
 [`docs/calendar.md`](docs/calendar.md) и
-[`docs/additional-components.md`](docs/additional-components.md). Общий top-layer, positioning и fallback
+[`docs/additional-components.md`](docs/additional-components.md). Контракт многострочного поля описан в
+[`docs/textarea.md`](docs/textarea.md). Общий top-layer, positioning и fallback
 контракт всплывающих компонентов описан в [`docs/overlays.md`](docs/overlays.md), а единый API боковых
 Drawer и мобильных Sheet — в [`docs/drawer.md`](docs/drawer.md).
 

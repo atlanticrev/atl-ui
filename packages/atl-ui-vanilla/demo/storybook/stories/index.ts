@@ -29,6 +29,7 @@ import { stepperStory } from './stepper.story';
 import { switcherStory } from './switcher.story';
 import { tableStory } from './table.story';
 import { tabsStory } from './tabs.story';
+import { textareaStory } from './textarea.story';
 import { toastStory } from './toast.story';
 import { tooltipStory } from './tooltip.story';
 
@@ -56,6 +57,7 @@ export const stories = [
 	calendarStory,
 	datePickerStory,
 	inputStory,
+	textareaStory,
 	searchStory,
 	selectStory,
 	autocompleteStory,

@@ -122,5 +122,5 @@ test('catalog search uses alt-search with shared SVG icons', async ({ page }) =>
 
 	await clear.click();
 
-	await expect(page.locator('#catalog-count')).toHaveText('33 components');
+	await expect(page.locator('#catalog-count')).toHaveText('34 components');
 });

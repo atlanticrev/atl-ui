@@ -28,6 +28,7 @@ vanilla использует native markup, properties, attributes и `alt-*` ev
 | Calendar | `<alt-calendar>` с single/range selection и day/month/year views | managed element | Готово |
 | Date Picker / Date Range Picker | `<alt-date-picker>`, `<alt-date-range-picker>` | form-associated elements | Готово |
 | `AtlInput` | `<alt-input>` с native input | form-associated element | Готово |
+| Multiline text | `<alt-textarea>` с native textarea и статичным notched label | form-associated element | Готово |
 | Search | `<alt-search>` с native `input[type="search"]` | form-associated element | Готово |
 | `AtlSelect` | `<alt-select>` и `<alt-option>` со скрытым native select carrier | form-associated element | Готово |
 | `AtlAutocomplete` | `<alt-autocomplete>` с combobox/listbox contract | form-associated element | Готово |

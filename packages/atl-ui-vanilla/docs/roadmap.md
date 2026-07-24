@@ -2,7 +2,7 @@
 
 ## Текущее состояние
 
-Массовый перенос компонентов завершён. Каталог содержит 33 поддерживаемые позиции: 21 категорию managed
+Массовый перенос компонентов завершён. Каталог содержит 34 поддерживаемые позиции: 22 категории managed
 или behavioral компонентов и 12 native CSS recipes. Полный список и публичные entry points зафиксированы в
 [`public-api.md`](public-api.md), соответствие React и vanilla — в
 [`migration-matrix.md`](migration-matrix.md).
@@ -11,7 +11,7 @@
 
 - core lifecycle, converters, batching, typed events и idempotent registration;
 - form carrier, selection, dismissal, focus, positioning, open-state и typeahead controllers;
-- Input, Select, Autocomplete и native form integration;
+- Input, Textarea, Select, Autocomplete и native form integration;
 - Calendar, Date Picker и Date Range Picker со всеми календарными view и presets;
 - Popup, Tooltip, Dialog, Drawer/Sheet и общий top-layer overlay contract;
 - Menu, Dropdown, Pagination, Table, Search, Alert и Toast;
@@ -22,7 +22,7 @@
 Подключить пакет в одном реальном экране `social-video-posting`:
 
 - импортировать только нужные component entry points, не `define-all`;
-- начать с формы, использующей Input, Select, Autocomplete и календарь;
+- начать с формы, использующей Input, Textarea, Select, Autocomplete и календарь;
 - проверить submit, reset, validation, mobile layout и overlays;
 - зафиксировать реальные пробелы API до миграции следующих экранов.
 

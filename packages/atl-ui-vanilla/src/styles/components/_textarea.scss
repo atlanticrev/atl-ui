@@ -1,0 +1,92 @@
+@use '../foundation/field-focus';
+
+@layer alt.components {
+  :where(alt-textarea, .alt-textarea) {
+    --alt-textarea-padding-block: 0.875rem;
+    --alt-textarea-padding-inline: 0.875rem;
+    --alt-textarea-font: var(--alt-type-body-lg);
+    --alt-textarea-label-font: var(--alt-type-body-sm);
+    --alt-textarea-label-padding-inline: 0.25rem;
+    --alt-textarea-border-width: 1px;
+    --alt-textarea-outline-width: 1px;
+    --alt-textarea-border-color: var(--alt-color-border);
+    --alt-textarea-field-min-height: 7.5rem;
+
+    display: block;
+    width: 100%;
+    color: var(--alt-color-ink);
+    font: var(--alt-textarea-font);
+  }
+
+  :where(alt-textarea, .alt-textarea):is([data-size='s'], [data-size='xs']) {
+    --alt-textarea-padding-block: 0.75rem;
+    --alt-textarea-padding-inline: 0.75rem;
+    --alt-textarea-font: var(--alt-type-body-md);
+  }
+
+  .alt-textarea__root {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    padding: var(--alt-textarea-padding-block) var(--alt-textarea-padding-inline);
+    border: var(--alt-textarea-border-width) solid var(--alt-textarea-border-color);
+    border-radius: var(--alt-textarea-radius, var(--alt-radius-xs));
+    background: var(--alt-textarea-bg, var(--alt-color-surface));
+    box-shadow: var(--alt-shadow-sm);
+    cursor: text;
+    transition: background-color var(--alt-motion-normal), border-color var(--alt-motion-normal),
+      box-shadow var(--alt-motion-normal);
+  }
+
+  :where(alt-textarea, .alt-textarea):hover .alt-textarea__root {
+    --alt-textarea-border-color: var(--alt-color-border-strong);
+  }
+
+  :where(alt-textarea, .alt-textarea):focus-within .alt-textarea__root {
+    @include field-focus.notched(
+      --alt-textarea-border-color,
+      --alt-textarea-outline-width,
+      --alt-textarea-state-color
+    );
+  }
+
+  :where(alt-textarea, .alt-textarea):is([data-status='error'], [aria-invalid='true']) {
+    --alt-textarea-border-color: var(--alt-color-danger);
+    --alt-textarea-state-color: var(--alt-color-danger);
+  }
+
+  :where(alt-textarea, .alt-textarea)[data-status='success'] {
+    --alt-textarea-border-color: var(--alt-color-success);
+    --alt-textarea-state-color: var(--alt-color-success);
+  }
+
+  @media (forced-colors: active) {
+    :where(alt-textarea, .alt-textarea):focus-within .alt-textarea__root {
+      @include field-focus.forced-colors(--alt-textarea-border-color);
+    }
+  }
+
+  :where(alt-textarea, .alt-textarea):is([disabled], [readonly], [data-readonly-styled='true'])
+    .alt-textarea__root {
+    --alt-textarea-bg: var(--alt-color-surface-muted);
+    opacity: 0.72;
+  }
+
+  .alt-textarea__label {
+    position: absolute;
+    top: 0;
+    left: var(--alt-textarea-padding-inline);
+    z-index: 2;
+    max-width: calc(100% - 2rem);
+    padding-inline: var(--alt-textarea-label-padding-inline);
+    overflow: hidden;
+    color: var(--alt-textarea-state-color, var(--alt-color-ink-muted));
+    font: var(--alt-textarea-label-font);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: color var(--alt-motion-fast);
+  }
+}

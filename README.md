@@ -23,20 +23,23 @@ npm install @atlanticrev/atl-ui-vanilla
 import '@atlanticrev/atl-ui-vanilla/default.css';
 import { defineAltInput } from '@atlanticrev/atl-ui-vanilla/input';
 import { defineAltSelect } from '@atlanticrev/atl-ui-vanilla/select';
+import { defineAltTextarea } from '@atlanticrev/atl-ui-vanilla/textarea';
 
 defineAltInput();
 defineAltSelect();
+defineAltTextarea();
 ```
 
 ```html
 <alt-input label="Title" name="title" required></alt-input>
+<alt-textarea label="Caption" name="caption" rows="5"></alt-textarea>
 <alt-select label="Channel" name="channel" required>
   <alt-option label="YouTube" value="youtube"></alt-option>
   <alt-option label="TikTok" value="tiktok"></alt-option>
 </alt-select>
 ```
 
-Пакет предоставляет 21 категорию managed/behavioral компонентов, 12 native CSS recipes, все варианты
+Пакет предоставляет 22 категории managed/behavioral компонентов, 12 native CSS recipes, все варианты
 календаря и range picker, Drawer/Sheet, а также общий top-layer overlay-механизм. Imports безопасны при SSR
 и не регистрируют custom elements автоматически. Полная инструкция находится в
 [`packages/atl-ui-vanilla/README.md`](packages/atl-ui-vanilla/README.md); изменения релиза `0.3.1` — в

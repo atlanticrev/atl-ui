@@ -40,11 +40,11 @@ const createConsumerFiles = () => {
 	write(
 		join(consumerDirectory, 'src/main.js'),
 		`import '${PACKAGE_NAME}/default.css';
-import { defineAltInput } from '${PACKAGE_NAME}/input';
+import { defineAltTextarea } from '${PACKAGE_NAME}/textarea';
 
-defineAltInput();
+defineAltTextarea();
 
-document.querySelector('#app').innerHTML = '<alt-input label="Title"></alt-input>';
+document.querySelector('#app').innerHTML = '<alt-textarea label="Caption"></alt-textarea>';
 `,
 	);
 };
@@ -107,8 +107,13 @@ const verifyBundleBoundary = () => {
 		assets.some((file) => file.endsWith('.css')),
 		'The consumer build must contain bundled CSS',
 	);
-	assert.match(javascript, /alt-input/, 'The imported Input entry point must be present');
-	assert.doesNotMatch(javascript, /alt-calendar/, 'An Input-only build must not contain Calendar registration');
+	assert.match(javascript, /alt-textarea/, 'The imported Textarea entry point must be present');
+	assert.doesNotMatch(
+		javascript,
+		/alt-input-field|alt-input__root|data-alt-owned="input"/,
+		'A Textarea-only build must not contain the Input implementation',
+	);
+	assert.doesNotMatch(javascript, /alt-calendar/, 'A Textarea-only build must not contain Calendar registration');
 };
 
 try {

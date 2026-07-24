@@ -26,6 +26,7 @@ import {
 	defineAltSelect,
 	defineAltTable,
 	defineAltTabs,
+	defineAltTextarea,
 	defineAltToastRegion,
 	defineAltTooltip,
 } from '../src';
@@ -76,6 +77,8 @@ describe('public API without browser globals', () => {
 
 		expect(defineAltTabs()).toBeUndefined();
 
+		expect(defineAltTextarea()).toBeUndefined();
+
 		expect(defineAltToastRegion()).toBeUndefined();
 
 		expect(defineAltTooltip()).toBeUndefined();
@@ -101,6 +104,7 @@ describe('public API without browser globals', () => {
 			select: undefined,
 			table: undefined,
 			tabs: undefined,
+			textarea: undefined,
 			toastRegion: undefined,
 			tooltip: undefined,
 		});
