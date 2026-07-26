@@ -47,6 +47,35 @@
     white-space: normal;
   }
 
+  :where(.alt-simple-table__table) :where(th, td)[data-fixed] {
+    position: sticky;
+    z-index: 1;
+  }
+
+  :where(.alt-simple-table__table) :where(th, td)[data-fixed='left'] {
+    left: var(--alt-table-fixed-offset, 0);
+  }
+
+  :where(.alt-simple-table__table) :where(th, td)[data-fixed='right'] {
+    right: var(--alt-table-fixed-offset, 0);
+  }
+
+  :where(.alt-simple-table__table) th[data-fixed] {
+    z-index: 2;
+  }
+
+  :where(.alt-simple-table__table) td[data-fixed] {
+    background: inherit;
+  }
+
+  :where(.alt-simple-table__table) [data-fixed='left'][data-fixed-edge='true'] {
+    box-shadow: inset -1px 0 var(--alt-color-border);
+  }
+
+  :where(.alt-simple-table__table) [data-fixed='right'][data-fixed-edge='true'] {
+    box-shadow: inset 1px 0 var(--alt-color-border);
+  }
+
   :where(.alt-simple-table__table) th {
     background: var(--alt-color-surface-muted);
     color: var(--alt-color-ink-muted);

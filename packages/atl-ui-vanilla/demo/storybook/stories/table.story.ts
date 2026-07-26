@@ -1,8 +1,10 @@
 import type { AltTableColumn, AltTableElementApi, AltTableRowClickDetail } from '../../../src';
 import { createCustomIcon } from '../custom-icon';
 import { findElement } from '../dom';
-import { channelColumns, channelRows, type ChannelRow } from '../fixtures';
-import { example, defineStory } from '../story-factory';
+import { type ChannelRow, channelColumns, channelRows } from '../fixtures';
+import { defineStory, example } from '../story-factory';
+
+import { pinnedTableMarkup, setupPinnedTable } from './table-pinning-story';
 
 const tables = `
 <div class="alt-catalog-story-stack">
@@ -67,9 +69,17 @@ export const tableStory = defineStory({
 			'Columns scroll horizontally instead of overlapping.',
 			true,
 		),
+		example(
+			'Pinned columns',
+			pinnedTableMarkup,
+			'Multiple left columns and one right column stay visible during horizontal scrolling.',
+			true,
+		),
 		example('Empty state', empty),
 	],
 	setup: (root) => {
+		setupPinnedTable(root);
+
 		const basic = findElement<AltTableElementApi<ChannelRow>>(root, '[data-basic-table]');
 
 		basic.columns = channelColumns;

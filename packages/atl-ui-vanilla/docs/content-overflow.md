@@ -23,9 +23,14 @@ moment of hover, focus or click. It stays closed when the complete text is alrea
 
 ## Table columns
 
-`AltTableColumn` accepts `width`, `minWidth` and `overflow`. Use `nowrap` for numeric, status and action
-columns, `ellipsis` for compact identifiers, and `wrap` for prose. The table has a configurable
-`--alt-table-min-width`; below it, `.alt-simple-table__scroll` becomes the horizontal scroll owner.
+`AltTableColumn` accepts `width`, `minWidth`, `overflow` and `fixed`. Use `nowrap` for numeric, status and
+action columns, `ellipsis` for compact identifiers, and `wrap` for prose. Set `fixed: 'left'` or
+`fixed: 'right'` to keep one or more columns visible inside the horizontal scroll region. The component
+calculates cumulative offsets from rendered column widths and recalculates them when the table resizes.
+Keep the total width of fixed columns smaller than the available scroll viewport.
+
+The table has a configurable `--alt-table-min-width`; below it, `.alt-simple-table__scroll` becomes the
+horizontal scroll owner.
 
 ## Story and test matrix
 

@@ -7,6 +7,7 @@ export type {
 	AltTableCell,
 	AltTableCellOverflow,
 	AltTableColumn,
+	AltTableColumnFixed,
 	AltTableElementApi,
 	AltTablePageChangeDetail,
 	AltTablePagination,

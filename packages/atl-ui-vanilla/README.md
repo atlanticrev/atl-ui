@@ -248,5 +248,5 @@ npm run test:browser --workspace @atlanticrev/atl-ui-vanilla
 Архитектура, аудит и порядок миграции описаны в `docs/`.
 Поддерживаемые компоненты, custom elements, entry points, CSS и инфраструктурные exports перечислены в
 [`docs/public-api.md`](docs/public-api.md). Актуальный межпакетный план ведётся в корневом
-[`VANILLA_PRODUCT_PLAN.md`](../../VANILLA_PRODUCT_PLAN.md). Изменения релиза `0.4.0` перечислены в
-[`docs/releases/0.4.0.md`](docs/releases/0.4.0.md).
+[`VANILLA_PRODUCT_PLAN.md`](../../VANILLA_PRODUCT_PLAN.md). Изменения релиза `0.5.0` перечислены в
+[`docs/releases/0.5.0.md`](docs/releases/0.5.0.md).

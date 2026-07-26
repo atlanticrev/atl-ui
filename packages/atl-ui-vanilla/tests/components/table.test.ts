@@ -145,4 +145,47 @@ describe('alt-table', () => {
 
 		expect(cell?.dataset.overflow).toBe('ellipsis');
 	});
+
+	it('pins multiple columns on either side and removes stale pinning styles', async () => {
+		const table = document.createElement(TAG_NAME) as AltTableElementApi<Row>;
+
+		table.columns = [
+			{ dataIndex: 'id', fixed: 'left', title: 'ID', width: 80 },
+			{ dataIndex: 'name', fixed: 'left', title: 'Name', width: 180 },
+			{ dataIndex: 'name', key: 'details', title: 'Details' },
+			{ dataIndex: 'id', fixed: 'right', key: 'actions', title: 'Actions', width: 96 },
+		];
+
+		table.dataSource = [{ id: 'one', name: 'One' }];
+
+		document.body.append(table);
+
+		await flushUpdates();
+
+		const headers = table.querySelectorAll<HTMLTableCellElement>('th');
+
+		expect(headers[0]?.dataset.fixed).toBe('left');
+
+		expect(headers[0]?.style.getPropertyValue('--alt-table-fixed-offset')).toBe('0px');
+
+		expect(headers[1]?.style.getPropertyValue('--alt-table-fixed-offset')).toBe('80px');
+
+		expect(headers[1]?.dataset.fixedEdge).toBe('true');
+
+		expect(headers[3]?.dataset.fixed).toBe('right');
+
+		expect(headers[3]?.dataset.fixedEdge).toBe('true');
+
+		expect(table.querySelector('td')?.dataset.fixed).toBe('left');
+
+		table.columns = [{ dataIndex: 'name', title: 'Name' }];
+
+		await flushUpdates();
+
+		const remainingHeader = table.querySelector<HTMLTableCellElement>('th');
+
+		expect(remainingHeader?.dataset.fixed).toBeUndefined();
+
+		expect(remainingHeader?.style.getPropertyValue('--alt-table-fixed-offset')).toBe('');
+	});
 });

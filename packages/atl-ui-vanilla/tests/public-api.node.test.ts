@@ -33,7 +33,7 @@ import {
 
 describe('public API without browser globals', () => {
 	it('imports every element without registration side effects', () => {
-		expect(ATL_UI_VANILLA_VERSION).toBe('0.4.0');
+		expect(ATL_UI_VANILLA_VERSION).toBe('0.5.0');
 
 		expect(altIconMarkup('check')).toContain('<svg');
 

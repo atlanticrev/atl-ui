@@ -2,6 +2,7 @@ import { createTypedEvent, upgradeProperties } from '../../core';
 
 import { syncTableColumns } from './table-columns';
 import { createTableDom } from './table-dom';
+import { syncTableFixedColumns } from './table-fixed-columns';
 import { resolveTablePage, sliceTablePage } from './table-pagination';
 import { createTablePropertiesClass } from './table-properties';
 import { renderTableEmpty, renderTablePagination } from './table-render';
@@ -37,6 +38,18 @@ export const createAltTableElementClass = (HtmlElementConstructor: typeof HTMLEl
 
 			this.tableDom ??= createTableDom(this);
 
+			const ResizeObserverConstructor = this.ownerDocument.defaultView?.ResizeObserver;
+
+			const observer = ResizeObserverConstructor
+				? new ResizeObserverConstructor(() => this.#syncFixedColumns())
+				: undefined;
+
+			if (observer) {
+				observer.observe(this.tableDom.table);
+
+				signal.addEventListener('abort', () => observer.disconnect(), { once: true });
+			}
+
 			this.tableDom.previous.addEventListener('click', () => this.#changePage(-1), { signal });
 
 			this.tableDom.next.addEventListener('click', () => this.#changePage(1), { signal });
@@ -68,6 +81,8 @@ export const createAltTableElementClass = (HtmlElementConstructor: typeof HTMLEl
 			);
 
 			renderTablePagination(this, this.tableDom, page, this.paginationValue !== false);
+
+			this.#syncFixedColumns();
 		}
 
 		#changePage(direction: 1 | -1): void {
@@ -100,6 +115,10 @@ export const createAltTableElementClass = (HtmlElementConstructor: typeof HTMLEl
 				: this.rowKeyValue
 					? String(record[this.rowKeyValue])
 					: String(index);
+
+		#syncFixedColumns = (): void => {
+			if (this.tableDom) syncTableFixedColumns(this.tableDom.table, this.columnsValue);
+		};
 
 		#handleRowClick = (event: Event): void => {
 			const row = (event.target as Element | null)?.closest<HTMLTableRowElement>('tr[data-key]');

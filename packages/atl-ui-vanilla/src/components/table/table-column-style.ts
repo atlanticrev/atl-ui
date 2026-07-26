@@ -19,4 +19,13 @@ export const applyTableColumnStyle = <RecordType extends object>(
 
 	if (column.overflow) cell.dataset.overflow = column.overflow;
 	else delete cell.dataset.overflow;
+
+	if (column.fixed) cell.dataset.fixed = column.fixed;
+	else {
+		delete cell.dataset.fixed;
+
+		delete cell.dataset.fixedEdge;
+
+		cell.style.removeProperty('--alt-table-fixed-offset');
+	}
 };

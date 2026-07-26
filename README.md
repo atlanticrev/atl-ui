@@ -42,8 +42,8 @@ defineAltTextarea();
 Пакет предоставляет 22 категории managed/behavioral компонентов, 12 native CSS recipes, все варианты
 календаря и range picker, Drawer/Sheet, а также общий top-layer overlay-механизм. Imports безопасны при SSR
 и не регистрируют custom elements автоматически. Полная инструкция находится в
-[`packages/atl-ui-vanilla/README.md`](packages/atl-ui-vanilla/README.md); изменения релиза `0.4.0` — в
-[`release notes`](packages/atl-ui-vanilla/docs/releases/0.4.0.md).
+[`packages/atl-ui-vanilla/README.md`](packages/atl-ui-vanilla/README.md); изменения релиза `0.5.0` — в
+[`release notes`](packages/atl-ui-vanilla/docs/releases/0.5.0.md).
 
 ## React CSS entrypoints
 

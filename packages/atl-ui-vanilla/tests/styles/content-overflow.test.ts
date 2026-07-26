@@ -21,6 +21,12 @@ describe('content overflow contracts', () => {
 		expect(css).toContain('[data-overflow=ellipsis]');
 
 		expect(css).toContain('text-overflow: ellipsis');
+
+		expect(css).toContain('[data-fixed]');
+
+		expect(css).toContain('position: sticky');
+
+		expect(css).toContain('--alt-table-fixed-offset');
 	});
 
 	it('ellipsizes chip labels without shrinking their actions', () => {

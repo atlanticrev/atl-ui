@@ -1,10 +1,12 @@
 export type AltTableCell = Node | number | string | null | undefined;
 export type AltTableCellOverflow = 'ellipsis' | 'nowrap' | 'wrap';
+export type AltTableColumnFixed = 'left' | 'right';
 
 export type AltTableColumn<RecordType extends object = Record<string, unknown>> = {
 	align?: 'center' | 'left' | 'right';
 	className?: string;
 	dataIndex?: keyof RecordType | number | string;
+	fixed?: AltTableColumnFixed;
 	key?: number | string;
 	minWidth?: number | string;
 	overflow?: AltTableCellOverflow;
