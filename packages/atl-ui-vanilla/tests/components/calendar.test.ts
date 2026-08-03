@@ -66,6 +66,16 @@ describe('alt-calendar', () => {
 		expect(calendar.querySelector('[data-action="apply"]')?.getAttribute('data-variant')).toBe('filled');
 	});
 
+	it('moves to an externally selected month after connection', async () => {
+		const calendar = await render();
+
+		calendar.value = '2000-01-22';
+
+		await Promise.resolve();
+
+		expect(calendar.querySelector('[data-value="2000-01-22"]')?.getAttribute('aria-pressed')).toBe('true');
+	});
+
 	it('selects an ordered range and waits for Apply in explicit mode', async () => {
 		const calendar = await render('selection-mode="range" commit-mode="explicit" start="2026-07-18"');
 

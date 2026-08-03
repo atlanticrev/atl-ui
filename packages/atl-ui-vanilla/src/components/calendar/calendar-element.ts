@@ -1,6 +1,6 @@
 import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
 
-import { createCalendarDom, type CalendarDom } from './calendar-dom';
+import { type CalendarDom, createCalendarDom } from './calendar-dom';
 import { renderCalendar } from './calendar-render';
 import {
 	addDays,
@@ -70,7 +70,13 @@ export const createAltCalendarElementClass = (HtmlElementConstructor: typeof HTM
 			value ? this.setAttribute('value', value) : this.removeAttribute('value');
 		}
 
-		attributeChangedCallback(): void {
+		attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
+			if ((name === 'start' || name === 'value') && oldValue !== newValue) {
+				const selected = parseDateValue(newValue);
+
+				if (selected) this.#cursor = selected;
+			}
+
 			this.requestUpdate();
 		}
 

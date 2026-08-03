@@ -17,7 +17,7 @@ beforeEach(() => document.body.replaceChildren());
 describe('date pickers', () => {
 	it('commits a single date and submits through a native form carrier', async () => {
 		document.body.innerHTML =
-			'<form><alt-date-picker name="publishDate" value="2026-07-22"></alt-date-picker></form>';
+			'<form><alt-date-picker name="publishDate" value="2000-01-22"></alt-date-picker></form>';
 
 		await Promise.resolve();
 
@@ -41,22 +41,26 @@ describe('date pickers', () => {
 
 		await Promise.resolve();
 
-		panel.querySelector<HTMLButtonElement>('[data-value="2026-07-23"]')?.click();
+		const nextDay = panel.querySelector<HTMLButtonElement>('[data-value="2000-01-23"]');
+
+		if (!nextDay) throw new Error('Initial date-picker value did not select the visible month.');
+
+		nextDay.click();
 
 		await Promise.resolve();
 
-		expect(picker.getAttribute('value')).toBe('2026-07-23');
+		expect(picker.getAttribute('value')).toBe('2000-01-23');
 
 		expect(change).toHaveBeenCalledOnce();
 
-		expect(new FormData(document.querySelector('form') as HTMLFormElement).get('publishDate')).toBe('2026-07-23');
+		expect(new FormData(document.querySelector('form') as HTMLFormElement).get('publishDate')).toBe('2000-01-23');
 
 		expect(picker.hasAttribute('open')).toBe(false);
 	});
 
 	it('submits both range values only after a complete selection', async () => {
 		document.body.innerHTML =
-			'<form><alt-date-range-picker name="from" name-end="to" start="2026-07-10"></alt-date-range-picker></form>';
+			'<form><alt-date-range-picker name="from" name-end="to" start="2000-01-10"></alt-date-range-picker></form>';
 
 		await Promise.resolve();
 
@@ -72,7 +76,11 @@ describe('date pickers', () => {
 
 		await Promise.resolve();
 
-		panel.querySelector<HTMLButtonElement>('[data-value="2026-07-14"]')?.click();
+		const rangeEnd = panel.querySelector<HTMLButtonElement>('[data-value="2000-01-14"]');
+
+		if (!rangeEnd) throw new Error('Initial date range did not select the visible month.');
+
+		rangeEnd.click();
 
 		await Promise.resolve();
 
@@ -84,31 +92,31 @@ describe('date pickers', () => {
 
 		const data = new FormData(document.querySelector('form') as HTMLFormElement);
 
-		expect(data.get('from')).toBe('2026-07-10');
+		expect(data.get('from')).toBe('2000-01-10');
 
-		expect(data.get('to')).toBe('2026-07-14');
+		expect(data.get('to')).toBe('2000-01-14');
 
 		expect(changed).toHaveBeenCalledOnce();
 	});
 
 	it('restores authored defaults on native form reset', async () => {
-		document.body.innerHTML = '<form><alt-date-picker name="date" value="2026-07-22"></alt-date-picker></form>';
+		document.body.innerHTML = '<form><alt-date-picker name="date" value="2000-01-22"></alt-date-picker></form>';
 
 		await Promise.resolve();
 
 		const picker = document.querySelector('alt-date-picker') as HTMLElement & { value: string | null };
 
-		picker.value = '2026-07-23';
+		picker.value = '2000-01-23';
 
 		(document.querySelector('form') as HTMLFormElement).reset();
 
 		await Promise.resolve();
 
-		expect(picker.value).toBe('2026-07-22');
+		expect(picker.value).toBe('2000-01-22');
 	});
 
 	it('portals the panel as a fallback and restores it on close or disconnect', async () => {
-		document.body.innerHTML = '<alt-date-range-picker start="2026-07-10"></alt-date-range-picker>';
+		document.body.innerHTML = '<alt-date-range-picker start="2000-01-10"></alt-date-range-picker>';
 
 		await Promise.resolve();
 
@@ -126,7 +134,11 @@ describe('date pickers', () => {
 
 		expect(panel.parentElement).toBe(document.body);
 
-		panel.querySelector<HTMLButtonElement>('[data-value="2026-07-14"]')?.click();
+		const rangeEnd = panel.querySelector<HTMLButtonElement>('[data-value="2000-01-14"]');
+
+		if (!rangeEnd) throw new Error('Initial date range did not select the visible month.');
+
+		rangeEnd.click();
 
 		await Promise.resolve();
 

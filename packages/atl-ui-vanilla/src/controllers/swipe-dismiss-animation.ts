@@ -20,7 +20,19 @@ export const animateSwipeSettle = (surface: HTMLElement, options: SwipeSettleAni
 
 	let frame = 0;
 
+	let targetApplied = false;
+
 	let timeout: number | undefined;
+
+	const applyTarget = (): void => {
+		if (targetApplied) return;
+
+		targetApplied = true;
+
+		options.onTarget();
+
+		if (duration === 0) queueMicrotask(finish);
+	};
 
 	const cancel = (): void => {
 		if (view) {
@@ -38,6 +50,8 @@ export const animateSwipeSettle = (surface: HTMLElement, options: SwipeSettleAni
 		complete = true;
 
 		cancel();
+
+		applyTarget();
 
 		options.onComplete();
 	};
@@ -60,12 +74,6 @@ export const animateSwipeSettle = (surface: HTMLElement, options: SwipeSettleAni
 		timeout = view.setTimeout(finish, duration + MOTION_FALLBACK_BUFFER + paintBuffer);
 
 		frame = view.requestAnimationFrame(() => {
-			const applyTarget = (): void => {
-				options.onTarget();
-
-				if (duration === 0) queueMicrotask(finish);
-			};
-
 			options.onReady?.();
 
 			if (options.waitForPaint) {
@@ -77,7 +85,7 @@ export const animateSwipeSettle = (surface: HTMLElement, options: SwipeSettleAni
 	} else {
 		options.onReady?.();
 
-		options.onTarget();
+		applyTarget();
 
 		queueMicrotask(finish);
 	}
