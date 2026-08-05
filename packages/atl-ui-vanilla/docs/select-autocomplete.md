@@ -53,6 +53,7 @@ Autocomplete отдельно отправляет `alt-input`, поэтому q
 - Arrow keys, Home, End, Page Up/Down, Enter, Escape и Tab следуют combobox/listbox keyboard pattern.
 - IME composition не подтверждает значение преждевременно.
 - Focused и open trigger сохраняет accent border при pointer hover.
+- Pointer focus сразу синхронизирует floating label и notch, ещё до открытия popup по click.
 
 Popup обоих компонентов использует общий anchored-overlay lifecycle: browser top layer, positioning при
 scroll/resize, viewport flip/clamp и fallback portal в `document.body`. Select подключает controller

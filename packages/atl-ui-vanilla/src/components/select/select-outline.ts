@@ -9,7 +9,7 @@ export const bindSelectOutline = (host: HTMLElement, dom: SelectDom, signal: Abo
 
 	bindFieldOutline(
 		{
-			getFloating: () => host.dataset.labelFloat === 'true' || dom.trigger.matches(':focus-visible'),
+			getFloating: () => host.dataset.labelFloat === 'true' || host.matches(':focus-within'),
 			host,
 			label: dom.label,
 			outline: dom.outline,
