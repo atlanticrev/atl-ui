@@ -29,13 +29,16 @@ import {
 	defineAltTextarea,
 	defineAltToastRegion,
 	defineAltTooltip,
+	setAltSkeletonHostLoading,
 } from '../src';
 
 describe('public API without browser globals', () => {
 	it('imports every element without registration side effects', () => {
-		expect(ATL_UI_VANILLA_VERSION).toBe('0.5.1');
+		expect(ATL_UI_VANILLA_VERSION).toBe('0.6.0');
 
 		expect(altIconMarkup('check')).toContain('<svg');
+
+		expect(setAltSkeletonHostLoading).toBeTypeOf('function');
 
 		expect(defineAltAlert()).toBeUndefined();
 

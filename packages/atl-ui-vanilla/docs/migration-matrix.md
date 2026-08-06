@@ -15,7 +15,7 @@ vanilla использует native markup, properties, attributes и `alt-*` ev
 | `AtlRadioButton` | `.alt-radio` с native radio | CSS/native recipe | Готово |
 | `AtlSwitcher` | `.alt-switcher` с native checkbox и `role="switch"` | CSS/native recipe | Готово |
 | `AtlChip` | `.alt-chip`; actionable chip остаётся native button | CSS/native recipe | Готово |
-| `AtlSkeleton` | `.alt-skeleton` и `.alt-skeleton-wrapper` | CSS/native recipe | Готово |
+| `AtlSkeleton` | atomic `.alt-skeleton` и content-backed `.alt-skeleton-host` | CSS/native recipe + helper | Готово |
 | Spinner | `.alt-spinner` | CSS/native recipe | Готово |
 | Stepper | `.alt-stepper` | CSS/native recipe | Готово |
 | `AtlSidebar` | `<nav class="alt-sidebar">` с authored navigation | CSS/native recipe | Готово |

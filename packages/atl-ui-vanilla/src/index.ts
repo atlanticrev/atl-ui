@@ -1,4 +1,4 @@
-export const ATL_UI_VANILLA_VERSION = '0.5.1';
+export const ATL_UI_VANILLA_VERSION = '0.6.0';
 
 export * from './components';
 export * from './controllers';

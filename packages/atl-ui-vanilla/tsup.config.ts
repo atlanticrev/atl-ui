@@ -26,6 +26,7 @@ export default defineConfig({
 		progress: 'src/components/progress/index.ts',
 		search: 'src/components/search/index.ts',
 		select: 'src/components/select/index.ts',
+		skeleton: 'src/components/skeleton/index.ts',
 		table: 'src/components/table/index.ts',
 		tabs: 'src/components/tabs/index.ts',
 		textarea: 'src/components/textarea/index.ts',

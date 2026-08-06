@@ -16,6 +16,10 @@
 Button, card, breadcrumbs, checkbox, radio, switcher, chip, skeleton, sidebar, divider, spinner, and stepper
 are semantic HTML with exported CSS. Feature code owns their content and routing.
 
+Skeleton дополнительно экспортирует SSR-safe `setAltSkeletonHostLoading`: это узкий state helper для
+синхронизации `aria-busy`, `aria-hidden` и `inert`, а не renderer или DOM lifecycle. Геометрией и fade-out
+полностью владеет CSS recipe.
+
 ### Owned native compounds
 
 Alert, input, textarea, search, file upload, progress, date picker, date range picker, and avatar own bounded

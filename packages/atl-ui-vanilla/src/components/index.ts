@@ -15,6 +15,7 @@ export * from './popup';
 export * from './progress';
 export * from './search';
 export * from './select';
+export * from './skeleton';
 export * from './table';
 export * from './tabs';
 export * from './textarea';

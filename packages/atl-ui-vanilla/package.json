@@ -1,6 +1,6 @@
 {
 	"name": "@atlanticrev/atl-ui-vanilla",
-	"version": "0.5.1",
+	"version": "0.6.0",
 	"description": "Zero-dependency Atlantic Review UI Web Components and native CSS recipes.",
 	"private": false,
 	"type": "module",
@@ -102,6 +102,10 @@
 		"./select": {
 			"types": "./dist/select.d.ts",
 			"import": "./dist/select.js"
+		},
+		"./skeleton": {
+			"types": "./dist/skeleton.d.ts",
+			"import": "./dist/skeleton.js"
 		},
 		"./table": {
 			"types": "./dist/table.d.ts",

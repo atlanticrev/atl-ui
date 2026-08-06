@@ -24,6 +24,8 @@ npm run test:browser --workspace @atlanticrev/atl-ui-vanilla
 - Горизонтальная область Table имеет `role="region"`, имя и `tabindex="0"`.
 - Loading spinner внутри Button декоративный.
   Состояние сообщает кнопка через `aria-busy="true"`.
+- Skeleton Host сообщает loading через `aria-busy`, а content временно получает `aria-hidden` и `inert`.
+- Skeleton shimmer и fade отключаются при `prefers-reduced-motion: reduce`.
 - Текстовые success/danger tokens проходят минимальный контраст WCAG AA.
 - Focus, keyboard selection, dismiss и focus restore покрыты browser-тестами.
 

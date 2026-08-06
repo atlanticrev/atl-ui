@@ -68,4 +68,18 @@ describe('native component recipes', () => {
 
 		expect(css).toContain('box-shadow: var(--alt-focus-ring)');
 	});
+
+	it('publishes content-backed skeleton geometry, radius and motion contracts', () => {
+		expect(css).toContain('.alt-skeleton-host');
+
+		expect(css).toContain('.alt-skeleton-host__content');
+
+		expect(css).toContain('[aria-busy=true]');
+
+		expect(css).toContain('border-radius: inherit');
+
+		expect(css).toContain('--alt-skeleton-fade-duration');
+
+		expect(css).toContain('prefers-reduced-motion: reduce');
+	});
 });

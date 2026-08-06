@@ -66,7 +66,8 @@ Toast/dismiss, File upload и пагинацию Table. Полная матри�
 ## Native recipes
 
 Контракты кнопки, loading, иконок, native form controls и authored composition описаны в
-[`docs/button.md`](docs/button.md) и [`docs/native-recipes.md`](docs/native-recipes.md).
+[`docs/button.md`](docs/button.md), [`docs/skeleton.md`](docs/skeleton.md) и
+[`docs/native-recipes.md`](docs/native-recipes.md).
 
 ```html
 <button class="alt-button" data-size="40" data-variant="filled" type="button">Publish</button>
@@ -75,6 +76,16 @@ Toast/dismiss, File upload и пагинацию Table. Полная матри�
   <input class="alt-checkbox__control" name="terms" type="checkbox" />
   <span class="alt-checkbox__label">Accept terms</span>
 </label>
+```
+
+Составной Skeleton Host сохраняет реальный DOM в layout, наследует radius surface и плавно открывает готовый
+content. Loading state синхронизируется точечным SSR-safe helper:
+
+```ts
+import { setAltSkeletonHostLoading } from '@atlanticrev/atl-ui-vanilla/skeleton';
+
+setAltSkeletonHostLoading(host, true);
+setAltSkeletonHostLoading(host, false);
 ```
 
 ## Managed и compound components
@@ -127,7 +138,7 @@ Input и Textarea держат настоящие `<input>` и `<textarea>` вн
 `alt-open-change`, `alt-input` и `alt-change` содержат причину и исходное browser event. Полный контракт
 Select и Autocomplete описан в [`docs/select-autocomplete.md`](docs/select-autocomplete.md).
 
-В export map доступны 27 независимо импортируемых JavaScript entry points и три CSS entry points. Ни один
+В export map доступны 28 независимо импортируемых JavaScript entry points и три CSS entry points. Ни один
 component entry point не регистрируется сам. Полный список поддерживаемых компонентов, recipes и imports
 находится в [`docs/public-api.md`](docs/public-api.md). Контракты календарей и новых компонентов описаны в
 [`docs/calendar.md`](docs/calendar.md) и
@@ -248,5 +259,5 @@ npm run test:browser --workspace @atlanticrev/atl-ui-vanilla
 Архитектура, аудит и порядок миграции описаны в `docs/`.
 Поддерживаемые компоненты, custom elements, entry points, CSS и инфраструктурные exports перечислены в
 [`docs/public-api.md`](docs/public-api.md). Актуальный межпакетный план ведётся в корневом
-[`VANILLA_PRODUCT_PLAN.md`](../../VANILLA_PRODUCT_PLAN.md). Изменения релиза `0.5.1` перечислены в
-[`docs/releases/0.5.1.md`](docs/releases/0.5.1.md).
+[`VANILLA_PRODUCT_PLAN.md`](../../VANILLA_PRODUCT_PLAN.md). Изменения релиза `0.6.0` перечислены в
+[`docs/releases/0.6.0.md`](docs/releases/0.6.0.md).

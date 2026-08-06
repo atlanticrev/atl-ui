@@ -1,6 +1,6 @@
 # Поддерживаемый публичный API
 
-Документ описывает публичную поверхность релиза `0.5.1`. Источники истины:
+Документ описывает публичную поверхность релиза `0.6.0`. Источники истины:
 `package.json#exports`, `src/index.ts`, component barrels и три CSS entry points. Внутренние файлы вне export
 map не считаются публичным API.
 
@@ -49,13 +49,14 @@ map не считаются публичным API.
 | Radio | `.alt-radio` и `.alt-radio__control` |
 | Switcher | `.alt-switcher` и `.alt-switcher__control` |
 | Chip | `.alt-chip` |
-| Skeleton | `.alt-skeleton` и `.alt-skeleton-wrapper` |
+| Skeleton | `.alt-skeleton`, `.alt-skeleton-wrapper` и `.alt-skeleton-host` |
 | Spinner | `.alt-spinner` |
 | Stepper | `.alt-stepper` |
 | Sidebar | `.alt-sidebar` |
 
-Recipes не имеют отдельных JavaScript entry points: это намеренно native markup, подключаемый через CSS.
-Интерактивные authored части используют native elements и документированные `data-*`/ARIA contracts.
+Recipes используют native markup, подключаемый через CSS. Skeleton дополнительно имеет узкий JS helper для
+синхронизации loading accessibility state; он не создаёт DOM и не вычисляет layout. Интерактивные authored части
+используют native elements и документированные `data-*`/ARIA contracts.
 
 ## Package entry points
 
@@ -66,6 +67,7 @@ Recipes не имеют отдельных JavaScript entry points: это на�
 | `@atlanticrev/atl-ui-vanilla/core` | Base element, converters, events, batching и registration helpers |
 | `@atlanticrev/atl-ui-vanilla/controllers` | Dismiss, focus, form carrier, open state, position, observers, selection и typeahead |
 | `@atlanticrev/atl-ui-vanilla/icons` | Tree-shakeable SVG factories, markup helpers и icon types |
+| `@atlanticrev/atl-ui-vanilla/skeleton` | `setAltSkeletonHostLoading` для content-backed host |
 | `@atlanticrev/atl-ui-vanilla/core.css` | Default light/dark `--alt-*` tokens |
 | `@atlanticrev/atl-ui-vanilla/theme.css` | Base styles и component recipes без default tokens |
 | `@atlanticrev/atl-ui-vanilla/default.css` | `core.css` и `theme.css` одним импортом |
