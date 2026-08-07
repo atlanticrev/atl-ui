@@ -3,7 +3,7 @@
     position: relative;
     display: block;
     overflow: hidden;
-    border-radius: var(--alt-skeleton-radius, 0);
+    border-radius: var(--alt-skeleton-radius, var(--alt-radius-sm));
     background: var(--alt-skeleton-bg, var(--alt-color-surface-strong));
   }
 
@@ -17,7 +17,8 @@
       var(--alt-skeleton-highlight, rgb(255 255 255 / 48%)) 50%,
       rgb(255 255 255 / 0%) 100%
     );
-    transform: translateX(-100%);
+    background-position: 200% 0;
+    background-size: 200% 100%;
     animation: alt-skeleton-shimmer var(--alt-skeleton-shimmer-duration, 1.6s) ease-in-out infinite;
   }
 
@@ -84,7 +85,8 @@
       var(--alt-skeleton-highlight, rgb(255 255 255 / 48%)) 50%,
       rgb(255 255 255 / 0%) 100%
     );
-    transform: translateX(-100%);
+    background-position: 200% 0;
+    background-size: 200% 100%;
     animation: alt-skeleton-shimmer var(--alt-skeleton-shimmer-duration, 1.6s) ease-in-out infinite paused;
   }
 
@@ -116,7 +118,7 @@
   }
 
   @keyframes alt-skeleton-shimmer {
-    to { transform: translateX(100%); }
+    to { background-position: -200% 0; }
   }
 
   @media (prefers-reduced-motion: reduce) {

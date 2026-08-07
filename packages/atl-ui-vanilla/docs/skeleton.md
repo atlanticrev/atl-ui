@@ -42,8 +42,11 @@ Overlay наследует вычисленный `border-radius` host. Совм
 Тогда `--alt-card-radius` одновременно определяет форму карточки и skeleton. Для произвольной surface задайте
 `border-radius` самому host. Не копируйте radius на отдельный overlay.
 
-Atomic `.alt-skeleton` продолжает использовать `--alt-skeleton-radius`; shapes `line` и `circle` устанавливают
-свои значения.
+Atomic `.alt-skeleton` использует `--alt-skeleton-radius` с системным fallback `--alt-radius-sm`; shapes `line` и
+`circle` устанавливают свои значения.
+
+Shimmer меняет только позицию gradient background внутри неизменного overlay box. Поэтому во время fade-out он не
+рисуется за границами host даже после восстановления обычного `overflow` готового содержимого.
 
 ## Visual overrides
 

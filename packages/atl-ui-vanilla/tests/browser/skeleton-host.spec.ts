@@ -57,6 +57,14 @@ test('Skeleton Host keeps geometry and inherits the covered surface radius', asy
 	expectSameBox(loadingMobile, await readBox(host));
 });
 
+test('Atomic Skeleton uses the system radius by default', async ({ page }) => {
+	await openSkeletonStory(page);
+
+	const skeleton = page.locator('.alt-skeleton:not([data-shape])').first();
+
+	expect(await skeleton.evaluate((element) => getComputedStyle(element).borderRadius)).toBe('10px');
+});
+
 test('Skeleton Host removes content from focus while loading', async ({ page }) => {
 	await openSkeletonStory(page);
 
@@ -86,12 +94,18 @@ test('Skeleton Host fades out without delaying ready content', async ({ page }) 
 
 	const transition = await host.evaluate(
 		(element) =>
-			new Promise<{ contentVisibility: string; opacity: number; overlayVisibility: string }>((resolve) => {
+			new Promise<{
+				contentVisibility: string;
+				opacity: number;
+				overlayTransform: string;
+				overlayVisibility: string;
+			}>((resolve) => {
 				requestAnimationFrame(() => {
 					requestAnimationFrame(() => {
 						resolve({
 							contentVisibility: getComputedStyle(element.firstElementChild as Element).visibility,
 							opacity: Number(getComputedStyle(element, '::before').opacity),
+							overlayTransform: getComputedStyle(element, '::after').transform,
 							overlayVisibility: getComputedStyle(element, '::before').visibility,
 						});
 					});
@@ -102,6 +116,8 @@ test('Skeleton Host fades out without delaying ready content', async ({ page }) 
 	expect(transition.contentVisibility).toBe('visible');
 
 	expect(transition.overlayVisibility).toBe('visible');
+
+	expect(transition.overlayTransform).toBe('none');
 
 	expect(transition.opacity).toBeGreaterThan(0);
 
