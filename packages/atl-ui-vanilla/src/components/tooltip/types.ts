@@ -9,5 +9,6 @@ export type AltTooltipElementApi = HTMLElement & {
 	content: Node | null;
 	open: boolean;
 	placement: AltTooltipPlacement;
+	text: string;
 	trigger: AltTooltipTrigger;
 };

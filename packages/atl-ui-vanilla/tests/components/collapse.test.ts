@@ -44,4 +44,24 @@ describe('alt-collapse', () => {
 
 		expect(changed).toHaveBeenCalled();
 	});
+
+	it('toggles from the authored summary without moving its content', async () => {
+		document.body.innerHTML = `<${TAG_NAME}><details data-key="one"><summary>One</summary><p>Content</p></details></${TAG_NAME}>`;
+
+		await Promise.resolve();
+
+		const collapse = document.querySelector(TAG_NAME) as AltCollapseElementApi;
+
+		const details = collapse.querySelector('details') as HTMLDetailsElement;
+
+		const content = details.querySelector('p') as HTMLParagraphElement;
+
+		details.querySelector('summary')?.click();
+
+		expect(details.open).toBe(true);
+
+		expect(content.parentElement).toBe(details);
+
+		expect(details.querySelector('[data-alt-icon="minus"]')).toBeInstanceOf(SVGSVGElement);
+	});
 });

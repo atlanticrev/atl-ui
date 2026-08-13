@@ -1,30 +1,30 @@
 import type { AltTooltipElementApi } from '../../../src';
 import { createCustomIcon } from '../custom-icon';
 import { findElement } from '../dom';
-import { example, defineStory } from '../story-factory';
+import { defineStory, example } from '../story-factory';
 
 const placements = `
 <div class="alt-catalog-story-row">
-	<alt-tooltip placement="top" title="Top tooltip">
+	<alt-tooltip placement="top" text="Top tooltip">
 		<button class="alt-button" data-variant="outlined">Top</button>
 	</alt-tooltip>
-	<alt-tooltip placement="right" title="Right tooltip">
+	<alt-tooltip placement="right" text="Right tooltip">
 		<button class="alt-button" data-variant="outlined">Right</button>
 	</alt-tooltip>
-	<alt-tooltip placement="bottom" title="Bottom tooltip">
+	<alt-tooltip placement="bottom" text="Bottom tooltip">
 		<button class="alt-button" data-variant="outlined">Bottom</button>
 	</alt-tooltip>
-	<alt-tooltip placement="left" title="Left tooltip">
+	<alt-tooltip placement="left" text="Left tooltip">
 		<button class="alt-button" data-variant="outlined">Left</button>
 	</alt-tooltip>
 </div>`;
 
 const triggers = `
 <div class="alt-catalog-story-row">
-	<alt-tooltip title="Visible on hover or focus" trigger="hover">
+	<alt-tooltip text="Visible on hover or focus" trigger="hover">
 		<button class="alt-button" data-variant="outlined">Hover / focus</button>
 	</alt-tooltip>
-	<alt-tooltip title="Toggle on click" trigger="click">
+	<alt-tooltip text="Toggle on click" trigger="click">
 		<button class="alt-button" data-variant="outlined">Click</button>
 	</alt-tooltip>
 	<alt-tooltip data-custom-tooltip trigger="click">
@@ -34,12 +34,19 @@ const triggers = `
 
 const overflow = `
 <div class="alt-catalog-stress-frame" data-overlay-clip data-width="narrow">
-	<alt-tooltip show-on-overflow title="Full value: all selected channels and derived publications">
+	<alt-tooltip show-on-overflow text="Full value: all selected channels and derived publications">
 		<span class="alt-catalog-truncated-text" data-alt-overflow-target tabindex="0">
 			All selected channels and derived publications
 		</span>
 	</alt-tooltip>
 </div>`;
+
+const longContent = `
+<alt-tooltip
+	text="A long tooltip explains the complete automation state without inheriting nowrap from its compact trigger or being clipped by the surrounding layout."
+>
+	<button class="alt-button" data-variant="outlined">Long explanation</button>
+</alt-tooltip>`;
 
 export const tooltipStory = defineStory({
 	id: 'tooltip',
@@ -50,6 +57,7 @@ export const tooltipStory = defineStory({
 		example('Placements', placements, 'Top, right, bottom and left.', true),
 		example('Triggers and content', triggers, 'Hover/focus, click and custom Node content.', true),
 		example('Truncated text', overflow, 'The complete value is available on hover and keyboard focus.'),
+		example('Long wrapped content', longContent, 'Long plain text wraps inside the viewport.', true),
 	],
 	setup: (root) => {
 		const tooltip = findElement<AltTooltipElementApi>(root, '[data-custom-tooltip]');

@@ -20,6 +20,8 @@ Cyrillic, CJK, emoji and RTL content.
 
 `alt-tooltip[show-on-overflow]` checks the trigger or its `[data-alt-overflow-target]` descendant at the
 moment of hover, focus or click. It stays closed when the complete text is already visible.
+Plain-text tooltip content uses `text` or the `text` attribute. Tooltip panels reset inherited
+`white-space`, so a compact `nowrap` trigger cannot prevent the complete value from wrapping.
 
 ## Table columns
 
@@ -29,8 +31,12 @@ action columns, `ellipsis` for compact identifiers, and `wrap` for prose. Set `f
 calculates cumulative offsets from rendered column widths and recalculates them when the table resizes.
 Keep the total width of fixed columns smaller than the available scroll viewport.
 
-The table has a configurable `--alt-table-min-width`; below it, `.alt-simple-table__scroll` becomes the
-horizontal scroll owner.
+The table derives its minimum width from every column automatically. For each column it uses the larger
+of `width` and `minWidth`, or `--alt-table-default-column-width` (`136px`) when neither is provided. A
+`minWidth` without `width` also becomes the fixed-layout column width, so the browser cannot distribute
+that column below its declared contract. Below the computed total, `.alt-simple-table__scroll` becomes
+the horizontal scroll owner. Consumers may still set `--alt-table-min-width` as an explicit override for
+exceptional layouts; it is not required for ordinary column-driven tables.
 
 ## Story and test matrix
 

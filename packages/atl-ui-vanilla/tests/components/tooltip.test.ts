@@ -23,7 +23,7 @@ describe('alt-tooltip', () => {
 
 		trigger.textContent = 'Details';
 
-		tooltip.setAttribute('title', 'More information');
+		tooltip.text = 'More information';
 
 		tooltip.append(trigger);
 
@@ -43,6 +43,8 @@ describe('alt-tooltip', () => {
 
 		expect(panel.textContent).toBe('More information');
 
+		expect(tooltip.hasAttribute('title')).toBe(false);
+
 		expect(trigger.getAttribute('aria-describedby')).toBe(panel.id);
 
 		tooltip.dispatchEvent(new Event('pointerleave'));
@@ -52,6 +54,26 @@ describe('alt-tooltip', () => {
 		expect(tooltip.open).toBe(false);
 
 		expect(panel.parentElement).toBe(tooltip);
+	});
+
+	it('migrates the legacy title attribute without leaving a native tooltip behind', async () => {
+		const tooltip = document.createElement(TAG_NAME) as AltTooltipElementApi;
+
+		tooltip.setAttribute('title', 'Legacy information');
+
+		tooltip.append(document.createElement('button'));
+
+		document.body.append(tooltip);
+
+		await Promise.resolve();
+
+		expect(tooltip.text).toBe('Legacy information');
+
+		expect(tooltip.title).toBe('Legacy information');
+
+		expect(tooltip.getAttribute('text')).toBe('Legacy information');
+
+		expect(tooltip.hasAttribute('title')).toBe(false);
 	});
 
 	it('toggles in click mode', async () => {

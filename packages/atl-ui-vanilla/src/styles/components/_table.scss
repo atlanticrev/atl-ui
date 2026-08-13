@@ -20,12 +20,13 @@
 
   :where(.alt-simple-table__table) {
     width: 100%;
-    min-width: var(--alt-table-min-width, 560px);
+    min-width: var(--alt-table-min-width, max(100%, var(--alt-table-computed-min-width, 560px)));
     border-collapse: collapse;
     table-layout: fixed;
   }
 
   :where(.alt-simple-table__table) :where(th, td) {
+    box-sizing: border-box;
     padding: 0.875rem 1rem;
     border-bottom: 1px solid var(--alt-color-border);
     text-align: left;

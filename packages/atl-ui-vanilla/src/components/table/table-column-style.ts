@@ -1,10 +1,5 @@
+import { resolveTableColumnWidth, toTableCssSize } from './table-column-size';
 import type { AltTableColumn } from './types';
-
-const toCssSize = (value: number | string | undefined): string => {
-	if (typeof value === 'number') return `${value}px`;
-
-	return value ?? '';
-};
 
 export const applyTableColumnStyle = <RecordType extends object>(
 	cell: HTMLTableCellElement,
@@ -13,9 +8,9 @@ export const applyTableColumnStyle = <RecordType extends object>(
 ): void => {
 	cell.style.textAlign = column.align ?? '';
 
-	cell.style.minWidth = toCssSize(column.minWidth);
+	cell.style.minWidth = toTableCssSize(column.minWidth);
 
-	cell.style.width = includeWidth ? toCssSize(column.width) : '';
+	cell.style.width = includeWidth ? resolveTableColumnWidth(column) : '';
 
 	if (column.overflow) cell.dataset.overflow = column.overflow;
 	else delete cell.dataset.overflow;

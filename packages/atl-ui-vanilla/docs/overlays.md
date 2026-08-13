@@ -37,4 +37,7 @@ document scroll lock, что Dialog и Drawer.
 владеет рамкой, фоном и тенью; для стандартных внутренних отступов authored content получает класс
 `.alt-popup__content` и может настраивать `--alt-popup-padding`. Tooltip переопределяет браузерный
 `overflow: auto` для элементов с `popover`, поэтому у короткой подсказки не появляется лишняя полоса
-прокрутки.
+прокрутки. Plain text задаётся property/attribute `text`, а произвольный Node — property `content`.
+Legacy `title` при upgrade переносится в `text` и удаляется с host, чтобы нативная браузерная подсказка не
+дублировала `role="tooltip"`. Панель явно возвращает `white-space: normal`, поэтому длинный текст
+переносится даже внутри `nowrap`-контейнера.

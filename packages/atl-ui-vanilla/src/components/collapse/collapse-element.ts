@@ -1,56 +1,28 @@
 import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../../core';
-import { setAltIcon } from '../../icons';
 
+import { getCollapseItemKey, getCollapseItems, syncCollapseItem } from './collapse-items';
+import { CollapseMotionController } from './collapse-motion-controller';
 import type { AltCollapseChangeDetail } from './types';
-
-const items = (host: HTMLElement): HTMLDetailsElement[] => {
-	return Array.from(host.querySelectorAll<HTMLDetailsElement>(':scope > details'));
-};
-
-const itemKey = (item: HTMLDetailsElement, index: number): string => item.dataset.key || String(index);
-
-const syncCollapseItem = (item: HTMLDetailsElement, index: number): void => {
-	item.classList.add('alt-collapse__item');
-
-	item.dataset.key ||= String(index);
-
-	const summary = item.querySelector<HTMLElement>(':scope > summary');
-
-	if (!summary) return;
-
-	summary.classList.add('alt-collapse__summary');
-
-	let indicator = summary.querySelector<HTMLElement>(':scope > [data-alt-owned="collapse-indicator"]');
-
-	if (!indicator) {
-		indicator = item.ownerDocument.createElement('span');
-
-		indicator.className = 'alt-collapse__indicator';
-
-		indicator.dataset.altOwned = 'collapse-indicator';
-
-		indicator.setAttribute('aria-hidden', 'true');
-
-		summary.append(indicator);
-	}
-
-	setAltIcon(indicator, item.open ? 'minus' : 'plus', { size: 20 });
-};
 
 export const createAltCollapseElementClass = (HtmlElementConstructor: typeof HTMLElement): CustomElementConstructor => {
 	const BaseElement = createBaseElementClass(HtmlElementConstructor);
 
 	return class AltCollapseElement extends BaseElement {
 		static observedAttributes = ['single'];
+		#motion = new CollapseMotionController(this, () => this.#dispatchChange());
 
 		get openKeys(): readonly string[] {
-			return items(this).flatMap((item, index) => (item.open ? [itemKey(item, index)] : []));
+			return getCollapseItems(this).flatMap((item, index) =>
+				item.open ? [getCollapseItemKey(item, index)] : [],
+			);
 		}
 		set openKeys(values: readonly string[]) {
 			const keys = new Set(values);
 
-			items(this).forEach((item, index) => {
-				item.open = keys.has(itemKey(item, index));
+			this.#motion.cancel();
+
+			getCollapseItems(this).forEach((item, index) => {
+				item.open = keys.has(getCollapseItemKey(item, index));
 			});
 		}
 		get single(): boolean {
@@ -69,6 +41,8 @@ export const createAltCollapseElementClass = (HtmlElementConstructor: typeof HTM
 
 			this.classList.add('alt-collapse');
 
+			this.addEventListener('click', this.#handleClick, { capture: true, signal });
+
 			this.addEventListener('toggle', this.#handleToggle, { capture: true, signal });
 
 			const Observer = this.ownerDocument.defaultView?.MutationObserver;
@@ -79,18 +53,51 @@ export const createAltCollapseElementClass = (HtmlElementConstructor: typeof HTM
 
 			signal.addEventListener('abort', () => observer?.disconnect(), { once: true });
 		}
+		onDisconnected(): void {
+			this.#motion.cancel();
+		}
 
 		update(): void {
-			items(this).forEach(syncCollapseItem);
+			getCollapseItems(this).forEach((item, index) => {
+				syncCollapseItem(item, index);
+			});
 		}
+
+		#handleClick = (event: MouseEvent): void => {
+			const summary = (event.target as Element | null)?.closest<HTMLElement>('summary');
+
+			const item = summary?.parentElement as HTMLDetailsElement | null | undefined;
+
+			if (item?.localName !== 'details' || !getCollapseItems(this).includes(item)) return;
+
+			const interactive = (event.target as Element | null)?.closest('a, button, input, select, textarea');
+
+			if (interactive && interactive !== summary) return;
+
+			event.preventDefault();
+
+			const open = !this.#motion.getOpen(item);
+
+			if (this.single && open) {
+				getCollapseItems(this).forEach((candidate) => {
+					if (candidate !== item && this.#motion.getOpen(candidate)) {
+						this.#motion.transition(candidate, false);
+					}
+				});
+			}
+
+			this.#motion.transition(item, open);
+		};
 
 		#handleToggle = (event: Event): void => {
 			const changed = event.target as HTMLDetailsElement;
 
-			if (!items(this).includes(changed)) return;
+			if (!getCollapseItems(this).includes(changed)) return;
+
+			if (this.#motion.isControlled(changed)) return;
 
 			if (this.single && changed.open) {
-				for (const [index, item] of items(this).entries()) {
+				for (const [index, item] of getCollapseItems(this).entries()) {
 					if (item === changed) continue;
 
 					item.open = false;
@@ -99,9 +106,13 @@ export const createAltCollapseElementClass = (HtmlElementConstructor: typeof HTM
 				}
 			}
 
-			syncCollapseItem(changed, items(this).indexOf(changed));
+			syncCollapseItem(changed, getCollapseItems(this).indexOf(changed));
 
-			this.dispatchEvent(createTypedEvent<AltCollapseChangeDetail>('alt-change', { openKeys: this.openKeys }));
+			this.#dispatchChange();
 		};
+
+		#dispatchChange(): void {
+			this.dispatchEvent(createTypedEvent<AltCollapseChangeDetail>('alt-change', { openKeys: this.openKeys }));
+		}
 	};
 };

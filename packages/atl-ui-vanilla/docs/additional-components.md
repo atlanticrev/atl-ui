@@ -4,7 +4,9 @@
 
 - `alt-collapse` расширяет authored `<details>`; атрибут `single` включает accordion mode, `openKeys`
   управляет открытыми секциями, `alt-change` возвращает актуальные keys. Состояние показывает SVG
-  `plus`/`minus` из общего icon set.
+  `plus`/`minus` из общего icon set. Пользовательское открытие и закрытие плавно анимирует фактическую
+  высоту `<details>`, не оборачивая и не перемещая authored content; `prefers-reduced-motion` отключает
+  движение.
 - `alt-menu` расширяет authored trigger `[data-alt-menu-trigger]` и соседний `[role="menu"]`. Поддерживаются
   ArrowUp/ArrowDown, Home/End, Escape, outside dismiss и `alt-select` с `{ item, value }`. Открытое menu
   использует общий top layer и не обрезается контейнерами.

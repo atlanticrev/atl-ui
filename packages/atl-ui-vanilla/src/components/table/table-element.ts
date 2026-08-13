@@ -1,5 +1,6 @@
 import { createTypedEvent, upgradeProperties } from '../../core';
 
+import { resolveTableMinimumWidth } from './table-column-size';
 import { syncTableColumns } from './table-columns';
 import { createTableDom } from './table-dom';
 import { syncTableFixedColumns } from './table-fixed-columns';
@@ -65,6 +66,11 @@ export const createAltTableElementClass = (HtmlElementConstructor: typeof HTMLEl
 			const records = sliceTablePage(this.dataSourceValue, this.paginationValue, page);
 
 			syncTableColumns(this.tableDom.thead, this.columnsValue, this.columnViews);
+
+			this.tableDom.table.style.setProperty(
+				'--alt-table-computed-min-width',
+				resolveTableMinimumWidth(this.columnsValue),
+			);
 
 			this.#renderedRows = syncTableRows(this.tableDom.tbody, this.rowViews, {
 				columns: this.columnsValue,

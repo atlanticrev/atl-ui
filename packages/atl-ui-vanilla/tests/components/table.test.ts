@@ -146,6 +146,37 @@ describe('alt-table', () => {
 		expect(cell?.dataset.overflow).toBe('ellipsis');
 	});
 
+	it('derives its minimum width from all column sizing contracts', async () => {
+		const table = document.createElement(TAG_NAME) as AltTableElementApi<Row>;
+
+		table.columns = [
+			{ dataIndex: 'name', minWidth: 180, title: 'Minimum only' },
+			{ dataIndex: 'id', title: 'Width only', width: 120 },
+			{ dataIndex: 'name', key: 'automatic', title: 'Automatic' },
+			{ dataIndex: 'name', key: 'responsive', minWidth: '12rem', title: 'Responsive', width: '40%' },
+		];
+
+		document.body.append(table);
+
+		await flushUpdates();
+
+		const nativeTable = table.querySelector<HTMLTableElement>('table');
+
+		const headers = table.querySelectorAll<HTMLTableCellElement>('th');
+
+		expect(nativeTable?.style.getPropertyValue('--alt-table-computed-min-width')).toBe(
+			'calc(180px + 120px + var(--alt-table-default-column-width, 136px) + max(12rem, 40%))',
+		);
+
+		expect(headers[0]?.style.width).toBe('180px');
+
+		expect(headers[1]?.style.width).toBe('120px');
+
+		expect(headers[2]?.style.width).toBe('');
+
+		expect(headers[3]?.style.width).toBe('40%');
+	});
+
 	it('pins multiple columns on either side and removes stale pinning styles', async () => {
 		const table = document.createElement(TAG_NAME) as AltTableElementApi<Row>;
 

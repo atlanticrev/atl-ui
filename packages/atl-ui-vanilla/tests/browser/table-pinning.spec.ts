@@ -26,6 +26,20 @@ test('multiple fixed columns stay pinned to both sides of the table scroll regio
 
 	expect(sizes.scrollWidth).toBeGreaterThan(sizes.clientWidth);
 
+	expect(Math.abs(sizes.scrollWidth - 616)).toBeLessThanOrEqual(1);
+
+	expect(
+		await example
+			.locator('table')
+			.evaluate((element) => element.style.getPropertyValue('--alt-table-computed-min-width')),
+	).toBe('calc(120px + 100px + 300px + 96px)');
+
+	expect(
+		await example
+			.locator('alt-table')
+			.evaluate((element) => getComputedStyle(element).getPropertyValue('--alt-table-min-width')),
+	).toBe('');
+
 	await expect(first).toHaveCSS('position', 'sticky');
 
 	await expect(second).toHaveCSS('position', 'sticky');

@@ -94,6 +94,8 @@ Dropdown и поэтому не имеет отдельного ключа в р
 - Individual imports не регистрируют элементы и не тянут `define-all`.
 - Public imports и вызовы регистрации SSR-safe.
 - Form controls сохраняют submit, reset, validation и FormData contracts.
+- Table вычисляет intrinsic minimum width из `AltTableColumn.width`/`minWidth`; Tooltip принимает plain
+  text через `text`, а Collapse анимирует пользовательское переключение authored `<details>`.
 - CSS selectors, `--alt-*` tokens, attributes и `alt-*` events считаются consumer-facing API, если они
   описаны в package docs.
 - ReactNode, arbitrary render callbacks, virtualization, routing и application state не входят в vanilla

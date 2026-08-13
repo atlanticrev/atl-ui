@@ -49,8 +49,8 @@ npm run publish:vanilla
 
 ```bash
 unset GITHUB_TOKEN
-git tag -a atl-ui-vanilla-v0.6.0 -m "@atlanticrev/atl-ui-vanilla 0.6.0"
-git push origin atl-ui-vanilla-v0.6.0
+git tag -a atl-ui-vanilla-v0.7.0 -m "@atlanticrev/atl-ui-vanilla 0.7.0"
+git push origin atl-ui-vanilla-v0.7.0
 ```
 
 Если команда завершилась ошибкой, тег создавать не нужно. Повторный запуск безопасен: команда заранее

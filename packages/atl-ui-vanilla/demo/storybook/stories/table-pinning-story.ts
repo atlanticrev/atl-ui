@@ -4,11 +4,7 @@ import { type ChannelRow, channelRows } from '../fixtures';
 
 export const pinnedTableMarkup = `
 <div class="alt-catalog-stress-frame" style="--alt-catalog-stress-width: 520px">
-	<alt-table
-		aria-label="Pinned channel table"
-		data-pinned-table
-		style="--alt-table-min-width: 760px"
-	></alt-table>
+	<alt-table aria-label="Pinned channel table" data-pinned-table></alt-table>
 </div>`;
 
 const pinnedColumns: readonly AltTableColumn<ChannelRow>[] = [

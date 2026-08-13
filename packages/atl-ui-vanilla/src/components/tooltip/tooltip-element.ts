@@ -3,13 +3,14 @@ import { createBaseElementClass, createTypedEvent, upgradeProperties } from '../
 import { createTooltipDom, findTooltipTrigger, type TooltipDom } from './tooltip-dom';
 import { isTooltipTriggerOverflowing } from './tooltip-overflow';
 import { bindTooltipOverlay } from './tooltip-overlay';
+import { migrateTooltipTitle, readTooltipText, writeTooltipText } from './tooltip-text';
 import type { AltTooltipOpenChangeDetail, AltTooltipPlacement, AltTooltipTrigger } from './types';
 
 export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTMLElement): CustomElementConstructor => {
 	const BaseElement = createBaseElementClass(HtmlElementConstructor);
 
 	return class AltTooltipElement extends BaseElement {
-		static observedAttributes = ['open', 'placement', 'title', 'trigger'];
+		static observedAttributes = ['open', 'placement', 'text', 'title', 'trigger'];
 		#cleanup: (() => void) | undefined;
 		#content: Node | null = null;
 		#dom: TooltipDom | undefined;
@@ -36,6 +37,18 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 		set placement(value: AltTooltipPlacement) {
 			this.setAttribute('placement', value);
 		}
+		get text(): string {
+			return readTooltipText(this);
+		}
+		set text(value: string) {
+			writeTooltipText(this, value);
+		}
+		override get title(): string {
+			return this.text;
+		}
+		override set title(value: string) {
+			this.text = value;
+		}
 		get trigger(): AltTooltipTrigger {
 			return this.getAttribute('trigger') === 'click' ? 'click' : 'hover';
 		}
@@ -43,12 +56,14 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 			this.setAttribute('trigger', value);
 		}
 
-		attributeChangedCallback(): void {
+		attributeChangedCallback(name: string, _previous: string | null, value: string | null): void {
+			if (migrateTooltipTitle(this, name, value)) return;
+
 			this.requestUpdate();
 		}
 
 		onConnected(signal: AbortSignal): void {
-			upgradeProperties(this, ['content', 'open', 'placement', 'trigger']);
+			upgradeProperties(this, ['content', 'open', 'placement', 'text', 'trigger']);
 
 			this.classList.add('alt-tooltip');
 
@@ -77,7 +92,7 @@ export const createAltTooltipElementClass = (HtmlElementConstructor: typeof HTML
 			this.#dom.panel.className = `alt-tooltip__panel alt-tooltip__panel--${this.placement}`;
 
 			if (this.#content) this.#dom.panel.replaceChildren(this.#content);
-			else this.#dom.panel.textContent = this.getAttribute('title') ?? '';
+			else this.#dom.panel.textContent = this.text;
 
 			this.#dom.panel.hidden = !this.open;
 
