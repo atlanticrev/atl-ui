@@ -53,9 +53,10 @@ test('single-panel collapse animates the previous item closed', async ({ page })
 
 	await schedule.locator('summary').click();
 
-	await expect(audience).toHaveAttribute('data-alt-collapse-animating', 'true');
-
-	await expect(schedule).toHaveAttribute('data-alt-collapse-animating', 'true');
+	await Promise.all([
+		expect(audience).toHaveAttribute('data-alt-collapse-animating', 'true'),
+		expect(schedule).toHaveAttribute('data-alt-collapse-animating', 'true'),
+	]);
 
 	await expect(audience).not.toHaveAttribute('data-alt-collapse-animating', 'true');
 

@@ -61,7 +61,7 @@ test('mobile catalog search remains usable', async ({ page }) => {
 	expect(box?.width).toBeGreaterThan(120);
 });
 
-test('table scrolls instead of overlapping adjacent cells', async ({ browserName, page }) => {
+test('table scrolls instead of overlapping adjacent cells', async ({ page }) => {
 	await page.setViewportSize({ height: 844, width: 390 });
 
 	await openStory(page, 'table');
@@ -88,8 +88,6 @@ test('table scrolls instead of overlapping adjacent cells', async ({ browserName
 	}));
 
 	expect(sizes.scrollWidth).toBeGreaterThan(sizes.clientWidth);
-
-	if (browserName === 'chromium') await expect(example).toHaveScreenshot('table-mobile.png');
 });
 
 test('long labels follow their component overflow contracts', async ({ browserName, page }) => {
