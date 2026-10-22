@@ -1,5 +1,9 @@
 import { expect, type Locator, test } from '@playwright/test';
 
+type ObservedCollapse = HTMLElement & {
+	animationProbe?: { keys: Set<string>; observer: MutationObserver };
+};
+
 const readHeight = (item: Locator): Promise<number> => {
 	return item.evaluate((element) => element.getBoundingClientRect().height);
 };
@@ -51,16 +55,43 @@ test('single-panel collapse animates the previous item closed', async ({ page })
 
 	const schedule = collapse.locator('details[data-key="schedule"]');
 
+	await collapse.evaluate((element) => {
+		const target = element as ObservedCollapse;
+
+		const keys = new Set<string>();
+
+		const observer = new MutationObserver((mutations) => {
+			for (const mutation of mutations) {
+				const item = mutation.target as HTMLDetailsElement;
+
+				if (item.dataset.altCollapseAnimating === 'true' && item.dataset.key) keys.add(item.dataset.key);
+			}
+		});
+
+		observer.observe(target, { attributeFilter: ['data-alt-collapse-animating'], attributes: true, subtree: true });
+
+		target.animationProbe = { keys, observer };
+	});
+
 	await schedule.locator('summary').click();
 
-	await Promise.all([
-		expect(audience).toHaveAttribute('data-alt-collapse-animating', 'true'),
-		expect(schedule).toHaveAttribute('data-alt-collapse-animating', 'true'),
-	]);
+	await expect
+		.poll(() =>
+			collapse.evaluate((element) => [...((element as ObservedCollapse).animationProbe?.keys ?? [])].sort()),
+		)
+		.toEqual(['audience', 'schedule']);
 
 	await expect(audience).not.toHaveAttribute('data-alt-collapse-animating', 'true');
 
 	await expect(schedule).not.toHaveAttribute('data-alt-collapse-animating', 'true');
+
+	await collapse.evaluate((element) => {
+		const target = element as ObservedCollapse;
+
+		target.animationProbe?.observer.disconnect();
+
+		delete target.animationProbe;
+	});
 
 	expect(
 		await collapse.locator('details[open]').evaluateAll((items) => items.map((item) => item.dataset.key)),
